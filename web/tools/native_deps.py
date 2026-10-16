@@ -166,6 +166,11 @@ def build(args):
              *options], log)
         run(["cmake", "--build", directory / "build", "--parallel", args.jobs], log)
         run(["cmake", "--install", directory / "build"], log)
+        if name == "TIFF":
+            # libtiff's static config needs its codec find modules when consumed
+            # by another project, including CMake's config-first FindTIFF path.
+            for module in ("FindDeflate.cmake", "FindZSTD.cmake"):
+                shutil.copy2(source / "cmake" / module, prefix / "lib/cmake/tiff" / module)
         if name == "BROTLI":
             # Brotli 1.0.9 deliberately has no install rules under Emscripten.
             # Install its actual compiled archives and public headers ourselves.

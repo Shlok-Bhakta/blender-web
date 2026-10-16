@@ -1,0 +1,25 @@
+--- a/cmake/TiffConfig.cmake.in
++++ b/cmake/TiffConfig.cmake.in
+@@ -1,5 +1,21 @@
+ if(NOT "@BUILD_SHARED_LIBS@")
+-    # TODO: import dependencies
++    include(CMakeFindDependencyMacro)
++    set(_tiff_module_path "${CMAKE_MODULE_PATH}")
++    list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
++    if("@ZLIB_SUPPORT@")
++        find_dependency(ZLIB)
++    endif()
++    if("@LIBDEFLATE_SUPPORT@")
++        find_dependency(Deflate)
++    endif()
++    if("@JPEG_SUPPORT@")
++        find_dependency(JPEG)
++    endif()
++    if("@ZSTD_SUPPORT@")
++        find_dependency(ZSTD)
++    endif()
++    set(CMAKE_MODULE_PATH "${_tiff_module_path}")
++    unset(_tiff_module_path)
+ endif()
+ 
+ function(set_variable_from_rel_or_absolute_path var root rel_or_abs_path)

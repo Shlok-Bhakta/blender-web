@@ -8,6 +8,10 @@ on:
     paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml']
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash
+
 permissions:
   contents: read
 
@@ -58,11 +62,16 @@ jobs:
             build/native/deps/downloads
             build/native/deps/*/installed.json
           key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
+          restore-keys: ${{ runner.os }}-native-deps-
       - uses: actions/cache/restore@v4
         id: app-deps
         with:
           path: |
-            build/native/deps/prefix
+            build/native/deps/prefix/include/python3.13
+            build/native/deps/prefix/lib/python3.13
+            build/native/deps/prefix/lib/libpython3.13.a
+            build/native/deps/prefix/include/shaderc
+            build/native/deps/prefix/lib/libshaderc_combined.a
             build/native/gpu-deps
           key: ${{ runner.os }}-native-app-deps-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py') }}
       - name: Build and validate native dependencies
@@ -82,7 +91,11 @@ jobs:
         if: steps.app-deps.outputs.cache-hit != 'true'
         with:
           path: |
-            build/native/deps/prefix
+            build/native/deps/prefix/include/python3.13
+            build/native/deps/prefix/lib/python3.13
+            build/native/deps/prefix/lib/libpython3.13.a
+            build/native/deps/prefix/include/shaderc
+            build/native/deps/prefix/lib/libshaderc_combined.a
             build/native/gpu-deps
           key: ${{ steps.app-deps.outputs.cache-primary-key }}
       - name: Compile original Blender application
