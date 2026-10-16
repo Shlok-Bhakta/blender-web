@@ -1,5 +1,8 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 #pragma once
+#ifdef WITH_WEBGPU_BACKEND
+#  include "native/ghost/GHOST_SystemWeb.hh"
+#else
 
 #include "intern/GHOST_SystemHeadless.hh"
 
@@ -41,3 +44,5 @@ class GHOST_SystemWeb final : public GHOST_SystemHeadless {
 };
 
 GHOST_ISystem *GHOST_createWebSystem();
+
+#endif

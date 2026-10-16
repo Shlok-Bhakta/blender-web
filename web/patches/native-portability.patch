@@ -1,0 +1,186 @@
+diff --git a/source/blender/blenkernel/BKE_idtype.hh b/source/blender/blenkernel/BKE_idtype.hh
+index 0f134a4c1e5..81458ed3432 100644
+--- a/source/blender/blenkernel/BKE_idtype.hh
++++ b/source/blender/blenkernel/BKE_idtype.hh
+@@ -11,6 +11,9 @@
+  */
+ 
+ #include <optional>
++#ifdef WITH_GHOST_WEB
++#  include "GHOST_WebImageCache.hh"
++#endif
+ 
+ #include "BLI_color_types.hh"
+ #include "BLI_function_ref.hh"
+@@ -79,7 +82,11 @@ struct IDCacheKey {
+    * Value uniquely identifying the cache within its ID.
+    * Typically the offset of its member in the data-block struct, but can be anything.
+    */
++#ifdef WITH_GHOST_WEB
++  GHOST_WebCacheIdentifier identifier;
++#else
+   size_t identifier;
++#endif
+ };
+ 
+ uint BKE_idtype_cache_key_hash(const void *key_v);
+diff --git a/source/blender/blenkernel/intern/image.cc b/source/blender/blenkernel/intern/image.cc
+index ea2f9b02adc..0fc45d53714 100644
+--- a/source/blender/blenkernel/intern/image.cc
++++ b/source/blender/blenkernel/intern/image.cc
+@@ -239,7 +239,11 @@ static void image_foreach_cache(ID *id,
+   }
+ 
+   /* Ensure we don't collide with the identifiers used above. */
++#ifdef WITH_GHOST_WEB
++  constexpr auto runtime_base_id = GHOST_web_image_runtime_base();
++#else
+   constexpr size_t runtime_base_id = size_t(1) << 32u;
++#endif
+ 
+   key.identifier = runtime_base_id + offsetof(bke::ImageRuntime, cache);
+   function_callback(id, &key, reinterpret_cast<void **>(&image->runtime->cache), 0, user_data);
+diff --git a/source/blender/blenlib/intern/expr_pylike_eval.cc b/source/blender/blenlib/intern/expr_pylike_eval.cc
+index 7919ff10a1b..8de97035d13 100644
+--- a/source/blender/blenlib/intern/expr_pylike_eval.cc
++++ b/source/blender/blenlib/intern/expr_pylike_eval.cc
+@@ -42,6 +42,10 @@
+ #include "BLI_utildefines.h"
+ #include "BLI_vector.hh"
+ 
++#ifdef WITH_GHOST_WEB
++#  include "GHOST_WebFloat.hh"
++#endif
++
+ namespace blender {
+ 
+ #ifdef _MSC_VER
+@@ -252,12 +256,18 @@ eExprPyLike_EvalStatus BLI_expr_pylike_eval(ExprPyLike_Parsed *expr,
+       default:
+         return EXPR_PYLIKE_FATAL_ERROR;
+     }
++#ifdef WITH_GHOST_WEB
++    if (sp > 0) GHOST_web_record_math(stack[sp - 1]);
++#endif
+   }
+ 
+   FAIL_IF(sp != 1 || pc != expr->ops.size());
+ 
+ #undef FAIL_IF
+ 
++#ifdef WITH_GHOST_WEB
++  const double result = stack[0];
++#endif
+   *r_result = stack[0];
+ 
+   /* Detect floating point evaluation errors. */
+@@ -287,6 +297,9 @@ static double op_mul(double a, double b)
+ 
+ static double op_div(double a, double b)
+ {
++#ifdef WITH_GHOST_WEB
++  return GHOST_web_divide(a, b);
++#endif
+   return a / b;
+ }
+ 
+@@ -312,6 +325,9 @@ static double op_degrees(double arg)
+ 
+ static double op_log2(double a, double b)
+ {
++#ifdef WITH_GHOST_WEB
++  return GHOST_web_divide(log(a), log(b));
++#endif
+   return log(a) / log(b);
+ }
+ 
+diff --git a/source/blender/blenlib/intern/storage.cc b/source/blender/blenlib/intern/storage.cc
+index 13c4e1bb273..cbdf733bcf1 100644
+--- a/source/blender/blenlib/intern/storage.cc
++++ b/source/blender/blenlib/intern/storage.cc
+@@ -58,6 +58,10 @@
+ #include "BLI_threads.h"
+ #include "BLI_utildefines.h"
+ 
++#ifdef WITH_GHOST_WEB
++#  include "GHOST_WebStorage.hh"
++#endif
++
+ namespace blender {
+ 
+ /* NOTE: The implementation for Apple lives in storage_apple.mm. */
+@@ -122,7 +126,9 @@ const char *BLI_dir_home()
+ 
+ double BLI_dir_free_space(const char *dir)
+ {
+-#ifdef WIN32
++#ifdef WITH_GHOST_WEB
++  return GHOST_web_storage_free_space();
++#elif defined(WIN32)
+   DWORD sectorspc, bytesps, freec, clusters;
+   char tmp[4];
+ 
+diff --git a/source/blender/gpu/intern/gpu_shader_dependency.cc b/source/blender/gpu/intern/gpu_shader_dependency.cc
+index ba4716f1763..1b8f8b63c3c 100644
+--- a/source/blender/gpu/intern/gpu_shader_dependency.cc
++++ b/source/blender/gpu/intern/gpu_shader_dependency.cc
+@@ -18,6 +18,9 @@
+ 
+ #include "BLI_map.hh"
+ #include "BLI_string_ref.hh"
++#ifdef WITH_GHOST_WEB
++#  include "GHOST_WebShaderValidation.hh"
++#endif
+ 
+ #include "CLG_log.h"
+ 
+@@ -195,9 +198,13 @@ struct GPUSource {
+       std::function<void(GPUSource &, GPUFunctionDictionary *, GPUPrintFormatMap *)> metadata_fn)
+       : fullpath(path), filename(file), source(datatoc)
+   {
++#ifdef WITH_GHOST_WEB
++    GHOST_web_validate_shader_source(source);
++#else
+     BLI_assert_msg(source.find("//") == std::string::npos &&
+                        source.find("/*") == std::string::npos,
+                    "Input source should have no comments.");
++#endif
+     metadata_fn(*this, g_functions, g_formats);
+   };
+ 
+@@ -243,7 +250,11 @@ struct GPUSource {
+       shader::PrintfFormat::Block::ArgumentType type =
+           shader::PrintfFormat::Block::ArgumentType::NONE;
+       int64_t start = 0, end = 0, cursor = -1;
++#ifdef WITH_GHOST_WEB
++      while ((end = GHOST_web_find_printf_argument(format, cursor + 1)) != -1) {
++#else
+       while ((end = format.find_first_of('%', cursor + 1)) != -1) {
++#endif
+         if (end - start > 0) {
+           /* Add the previous block without the newly found % character. */
+           fmt.format_blocks.append({type, format.substr(start, end - start)});
+diff --git a/source/blender/gpu/shader_tool/scope.hh b/source/blender/gpu/shader_tool/scope.hh
+index 42154b14b3e..647275c074b 100644
+--- a/source/blender/gpu/shader_tool/scope.hh
++++ b/source/blender/gpu/shader_tool/scope.hh
+@@ -13,6 +13,9 @@
+ #include "token_stream.hh"
+ 
+ #include <cassert>
++#ifdef WITH_GHOST_WEB
++#  include "GHOST_WebShaderScope.hh"
++#endif
+ 
+ namespace blender::gpu::shader::parser {
+ 
+@@ -37,6 +40,9 @@ struct Scope {
+ 
+   Scope(const ParserBase &parser, int64_t index) : parser_(&parser), index_(index)
+   {
++#ifdef WITH_GHOST_WEB
++    index_ = GHOST_web_shader_scope_index(index, parser.scope_types.size());
++#endif
+     if (index < 0 || index >= parser.scope_types.size()) {
+       index = parser.scope_types.size();
+       return;

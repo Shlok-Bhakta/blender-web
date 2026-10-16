@@ -1,0 +1,71 @@
+diff --git a/src/cmake/DawnCompilerExtraFlags.cmake b/src/cmake/DawnCompilerExtraFlags.cmake
+index caaf850ab..2ba0cf67c 100644
+--- a/src/cmake/DawnCompilerExtraFlags.cmake
++++ b/src/cmake/DawnCompilerExtraFlags.cmake
+@@ -44,7 +44,7 @@ function(common_compile_options target)
+   if (COMPILER_IS_LIKE_GNU)
+     target_compile_options(${target}
+       PRIVATE
+-        "-fno-exceptions"
++        "$<IF:$<BOOL:${EMSCRIPTEN}>,-fwasm-exceptions,-fno-exceptions>"
+ 
+         "-Wno-assume"
+         "-Wno-deprecated-builtins"
+diff --git a/src/tint/utils/ice/ice.cc b/src/tint/utils/ice/ice.cc
+index 6649ca3bc..13b7215f3 100644
+--- a/src/tint/utils/ice/ice.cc
++++ b/src/tint/utils/ice/ice.cc
+@@ -36,13 +36,16 @@
+ 
+ namespace tint {
+ 
++// Host-armed recovery point for ICEs (see ice.h). Default: trap as before.
++thread_local bool internal_compiler_error_recovery = false;
++
+ InternalCompilerError::InternalCompilerError(const char* file,
+                                              size_t line,
+                                              InternalCompilerErrorCallback callback)
+     : file_(file), line_(line), callback_info_(callback) {}
+ 
+ TINT_BEGIN_DISABLE_WARNING(DESTRUCTOR_NEVER_RETURNS);
+-InternalCompilerError::~InternalCompilerError() {
++InternalCompilerError::~InternalCompilerError() noexcept(false) {
+     std::ostringstream err;
+     err << Error();
+     err << R"(
+@@ -63,6 +66,11 @@ InternalCompilerError::~InternalCompilerError() {
+         std::cerr << err.str();
+     }
+ 
++    if (internal_compiler_error_recovery) {
++        internal_compiler_error_recovery = false;
++        throw RecoverableCompilerError{};
++    }
++
+     debugger::Break();
+ 
+ #if defined(_MSC_VER) && !defined(__clang__)
+diff --git a/src/tint/utils/ice/ice.h b/src/tint/utils/ice/ice.h
+index a6fb44df1..aaf69dba1 100644
+--- a/src/tint/utils/ice/ice.h
++++ b/src/tint/utils/ice/ice.h
+@@ -37,6 +37,10 @@
+ 
+ namespace tint {
+ 
++/// Permit the host to reject an unsupported shader while unwinding C++ owners.
++struct RecoverableCompilerError {};
++extern thread_local bool internal_compiler_error_recovery;
++
+ /// An instance of InternalCompilerErrorCallbackInfo can be used to set up a callback so that the
+ /// user of Tint can capture an ICE message before crashing.
+ struct InternalCompilerErrorCallbackInfo {
+@@ -62,7 +66,7 @@ class InternalCompilerError {
+     /// Destructor.
+     /// Adds the internal compiler error message to the diagnostics list, calls the
+     /// InternalCompilerErrorReporter if one is set, then terminates the process.
+-    [[noreturn]] ~InternalCompilerError();
++    [[noreturn]] ~InternalCompilerError() noexcept(false);
+ 
+     /// Appends `arg` to the ICE message.
+     /// @param arg the argument to append to the ICE message

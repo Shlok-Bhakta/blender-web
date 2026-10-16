@@ -1,0 +1,194 @@
+diff --git a/source/blender/gpu/CMakeLists.txt b/source/blender/gpu/CMakeLists.txt
+index ebf0ae9c4b9..015e00cb523 100644
+--- a/source/blender/gpu/CMakeLists.txt
++++ b/source/blender/gpu/CMakeLists.txt
+@@ -473,6 +473,10 @@ if(WITH_VULKAN_BACKEND)
+   add_definitions(-DWITH_VULKAN_BACKEND)
+ endif()
+ 
++if(WITH_WEBGPU_BACKEND)
++  include(${CMAKE_SOURCE_DIR}/intern/ghost/web/native/gpu/platform.cmake)
++endif()
++
+ set(GLSL_SRC
+   GPU_shader_shared.hh
+ 
+diff --git a/source/blender/gpu/GPU_platform_backend_enum.h b/source/blender/gpu/GPU_platform_backend_enum.h
+index 2e87ed9beb9..229169d7034 100644
+--- a/source/blender/gpu/GPU_platform_backend_enum.h
++++ b/source/blender/gpu/GPU_platform_backend_enum.h
+@@ -16,6 +16,9 @@ enum GPUBackendType {
+   GPU_BACKEND_OPENGL = 1 << 0,
+   GPU_BACKEND_METAL = 1 << 1,
+   GPU_BACKEND_VULKAN = 1 << 3,
++#ifdef WITH_GHOST_WEB
++  GPU_BACKEND_WEBGPU = 1 << 4,
++#endif
+   GPU_BACKEND_ANY = 0xFFFFFFFFu
+ };
+ 
+diff --git a/source/blender/gpu/intern/gpu_context.cc b/source/blender/gpu/intern/gpu_context.cc
+index f73af772d2c..af09571eabd 100644
+--- a/source/blender/gpu/intern/gpu_context.cc
++++ b/source/blender/gpu/intern/gpu_context.cc
+@@ -30,6 +30,9 @@
+ #include "GPU_batch.hh"
+ #include "GPU_pass.hh"
+ #include "gpu_backend.hh"
++#ifdef WITH_WEBGPU_BACKEND
++#  include "webgpu_backend.hh"
++#endif
+ #include "gpu_context_private.hh"
+ #include "gpu_matrix_private.hh"
+ #include "gpu_private.hh"
+@@ -456,6 +459,9 @@ static const char *gpu_backend_type_name(const GPUBackendType backend_type)
+       return "Vulkan";
+     case GPU_BACKEND_METAL:
+       return "Metal";
++#ifdef WITH_WEBGPU_BACKEND
++    case GPU_BACKEND_WEBGPU: return "WebGPU";
++#endif
+     case GPU_BACKEND_NONE:
+       return "None";
+     case GPU_BACKEND_ANY:
+@@ -488,6 +494,11 @@ bool GPU_backend_type_selection_detect()
+   backends_to_check.add(GPU_BACKEND_VULKAN);
+ #endif
+ 
++#ifdef WITH_WEBGPU_BACKEND
++  backends_to_check.clear();
++  backends_to_check.add(GPU_BACKEND_WEBGPU);
++#endif
++
+   for (const GPUBackendType backend_type : backends_to_check) {
+     GPU_backend_type_selection_set(backend_type);
+     if (GPU_backend_supported()) {
+@@ -528,6 +539,9 @@ static bool gpu_backend_supported()
+       return MTLBackend::metal_is_supported();
+ #else
+       return false;
++#endif
++#ifdef WITH_WEBGPU_BACKEND
++    case GPU_BACKEND_WEBGPU: return true;
+ #endif
+     case GPU_BACKEND_NONE:
+       return true;
+@@ -565,6 +579,11 @@ static void gpu_backend_create()
+     case GPU_BACKEND_METAL:
+       g_backend = MEM_new<MTLBackend>(__func__);
+       break;
++#endif
++#ifdef WITH_WEBGPU_BACKEND
++    case GPU_BACKEND_WEBGPU:
++      g_backend = MEM_new<WebGPUBackend>(__func__);
++      break;
+ #endif
+     case GPU_BACKEND_NONE:
+       g_backend = MEM_new<DummyBackend>(__func__);
+@@ -596,6 +615,9 @@ void gpu_backend_discard()
+ 
+ GPUBackendType GPU_backend_get_type()
+ {
++#ifdef WITH_WEBGPU_BACKEND
++  if (g_backend && dynamic_cast<WebGPUBackend *>(g_backend)) return GPU_BACKEND_WEBGPU;
++#endif
+ 
+ #ifdef WITH_OPENGL_BACKEND
+   if (g_backend && dynamic_cast<GLBackend *>(g_backend) != nullptr) {
+@@ -639,6 +661,9 @@ namespace gpu {
+ static GHOST_TDrawingContextType ghost_context_type()
+ {
+   switch (GPU_backend_type_selection_get()) {
++#ifdef WITH_WEBGPU_BACKEND
++    case GPU_BACKEND_WEBGPU: return GHOST_kDrawingContextTypeNone;
++#endif
+ #ifdef WITH_OPENGL_BACKEND
+     case GPU_BACKEND_OPENGL:
+       return GHOST_kDrawingContextTypeOpenGL;
+diff --git a/source/blender/gpu/intern/gpu_shader.cc b/source/blender/gpu/intern/gpu_shader.cc
+index 3189b897166..935b9714fe5 100644
+--- a/source/blender/gpu/intern/gpu_shader.cc
++++ b/source/blender/gpu/intern/gpu_shader.cc
+@@ -21,6 +21,9 @@
+ #include "shader_tool/processor.hh"
+ 
+ #include "gpu_backend.hh"
++#ifdef WITH_WEBGPU_BACKEND
++#  include "shader_defines.hh"
++#endif
+ #include "gpu_context_private.hh"
+ #include "gpu_profile_report.hh"
+ #include "gpu_shader_create_info.hh"
+@@ -166,6 +169,9 @@ static void standard_defines(Vector<StringRefNull> &sources)
+   }
+   /* API Definition */
+   GPUBackendType backend = GPU_backend_get_type();
++#ifdef WITH_WEBGPU_BACKEND
++  if (GHOST_web_standard_shader_defines(backend, sources)) return;
++#endif
+   switch (backend) {
+     case GPU_BACKEND_OPENGL:
+       sources.append("#define GPU_OPENGL\n");
+diff --git a/source/blender/windowmanager/intern/wm.cc b/source/blender/windowmanager/intern/wm.cc
+index a39a8dbc3f5..e3823273bbb 100644
+--- a/source/blender/windowmanager/intern/wm.cc
++++ b/source/blender/windowmanager/intern/wm.cc
+@@ -63,6 +63,10 @@
+ 
+ #include "BLO_read_write.hh"
+ 
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebMainLoop.hh"
++#endif
++
+ namespace blender {
+ 
+ /* ****************************************************** */
+@@ -602,6 +606,9 @@ void WM_main(bContext *C)
+    * This ensures we don't run operators before the depsgraph has been evaluated. */
+   wm_event_do_refresh_wm_and_depsgraph(C);
+ 
++#ifdef WITH_GHOST_WEB
++  GHOST_web_main_loop(C);
++#endif
+   while (true) {
+ 
+     /* Get events from ghost, handle window events, add to window queues. */
+diff --git a/source/blender/windowmanager/intern/wm_window.cc b/source/blender/windowmanager/intern/wm_window.cc
+index 4c0aa2cd5c6..81c14ea4680 100644
+--- a/source/blender/windowmanager/intern/wm_window.cc
++++ b/source/blender/windowmanager/intern/wm_window.cc
+@@ -2369,6 +2369,9 @@ const char *WM_ghost_backend()
+ GHOST_TDrawingContextType wm_ghost_drawing_context_type(const GPUBackendType gpu_backend)
+ {
+   switch (gpu_backend) {
++#ifdef WITH_GHOST_WEB
++    case GPU_BACKEND_WEBGPU: return GHOST_kDrawingContextTypeNone;
++#endif
+     case GPU_BACKEND_NONE:
+       return GHOST_kDrawingContextTypeNone;
+     case GPU_BACKEND_ANY:
+diff --git a/source/creator/creator.cc b/source/creator/creator.cc
+index 4253893b082..97f385e7bf4 100644
+--- a/source/creator/creator.cc
++++ b/source/creator/creator.cc
+@@ -7,6 +7,9 @@
+  */
+ 
+ #include <cstdlib>
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebBootstrap.hh"
++#endif
+ #include <cstring>
+ 
+ #ifdef WIN32
+@@ -338,6 +341,9 @@ int main(int argc,
+ )
+ {
+   using namespace blender;
++#ifdef WITH_GHOST_WEB
++  if (GHOST_web_bootstrap(argc, argv, main)) return 0;
++#endif
+ 
+   bContext *C;
+ #ifndef WITH_PYTHON_MODULE

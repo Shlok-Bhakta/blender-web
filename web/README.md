@@ -1,10 +1,13 @@
-# Blender Web preview
+# Legacy browser platform fixture
 
-This port pins the released Blender 5.2.2 LTS tag in the `blender/` submodule and
+The deployed application now uses [Blender’s original C++ UI](native/README.md).
+This document describes the earlier platform fixture, built separately with
+`web/tools/build.py`.
+
+This fixture pins the released Blender 5.2.2 LTS tag in the `blender/` submodule and
 `upstream.json`. It builds a small browser integration test from upstream GHOST,
 clog, guardedalloc and selected Blender math code. A browser editor interface
-controls the WebGPU cube fixture through a Wasm API. **Blender's original native
-UI and scene evaluation are not running yet.**
+controls the WebGPU cube fixture through a Wasm API. The fixture does not run Blender’s original native UI or scene evaluation.
 
 The test proves the platform path before cross-compiling the editor's larger
 dependency graph. `platform_test.cc` is a separate entry point, not a replacement

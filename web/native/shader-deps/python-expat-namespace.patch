@@ -1,0 +1,12 @@
+--- a/Modules/expat/pyexpatns.h
++++ b/Modules/expat/pyexpatns.h
+@@ -37,6 +37,9 @@
+ 
+ #ifndef PYEXPATNS_H
+ #define PYEXPATNS_H
++
++#define g_reparseDeferralEnabledDefault PyExpat_g_reparseDeferralEnabledDefault
++#define _INTERNAL_trim_to_complete_utf8_characters PyExpat_INTERNAL_trim_to_complete_utf8_characters
+ 
+ #define testingAccountingGetCountBytesDirect PyExpat_testingAccountingGetCountBytesDirect
+ #define testingAccountingGetCountBytesIndirect PyExpat_testingAccountingGetCountBytesIndirect
