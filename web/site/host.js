@@ -31,7 +31,7 @@ export function createHost(canvas, renderer, onJob, fail) {
   const host = {
     diagnostics: {}, job: null, pixelRatio: 1,
     setTitle(title) { document.title = title; },
-    draw(matrix) { if (!stopped) renderer.draw(matrix); },
+    draw(matrix, view, normal, state) { if (!stopped) renderer.draw(matrix, view, normal, state); },
     invalidate,
     jobComplete(checksum, workers) {
       host.job = { checksum, workers, done: true };

@@ -1,9 +1,10 @@
-# Blender Web platform bring-up
+# Blender Web preview
 
 This port pins the released Blender 5.2.2 LTS tag in the `blender/` submodule and
 `upstream.json`. It builds a small browser integration test from upstream GHOST,
-clog, guardedalloc and selected Blender math code. The WebGPU cube is a test
-fixture. **This is not a working browser build of Blender's editor.**
+clog, guardedalloc and selected Blender math code. A browser editor interface
+controls the WebGPU cube fixture through a Wasm API. **Blender's original native
+UI and scene evaluation are not running yet.**
 
 The test proves the platform path before cross-compiling the editor's larger
 dependency graph. `platform_test.cc` is a separate entry point, not a replacement
@@ -27,8 +28,22 @@ python3 web/tools/serve.py --pages-mode
 ```
 
 Open `http://localhost:8080`. Drag or touch-drag to orbit, scroll to zoom, and
-press Home while the canvas is focused to reset the view. Save and restore write
-view settings through the Wasm virtual filesystem to IndexedDB.
+press Home while the canvas is focused to reset the view. Front, Right and Top
+select orthographic views. Frame object centers the object, including translated
+or scaled objects. The plus/minus controls provide touch zoom.
+
+The outliner selects and hides the cube. Object properties rename it and edit
+location, Euler rotation in degrees and scale. These fields change the Wasm transform used
+to draw the object. Edit > Undo/Redo applies to object edits. The inspector and
+outliner dividers accept pointer dragging or arrow keys; panel size changes also
+generate GHOST resize events. On phones, Inspector opens the panels beneath the
+viewport, leaving the canvas accessible for touch navigation.
+
+File > Save preview explicitly flushes the object, camera, display settings and
+panel layout through the Wasm filesystem to IndexedDB. Restore saved preview
+loads that snapshot. Download/Open preview use a versioned `.blender-web.json`
+format, with validation before changing the scene. These files are preview data,
+not `.blend` files. Saved views from the first platform build can still be restored.
 
 Use `?threads=2` to limit the pool, or `?threads=0` to select the separate
 single-thread module. The default uses the browser's reported logical core count,
@@ -52,15 +67,20 @@ does not establish Safari compatibility; physical iOS testing remains necessary.
 * Pointer capture supports drag events beyond canvas bounds. Focus loss and
   pointer cancellation clear held input. Unsupported native capabilities are not
   advertised. A second GHOST window fails explicitly for now.
-* The test renderer uses baseline WebGPU capabilities, persistent GPU buffers,
-  and a 64-byte matrix upload per redraw. It recreates depth textures on resize
+* `web/site/editor.js` owns the browser controls, object labels, history and layout.
+  `web/platform_test.cc` owns the fixture's transforms, camera and rendering flags.
+  The UI adapter is separate from Blender's native editor startup and operators.
+* The preview renderer uses baseline WebGPU capabilities, persistent GPU buffers,
+  and three 4×4 matrices per redraw. It draws a Z-up grid and object edges, handles
+  negative/nonuniform scale, and recreates depth textures on resize
   and reports GPU loss. It redraws on demand and pauses while hidden. Raster DPR
   is capped at 2 and bounded by the device's texture-size limit.
 * Both Wasm variants use `-O3`, link-time optimization and baseline SIMD. Initial
   Wasm memory is 64 MiB, with growth up to 1 GiB. This is a safety bound for the
   platform test, not a tested memory budget for the full editor.
 * IDBFS mounts `/user` before application startup. Save explicitly waits for the
-  IndexedDB flush. Storage failures disable persistence while retaining rendering.
+  IndexedDB flush. Storage failures disable local persistence while retaining rendering
+  and JSON import/export.
   Browser storage is device-local and may be evicted; this does not provide
   durable project-file storage or `.blend` saving yet.
 
@@ -106,9 +126,12 @@ npm test
 ```
 
 The browser checks rendered pixels, GHOST resizing and pointer input, idle redraw,
-actual Wasm worker calculations, view persistence across module reloads, offline
-startup, and a fresh non-isolated mobile-sized context using the single-thread
-module. Screenshots and results are written to `build/web/evidence/`. CI uses
+actual Wasm worker calculations, numeric transforms and undo/redo, visibility,
+orthographic views, panel resizing, project persistence across module reloads,
+JSON import/export and invalid-import rejection. It also checks offline UI startup
+and restoration, plus a fresh non-isolated mobile context using the single-thread
+module with touch zoom and inspector controls. Screenshots and results are written
+to `build/web/evidence/`. CI uses
 software Vulkan for correctness; these tests measure no hardware performance and
 do not run Safari.
 
@@ -120,6 +143,13 @@ shader compilation/translation, and the operations required by its drawing path.
 Putting this work in GHOST would duplicate responsibilities already assigned to
 Blender's GPU layer. Keep the implementation in a separate backend directory and
 use guarded factory hooks, as with GHOST.
+
+Inspection of `source/blender/windowmanager/intern/wm_init_exit.cc` confirms that
+the original UI starts after operator/editor registration, font initialization,
+startup-file loading and GPU initialization. Linking GHOST alone cannot run those
+panels. The browser controls deliberately expose only the fixture's working
+operations; native mesh editing, modifiers, the timeline and Python panels require
+the actual editor dependency graph.
 
 A full-editor CMake probe on this checkout first failed because `startup.blend`
 was a Git LFS pointer. Fetching that specific asset resolved the check. The next

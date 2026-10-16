@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 import { createRenderer } from './gpu.js';
 import { createHost } from './host.js';
+import { createEditor } from './editor.js';
 
 const loading = document.querySelector('#loading');
 const status = document.querySelector('#status');
@@ -11,9 +12,10 @@ function fail(error) {
   failed = true;
   console.error(error);
   loading.hidden = false;
-  loading.textContent = `Unable to start the platform test.\n${error.message || error}`;
+  loading.textContent = `Unable to start the preview.\n${error.message || error}`;
   status.textContent = 'Stopped';
   buttons.forEach(button => button.disabled = true);
+  document.querySelectorAll('fieldset, input').forEach(control => control.disabled = true);
 }
 
 async function deadline(promise, milliseconds = 5000) {
@@ -112,30 +114,40 @@ async function start() {
     document.querySelector('#cpu').disabled = true;
     module._web_run_parallel_test();
   };
-  if (!storageError) {
-    const save = document.querySelector('#save');
-    const restore = document.querySelector('#restore');
-    save.disabled = restore.disabled = false;
-    const storageAction = action => async () => {
-      save.disabled = restore.disabled = true;
-      try { await action(); }
-      catch (error) { status.textContent = `View storage failed: ${error.message || error}`; }
-      finally { if (!failed) save.disabled = restore.disabled = false; }
-    };
-    save.onclick = storageAction(async () => {
-      const view = { yaw: module._web_yaw(), pitch: module._web_pitch(), distance: module._web_distance() };
-      module.FS.writeFile('/user/view.json', JSON.stringify(view));
-      // Explicitly flush before saying saved. No asynchronous unload saves.
+  let editor, storageBusy = false;
+  const message = text => { status.textContent = text; };
+  const updateStorageButtons = () => {
+    document.querySelector('#save').disabled = failed || !!storageError || storageBusy;
+    document.querySelector('#restore').disabled = failed || !!storageError || storageBusy ||
+      !['/user/preview.json', '/user/view.json'].some(path => module.FS.analyzePath(path).exists);
+  };
+  const storageAction = action => async () => {
+    if (failed || storageError || storageBusy) return;
+    storageBusy = true; updateStorageButtons();
+    try { await action(); }
+    catch (error) { message(`Preview storage failed: ${error.message || error}`); }
+    finally { storageBusy = false; updateStorageButtons(); }
+  };
+  editor = createEditor(module, host, { message,
+    save: storageAction(async () => {
+      const state = editor.capture();
+      module.FS.writeFile('/user/preview.json', JSON.stringify(state));
+      // Confirm only after IndexedDB has flushed. Edits during the flush remain dirty.
       await sync(module, false);
-      status.textContent = `WebGPU · ${mode} · View saved on this device`;
-    });
-    restore.onclick = storageAction(async () => {
-      const view = JSON.parse(module.FS.readFile('/user/view.json', { encoding: 'utf8' }));
-      if (![view.yaw, view.pitch, view.distance].every(Number.isFinite)) throw new Error('Invalid saved view');
-      module._web_orbit(view.yaw, view.pitch, view.distance);
-      status.textContent = `WebGPU · ${mode} · View restored`;
-    });
-  }
+      editor.markSaved(state); message('Preview saved on this device');
+    }),
+    restore: storageAction(async () => {
+      if (module.FS.analyzePath('/user/preview.json').exists) {
+        editor.restore(JSON.parse(module.FS.readFile('/user/preview.json', { encoding: 'utf8' })));
+        editor.markSaved(editor.capture()); message('Preview restored');
+      } else {
+        editor.restoreLegacyView(JSON.parse(module.FS.readFile('/user/view.json', { encoding: 'utf8' })));
+        message('Saved view restored');
+      }
+    }),
+  });
+  window.blenderWeb.editor = editor;
+  updateStorageButtons();
   host.invalidate();
 }
 start().catch(fail);

@@ -3,25 +3,91 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#202124">
+  <meta name="theme-color" content="#252525">
   <link rel="icon" href="data:,">
-  <title>Blender Web | GHOST platform test</title>
+  <title>Blender Web | Preview</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <header><strong>Blender Web</strong><span>GHOST / WebGPU platform test</span></header>
-  <main>
-    <canvas id="canvas" tabindex="0" aria-label="Cube viewport. Drag to orbit, scroll to zoom, Home to reset."></canvas>
-    <div id="loading" role="status">Starting the browser platform…</div>
-  </main>
-  <footer>
-    <span id="status" role="status">Loading</span>
-    <span>Drag to orbit · Scroll to zoom · Home to reset</span>
-    <button id="save" disabled>Save view</button>
-    <button id="restore" disabled>Restore view</button>
-    <button id="cpu" disabled>Check CPU workers</button>
-  </footer>
-  <p class="scope">Platform bring-up using Blender's GHOST, logging, allocator and math code. The cube is a test fixture. Blender's editor, scene evaluation and Workbench renderer are not running yet.</p>
+  <header class="topbar">
+    <strong class="brand">Blender <span>Web</span></strong>
+    <nav aria-label="Application menus">
+      <details class="menu"><summary>File</summary><div class="menu-items">
+        <button id="new-preview" class="editor-action" disabled>New preview</button>
+        <button id="save" disabled>Save preview <kbd>Ctrl S</kbd></button>
+        <button id="restore" disabled>Restore saved preview</button>
+        <hr><button id="download" class="editor-action" disabled>Download preview .json</button>
+        <button id="open" class="editor-action" disabled>Open preview .json…</button>
+      </div></details>
+      <details class="menu"><summary>Edit</summary><div class="menu-items">
+        <button id="undo" disabled>Undo <kbd>Ctrl Z</kbd></button>
+        <button id="redo" disabled>Redo <kbd>Ctrl Shift Z</kbd></button>
+        <hr><button id="reset-transform" class="editor-action" disabled>Reset transform</button>
+      </div></details>
+      <details class="menu"><summary>Help</summary><div class="menu-items help-menu">
+        <p>Drag or touch-drag to orbit. Scroll to zoom. Home resets the view.</p>
+        <p>This is the preview interface around the GHOST/Wasm cube. Blender's original editors and .blend files are still being ported.</p>
+        <a href="https://github.com/Shlok-Bhakta/blender-web" target="_blank" rel="noopener">Source and build notes ↗</a>
+      </div></details>
+    </nav>
+    <span class="workspace-tab">Layout</span>
+    <span class="preview-label">Preview engine</span>
+    <button id="inspector-toggle" aria-controls="inspector" aria-expanded="true">Inspector</button>
+  </header>
+  <div id="workspace" class="workspace">
+    <section class="viewport-editor" aria-label="3D viewport editor">
+      <div class="editor-header viewport-header">
+        <span class="editor-type">◇</span><span>Object Mode</span><span class="header-divider"></span>
+        <button id="frame-selected" class="editor-action" disabled>Frame object</button>
+        <button id="reset-view" class="editor-action" disabled>Reset view</button>
+        <span class="spacer"></span>
+        <button id="grid-toggle" class="editor-action" aria-pressed="true" disabled>Grid</button>
+        <button id="edges-toggle" class="editor-action" aria-pressed="true" disabled>Edges</button>
+        <button id="projection-toggle" class="editor-action" aria-pressed="false" disabled>Orthographic</button>
+      </div>
+      <main id="viewport">
+        <canvas id="canvas" tabindex="0" aria-label="Cube viewport. Drag to orbit, scroll to zoom, Home to reset."></canvas>
+        <div class="viewport-info" aria-hidden="true"><span id="view-label">User perspective</span><span id="object-label">(1) Collection | Cube</span></div>
+        <div class="view-controls" aria-label="View orientation">
+          <button data-view="front" class="editor-action" title="Front view, looking along Y" disabled>Front</button>
+          <button data-view="right" class="editor-action" title="Right view, looking along X" disabled>Right</button>
+          <button data-view="top" class="editor-action" title="Top view, looking along Z" disabled>Top</button>
+          <button id="zoom-in" class="editor-action" aria-label="Zoom in" disabled>+</button>
+          <button id="zoom-out" class="editor-action" aria-label="Zoom out" disabled>−</button>
+          <span class="axis-key"><i>X</i><i>Y</i><i>Z</i></span>
+        </div>
+        <div id="loading" role="status">Starting the browser preview…</div>
+      </main>
+      <div class="viewport-bottom"><span id="project-state">Untitled preview</span><span>Drag to orbit · Scroll to zoom</span><span>Cube · 8 vertices · 6 faces</span></div>
+    </section>
+    <div id="inspector-split" class="splitter vertical" role="separator" tabindex="0" aria-label="Resize inspector" aria-orientation="vertical" aria-valuemin="220" aria-valuemax="520" aria-valuenow="286"></div>
+    <aside id="inspector" aria-label="Scene inspector">
+      <section class="outliner" aria-labelledby="outliner-title">
+        <div class="editor-header"><span class="editor-type">☷</span><strong id="outliner-title">Outliner</strong><span class="spacer"></span><span class="muted">1 object</span></div>
+        <div class="tree-root">▾ <span>Scene Collection</span></div>
+        <div class="tree-collection">▾ <span>▱</span> Collection</div>
+        <div class="object-row" id="object-row">
+          <button id="select-object" class="editor-action" aria-pressed="true" disabled><span class="cube-icon">◇</span><span id="outliner-name">Cube</span></button>
+          <label class="visibility-control" title="Show object in viewport"><input id="object-visible" type="checkbox" checked disabled aria-label="Object visible"><span aria-hidden="true">◉</span></label>
+        </div>
+      </section>
+      <div id="outliner-split" class="splitter horizontal" role="separator" tabindex="0" aria-label="Resize outliner" aria-orientation="horizontal" aria-valuemin="90" aria-valuemax="360" aria-valuenow="170"></div>
+      <section class="properties" aria-labelledby="properties-title">
+        <div class="editor-header"><span class="editor-type orange">◇</span><strong id="properties-title">Object properties</strong></div>
+        <div class="properties-content">
+          <label class="object-name"><span>Object</span><input id="object-name" value="Cube" maxlength="64" disabled aria-label="Object name"></label>
+          <details class="property-group" open><summary>Transform</summary>
+            <fieldset id="transform-fields" disabled></fieldset>
+            <div class="dimensions"><span>Dimensions</span><output id="dimensions">2.000 × 2.000 × 2.000</output></div>
+          </details>
+          <p class="selection-hint" id="selection-hint" hidden>Select the cube in the outliner to edit its transform.</p>
+          <p class="engine-note">Preview object controls. Mesh editing, modifiers and Blender's native property panels follow the actual editor build.</p>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <footer class="statusbar"><span id="status" role="status">Loading</span><span class="status-engine">GHOST · Wasm · WebGPU</span><button id="cpu" disabled>Check CPU workers</button></footer>
+  <input id="project-file" type="file" accept=".json,application/json" hidden>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

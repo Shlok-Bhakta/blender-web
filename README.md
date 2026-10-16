@@ -4,7 +4,7 @@ Browser platform bring-up based on Blender 5.2.2 LTS.
 
 [Live platform test](https://shlok-bhakta.github.io/blender-web/) · [Build instructions and current scope](web/README.md)
 
-The current build compiles Blender's GHOST, logging, allocator and selected math code to WebAssembly. It renders a WebGPU cube test fixture and exercises resize/input events, CPU workers, IndexedDB persistence and offline caching. Blender's editor, scene evaluation and Workbench renderer are not running yet.
+The current build compiles Blender's GHOST, logging, allocator and selected math code to WebAssembly. Its browser interface has an outliner, object transform fields, undo/redo, resizable panels and viewport controls driving a WebGPU cube fixture. Preview projects can be saved to IndexedDB or imported/exported as JSON, and the interface works offline after caching. Blender's native editors, scene evaluation, Workbench renderer and `.blend` files are not running yet.
 
 The `blender/` submodule pins official source. Web platform files live separately in `intern/ghost/web/`; `web/patches/ghost-web.patch` adds nine guarded integration lines to upstream code. The build applies that patch in an isolated worktree, keeping the reference source untouched.
 

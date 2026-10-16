@@ -2,7 +2,7 @@
 const VERSION = '__BUILD_VERSION__';
 const PREFIX = `blender-web:${self.registration.scope}:`;
 const CACHE = PREFIX + VERSION;
-const SHELL = ['index.html', 'style.css', 'app.js', 'gpu.js', 'host.js', 'manifest.json'];
+const SHELL = ['index.html', 'style.css', 'app.js', 'gpu.js', 'host.js', 'editor.js', 'manifest.json'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
