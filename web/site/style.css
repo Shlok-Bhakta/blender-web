@@ -92,6 +92,11 @@ fieldset:disabled { opacity: .45; }
 #cpu { padding: 3px 7px; border-color: #484848; font-size: 10px; }
 .workspace.inspector-hidden { grid-template-columns: minmax(0,1fr); }
 .workspace.inspector-hidden > #inspector, .workspace.inspector-hidden > .vertical { display: none; }
+@media (pointer: coarse), (max-width: 700px) {
+  input { font-size: 16px; }
+  button, nav summary { min-height: 28px; }
+  .visibility-control { min-width: 28px; min-height: 28px; display: grid; place-content: center; }
+}
 @media (max-width: 700px) {
   .topbar { gap: 4px; padding: 3px 5px; }.brand { font-size: 12px; }.brand span { display: none; }
   .workspace-tab { display: none; }.preview-label { font-size: 10px; }
