@@ -1,0 +1,38 @@
+diff --git a/intern/ghost/CMakeLists.txt b/intern/ghost/CMakeLists.txt
+index 8c3e57ee796..0fff3f68593 100644
+--- a/intern/ghost/CMakeLists.txt
++++ b/intern/ghost/CMakeLists.txt
+@@ -135,6 +135,8 @@ list(APPEND SRC
+ 
+ if(WITH_HEADLESS)
+   add_definitions(-DWITH_HEADLESS)
++elseif(WITH_GHOST_WEB)
++  include(web/platform.cmake)
+ elseif(WITH_GHOST_SDL)
+   list(APPEND SRC
+     intern/GHOST_ContextSDL.cc
+diff --git a/intern/ghost/intern/GHOST_ISystem.cc b/intern/ghost/intern/GHOST_ISystem.cc
+index fb5c5ae4457..38a38970638 100644
+--- a/intern/ghost/intern/GHOST_ISystem.cc
++++ b/intern/ghost/intern/GHOST_ISystem.cc
+@@ -15,6 +15,10 @@
+ #include "GHOST_ISystem.hh"
+ #include "GHOST_SystemHeadless.hh"
+ 
++#ifdef WITH_GHOST_WEB
++#  include "web/GHOST_SystemWeb.hh"
++#endif
++
+ #if defined(WITH_GHOST_X11) && defined(WITH_GHOST_WAYLAND)
+ #  include "GHOST_SystemWayland.hh"
+ #  include "GHOST_SystemX11.hh"
+@@ -67,6 +71,9 @@ GHOST_TSuccess GHOST_ISystem::createSystem(bool verbose, [[maybe_unused]] bool b
+ 
+ #if defined(WITH_HEADLESS)
+     /* Pass. */
++#elif defined(WITH_GHOST_WEB)
++    backends_attempted.push_back({"WEB"});
++    system_ = GHOST_createWebSystem();
+ #elif defined(WITH_GHOST_X11) && defined(WITH_GHOST_WAYLAND)
+     /* Special case, try Wayland, fall back to X11. */
+     if (has_wayland_libraries) {

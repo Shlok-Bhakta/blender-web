@@ -1,0 +1,6 @@
+{
+  "name": "blender-web-platform-tests",
+  "private": true,
+  "scripts": { "test": "node smoke.cjs" },
+  "devDependencies": { "playwright": "1.58.2", "pngjs": "7.0.0" }
+}

@@ -1,0 +1,4 @@
+[submodule "blender"]
+	path = blender
+	url = https://projects.blender.org/blender/blender.git
+	shallow = true

@@ -1,0 +1,94 @@
+name: Blender Web platform
+
+on:
+  push:
+    branches: [main, blender-web/v5.2]
+    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml']
+  pull_request:
+    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/tests/package-lock.json
+      - name: Read pinned SDK
+        run: |
+          python3 - <<'PY'
+          import json, os
+          pins = json.load(open('web/upstream.json'))
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write(f"EMSDK_REVISION={pins['emsdkRevision']}\n")
+              output.write(f"EMSDK_VERSION={pins['emscriptenVersion']}\n")
+          PY
+      - uses: actions/cache@v4
+        id: sdk-cache
+        with:
+          path: ${{ runner.temp }}/emsdk
+          key: ${{ runner.os }}-emsdk-${{ hashFiles('web/upstream.json') }}
+      - name: Install Emscripten
+        if: steps.sdk-cache.outputs.cache-hit != 'true'
+        run: |
+          git init "$RUNNER_TEMP/emsdk"
+          git -C "$RUNNER_TEMP/emsdk" fetch --depth=1 https://github.com/emscripten-core/emsdk.git "$EMSDK_REVISION"
+          git -C "$RUNNER_TEMP/emsdk" checkout --detach FETCH_HEAD
+          "$RUNNER_TEMP/emsdk/emsdk" install "$EMSDK_VERSION"
+          "$RUNNER_TEMP/emsdk/emsdk" activate "$EMSDK_VERSION"
+      - name: Build static site
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          python3 web/tools/build.py
+      - name: Install browser tests
+        working-directory: web/tests
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Test without server isolation headers
+        run: |
+          python3 web/tools/serve.py --pages-mode > "$RUNNER_TEMP/blender-web-server.log" 2>&1 &
+          WEB_SERVER_PID=$!
+          trap 'kill "$WEB_SERVER_PID"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8080/manifest.json > /dev/null; then break; fi
+            sleep 1
+          done
+          npm test --prefix web/tests
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: build/web/evidence
+          if-no-files-found: ignore
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web/dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy static site
+        id: deployment
+        uses: actions/deploy-pages@v4
