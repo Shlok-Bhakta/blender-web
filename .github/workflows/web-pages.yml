@@ -73,12 +73,12 @@ jobs:
             build/native/deps/prefix/include/shaderc
             build/native/deps/prefix/lib/libshaderc_combined.a
             build/native/gpu-deps
-          key: ${{ runner.os }}-native-app-deps-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py') }}
+          key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py') }}
       - name: Build and validate native dependencies
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           mkdir -p build/native
-          python3 web/tools/native_build.py --app --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
+          python3 web/tools/native_build.py --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
       - uses: actions/cache/save@v4
         if: steps.native-deps.outputs.cache-hit != 'true'
         with:
@@ -87,6 +87,11 @@ jobs:
             build/native/deps/downloads
             build/native/deps/*/installed.json
           key: ${{ steps.native-deps.outputs.cache-primary-key }}
+      - name: Build and validate application dependencies
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          mkdir -p build/native
+          python3 web/tools/native_build.py --app --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
       - uses: actions/cache/save@v4
         if: steps.app-deps.outputs.cache-hit != 'true'
         with:
