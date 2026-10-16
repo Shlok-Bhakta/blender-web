@@ -1,0 +1,96 @@
+--- a/src/libutil/sysutil.cpp
++++ b/src/libutil/sysutil.cpp
+@@ -15,6 +15,12 @@
+ #include <signal.h>
+ #include <string>
+ #include <thread>
++
++#ifdef __EMSCRIPTEN__
++#    include <emscripten/heap.h>
++#    include <unistd.h>
++#    include <sys/ioctl.h>
++#endif
+ 
+ #ifdef __linux__
+ #    include <sys/ioctl.h>
+@@ -82,7 +88,10 @@
+ size_t
+ Sysutil::memory_used(bool resident)
+ {
+-#if defined(__linux__)
++#if defined(__EMSCRIPTEN__)
++    // Browsers expose the linear heap, not host resident-memory accounting.
++    return emscripten_get_heap_size();
++#elif defined(__linux__)
+ #    if 0
+     // doesn't seem to work?
+     struct rusage ru;
+@@ -144,7 +153,10 @@
+ size_t
+ Sysutil::physical_memory()
+ {
+-#if defined(__linux__)
++#if defined(__EMSCRIPTEN__)
++    // Size caches against the module memory budget rather than host RAM.
++    return emscripten_get_heap_max();
++#elif defined(__linux__)
+     size_t size = 0;
+     FILE* file  = fopen("/proc/meminfo", "r");
+     if (file) {
+@@ -270,7 +282,8 @@
+     size_t cb = sizeof(filename);
+     int r     = 1;
+     sysctl(mib, 4, filename, &cb, NULL, 0);
+-#elif defined(__GNU__) || defined(__OpenBSD__) || defined(_WIN32)
++#elif defined(__GNU__) || defined(__OpenBSD__) || defined(_WIN32) \
++    || defined(__EMSCRIPTEN__)
+     int r = 0;
+ #else
+     // No idea what platform this is
+--- a/src/libutil/strutil.cpp
++++ b/src/libutil/strutil.cpp
+@@ -79,7 +79,7 @@
+ // On systems that support it, get a location independent locale.
+ #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) \
+     || defined(__FreeBSD_kernel__) || defined(__OpenBSD__)           \
+-    || defined(__GLIBC__) || defined(__NetBSD__)
++    || defined(__GLIBC__) || defined(__EMSCRIPTEN__) || defined(__NetBSD__)
+ static locale_t c_loc = newlocale(LC_ALL_MASK, "C", nullptr);
+ #elif defined(_WIN32)
+ static _locale_t c_loc = _create_locale(LC_ALL, "C");
+@@ -527,7 +527,7 @@
+ {
+ #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) \
+     || defined(__FreeBSD_kernel__) || defined(__OpenBSD__)           \
+-    || defined(__GLIBC__)
++    || defined(__GLIBC__) || defined(__EMSCRIPTEN__)
+     return strcasecmp_l(a, b, c_loc);
+ #elif defined(_WIN32)
+     return _stricmp_l(a, b, c_loc);
+@@ -550,7 +550,7 @@
+ {
+ #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) \
+     || defined(__FreeBSD_kernel__) || defined(__OpenBSD__)           \
+-    || defined(__GLIBC__)
++    || defined(__GLIBC__) || defined(__EMSCRIPTEN__)
+     return strncasecmp_l(a, b, size, c_loc);
+ #elif defined(_WIN32)
+     return _strnicmp_l(a, b, size, c_loc);
+@@ -1729,7 +1729,7 @@
+     // On OSX, strtod_l is for some reason drastically faster than strtof_l.
+     return static_cast<float>(strtod_l(nptr, endptr, c_loc));
+ #elif defined(__linux__) || defined(__FreeBSD__) \
+-    || defined(__FreeBSD_kernel__) || defined(__GLIBC__)
++    || defined(__FreeBSD_kernel__) || defined(__GLIBC__) || defined(__EMSCRIPTEN__)
+     return strtof_l(nptr, endptr, c_loc);
+ #elif defined(_WIN32)
+     // Windows has _strtod_l
+@@ -1764,7 +1764,7 @@
+ {
+     // Can use strtod_l on platforms that support it
+ #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) \
+-    || defined(__FreeBSD_kernel__) || defined(__GLIBC__)
++    || defined(__FreeBSD_kernel__) || defined(__GLIBC__) || defined(__EMSCRIPTEN__)
+     return strtod_l(nptr, endptr, c_loc);
+ #elif defined(_WIN32)
+     // Windows has _strtod_l

@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Use genuine installed Wasm libraries, including static transitive dependencies.
+find_package(Threads REQUIRED)
+find_package(JPEG REQUIRED)
+find_package(PNG REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(Zstd REQUIRED)
+find_package(zstd CONFIG REQUIRED)
+find_package(libdeflate CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+find_package(Freetype REQUIRED)
+find_package(Brotli REQUIRED)
+find_package(openjph CONFIG REQUIRED)
+find_package(Imath CONFIG REQUIRED)
+find_package(OpenEXR CONFIG REQUIRED)
+
+# TIFF's installed targets use these names but don't import their dependencies.
+add_library(Deflate::Deflate ALIAS libdeflate::libdeflate_static)
+add_library(ZSTD::ZSTD ALIAS zstd::libzstd_static)
+find_package(Tiff CONFIG REQUIRED)
+add_library(TIFF::TIFF ALIAS TIFF::tiff)
+target_link_libraries(Freetype::Freetype INTERFACE ZLIB::ZLIB ${BROTLI_LIBRARIES})
+list(APPEND FREETYPE_LIBRARIES ZLIB::ZLIB)
+
+find_package(OpenColorIO CONFIG REQUIRED)
+find_package(OpenImageIO CONFIG REQUIRED)
+find_package(Eigen3 CONFIG REQUIRED)
+find_package(TBB CONFIG REQUIRED)

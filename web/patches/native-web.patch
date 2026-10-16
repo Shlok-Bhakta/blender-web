@@ -1,0 +1,91 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 141fdaf9fea..ec22194fabe 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1538,7 +1538,9 @@ endif()
+ # - WIN32
+ # - APPLE
+ 
+-if(UNIX AND NOT APPLE)
++if(WITH_GHOST_WEB AND EMSCRIPTEN)
++  include(intern/ghost/web/native/platform.cmake)
++elseif(UNIX AND NOT APPLE)
+   include(platform_unix)
+ elseif(WIN32)
+   include(platform_win32)
+diff --git a/build_files/cmake/platform/dependency_targets.cmake b/build_files/cmake/platform/dependency_targets.cmake
+index f711326cc51..7f10ba0f896 100644
+--- a/build_files/cmake/platform/dependency_targets.cmake
++++ b/build_files/cmake/platform/dependency_targets.cmake
+@@ -141,7 +141,9 @@ target_link_libraries(bf_deps_png INTERFACE ${PNG_LIBRARIES})
+ # Configure OpenImageIO
+ 
+ add_library(bf::dependencies::openimageio ALIAS OpenImageIO::OpenImageIO)
+-get_target_property(OPENIMAGEIO_TOOL OpenImageIO::oiiotool LOCATION)
++if(NOT WITH_GHOST_WEB OR TARGET OpenImageIO::oiiotool)
++  get_target_property(OPENIMAGEIO_TOOL OpenImageIO::oiiotool LOCATION)
++endif()
+ 
+ # -----------------------------------------------------------------------------
+ # Configure USD
+diff --git a/source/blender/blenlib/BLI_resource_scope.hh b/source/blender/blenlib/BLI_resource_scope.hh
+index 4bb472dea20..58c4f69b981 100644
+--- a/source/blender/blenlib/BLI_resource_scope.hh
++++ b/source/blender/blenlib/BLI_resource_scope.hh
+@@ -12,6 +12,10 @@
+ #include "BLI_linear_allocator_chunked_list.hh"
+ #include "BLI_utility_mixins.hh"
+ 
++#ifdef WITH_GHOST_WEB
++#  include "GHOST_WebABI.hh"
++#endif
++
+ namespace blender {
+ 
+ /**
+@@ -141,7 +145,11 @@ class ResourceScope : NonMovable {
+  * from #NonCopyable. That happens because then there would be two #NonCopyable types at the same
+  * address which is not allowed. The proper solution is probably to change how NonCopyable and
+  * NonMovable are used overall. */
++#ifdef WITH_GHOST_WEB
++static_assert(sizeof(ResourceScope) == GHOST_web_resource_scope_size());
++#else
+ static_assert(sizeof(ResourceScope) == 16);
++#endif
+ 
+ /* -------------------------------------------------------------------- */
+ /** \name #ResourceScope Inline Methods
+diff --git a/source/blender/makesdna/DNA_customdata_types.h b/source/blender/makesdna/DNA_customdata_types.h
+index d1b90e5fbb2..5f990af48ae 100644
+--- a/source/blender/makesdna/DNA_customdata_types.h
++++ b/source/blender/makesdna/DNA_customdata_types.h
+@@ -15,6 +15,10 @@
+ 
+ #include "BLI_implicit_sharing.h"
+ 
++#ifdef WITH_GHOST_WEB
++#  include "GHOST_WebDNA.hh"
++#endif
++
+ namespace blender {
+ 
+ /** #CustomDataLayer.type */
+@@ -259,6 +263,9 @@ struct CustomData {
+ using eCustomDataMask = uint64_t;
+ #endif
+ 
++#ifdef WITH_GHOST_WEB
++GHOST_WEB_DNA_PACK_BEGIN()
++#endif
+ struct CustomData_MeshMasks {
+   uint64_t vmask = 0;
+   uint64_t emask = 0;
+@@ -266,5 +273,8 @@ struct CustomData_MeshMasks {
+   uint64_t pmask = 0;
+   uint64_t lmask = 0;
+ };
++#ifdef WITH_GHOST_WEB
++GHOST_WEB_DNA_PACK_END()
++#endif
+ 
+ }  // namespace blender

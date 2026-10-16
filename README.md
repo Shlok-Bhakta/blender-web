@@ -17,4 +17,6 @@ python3 web/tools/serve.py --pages-mode
 
 Open `http://localhost:8080`. GitHub Actions builds both threaded and single-thread variants, runs browser checks, then deploys the static site to GitHub Pages.
 
+The separate [native editor build](web/native/README.md) compiles Blender's original C++ editors through upstream CMake, with Wasm versions of its dependencies. This is an archive compilation checkpoint; native UI rendering and browser startup are still being ported. It does not replace the deployed preview.
+
 Port code is licensed under GPL-2.0-or-later. Blender and its dependencies retain their upstream licenses.

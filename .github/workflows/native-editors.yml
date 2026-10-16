@@ -1,0 +1,91 @@
+name: Native Blender editor compilation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/native/**'
+      - 'web/tools/native_*.py'
+      - 'web/tools/prepare.py'
+      - 'web/patches/**'
+      - 'web/upstream.json'
+      - 'intern/ghost/**'
+      - 'blender'
+      - '.github/workflows/native-editors.yml'
+  pull_request:
+    paths:
+      - 'web/native/**'
+      - 'web/tools/native_*.py'
+      - 'web/tools/prepare.py'
+      - 'web/patches/**'
+      - 'web/upstream.json'
+      - 'intern/ghost/**'
+      - 'blender'
+      - '.github/workflows/native-editors.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-editors-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Read pinned SDK
+        run: |
+          python3 - <<'PY'
+          import json, os
+          pins = json.load(open('web/upstream.json'))
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write(f"EMSDK_REVISION={pins['emsdkRevision']}\n")
+              output.write(f"EMSDK_VERSION={pins['emscriptenVersion']}\n")
+          PY
+      - uses: actions/cache@v4
+        id: sdk-cache
+        with:
+          path: ${{ runner.temp }}/emsdk
+          key: ${{ runner.os }}-emsdk-${{ hashFiles('web/upstream.json') }}
+      - name: Install Emscripten
+        if: steps.sdk-cache.outputs.cache-hit != 'true'
+        run: |
+          git init "$RUNNER_TEMP/emsdk"
+          git -C "$RUNNER_TEMP/emsdk" fetch --depth=1 https://github.com/emscripten-core/emsdk.git "$EMSDK_REVISION"
+          git -C "$RUNNER_TEMP/emsdk" checkout --detach FETCH_HEAD
+          "$RUNNER_TEMP/emsdk/emsdk" install "$EMSDK_VERSION"
+          "$RUNNER_TEMP/emsdk/emsdk" activate "$EMSDK_VERSION"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            build/native/deps/prefix
+            build/native/deps/downloads
+            build/native/deps/*/installed.json
+          key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
+      - name: Compile original editors and validate Wasm dependencies
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          mkdir -p build/native
+          python3 web/tools/native_build.py --jobs 4 --check-deps 2>&1 | tee build/native/build.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-compilation-logs
+          path: |
+            build/native/build.log
+            build/native/deps/*/build.log
+            build/native/deps/dependencies.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wasm-editor-archives
+          path: |
+            build/native/editor/lib/*.a
+            build/native/editor-compilation.json
+            build/native/dependency-check.json
+            web/native/README.md

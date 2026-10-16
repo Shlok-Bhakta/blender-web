@@ -1,2 +1,3 @@
 # Unified diffs contain a single context-marker space on otherwise blank lines.
 web/patches/*.patch whitespace=-blank-at-eol
+web/native/patches/*.patch whitespace=-blank-at-eol
