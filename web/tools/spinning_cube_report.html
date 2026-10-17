@@ -20,6 +20,7 @@ th,td{padding:9px 8px;border-bottom:1px solid var(--border,#dce1eb);text-align:r
 <div class="metric"><span class="value" id="total"></span><span class="label">Median for all 50 frames</span></div>
 <div class="metric"><span class="value" id="fps"></span><span class="label">Median output frames/sec</span></div>
 </div>
+<p class="small" id="comparison" hidden></p>
 <div class="controls" id="runs"><label><input id="steady" type="checkbox">Zoom to frames 2–50</label></div>
 <div class="plot"><svg id="plot" role="img" aria-label="Per-frame latency across all benchmark runs"></svg></div>
 <label class="small muted" for="frame">Inspect frame</label><input id="frame" type="range" min="1" max="50" value="1">
@@ -37,6 +38,11 @@ byId('configuration').textContent=`${data.runCount} fresh-browser runs × 50 fra
 byId('first').textContent=seconds(data.firstSavedFrameSeconds.median);
 byId('total').textContent=seconds(data.animationSeconds.median);
 byId('fps').textContent=data.overallFps.median.toFixed(3);
+const previous=data.conditions.previousSharedHostBaseline;
+if(previous){
+ byId('comparison').hidden=false;
+ byId('comparison').textContent=`Compared with the earlier competing-browser baseline: first frame ${seconds(previous.firstSavedFrameSeconds)} → ${seconds(data.firstSavedFrameSeconds.median)}, full sequence ${seconds(previous.animationSeconds)} → ${seconds(data.animationSeconds.median)}. Sequence time fell ${(100*(1-data.animationSeconds.median/previous.animationSeconds)).toFixed(1)}%; throughput rose ${(100*(data.overallFps.median/previous.overallFps-1)).toFixed(1)}%. Same bundle, settings and decoded pixels.`;
+}
 byId('hardware').textContent=`${data.cpu} · ${data.adapter.vendor.toUpperCase()} ${data.adapter.architecture} WebGPU · Chromium ${data.browserVersion}`;
 const cores=data.runs.map(r=>r.resources.averageCpuCores), rss=data.runs.map(r=>r.resources.peakAggregateRssBytes/2**30);
 byId('resources').textContent=`Browser CPU use averaged ${Math.min(...cores).toFixed(2)}–${Math.max(...cores).toFixed(2)} logical cores. Peak aggregate browser RSS was ${Math.min(...rss).toFixed(2)}–${Math.max(...rss).toFixed(2)} GiB. Every frame passed image validation.`;

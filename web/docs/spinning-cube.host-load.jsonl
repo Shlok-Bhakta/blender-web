@@ -1,0 +1,118 @@
+{"seconds": 5.000116670969874, "external": []}
+{"seconds": 10.026985072996467, "external": []}
+{"seconds": 15.077756497077644, "external": []}
+{"seconds": 20.103019420057535, "external": []}
+{"seconds": 25.153610138688236, "external": []}
+{"seconds": 30.179344120901078, "external": []}
+{"seconds": 35.215196433942765, "external": []}
+{"seconds": 40.266403892077506, "external": []}
+{"seconds": 45.292591812089086, "external": []}
+{"seconds": 50.343423566780984, "external": []}
+{"seconds": 55.374122759792954, "external": []}
+{"seconds": 60.425954557955265, "external": []}
+{"seconds": 65.45192494569346, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.45165407371640964}]}
+{"seconds": 70.50398231204599, "external": []}
+{"seconds": 75.5279668639414, "external": []}
+{"seconds": 80.55607207585126, "external": []}
+{"seconds": 85.60782231390476, "external": []}
+{"seconds": 90.64460053900257, "external": [{"pid": 96, "name": "kswapd0", "cores": 0.17670025564461253}]}
+{"seconds": 95.698060864117, "external": [{"pid": 74, "name": "kcompactd0", "cores": 0.19590536707688166}, {"pid": 96, "name": "kswapd0", "cores": 0.12070936759282608}]}
+{"seconds": 100.72314656479284, "external": []}
+{"seconds": 105.75091280695051, "external": []}
+{"seconds": 110.80760357668623, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.38958284967521506}]}
+{"seconds": 115.8342113327235, "external": []}
+{"seconds": 120.88446862483397, "external": []}
+{"seconds": 125.93875900190324, "external": []}
+{"seconds": 130.96351782185957, "external": []}
+{"seconds": 136.01250851387158, "external": []}
+{"seconds": 141.0696932328865, "external": []}
+{"seconds": 146.09638159396127, "external": []}
+{"seconds": 151.1490457658656, "external": []}
+{"seconds": 156.17607153905556, "external": []}
+{"seconds": 161.2259772568941, "external": []}
+{"seconds": 166.2536045750603, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.11536256832408816}, {"pid": 3982342, "name": "snapd", "cores": 0.1770218720835146}]}
+{"seconds": 171.30460205301642, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.2454960639777958}]}
+{"seconds": 176.33791132178158, "external": []}
+{"seconds": 181.3679601708427, "external": []}
+{"seconds": 186.4122098898515, "external": []}
+{"seconds": 191.4438641667366, "external": []}
+{"seconds": 196.49326886888593, "external": []}
+{"seconds": 201.54671549610794, "external": []}
+{"seconds": 206.57164454692975, "external": [{"pid": 96, "name": "kswapd0", "cores": 0.13930544947406118}, {"pid": 3828155, "name": "node-MainThread", "cores": 0.22288871915849792}]}
+{"seconds": 211.62179846176878, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.15643087583503498}]}
+{"seconds": 216.64797798590735, "external": []}
+{"seconds": 221.69578769709915, "external": []}
+{"seconds": 226.7495321710594, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.12861750398128904}]}
+{"seconds": 231.77434412483126, "external": []}
+{"seconds": 236.8221339257434, "external": []}
+{"seconds": 241.8770581530407, "external": []}
+{"seconds": 246.90561191970482, "external": []}
+{"seconds": 251.9584777848795, "external": []}
+{"seconds": 256.98706074710935, "external": []}
+{"seconds": 262.01234659180045, "external": [{"pid": 3883944, "name": "node", "cores": 0.13133581260800298}, {"pid": 3883956, "name": "node", "cores": 0.6686186823680151}]}
+{"seconds": 267.06913709593937, "external": []}
+{"seconds": 272.0947287688032, "external": []}
+{"seconds": 277.1475073536858, "external": []}
+{"seconds": 282.17398795485497, "external": []}
+{"seconds": 287.2277509397827, "external": []}
+{"seconds": 292.2529430119321, "external": []}
+{"seconds": 297.2811974501237, "external": [{"pid": 3982342, "name": "snapd", "cores": 0.14716836808801814}]}
+{"seconds": 302.33271439699456, "external": []}
+{"seconds": 307.3580967769958, "external": []}
+{"seconds": 312.4127843598835, "external": []}
+{"seconds": 317.4384261649102, "external": []}
+{"seconds": 322.4689013711177, "external": []}
+{"seconds": 327.5238469238393, "external": []}
+{"seconds": 332.54859283799306, "external": [{"pid": 96, "name": "kswapd0", "cores": 0.12139917329585678}]}
+{"seconds": 337.60072225891054, "external": []}
+{"seconds": 342.6263627917506, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.3979592226962915}]}
+{"seconds": 347.65170629369095, "external": []}
+{"seconds": 352.70948222186416, "external": []}
+{"seconds": 357.7364725279622, "external": [{"pid": 3882943, "name": "claude", "cores": 0.14521611452372807}]}
+{"seconds": 362.7920587901026, "external": []}
+{"seconds": 367.8166419379413, "external": []}
+{"seconds": 372.8684649961069, "external": []}
+{"seconds": 377.9006307767704, "external": []}
+{"seconds": 382.94950826093554, "external": []}
+{"seconds": 388.0009256009944, "external": []}
+{"seconds": 393.0265300977044, "external": []}
+{"seconds": 398.0663600009866, "external": []}
+{"seconds": 403.0972653920762, "external": []}
+{"seconds": 408.1520031839609, "external": []}
+{"seconds": 413.1803277670406, "external": [{"pid": 96, "name": "kswapd0", "cores": 0.18495226086427557}]}
+{"seconds": 418.23360458994284, "external": []}
+{"seconds": 423.26089577004313, "external": []}
+{"seconds": 428.30563037469983, "external": [{"pid": 3882943, "name": "claude", "cores": 0.12091815482957634}]}
+{"seconds": 433.3371662199497, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.1609846426443915}, {"pid": 3882943, "name": "claude", "cores": 0.155022248472377}]}
+{"seconds": 438.3620779858902, "external": [{"pid": 3882943, "name": "claude", "cores": 0.35622516043622005}]}
+{"seconds": 443.4138451749459, "external": []}
+{"seconds": 448.4395085386932, "external": []}
+{"seconds": 453.49242053413764, "external": []}
+{"seconds": 458.5171970059164, "external": []}
+{"seconds": 463.5705859749578, "external": []}
+{"seconds": 468.63217265484855, "external": [{"pid": 3982342, "name": "snapd", "cores": 0.2173231576513755}]}
+{"seconds": 473.66210525482893, "external": []}
+{"seconds": 478.71538023883477, "external": []}
+{"seconds": 483.7421609009616, "external": []}
+{"seconds": 488.79754665400833, "external": []}
+{"seconds": 493.82283369405195, "external": []}
+{"seconds": 498.85649066697806, "external": [{"pid": 3882943, "name": "claude", "cores": 0.10529124309634993}, {"pid": 3982342, "name": "snapd", "cores": 0.2622347941267583}]}
+{"seconds": 503.88185300305486, "external": []}
+{"seconds": 508.93571035703644, "external": []}
+{"seconds": 513.960810369812, "external": []}
+{"seconds": 519.013107045088, "external": []}
+{"seconds": 524.0391309219413, "external": [{"pid": 96, "name": "kswapd0", "cores": 0.11738901653793764}]}
+{"seconds": 529.0927202240564, "external": []}
+{"seconds": 534.1182234259322, "external": []}
+{"seconds": 539.1425284547731, "external": [{"pid": 96, "name": "kswapd0", "cores": 0.12340015115344881}]}
+{"seconds": 544.1975869699381, "external": []}
+{"seconds": 549.2212161300704, "external": []}
+{"seconds": 554.2663226816803, "external": []}
+{"seconds": 559.2882705968805, "external": [{"pid": 3828155, "name": "node-MainThread", "cores": 0.22501228986859476}]}
+{"seconds": 564.3422945877537, "external": [{"pid": 3882943, "name": "claude", "cores": 0.11278141952419064}]}
+{"seconds": 569.3697816277854, "external": []}
+{"seconds": 574.4216194157489, "external": [{"pid": 3882943, "name": "claude", "cores": 0.11085074848093117}]}
+{"seconds": 579.4471492599696, "external": []}
+{"seconds": 584.4780856408179, "external": []}
+{"seconds": 589.5245100669563, "external": []}
+{"seconds": 594.5766821349971, "external": []}

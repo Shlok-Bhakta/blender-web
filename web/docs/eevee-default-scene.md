@@ -81,37 +81,59 @@ and the factory PNG output settings. No frames or samples were skipped.
 
 | Run | First saved PNG | All 50 frames | Output frames/sec | Device GPU busy, average |
 | --- | ---: | ---: | ---: | ---: |
-| 1 | 7.88 s | 203.63 s | 0.246 | 74.8% |
-| 2 | 11.08 s | 211.01 s | 0.237 | 73.3% |
-| 3 | 11.32 s | 217.41 s | 0.230 | 74.4% |
+| 1 | 8.07 s | 179.70 s | 0.278 | 75.9% |
+| 2 | 7.79 s | 179.84 s | 0.278 | 77.3% |
+| 3 | 7.94 s | 178.72 s | 0.280 | 76.3% |
 
-The median first saved frame was **11.08 seconds**. The median 50-frame time was
-**211.01 seconds**, or **0.237 output frames/sec**. First-frame clocks run from
-Blender's `render_init` callback to the first `render_post`, which runs after
-PNG encoding and writing in the animation path. Keyboard-command-to-job delay
-is recorded separately. Startup, scene setup, image export, validation and video
-encoding are excluded. PNGs are written to the Wasm memory filesystem during
-timing. There is no screen recording or CPU stack profiler in these runs.
-The output video plays those 50 frames at the scene's factory 24 fps; it is a
-2.08-second animation, rather than a real-time recording of the render job.
+After waiting for the testing-glass T3 task to complete and its browser processes
+to exit, the median first saved frame was **7.94 seconds**. The median 50-frame
+time was **179.70 seconds**, or **0.278 output frames/sec**. All three sequence
+times fall within 1.12 seconds.
+
+| Median measurement | Earlier competing browser load | After that browser exited |
+| --- | ---: | ---: |
+| First saved frame | 11.08 s | 7.94 s |
+| All 50 frames | 211.01 s | 179.70 s |
+| Output frames/sec | 0.237 | 0.278 |
+
+The sequence took **14.8% less time**, with **17.4% higher throughput**. This is
+an observed comparison on the same shared machine, not a controlled experiment.
+The runtime bundle and render settings are identical. The earlier
+[interactive report](spinning-cube.shared-host.html),
+[JSON](spinning-cube.shared-host.acceptance.json),
+[CSV](spinning-cube.shared-host.frames.csv) and
+[plot](spinning-cube.shared-host.frame-times.svg) remain available.
+
+First-frame clocks run from Blender's `render_init` callback to the first
+`render_post`, which runs after PNG encoding and writing in the animation path.
+Keyboard-command-to-job delay is recorded separately. Startup, scene setup,
+image export, validation and video encoding are excluded. PNGs are written to
+the Wasm memory filesystem during timing. There is no screen recording or CPU
+stack profiler in these runs. The output video plays those 50 frames at the
+scene's factory 24 fps; it is a 2.08-second animation.
 
 ![Per-frame latency for three 50-frame sequences](spinning-cube.frame-times.svg)
 
 All **150 PNGs** passed size, foreground, alpha and frame-order checks. The
-rotation curve advances by 7.2 degrees per frame, and the saved images visibly
-change with rotation. All 50 corresponding decoded images match bit for bit
-across the three runs. There were zero browser or WebGPU errors, and the checked
-quality settings remained unchanged throughout rendering.
+rotation curve advances by 7.2 degrees per frame. All 50 corresponding decoded
+images match bit for bit across these runs and the earlier shared-load runs,
+so the existing video also represents this output. There were zero browser or
+WebGPU errors, and the checked quality settings remained unchanged.
 
-This is a **shared-host baseline**. Another Chromium workload consumed CPU during
-the session, so the spread should not be interpreted as isolated-machine
-variance. Each run starts with an empty IndexedDB shader cache, while OS and
-graphics-driver caches remain intact. Device-wide GPU busy time peaked at 100%
-in every run. The benchmark's browser processes averaged 0.53 to 0.57 logical
-CPU cores, with peak aggregate browser RSS of 1.76 to 1.98 GiB. Device-wide GTT
-allocations peaked at 6.84 to 7.16 GiB and fell back to about 12 MiB after the
-benchmark browsers closed. These allocation counters are not per-process
-resident-memory measurements.
+A [five-second process CPU monitor](spinning-cube.host-load.jsonl) detected no
+competing browser workload. The testing-glass thread began another turn during
+run 3; its Claude process briefly reached 0.36 CPU cores. Other sampled
+background processes peaked at 0.67 CPU cores each. Sampling began during run 1
+after its first frame and can miss short-lived processes. These are low-load
+shared-host measurements, rather than a claim of complete machine isolation.
+
+Each run starts with an empty IndexedDB shader cache. OS and graphics-driver
+caches are not cleared. Device-wide GPU busy time averaged 75.9% to 77.3% and
+peaked at 100% in every run. Browser processes averaged 0.71 to 0.72 logical CPU
+cores, with one-second peaks of 2.20 to 2.28 cores. Peak aggregate browser RSS
+was 1.77 to 1.98 GiB. Device-wide GTT allocations peaked at 6.78 to 7.12 GiB and
+fell to about 12 MiB after the benchmark browsers closed. These allocation
+counters are not per-process resident-memory measurements.
 
 Blender's normal UI loop pauses for this GPU-owner job. The first-frame metric
 therefore measures saved output availability; the UI refreshes after the full

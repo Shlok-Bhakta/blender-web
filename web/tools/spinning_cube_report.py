@@ -87,6 +87,8 @@ def plot(report, destination):
         ax.set_xticks([1, 10, 20, 30, 40, 50] if ax is axes[0] else [2, 10, 20, 30, 40, 50])
     fig.savefig(destination, metadata={'Date': None})
     plt.close(fig)
+    if destination.suffix.lower() == '.svg':
+        destination.write_text('\n'.join(line.rstrip() for line in destination.read_text().splitlines())+'\n')
 
 
 if __name__ == '__main__':
@@ -102,7 +104,7 @@ if __name__ == '__main__':
     if args.csv:
         with args.csv.open('w', newline='') as file:
             fields = ['run', 'frame', 'elapsedSeconds', 'frameSeconds', 'renderAndWriteSeconds', 'keyframedRotationZ', 'bytes', 'pixelSha256']
-            writer = csv.DictWriter(file, fieldnames=fields)
+            writer = csv.DictWriter(file, fieldnames=fields, lineterminator='\n')
             writer.writeheader()
             for run in result['runs']:
                 for row, digest in zip(run['timings'], run['pixelHashes']):
