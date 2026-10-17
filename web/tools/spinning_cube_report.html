@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spinning cube benchmark</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:var(--foreground,#202535);font:14px/1.5 var(--font-sans,system-ui,sans-serif)}
+p{margin:0 0 14px}.muted{color:var(--muted-foreground,#616a7d)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.metric{padding:16px;background:var(--card,#f1f4f9);border:1px solid var(--border,#dce1eb);border-radius:var(--radius,12px)}
+.value{display:block;font-size:clamp(19px,4vw,29px);font-weight:650;font-variant-numeric:tabular-nums}.label{font-size:12px;color:var(--muted-foreground,#616a7d)}
+.controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:14px 0 4px}.controls label{display:flex;align-items:center;gap:5px}
+.plot{margin:8px 0 4px}svg{display:block;width:100%;height:300px;overflow:visible}svg text{fill:var(--muted-foreground,#616a7d);font-size:11px;font-family:inherit}
+input{accent-color:var(--primary,#2467a8)}input[type=range]{width:100%;margin:5px 0 0}.detail{font-variant-numeric:tabular-nums;min-height:24px}
+.scroll{overflow-x:auto;margin:16px 0}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;white-space:nowrap}
+th,td{padding:9px 8px;border-bottom:1px solid var(--border,#dce1eb);text-align:right}th:first-child,td:first-child{text-align:left}th{font-size:12px;color:var(--muted-foreground,#616a7d);font-weight:500}
+.note{padding:16px;background:var(--secondary,#f1f4f9);border-radius:var(--radius,12px);font-size:12px;margin-top:14px}.small{font-size:12px}.key{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+@media(max-width:440px){.metrics{gap:6px}.metric{padding:16px}.label{font-size:11px}th,td{padding:9px 6px}.controls{gap:8px}}
+</style></head><body>
+<p class="muted" id="configuration"></p>
+<div class="metrics">
+<div class="metric"><span class="value" id="first"></span><span class="label">Median first saved frame</span></div>
+<div class="metric"><span class="value" id="total"></span><span class="label">Median for all 50 frames</span></div>
+<div class="metric"><span class="value" id="fps"></span><span class="label">Median output frames/sec</span></div>
+</div>
+<div class="controls" id="runs"><label><input id="steady" type="checkbox">Zoom to frames 2–50</label></div>
+<div class="plot"><svg id="plot" role="img" aria-label="Per-frame latency across all benchmark runs"></svg></div>
+<label class="small muted" for="frame">Inspect frame</label><input id="frame" type="range" min="1" max="50" value="1">
+<p class="detail small" id="detail" aria-live="polite"></p>
+<div class="scroll"><table><thead><tr><th>Run</th><th>First PNG</th><th>50 PNGs</th><th>Frames/sec</th><th>GPU busy</th></tr></thead><tbody id="results"></tbody></table></div>
+<p class="small muted" id="hardware"></p>
+<p class="small" id="resources"></p>
+<div class="note" id="method"></div>
+<script>
+const data=__REPORT_JSON__;
+const colors=['var(--chart-1,#1b6ca8)','var(--chart-2,#c57700)','var(--chart-3,#5b7d24)'];
+const show=new Set(data.runs.map(r=>r.run));
+const byId=id=>document.getElementById(id), seconds=n=>n.toFixed(2)+' s';
+byId('configuration').textContent=`${data.runCount} fresh-browser runs × 50 frames · Eevee · 1920×1080 · 64 samples`;
+byId('first').textContent=seconds(data.firstSavedFrameSeconds.median);
+byId('total').textContent=seconds(data.animationSeconds.median);
+byId('fps').textContent=data.overallFps.median.toFixed(3);
+byId('hardware').textContent=`${data.cpu} · ${data.adapter.vendor.toUpperCase()} ${data.adapter.architecture} WebGPU · Chromium ${data.browserVersion}`;
+const cores=data.runs.map(r=>r.resources.averageCpuCores), rss=data.runs.map(r=>r.resources.peakAggregateRssBytes/2**30);
+byId('resources').textContent=`Browser CPU use averaged ${Math.min(...cores).toFixed(2)}–${Math.max(...cores).toFixed(2)} logical cores. Peak aggregate browser RSS was ${Math.min(...rss).toFixed(2)}–${Math.max(...rss).toFixed(2)} GiB. Every frame passed image validation.`;
+byId('method').textContent=`${data.conditions.backgroundLoad || ''} GPU busy is device-wide. Timings include PNG encoding and writing to the Wasm memory filesystem; startup, scene setup, export and video encoding are excluded. Each run starts with empty IndexedDB. OS and driver caches remain warm. First-frame time measures saved output availability; Blender's UI refreshes after the animation job.`;
+for (const [i,run] of data.runs.entries()) {
+ const tr=document.createElement('tr');
+ for(const value of [String(run.run),seconds(run.firstSavedFrameSeconds),seconds(run.renderAnimationSeconds),run.framesPerSecond.toFixed(3),run.resources.gpuBusyMeanPercent.toFixed(1)+'%']) {
+  const td=document.createElement('td');td.textContent=value;tr.append(td);
+ }
+ byId('results').append(tr);
+ const label=document.createElement('label'),input=document.createElement('input'),dot=document.createElement('span');
+ input.type='checkbox';input.checked=true;input.setAttribute('aria-label',`Show run ${run.run}`);
+ dot.className='key';dot.style.background=colors[i%colors.length];
+ label.append(input,dot,document.createTextNode(`Run ${run.run}`));byId('runs').append(label);
+ input.onchange=()=>{input.checked ? show.add(run.run) : show.delete(run.run);draw();};
+}
+const ns='http://www.w3.org/2000/svg';
+function element(name,attributes,text){const e=document.createElementNS(ns,name);for(const [k,v] of Object.entries(attributes))e.setAttribute(k,v);if(text!==undefined)e.textContent=text;byId('plot').append(e);return e;}
+function detail(){const frame=Number(byId('frame').value);byId('detail').textContent=`Frame ${frame}: `+data.runs.filter(r=>show.has(r.run)).map(r=>`run ${r.run} ${seconds(r.timings[frame-1].frameSeconds)}`).join(' · ');}
+function draw(){
+ const svg=byId('plot');svg.replaceChildren();const width=Math.max(300,svg.clientWidth),height=300;svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
+ const steady=byId('steady').checked,start=steady?2:1,active=data.runs.filter(r=>show.has(r.run));
+ if(!active.length){element('text',{x:width/2,y:140,'text-anchor':'middle'},'Select a run to display.');detail();return;}
+ const values=active.flatMap(r=>r.timings.slice(start-1).map(t=>t.frameSeconds));
+ const low=steady ? Math.max(0,Math.min(...values)-.15) : 0, high=Math.max(...values)*1.08;
+ const left=44,right=12,top=24,bottom=36,w=width-left-right,h=height-top-bottom;
+ const x=frame=>left+(frame-start)/(50-start)*w,y=t=>top+(high-t)/(high-low)*h;
+ for(let i=0;i<=4;i++){const t=low+(high-low)*i/4;const py=y(t);element('line',{x1:left,x2:width-right,y1:py,y2:py,stroke:'var(--border,#dce1eb)'});element('text',{x:left-7,y:py+4,'text-anchor':'end'},t.toFixed(1));}
+ element('text',{x:left,y:12},'Seconds per saved frame');
+ for(const frame of [start,10,20,30,40,50])element('text',{x:x(frame),y:height-15,'text-anchor':'middle'},String(frame));
+ for(const [i,run] of data.runs.entries())if(show.has(run.run))element('polyline',{points:run.timings.slice(start-1).map(t=>`${x(t.frame)},${y(t.frameSeconds)}`).join(' '),fill:'none',stroke:colors[i%colors.length],'stroke-width':1.8});
+ detail();
+}
+byId('steady').onchange=draw;byId('frame').oninput=detail;new ResizeObserver(draw).observe(byId('plot'));draw();
+console.log(JSON.stringify({runs:data.runs.length,frames:data.runs.map(r=>r.timings.length),tableRows:byId('results').children.length}));
+</script></body></html>

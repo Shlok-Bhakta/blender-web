@@ -114,3 +114,30 @@ measure CPU overhead; they do not measure GPU execution time. Detailed tracing
 adds overhead, so compare normal acceptance runs separately for user timings.
 The first render uses an empty IndexedDB shader cache in a fresh browser context.
 Repeat renders reuse translations and pipelines within that session.
+
+
+The spinning-cube benchmark runs Blender's native Render Animation command for
+50 frames at factory Eevee quality. It starts three fresh Chromium processes,
+measures the first saved frame and each subsequent frame inside Blender, samples
+browser CPU time and Linux GPU busy counters, and validates every saved PNG.
+It adds linear Z-rotation keyframes to the factory cube and retains the camera,
+light, resolution, samples, color management and PNG settings. Timings include
+PNG output to the Wasm memory filesystem. Exports, image validation and video
+encoding happen after timing, with screen recording disabled.
+
+```sh
+WEB_SPIN_RUNS=3 node web/tests/spinning-cube.cjs
+python3 web/tools/spinning_cube_report.py build/native/spinning-cube \
+  --json build/native/spinning-cube/report.json \
+  --html build/native/spinning-cube/report.html \
+  --csv build/native/spinning-cube/frames.csv
+```
+
+`WEB_SPIN_OUTPUT` selects another evidence directory. `WEB_SPIN_FRAMES` selects a
+shorter diagnostic sequence; the baseline report requires 50 frames per run.
+Add `--plot path/to/frame-times.svg` to export a static plot with Matplotlib
+installed. Keep other CPU/GPU workloads idle for an isolated-machine result;
+`conditions.json` in the evidence directory records any known measurement
+conditions in the published report. GPU busy counters cover the whole device.
+The measured benchmark and output animation are linked in the
+[render documentation](../docs/eevee-default-scene.md).

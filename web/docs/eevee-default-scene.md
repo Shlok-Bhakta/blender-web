@@ -68,6 +68,58 @@ and its supported resource limits. The site does not reduce samples or
 resolution to gain speed.
 
 
+## 50-frame spinning cube baseline
+
+[Watch the rendered animation](spinning-cube.mp4) · [Interactive results](spinning-cube.html) ·
+[Raw timings and resource evidence](spinning-cube.acceptance.json) · [Frame CSV](spinning-cube.frames.csv)
+
+Three fresh Chromium processes each rendered frames 1 through 50 using Blender's
+native Render Animation command. The factory cube rotates linearly around Z,
+with keyframes at frame 1 and frame 51 for a complete turn. Resolution remains
+1920×1080 at 100%, with 64 Eevee samples, the original camera and light, AgX,
+and the factory PNG output settings. No frames or samples were skipped.
+
+| Run | First saved PNG | All 50 frames | Output frames/sec | Device GPU busy, average |
+| --- | ---: | ---: | ---: | ---: |
+| 1 | 7.88 s | 203.63 s | 0.246 | 74.8% |
+| 2 | 11.08 s | 211.01 s | 0.237 | 73.3% |
+| 3 | 11.32 s | 217.41 s | 0.230 | 74.4% |
+
+The median first saved frame was **11.08 seconds**. The median 50-frame time was
+**211.01 seconds**, or **0.237 output frames/sec**. First-frame clocks run from
+Blender's `render_init` callback to the first `render_post`, which runs after
+PNG encoding and writing in the animation path. Keyboard-command-to-job delay
+is recorded separately. Startup, scene setup, image export, validation and video
+encoding are excluded. PNGs are written to the Wasm memory filesystem during
+timing. There is no screen recording or CPU stack profiler in these runs.
+The output video plays those 50 frames at the scene's factory 24 fps; it is a
+2.08-second animation, rather than a real-time recording of the render job.
+
+![Per-frame latency for three 50-frame sequences](spinning-cube.frame-times.svg)
+
+All **150 PNGs** passed size, foreground, alpha and frame-order checks. The
+rotation curve advances by 7.2 degrees per frame, and the saved images visibly
+change with rotation. All 50 corresponding decoded images match bit for bit
+across the three runs. There were zero browser or WebGPU errors, and the checked
+quality settings remained unchanged throughout rendering.
+
+This is a **shared-host baseline**. Another Chromium workload consumed CPU during
+the session, so the spread should not be interpreted as isolated-machine
+variance. Each run starts with an empty IndexedDB shader cache, while OS and
+graphics-driver caches remain intact. Device-wide GPU busy time peaked at 100%
+in every run. The benchmark's browser processes averaged 0.53 to 0.57 logical
+CPU cores, with peak aggregate browser RSS of 1.76 to 1.98 GiB. Device-wide GTT
+allocations peaked at 6.84 to 7.16 GiB and fell back to about 12 MiB after the
+benchmark browsers closed. These allocation counters are not per-process
+resident-memory measurements.
+
+Blender's normal UI loop pauses for this GPU-owner job. The first-frame metric
+therefore measures saved output availability; the UI refreshes after the full
+animation job. The report preserves both GPU readback and saved-PNG timing.
+The [native build instructions](../native/README.md) include the repeatable
+benchmark and report commands.
+
+
 ## Shared backend work
 
 The render job runs on the browser worker that owns the WebGPU device. Blender's
