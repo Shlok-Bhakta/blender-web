@@ -111,6 +111,11 @@ if __name__ == '__main__':
         plot(result, args.plot)
     if args.html:
         template = Path(__file__).with_suffix('.html').read_text()
-        encoded = json.dumps(result).replace('<', chr(92) + 'u003c')
+        # Artifact hosts auto-inline image paths, including strings in script data.
+        # These paths belong to WasmFS, and the chart only needs frame timings.
+        view = {**result, 'runs': [{**run, 'timings': [
+            {key: value for key, value in row.items() if key != 'path'}
+            for row in run['timings']]} for run in result['runs']]}
+        encoded = json.dumps(view).replace('<', chr(92) + 'u003c')
         args.html.write_text(template.replace('__REPORT_JSON__', encoded))
     print(json.dumps({key: result[key] for key in ['runCount', 'firstSavedFrameSeconds', 'animationSeconds', 'overallFps']}))
