@@ -225,6 +225,7 @@ WebGPUTexture::WebGPUTexture(const char *name) : Texture(name)
 
 WebGPUTexture::~WebGPUTexture()
 {
+  if (atomic_buffer_) wgpuBufferRelease(atomic_buffer_);
   g_wgpu_live_textures.erase(
       std::remove(g_wgpu_live_textures.begin(), g_wgpu_live_textures.end(), this),
       g_wgpu_live_textures.end());
@@ -1033,3 +1034,42 @@ void WebGPUTexture::read(int /*mip*/, eGPUDataFormat format, void *dst)
 }
 
 }  // namespace blender::gpu
+
+namespace blender::gpu {
+WGPUBuffer WebGPUTexture::atomic_buffer()
+{
+  auto *ctx = ctx_get();
+  if (!ctx || !texture_) return nullptr;
+  if (!atomic_buffer_) {
+    atomic_pitch_ = (uint32_t(width_get()) * 4 + 255) & ~255u;
+    const uint32_t layers = wgpuTextureGetDepthOrArrayLayers(texture_);
+    WGPUBufferDescriptor descriptor = {};
+    descriptor.label = {"Blender atomic image backing", WGPU_STRLEN};
+    descriptor.size = 256 + uint64_t(atomic_pitch_) * height_get() * layers;
+    descriptor.usage = WGPUBufferUsage_Storage | WGPUBufferUsage_CopySrc | WGPUBufferUsage_CopyDst;
+    atomic_buffer_ = wgpuDeviceCreateBuffer(ctx->device(), &descriptor);
+    uint32_t header[64] = {uint32_t(width_get()), uint32_t(height_get()), layers, atomic_pitch_ / 4};
+    wgpuQueueWriteBuffer(ctx->queue(), atomic_buffer_, 0, header, sizeof(header));
+  }
+  atomic_dirty_ = true;
+  return atomic_buffer_;
+}
+void WebGPUTexture::resolve_atomics()
+{
+  if (!atomic_buffer_ || !atomic_dirty_) return;
+  auto *ctx = ctx_get();
+  ctx->flush_if_pass_open("atomic image resolve");
+  WGPUTexelCopyBufferInfo source = {};
+  source.buffer = atomic_buffer_;
+  source.layout.offset = 256;
+  source.layout.bytesPerRow = atomic_pitch_;
+  source.layout.rowsPerImage = uint32_t(height_get());
+  WGPUTexelCopyTextureInfo target = {};
+  target.texture = texture_;
+  target.aspect = WGPUTextureAspect_All;
+  WGPUExtent3D extent = {uint32_t(width_get()), uint32_t(height_get()), wgpuTextureGetDepthOrArrayLayers(texture_)};
+  wgpuCommandEncoderCopyBufferToTexture(ctx->ensure_encoder(), &source, &target, &extent);
+  ctx->flush_encoder();
+  atomic_dirty_ = false;
+}
+}

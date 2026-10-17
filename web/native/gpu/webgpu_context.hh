@@ -42,6 +42,8 @@ class WebGPUContext : public Context {
  private:
   WGPUDevice device_ = nullptr;
   WGPUQueue queue_ = nullptr;
+  WGPUBuffer readback_buffer_ = nullptr;
+  size_t readback_capacity_ = 0;
 
   /* Per-frame command recording. Created lazily; flushed on submit(). */
   WGPUCommandEncoder encoder_ = nullptr;

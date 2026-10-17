@@ -33,6 +33,7 @@ namespace blender::gpu {
  * against the ShaderInterface to find the app binding slot. */
 struct WgslResourceBinding {
   uint32_t binding;
+  WGPUShaderStage visibility = WGPUShaderStage_None;
   enum Kind { UBO, SSBO, TEXTURE, SAMPLER, STORAGE_TEXTURE, PUSH_CONST } kind;
   std::string res_name;
   /* Type detail parsed from the WGSL declaration, used to build an explicit

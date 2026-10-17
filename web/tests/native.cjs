@@ -5,7 +5,8 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 const { PNG } = require('pngjs');
 const url = process.env.WEB_TEST_URL || 'http://127.0.0.1:8093/';
-const output = path.resolve(__dirname, '../../build/native/evidence');
+const uiFallback = process.env.WEB_TEST_UI_FALLBACK === '1';
+const output = path.resolve(__dirname, uiFallback ? '../../build/native/evidence-ui' : '../../build/native/evidence');
 const messages = [];
 
 async function ready(page, failure) {
@@ -27,7 +28,16 @@ async function consoleCommand(page, command, marker) {
         if (png.data[i+1] > 180 && png.data[i+1] > png.data[i] * 1.2 && png.data[i+2] < 40) bannerPixels++;
       }
     }
-    if (bannerPixels > 200) break;
+    // A reused console may have scrolled its banner out of view. Its dark
+    // body is drawn only after console_main_region_draw initializes language.
+    let dark = 0, area = 0;
+    for (let y=100; y<Math.min(300,png.height-100); y++) {
+      for (let x=100; x<Math.min(600,png.width-200); x++) {
+        const i=(y*png.width+x)*4; area++;
+        if (png.data[i]>=20&&png.data[i]<=35&&png.data[i]===png.data[i+1]&&png.data[i]===png.data[i+2]) dark++;
+      }
+    }
+    if (bannerPixels > 200 || dark > area*.95) break;
     if (Date.now() > bannerDeadline) throw new Error('Original Python console banner did not draw');
     await page.waitForTimeout(250);
   }
@@ -54,6 +64,10 @@ async function main() {
   let page;
   try {
     const context = await browser.newContext({viewport:{width:1280,height:800},deviceScaleFactor:1});
+    if (uiFallback) await context.addInitScript(() => {
+      delete WebAssembly.promising;
+      delete WebAssembly.Suspending;
+    });
     page = await context.newPage();
     let rejectFailure;
     const failure = new Promise((_, reject) => { rejectFailure = reject; });
@@ -66,6 +80,7 @@ async function main() {
     page.on('pageerror', error => { rejectFailure(error); errors.push(error.message); fs.appendFileSync(path.join(output,'errors.log'),error.stack+'\n'); });
     await page.goto(url);
     await ready(page, failure);
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.blenderVariant), uiFallback ? 'ui' : 'render');
     const image = await page.screenshot({path:path.join(output,'original-ui.png')});
     const png = PNG.sync.read(image);
     const colors = new Set();
@@ -100,7 +115,7 @@ async function main() {
       'NATIVE_STORAGE_READ:persisted');
     await page.screenshot({path:path.join(output,'original-ui-offline.png')});
     assert.deepEqual(errors, [], 'Browser runtime errors');
-    const report = {originalUI:true, startupCube:true, webgpu:true, isolated:true, workers:page.workers().length,
+    const report = {variant:uiFallback ? 'ui' : 'render', originalUI:true, startupCube:true, webgpu:true, isolated:true, workers:page.workers().length,
       colors:colors.size, resize:true, nativePythonConsole:true, persistentStorage:true, offlineReload:true};
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
@@ -112,4 +127,5 @@ async function main() {
     await browser.close();
   }
 }
-main().catch(error => { console.error(error); process.exitCode=1; });
+module.exports = {ready, consoleCommand, messages};
+if (require.main === module) main().catch(error => { console.error(error); process.exitCode=1; });

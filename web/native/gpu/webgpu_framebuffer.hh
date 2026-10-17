@@ -72,6 +72,16 @@ class WebGPUFrameBuffer : public FrameBuffer {
     return is_backbuffer_;
   }
 
+  void viewport_transforms(float values[16][4]) const
+  {
+    for (int i = 0; i < 16; i++) {
+      const int *rect = viewport_[multi_viewport_ ? i : 0];
+      values[i][0] = multi_viewport_ ? float(rect[2]) / width_ : 1.0f;
+      values[i][1] = multi_viewport_ ? float(rect[3]) / height_ : 1.0f;
+      values[i][2] = multi_viewport_ ? 2.0f * rect[0] / width_ + values[i][0] - 1.0f : 0.0f;
+      values[i][3] = multi_viewport_ ? 2.0f * rect[1] / height_ + values[i][1] - 1.0f : 0.0f;
+    }
+  }
   void bind(bool enabled_srgb) override;
   bool check(char err_out[256]) override;
   void clear(GPUFrameBufferBits buffers,

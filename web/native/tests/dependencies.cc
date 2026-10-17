@@ -70,10 +70,20 @@ int main()
     }
     require(task_exception, "oneTBB did not propagate a C++ exception");
 
+    require(OIIO::ustring("ResolutionUnit").string() == "ResolutionUnit",
+            "OpenImageIO corrupted an interned string longer than Wasm32 SSO capacity");
     const std::array<unsigned char, 12> pixels = {255, 0, 0, 0, 255, 0, 0, 0, 255, 127, 63, 31};
     auto output = OIIO::ImageOutput::create("/roundtrip.png");
     require(bool(output), "PNG output plugin is unavailable");
-    require(output->open("/roundtrip.png", OIIO::ImageSpec(2, 2, 3, OIIO::TypeDesc::UINT8)), "Cannot open PNG output");
+    OIIO::ImageSpec specification(2, 2, 3, OIIO::TypeDesc::UINT8);
+    specification.attribute("Software", "Blender Web");
+    specification.attribute("RenderTime", "00:01.00");
+    for (const char *name : {"File", "Date", "Time", "Frame", "FrameRange", "Camera", "Lens", "Scene", "Memory", "Hostname"})
+      specification.attribute(name, "Factory scene render");
+    specification.attribute("XResolution", 2835);
+    specification.attribute("YResolution", 2835);
+    specification.attribute("ResolutionUnit", "m");
+    require(output->open("/roundtrip.png", specification), "Cannot open PNG output");
     require(output->write_image(OIIO::TypeDesc::UINT8, pixels.data()), "Cannot encode PNG");
     require(output->close(), "Cannot close PNG output");
     auto input = OIIO::ImageInput::open("/roundtrip.png");
@@ -118,7 +128,7 @@ int main()
     FT_Done_Face(face);
     FT_Done_FreeType(fonts);
 
-    std::printf("{\"threads\":%zu,\"checksum\":%llu,\"pngRoundtrip\":true,\"colorTransform\":true,\"woff2\":true,\"exceptions\":true,\"longjmp\":true}\n",
+    std::printf("{\"threads\":%zu,\"checksum\":%llu,\"pngRoundtrip\":true,\"pngMetadata\":true,\"colorTransform\":true,\"woff2\":true,\"exceptions\":true,\"longjmp\":true}\n",
                 threads.size(), static_cast<unsigned long long>(checksum));
     return 0;
   }

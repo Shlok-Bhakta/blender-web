@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Initial native editor compilation. This does not yet produce a runnable UI.
+# Original Blender UI and renderer with optional systems omitted by the lite preset.
 include("${CMAKE_CURRENT_LIST_DIR}/../../../../build_files/cmake/config/blender_lite.cmake")
 set(WITH_GHOST_WEB ON CACHE BOOL "" FORCE)
 set(WITH_GHOST_X11 OFF CACHE BOOL "" FORCE)

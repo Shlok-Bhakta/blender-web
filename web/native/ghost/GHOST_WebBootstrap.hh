@@ -62,7 +62,7 @@ inline bool GHOST_web_bootstrap(int argc, const char **argv,
         const requiredFeatures = [...adapter.features].filter(f =>
           ['dual-source-blending', 'float32-filterable', 'rg11b10ufloat-renderable',
            'bgra8unorm-storage', 'shader-f16', 'depth32float-stencil8',
-           'indirect-first-instance', 'clip-distances'].includes(f));
+           'indirect-first-instance', 'clip-distances', 'texture-formats-tier1', 'texture-formats-tier2', 'float32-blendable'].includes(f));
         const requiredLimits = {};
         for (const key of ['maxStorageTexturesPerShaderStage', 'maxStorageBuffersPerShaderStage',
           'maxSampledTexturesPerShaderStage', 'maxSamplersPerShaderStage',

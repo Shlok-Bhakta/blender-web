@@ -22,6 +22,9 @@
 #include "src/tint/lang/spirv/reader/reader.h"
 #include "src/tint/lang/wgsl/writer/writer.h"
 #include "src/tint/lang/core/ir/module.h"
+#include "src/tint/lang/core/ir/builder.h"
+#include "src/tint/lang/core/ir/load.h"
+#include "src/tint/lang/core/type/struct.h"
 #include "src/tint/utils/ice/ice.h"
 
 #include "gpu_shader_dependency_private.hh"
@@ -548,7 +551,7 @@ static std::string wgsl_cache_key(const char *stage, const std::string &glsl)
     h = (h ^ uint8_t(c)) * 1099511628211ull;
   }
   char key[64];
-  snprintf(key, sizeof(key), "v2:%s:%016llx:%zu", stage, (unsigned long long)h, glsl.size());
+  snprintf(key, sizeof(key), "v5:%s:%016llx:%zu", stage, (unsigned long long)h, glsl.size());
   return key;
 }
 
@@ -587,11 +590,19 @@ static bool glsl_to_wgsl(const std::string &glsl,
       fflush(stderr);
     }
   }
-  std::string adapted;
-  const std::string &compiler_source = webgpu_adapt_draw_command(glsl, name, adapted) ? adapted : glsl;
+  std::string preprocessing_source, adapted;
+  webgpu_adapt_draw_command(glsl, name, preprocessing_source, kind == shaderc_vertex_shader, true);
   shaderc::Compiler compiler;
   shaderc::CompileOptions opts;
   opts.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_0);
+  auto preprocessed = compiler.PreprocessGlsl(preprocessing_source, kind, name, opts);
+  if (preprocessed.GetCompilationStatus() != shaderc_compilation_status_success) {
+    fprintf(stderr, "WGPU_SH preprocess FAIL %s: %s\n", name, preprocessed.GetErrorMessage().c_str());
+    return false;
+  }
+  const std::string expanded(preprocessed.cbegin(), preprocessed.cend());
+  webgpu_adapt_draw_command(expanded, name, adapted, kind == shaderc_vertex_shader);
+  const std::string &compiler_source = adapted;
   shaderc::SpvCompilationResult spv = compiler.CompileGlslToSpv(compiler_source, kind, name, opts);
   if (spv.GetCompilationStatus() != shaderc_compilation_status_success) {
     fprintf(stderr, "WGPU_SH shaderc FAIL %s: %s\n", name, spv.GetErrorMessage().c_str());
@@ -631,6 +642,23 @@ static bool glsl_to_wgsl(const std::string &glsl,
     fprintf(stderr, "WGPU_SH tint-read FAIL %s: %s\n", name, ir.Failure().reason.c_str());
     fflush(stderr);
     return false;
+  }
+  // Bracket shared struct loads with barriers. Tint recognizes this canonical
+  // broadcast pattern and emits WGSL's workgroupUniformLoad builtin.
+  if (std::strstr(name, "shadow_tilemap_init") || std::strstr(name, "shadow_page_mask") ||
+      std::strstr(name, "shadow_tilemap_finalize")) {
+    auto &module = ir.Get();
+    tint::core::ir::Builder builder{module};
+    std::vector<tint::core::ir::Load *> loads;
+    for (auto *instruction : module.Instructions()) {
+      auto *load = instruction->As<tint::core::ir::Load>();
+      if (load && load->Result()->Type()->Is<tint::core::type::Struct>() &&
+          load->From()->Type()->As<tint::core::type::Pointer>()->AddressSpace() == tint::core::AddressSpace::kWorkgroup) loads.push_back(load);
+    }
+    for (auto *load : loads) {
+      builder.InsertBefore(load, [&] { builder.Call(module.Types().void_(), tint::core::BuiltinFn::kWorkgroupBarrier); });
+      builder.InsertAfter(load, [&] { builder.Call(module.Types().void_(), tint::core::BuiltinFn::kWorkgroupBarrier); });
+    }
   }
   /* Permissive WGSL emission: EEVEE uses derivatives in non-uniform control flow
    * (fwidth), has provably-unreachable branches after early-outs, and relies on
@@ -840,6 +868,19 @@ static void parse_wgsl_bindings(const std::string &wgsl, std::vector<WgslResourc
       name_start = (close == std::string::npos) ? 3 : close + 1;
     }
     std::string varname = trim_ws(decl.substr(name_start, colon - name_start));
+    // SPIR-V can retain declarations that the entry point never uses. Exposing
+    // those in a layout wastes limits and incorrectly makes fragment-only
+    // storage textures visible to the vertex stage.
+    auto identifier = [](char c) { return std::isalnum(static_cast<unsigned char>(c)) || c == '_'; };
+    unsigned references = 0;
+    for (size_t use = wgsl.find(varname); use != std::string::npos; use = wgsl.find(varname, use + varname.size())) {
+      if ((use == 0 || !identifier(wgsl[use - 1])) &&
+          (use + varname.size() == wgsl.size() || !identifier(wgsl[use + varname.size()]))) {
+        if (++references > 1) break;
+      }
+    }
+    if (references < 2) continue;
+
 
     WgslResourceBinding b;
     b.binding = binding;
@@ -904,8 +945,12 @@ static void parse_wgsl_bindings(const std::string &wgsl, std::vector<WgslResourc
     }
     /* Dedup by binding (a resource used in vert+frag appears in both). */
     bool dup = false;
-    for (const WgslResourceBinding &e : out) {
+    for (WgslResourceBinding &e : out) {
       if (e.binding == b.binding) {
+        if (b.kind == WgslResourceBinding::SSBO && b.writable) {
+          e.writable = true;
+          e.buffer_type = WGPUBufferBindingType_Storage;
+        }
         dup = true;
         break;
       }
@@ -1561,8 +1606,36 @@ void WebGPUShader::ensure_translated()
   }
 
   if (translated) {
-    parse_wgsl_bindings(vertex_wgsl_, render_bindings_);
-    parse_wgsl_bindings(fragment_wgsl_, render_bindings_);
+    std::vector<WgslResourceBinding> vertex_bindings, fragment_bindings;
+    parse_wgsl_bindings(vertex_wgsl_, vertex_bindings);
+    parse_wgsl_bindings(fragment_wgsl_, fragment_bindings);
+    // WebGPU forbids vertex writes. A shared desktop binding can be read-only
+    // in the vertex stage and writable in the fragment stage. Give those
+    // declarations distinct slots instead of hiding the vertex binding.
+    for (auto &vertex : vertex_bindings) {
+      for (const auto &fragment : fragment_bindings) {
+        if (vertex.binding != fragment.binding || vertex.kind != WgslResourceBinding::SSBO || !fragment.writable) continue;
+        const uint32_t old_binding = vertex.binding;
+        vertex.binding += 256;
+        vertex_wgsl_ = std::regex_replace(vertex_wgsl_,
+            std::regex("@binding\\(" + std::to_string(old_binding) + "u?\\)"),
+            "@binding(" + std::to_string(vertex.binding) + ")");
+        break;
+      }
+      vertex.visibility = WGPUShaderStage_Vertex;
+      render_bindings_.push_back(vertex);
+    }
+    for (auto fragment : fragment_bindings) {
+      fragment.visibility = WGPUShaderStage_Fragment;
+      bool merged = false;
+      for (auto &binding : render_bindings_) {
+        if (binding.binding == fragment.binding) {
+          binding.visibility = WGPUShaderStage(binding.visibility | WGPUShaderStage_Fragment);
+          merged = true; break;
+        }
+      }
+      if (!merged) render_bindings_.push_back(fragment);
+    }
     parse_wgsl_bindings(compute_wgsl_, compute_bindings_);
     frag_output_mask_ = parse_fragment_output_mask(fragment_wgsl_);
     parse_vertex_inputs(vertex_wgsl_, vertex_inputs_);
@@ -1673,6 +1746,35 @@ std::string WebGPUShader::resources_declare(const shader::ShaderCreateInfo &info
   /* Emit one resource as a single line (no trailing newline — the macro adds the
    * line-continuation). */
   auto print_one = [&](const ShaderCreateInfo::Resource &res) {
+    if (res.bind_type == ShaderCreateInfo::Resource::BindType::SAMPLER &&
+        res.sampler.type == ImageType::AtomicUint2DArray) {
+      const std::string name(res.sampler.name);
+      ss << "layout(binding = " << binding++ << ", std430) readonly buffer _web_atomic_sample_" << name
+         << " { uvec4 web_dims_" << name << "; uint web_padding_" << name
+         << "[60]; uint web_data_" << name << "[]; }; ";
+      ss << "uvec4 web_fetch_" << name << "(ivec3 p, int lod) { return uvec4(web_data_" << name
+         << "[uint(p.x) + web_dims_" << name << ".w * (uint(p.y) + web_dims_" << name
+         << ".y * uint(p.z))], 0u, 0u, 1u); } ";
+      return;
+    }
+    if (res.bind_type == ShaderCreateInfo::Resource::BindType::IMAGE &&
+        res.image.type == ImageType::AtomicUint2DArray) {
+      const std::string name(res.image.name);
+      ss << "layout(binding = " << binding++ << ", std430) buffer _web_atomic_" << name
+         << " { uvec4 web_dims_" << name << "; uint web_padding_" << name
+         << "[60]; uint web_data_" << name << "[]; }; ";
+      ss << "uint web_index_" << name << "(ivec3 p) { return uint(p.x) + web_dims_" << name
+         << ".w * (uint(p.y) + web_dims_" << name << ".y * uint(p.z)); } ";
+      ss << "uint web_min_" << name << "(ivec3 p, uint v) { return atomicMin(web_data_" << name
+         << "[web_index_" << name << "(p)], v); } ";
+      ss << "uint web_add_" << name << "(ivec3 p, uint v) { return atomicAdd(web_data_" << name
+         << "[web_index_" << name << "(p)], v); } ";
+      ss << "void web_store_" << name << "(ivec3 p, uvec4 v) { atomicExchange(web_data_" << name
+         << "[web_index_" << name << "(p)], v.x); } ";
+      ss << "uvec4 web_load_" << name << "(ivec3 p) { return uvec4(atomicAdd(web_data_" << name
+         << "[web_index_" << name << "(p)], 0u), 0u, 0u, 1u); } ";
+      return;
+    }
     ss << "layout(binding = " << binding++;
     if (res.bind_type == ShaderCreateInfo::Resource::BindType::IMAGE) {
       ss << ", " << to_string(res.image.format);
@@ -1763,9 +1865,16 @@ std::string WebGPUShader::vertex_interface_declare(const shader::ShaderCreateInf
   ss << "#ifdef GPU_POINTCOORD_VARYING\n";
   ss << "layout(location = 15) out vec2 gpu_pointcoord_var;\n";
   ss << "#endif\n";
+  if (flag_is_set(info.builtins_, BuiltinBits::VIEWPORT_INDEX)) {
+    ss << "layout(binding = 768, std140) uniform _web_viewports { vec4 web_viewports[16]; };\n";
+  }
   ss << "void main_function_();\n";
   ss << "void main() {\n";
   ss << "  main_function_();\n";
+  if (flag_is_set(info.builtins_, BuiltinBits::VIEWPORT_INDEX)) {
+    ss << "  vec4 web_vp = web_viewports[clamp(gpu_viewport_index_var, 0, 15)];\n"
+          "  gl_Position.xy = gl_Position.xy * web_vp.xy + gl_Position.w * web_vp.zw;\n";
+  }
   ss << "#ifdef GPU_POINTCOORD_VARYING\n";
   ss << "  gpu_pointcoord_var = vec2(0.5);\n";
   ss << "#endif\n";

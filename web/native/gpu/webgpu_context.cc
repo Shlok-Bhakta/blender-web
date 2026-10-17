@@ -22,6 +22,7 @@
 
 #include "GPU_framebuffer.hh"
 #include "native/ghost/GHOST_WebPresent.hh"
+#include "native/ghost/GHOST_WebJobs.hh"
 #include "GPU_texture.hh"
 
 #include "webgpu_context.hh"
@@ -125,7 +126,8 @@ WebGPUContext::WebGPUContext(GHOST_IWindow * /*ghost_window*/,
    * (Blender creates more than one; emscripten_webgpu_get_device only hands the
    * device over on the first/right thread, and Module.preinitializedWebGPUDevice
    * isn't visible on every thread under PROXY_TO_PTHREAD). The WGPUDevice handle
-   * lives in shared wasm memory, so reusing it across contexts/threads works.
+   * lives in shared wasm memory, but its JS object is worker-local. GPU jobs
+   * are dispatched to this same owning worker by GHOST_WebJobs.
    * Probe guards against the device-less headless case (plain node, no device). */
   static WGPUDevice s_shared_device = nullptr;
   if (s_shared_device == nullptr) {
@@ -162,6 +164,7 @@ WebGPUContext::WebGPUContext(GHOST_IWindow * /*ghost_window*/,
 
 WebGPUContext::~WebGPUContext()
 {
+  if (readback_buffer_) wgpuBufferRelease(readback_buffer_);
   g_all_contexts.erase(std::remove(g_all_contexts.begin(), g_all_contexts.end(), this),
                        g_all_contexts.end());
   render_pass_end();
@@ -1403,7 +1406,7 @@ WGPUBindGroupLayout WebGPUContext::make_bind_group_layout(
     WGPUBindGroupLayoutEntry e = {};
     e.binding = b.binding;
     /* Writable storage is illegal in the vertex stage. */
-    e.visibility = (b.writable && !is_compute) ? WGPUShaderStage_Fragment : base_vis;
+    e.visibility = (b.writable && !is_compute) ? WGPUShaderStage_Fragment : (b.visibility ? b.visibility : base_vis);
     switch (b.kind) {
       case WgslResourceBinding::UBO:
       case WgslResourceBinding::PUSH_CONST:
@@ -1526,6 +1529,15 @@ WGPUBindGroup WebGPUContext::build_bind_group(WebGPUShader *shader,
         break;
       }
       case WgslResourceBinding::UBO: {
+        if (b.res_name == "web_viewports") {
+          float transforms[16][4];
+          static_cast<WebGPUFrameBuffer *>(active_fb)->viewport_transforms(transforms);
+          if (uniform_arena_alloc(sizeof(transforms), e.buffer, e.offset)) {
+            e.size = sizeof(transforms);
+            wgpuQueueWriteBuffer(queue_, e.buffer, e.offset, transforms, sizeof(transforms));
+          }
+          break;
+        }
         const ShaderInput *in = iface->ubo_get(StringRefNull(b.res_name.c_str()));
         int slot = in ? in->binding : -1;
         e.buffer = (slot >= 0 && slot < WEBGPU_MAX_UBO) ? bound_ubo_[slot] : nullptr;
@@ -1536,6 +1548,18 @@ WGPUBindGroup WebGPUContext::build_bind_group(WebGPUShader *shader,
         const ShaderInput *in = iface->ssbo_get(StringRefNull(b.res_name.c_str()));
         int slot = in ? in->binding : -1;
         e.buffer = (slot >= 0 && slot < WEBGPU_MAX_SSBO) ? bound_ssbo_[slot] : nullptr;
+        if (b.res_name.rfind("web_atomic_sample_", 0) == 0) {
+          const std::string name = b.res_name.substr(18);
+          const ShaderInput *sampler = iface->uniform_get(StringRefNull(name.c_str()));
+          WebGPUTexture *texture = sampler && sampler->binding >= 0 && sampler->binding < WEBGPU_MAX_TEX ? bound_tex_[sampler->binding] : nullptr;
+          e.buffer = texture ? texture->atomic_buffer() : nullptr;
+        }
+        else if (b.res_name.rfind("web_atomic_", 0) == 0) {
+          const std::string image_name = b.res_name.substr(11);
+          const ShaderInput *image = iface->uniform_get(StringRefNull(image_name.c_str()));
+          WebGPUTexture *texture = image && image->binding >= 0 && image->binding < WEBGPU_MAX_IMAGE ? bound_image_[image->binding] : nullptr;
+          e.buffer = texture ? texture->atomic_buffer() : nullptr;
+        }
         e.size = WGPU_WHOLE_SIZE;
         break;
       }
@@ -1544,6 +1568,7 @@ WGPUBindGroup WebGPUContext::build_bind_group(WebGPUShader *shader,
         int slot = in ? in->binding : -1;
         WebGPUTexture *t = (slot >= 0 && slot < WEBGPU_MAX_TEX) ? bound_tex_[slot] : nullptr;
         /* Depth-stencil textures must be bound through a single-aspect view. */
+        if (t) t->resolve_atomics();
         e.textureView = t ? t->wgpu_sample_view() : nullptr;
         break;
       }
@@ -1875,7 +1900,7 @@ static void webgpu_decode_texel(const uint8_t *p, WGPUTextureFormat fmt, float o
  * possible (the wait would then abort — guarded by the caller's context). */
 bool WebGPUContext::map_read_sync(WGPUBuffer buf, size_t size, void *dst)
 {
-  if (buf == nullptr || dst == nullptr) {
+  if (buf == nullptr || dst == nullptr || !emscripten_has_asyncify()) {
     return false;
   }
   struct MapState {
@@ -1909,8 +1934,8 @@ bool WebGPUContext::map_read_sync(WGPUBuffer buf, size_t size, void *dst)
   return true;
 }
 
-/* Synchronous small readback (select-id samples, depth picks): copy the region
- * into a scratch buffer, block on the map (JSPI), convert into r_data. */
+/* Shared texture/framebuffer readback: copy a region into reusable staging,
+ * yield through JSPI until mapping completes, then convert into r_data. */
 bool WebGPUContext::read_small_sync(WGPUTexture tex,
                                     WGPUTextureFormat fmt,
                                     int x,
@@ -1926,58 +1951,60 @@ bool WebGPUContext::read_small_sync(WGPUTexture tex,
   if (r_data == nullptr || device_ == nullptr) {
     return false;
   }
-  /* Supported conversions (texel -> caller format). */
   bool is_depth = false;
-  uint32_t bpp = 0;
+  bool half = false, normalized = false;
+  uint32_t component_bytes = 4;
   switch (fmt) {
+    case WGPUTextureFormat_RGBA16Float:
+    case WGPUTextureFormat_RG16Float:
+    case WGPUTextureFormat_R16Float:
+      if (dst_format != GPU_DATA_FLOAT && dst_format != GPU_DATA_HALF_FLOAT) return false;
+      half = true; component_bytes = 2; break;
+    case WGPUTextureFormat_RGBA32Float:
+    case WGPUTextureFormat_RG32Float:
+    case WGPUTextureFormat_R32Float:
+      if (dst_format != GPU_DATA_FLOAT) return false;
+      break;
     case WGPUTextureFormat_R32Uint:
     case WGPUTextureFormat_R32Sint:
-      if (channels != 1 || !(dst_format == GPU_DATA_UINT || dst_format == GPU_DATA_INT)) {
-        return false;
-      }
-      bpp = 4;
-      break;
-    case WGPUTextureFormat_R32Float:
-      if (channels != 1 || dst_format != GPU_DATA_FLOAT) {
-        return false;
-      }
-      bpp = 4;
+    case WGPUTextureFormat_RG32Uint:
+    case WGPUTextureFormat_RGBA32Uint:
+      if (dst_format != GPU_DATA_UINT && dst_format != GPU_DATA_INT) return false;
       break;
     case WGPUTextureFormat_Depth32Float:
     case WGPUTextureFormat_Depth32FloatStencil8:
-      /* DepthOnly aspect copies out tightly-packed float32. */
-      if (channels != 1 || dst_format != GPU_DATA_FLOAT) {
-        return false;
-      }
-      is_depth = true;
-      bpp = 4;
-      break;
+      if (channels != 1 || dst_format != GPU_DATA_FLOAT) return false;
+      is_depth = true; break;
     case WGPUTextureFormat_R8Unorm:
-      if (channels != 1 || dst_format != GPU_DATA_UBYTE) {
-        return false;
-      }
-      bpp = 1;
-      break;
-    default:
-      return false;
+    case WGPUTextureFormat_RG8Unorm:
+    case WGPUTextureFormat_RGBA8Unorm:
+    case WGPUTextureFormat_RGBA8UnormSrgb:
+      if (dst_format != GPU_DATA_UBYTE && dst_format != GPU_DATA_FLOAT) return false;
+      normalized = true; component_bytes = 1; break;
+    default: return false;
   }
-
+  const uint32_t bpp = webgpu_format_bytes_per_pixel(fmt);
+  if (!bpp || bpp != uint32_t(channels) * component_bytes) return false;
   /* All recorded work must land before the copy (and the copy needs top-level
    * encoder access). */
   submit();
   const uint32_t bpr = align256(uint32_t(w) * bpp);
   const size_t need = size_t(bpr) * size_t(h);
-  WGPUBufferDescriptor bd = {};
-  bd.label = {"read_small_sync", WGPU_STRLEN};
-  bd.size = need;
-  bd.usage = WGPUBufferUsage_CopyDst | WGPUBufferUsage_MapRead;
-  WGPUBuffer scratch = wgpuDeviceCreateBuffer(device_, &bd);
-  if (scratch == nullptr) {
-    return false;
+  /* Keep one growable staging allocation per context. Readback is serialized
+   * by the GPU-owner job; unmapping makes it available for the next pass. */
+  if (!readback_buffer_ || readback_capacity_ < need) {
+    if (readback_buffer_) wgpuBufferRelease(readback_buffer_);
+    WGPUBufferDescriptor bd = {};
+    bd.label = {"Blender readback staging", WGPU_STRLEN};
+    bd.size = need;
+    bd.usage = WGPUBufferUsage_CopyDst | WGPUBufferUsage_MapRead;
+    readback_buffer_ = wgpuDeviceCreateBuffer(device_, &bd);
+    readback_capacity_ = need;
   }
+  WGPUBuffer scratch = readback_buffer_;
+  if (!scratch) return false;
   WGPUCommandEncoder enc = ensure_encoder();
   if (enc == nullptr) {
-    wgpuBufferRelease(scratch);
     return false;
   }
   WGPUTexelCopyTextureInfo src = {};
@@ -1995,15 +2022,25 @@ bool WebGPUContext::read_small_sync(WGPUTexture tex,
 
   std::vector<uint8_t> raw(need);
   const bool ok = map_read_sync(scratch, need, raw.data());
-  wgpuBufferRelease(scratch);
   if (!ok) {
     return false;
   }
   /* De-stride rows into the tightly packed caller buffer. Both sides use the
    * GL bottom-up row convention (the y passed in is already a storage row). */
-  uint8_t *out = static_cast<uint8_t *>(r_data);
+  const size_t elements = size_t(w) * channels;
+  const size_t output_bytes = dst_format == GPU_DATA_FLOAT ? 4 : component_bytes;
   for (int row = 0; row < h; row++) {
-    std::memcpy(out + size_t(row) * w * bpp, raw.data() + size_t(row) * bpr, size_t(w) * bpp);
+    const uint8_t *input = raw.data() + size_t(row) * bpr;
+    uint8_t *output = static_cast<uint8_t *>(r_data) + size_t(row) * elements * output_bytes;
+    if (half && dst_format == GPU_DATA_FLOAT) {
+      math::half_to_float_array(reinterpret_cast<const uint16_t *>(input),
+                                reinterpret_cast<float *>(output), elements);
+    }
+    else if (normalized && dst_format == GPU_DATA_FLOAT) {
+      float *floats = reinterpret_cast<float *>(output);
+      for (size_t i = 0; i < elements; i++) floats[i] = input[i] / 255.0f;
+    }
+    else std::memcpy(output, input, elements * component_bytes);
   }
   return true;
 }
@@ -2023,108 +2060,17 @@ bool WebGPUContext::read_color_sync(WGPUTexture tex,
   if (device_ == nullptr || tex == nullptr || w <= 0 || h <= 0) {
     return false;
   }
-  /* CPython's Emscripten C-call trampoline (a JS frame) sits on the stack during
-   * the Python-driven render, so JSPI cannot suspend here for a synchronous map.
-   * Instead capture asynchronously: copy the texture into a PERSISTENT buffer now
-   * (this executes on the GPU as the queue drains), and let JS map that buffer
-   * after the render returns and the browser event loop is free
-   * (wgpu_capture_map, below). The synchronous caller (Blender's RenderResult)
-   * therefore gets zeros and is ignored — the pixels are read back from JS.
-   *
-   * Only capture 4-channel colour targets (the EEVEE "combined" film output is
-   * RGBA16F); skip depth/other reads so they don't clobber the colour capture.
-   * Last colour read wins, which is the composited film result.
-   *
-   * SMALL non-film reads (channels < 4: the select-id buffer sample behind
-   * click-select, depth picks) DO read back synchronously via JSPI
-   * (read_small_sync): the interactive callers sit on a pure-wasm main-loop
-   * stack where wgpuInstanceWaitAny can suspend. */
-  /* Gated OFF by default: the blocking wait needs JSPI, which is incompatible
-   * with this build's -fexceptions (see link_blender_web.sh). Enable with
-   * ENV.WGPU_SYNC_READ=1 for experiments only. */
-  static const bool sync_read_on = getenv("WGPU_SYNC_READ") != nullptr;
-  if (sync_read_on && channels < 4 && !g_capture_debug_world && !wgpu_env_cap_gbuf()) {
-    if (read_small_sync(tex, fmt, x, y, w, h, dst_format, channels, r_data, layer, mip)) {
-      return true;
-    }
+  if (GHOST_web_gpu_job_active()) {
+    const bool ok = read_small_sync(tex, fmt, x, y, w, h, dst_format, channels,
+                                    r_data, layer, mip);
+    fprintf(stderr, "WEB_READBACK %dx%d channels=%d format=%d success=%d\n",
+            w, h, channels, int(fmt), int(ok));
+    return ok;
   }
-  /* A raw SSBO debug capture must not be clobbered by the film readback. */
-  static const bool ssbo_cap_on = getenv("WGPU_CAP_SSBO_SHADER") != nullptr ||
-                                  getenv("WGPU_CAP_STENCIL") != nullptr;
-  if (channels < 4 || g_capture_debug_world || wgpu_env_cap_gbuf() || ssbo_cap_on) {
-    if (r_data) { std::memset(r_data, 0, size_t(w) * size_t(h) * size_t(std::max(channels, 1)) *
-                              (dst_format == GPU_DATA_FLOAT ? 4u : 1u)); }
-    return false;
-  }
-  switch (fmt) {
-    case WGPUTextureFormat_Depth16Unorm:
-    case WGPUTextureFormat_Depth32Float:
-    case WGPUTextureFormat_Depth32FloatStencil8:
-      return false;
-    default:
-      break;
-  }
-
-  /* Flush pending GPU work so the texture holds final content, then record the
-   * copy into the persistent readback buffer. */
-  submit();
-
-  /* GUI F12 path: also self-map a copy so the RenderResult can be filled once
-   * the pixels arrive (the synchronous return below is still zeros). */
-  fprintf(stderr, "WGPU_FILM read4 %dx%d fmt=%d tex=%p\n", w, h, int(fmt), (void *)tex);
-  fflush(stderr);
-  film_capture_async(tex, fmt, w, h);
-
-  const uint32_t bpp = webgpu_format_bytes_per_pixel(fmt);
-  const uint32_t bpr = align256(uint32_t(w) * bpp);
-  const size_t need = size_t(bpr) * size_t(h);
-  if (g_capture_buf == nullptr || g_capture_cap < need) {
-    if (g_capture_buf) {
-      wgpuBufferRelease(g_capture_buf);
-    }
-    WGPUBufferDescriptor bd = {};
-    bd.size = need;
-    bd.usage = WGPUBufferUsage_CopyDst | WGPUBufferUsage_MapRead;
-    g_capture_buf = wgpuDeviceCreateBuffer(device_, &bd);
-    g_capture_cap = need;
-  }
-  if (g_capture_buf == nullptr) {
-    return false;
-  }
-
-  WGPUCommandEncoderDescriptor ed = {};
-  WGPUCommandEncoder enc = wgpuDeviceCreateCommandEncoder(device_, &ed);
-  WGPUTexelCopyTextureInfo src = {};
-  src.texture = tex;
-  src.aspect = WGPUTextureAspect_All;
-  src.mipLevel = uint32_t(std::max(mip, 0));
-  /* Layer views read a single array layer: origin.z selects it. */
-  src.origin = {uint32_t(x), uint32_t(y), uint32_t(std::max(layer, 0))};
-  WGPUTexelCopyBufferInfo dst = {};
-  dst.buffer = g_capture_buf;
-  dst.layout.bytesPerRow = bpr;
-  dst.layout.rowsPerImage = uint32_t(h);
-  WGPUExtent3D ext = {uint32_t(w), uint32_t(h), 1};
-  wgpuCommandEncoderCopyTextureToBuffer(enc, &src, &dst, &ext);
-  WGPUCommandBufferDescriptor cbd = {};
-  WGPUCommandBuffer cb = wgpuCommandEncoderFinish(enc, &cbd);
-  wgpuQueueSubmit(queue_, 1, &cb);
-  wgpuCommandBufferRelease(cb);
-  wgpuCommandEncoderRelease(enc);
-
-  g_capture_w = uint32_t(w);
-  g_capture_h = uint32_t(h);
-  g_capture_bpr = bpr;
-  g_capture_bpp = bpp;
-  g_capture_ready = 0;
-  fprintf(stderr, "WGPU_CAPTURE deferred %dx%d fmt=%d bpp=%u\n", w, h, int(fmt), bpp);
-  fflush(stderr);
-
-  if (r_data) {
-    std::memset(r_data, 0,
-                size_t(w) * size_t(h) * size_t(std::clamp(channels, 1, 4)) *
-                    (dst_format == GPU_DATA_FLOAT ? 4u : 1u));
-  }
+  /* Interactive entry points have not entered a promising Wasm call yet. */
+  if (r_data) std::memset(r_data, 0, size_t(w) * h * channels *
+      (dst_format == GPU_DATA_FLOAT || dst_format == GPU_DATA_UINT || dst_format == GPU_DATA_INT ? 4 :
+       dst_format == GPU_DATA_HALF_FLOAT ? 2 : 1));
   return false;
 }
 

@@ -122,12 +122,14 @@ jobs:
             sleep 1
           done
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/native.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: browser-evidence
           path: |
             build/native/evidence
+            build/native/evidence-ui
             build/native/build.log
             build/native/*-check.json
             build/native/*-build.log

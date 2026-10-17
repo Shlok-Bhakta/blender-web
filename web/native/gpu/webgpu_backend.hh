@@ -5,15 +5,15 @@
 /** \file
  * \ingroup gpu
  *
- * WebGPU GPU backend (Emscripten / Dawn). Targets the browser's native WebGPU
- * via the emdawnwebgpu port — the path that lets EEVEE-Next run in the browser
- * (compute shaders + storage buffers, which WebGL2 lacks). WebGPU primitives
- * (compute, render-to-texture, no JSPI) were verified standalone before this
- * scaffold; see the smoke/wgpu_*.c probes and the webgpu-verified memory.
+ * WebGPU backend for Blender's original draw and render engines. GPU jobs run
+ * on the worker that owns the JS device handles. JSPI yields that worker during
+ * readback while Blender's CPU tasks continue using the pthread pool.
  *
  */
 
 #pragma once
+#include "native/ghost/GHOST_WebJobs.hh"
+#include <emscripten.h>
 
 #include <cstdio>
 
@@ -147,6 +147,19 @@ class WebGPUBackend : public GPUBackend {
     GCaps.max_uniform_buffer_size = 65536;
     GCaps.max_storage_buffer_size = size_t(1) << 27; /* 128 MB */
     GCaps.storage_buffer_alignment = 256;
+    auto device_limit = [](const char *name, double fallback) {
+      return EM_ASM_DOUBLE({
+        return Module.preinitializedWebGPUDevice?.limits[UTF8ToString($0)] || $1;
+      }, name, fallback);
+    };
+    GCaps.max_texture_size = int(device_limit("maxTextureDimension2D", GCaps.max_texture_size));
+    GCaps.max_texture_3d_size = int(device_limit("maxTextureDimension3D", GCaps.max_texture_3d_size));
+    GCaps.max_texture_layers = int(device_limit("maxTextureArrayLayers", GCaps.max_texture_layers));
+    GCaps.max_work_group_size[0] = int(device_limit("maxComputeWorkgroupSizeX", 256));
+    GCaps.max_work_group_size[1] = int(device_limit("maxComputeWorkgroupSizeY", 256));
+    GCaps.max_work_group_size[2] = int(device_limit("maxComputeWorkgroupSizeZ", 64));
+    GCaps.max_compute_shader_storage_blocks = int(device_limit("maxStorageBuffersPerShaderStage", 8));
+    GCaps.max_storage_buffer_size = size_t(device_limit("maxStorageBufferBindingSize", 1 << 27));
     GCaps.max_parallel_compilations = 0; /* synchronous main-thread compilation */
     GCaps.mem_stats_support = false;
     GCaps.geometry_shader_support = false;
@@ -675,6 +688,7 @@ class WebGPUBackend : public GPUBackend {
      * giant command buffer. */
     if (WebGPUContext *ctx = WebGPUContext::get()) {
       ctx->submit();
+      if (GHOST_web_gpu_job_active()) emscripten_sleep(0);
     }
   }
 

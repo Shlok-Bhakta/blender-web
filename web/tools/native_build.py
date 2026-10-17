@@ -93,6 +93,43 @@ def check_shader_processor(base, source):
     print(json.dumps(report), flush=True)
 
 
+def build_ui_fallback(base, jobs):
+    """Relink the same objects without stack switching for browsers lacking JSPI."""
+    binary = base / "editor/bin"
+    saved = base / "render-binary"
+    saved.mkdir(exist_ok=True)
+    files = [path for path in binary.glob("blender.*") if path.suffix in (".js", ".wasm", ".data")]
+    for path in files:
+        shutil.copy2(path, saved / path.name)
+    subprocess.run(["cmake", "-S", str(base / "source"), "-B", str(base / "editor"),
+                    "-DBLENDER_WEB_JSPI=OFF"], check=True)
+    try:
+        subprocess.run(["cmake", "--build", str(base / "editor"), "--parallel", str(jobs),
+                        "--target", "blender"], check=True)
+        if (binary / "blender.data").read_bytes() != (saved / "blender.data").read_bytes():
+            raise RuntimeError("UI and render variants must share identical preload data")
+        for path in files:
+            if path.suffix != ".data":
+                shutil.copy2(path, binary / path.name.replace("blender.", "blender-ui.", 1))
+    finally:
+        subprocess.run(["cmake", "-S", str(base / "source"), "-B", str(base / "editor"),
+                        "-DBLENDER_WEB_JSPI=ON"], check=True)
+        for path in files:
+            shutil.copy2(saved / path.name, path)
+
+
+def check_switch_lowering(base):
+    generator = base / "shader-switch-fixture"
+    generated = base / "shader-switch-generated.cc"
+    check = base / "shader-switch-check"
+    subprocess.run(["g++", "-std=c++20", "-O2", str(ROOT / "web/native/tests/shader_switch.cc"), "-o", str(generator)], check=True)
+    generated.write_text(subprocess.check_output([str(generator)], text=True))
+    subprocess.run(["g++", "-std=c++20", "-O2", str(generated), "-o", str(check)], check=True)
+    result = subprocess.check_output([str(check)], text=True)
+    (base / "shader-switch-check.json").write_text(result)
+    print(result, end="", flush=True)
+
+
 def check_shader_translation(base, prefix):
     dawn = base / "gpu-deps/src/dawn"
     libraries = base / "gpu-deps/build"
@@ -151,7 +188,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -207,9 +244,10 @@ def main():
         if args.check_deps:
             check_python(base, prefix)
             check_shader_translation(base, prefix)
+            check_switch_lowering(base)
     if args.check_deps:
         check_dependencies(source, base, prefix, args.jobs)
-    subprocess.run(["emcmake", "cmake", f"-DBLENDER_WEB_APPLICATION={'ON' if args.app else 'OFF'}", "-G", "Unix Makefiles", "-S", str(source), "-B", str(base / "editor"),
+    subprocess.run(["emcmake", "cmake", f"-DBLENDER_WEB_APPLICATION={'ON' if args.app else 'OFF'}", "-DBLENDER_WEB_JSPI=ON", "-G", "Unix Makefiles", "-S", str(source), "-B", str(base / "editor"),
                     f"-DCMAKE_TOOLCHAIN_FILE={ROOT / 'web/native/toolchain.cmake'}",
                     f"-DCMAKE_PREFIX_PATH={prefix}", f"-DCMAKE_FIND_ROOT_PATH={prefix}",
                     "-C", str(source / "intern/ghost/web/native/config.cmake"),
@@ -220,6 +258,7 @@ def main():
         if args.targets or args.app:
             subprocess.run([*command, *(args.targets or ["blender"])], check=True)
             if args.app:
+                build_ui_fallback(base, args.jobs)
                 check_expressions(base, source, prefix)
                 check_shader_processor(base, source)
                 check_image_cache(base, prefix)
@@ -249,7 +288,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 

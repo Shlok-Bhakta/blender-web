@@ -18,12 +18,18 @@
   if (!navigator.gpu) throw new Error('This browser does not provide WebGPU');
   const manifest = await (await fetch('manifest.json')).json();
   const assetBase = new URL(manifest.assetBase, location.href);
+  const canSuspend = typeof WebAssembly.promising === 'function' && typeof WebAssembly.Suspending === 'function';
+  const uiOnly = !canSuspend && manifest.uiFallback;
+  if (!canSuspend && !uiOnly) throw new Error('This build requires current desktop Chrome');
+  const executable = uiOnly ? 'blender-ui.js' : 'blender.js';
+  document.documentElement.dataset.blenderVariant = uiOnly ? 'ui' : 'render';
   const canvas = document.getElementById('canvas');
   canvas.width = innerWidth;
   canvas.height = innerHeight;
   canvas.addEventListener('contextmenu', event => event.preventDefault());
   window.Module = {
     canvas,
+    mainScriptUrlOrBlob: new URL(executable, assetBase).href,
     arguments: ['--factory-startup', '--disable-autoexec', '--python-expr',
       'import bpy; bpy.context.preferences.view.show_splash = False'],
     print: text => console.log(text),
@@ -37,10 +43,10 @@
     },
     setStatus: text => { if (status.isConnected) status.textContent = text || 'Starting Blender…'; },
     onAbort: reason => { status.textContent = `Blender stopped: ${reason}`; },
-    locateFile: path => new URL(path, assetBase).href,
+    locateFile: path => new URL(uiOnly && path === 'blender.wasm' ? 'blender-ui.wasm' : path, assetBase).href,
   };
   const script = document.createElement('script');
-  script.src = new URL('blender.js', assetBase).href;
+  script.src = new URL(executable, assetBase).href;
   script.onerror = () => { status.textContent = 'Blender download failed. Reload to retry.'; };
   document.body.append(script);
 })().catch(error => {

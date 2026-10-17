@@ -24,6 +24,9 @@ namespace blender::gpu {
 class WebGPUTexture : public Texture {
  private:
   WGPUTexture texture_ = nullptr;
+  WGPUBuffer atomic_buffer_ = nullptr;
+  bool atomic_dirty_ = false;
+  uint32_t atomic_pitch_ = 0;
   WGPUTextureView view_ = nullptr;
   WGPUTextureFormat wgpu_format_ = WGPUTextureFormat_RGBA8Unorm;
   /* Single-layer/mip views for render attachments (key: layer<<8 | mip) and the
@@ -47,6 +50,8 @@ class WebGPUTexture : public Texture {
   long long alloc_bytes_ = 0;
 
  public:
+  WGPUBuffer atomic_buffer();
+  void resolve_atomics();
   WebGPUTexture(const char *name);
   ~WebGPUTexture() override;
 

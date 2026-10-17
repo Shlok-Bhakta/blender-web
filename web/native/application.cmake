@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
+option(BLENDER_WEB_JSPI "Enable GPU render waits using JavaScript Promise Integration" ON)
 set(BLENDER_WEB_LINK_OPTIMIZATION "3" CACHE STRING "Final Wasm optimization level")
 function(blender_web_configure_application)
   if(NOT TARGET blender)
@@ -18,6 +19,10 @@ function(blender_web_configure_application)
   set_property(TARGET blender APPEND PROPERTY LINK_DEPENDS
     "${CMAKE_BINARY_DIR}/../assets.sha256"
     "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shader-cache.js")
+  if(BLENDER_WEB_JSPI)
+    target_link_options(blender PRIVATE -sJSPI=1
+      "-sJSPI_EXPORTS=['main','blender_web_run_gpu_jobs']")
+  endif()
   target_link_options(blender PRIVATE
     --use-port=emdawnwebgpu -sUSE_BZIP2=1
     "-O${BLENDER_WEB_LINK_OPTIMIZATION}"

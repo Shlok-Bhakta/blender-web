@@ -42,6 +42,7 @@ def collect(base, root):
     destination.mkdir(exist_ok=True)
     shell = root / 'web/native/site'
     artifacts = [base / 'editor/bin' / f'blender.{suffix}' for suffix in ['js', 'wasm', 'data', 'worker.js']]
+    artifacts += [base / 'editor/bin' / f'blender-ui.{suffix}' for suffix in ['js', 'wasm', 'worker.js']]
     artifacts = [path for path in artifacts if path.exists()]
     for required in ['blender.js', 'blender.wasm', 'blender.data']:
         if required not in [path.name for path in artifacts]:
@@ -53,6 +54,11 @@ def collect(base, root):
     version = version_hash.hexdigest()[:20]
     bundle = destination / 'assets' / version
     bundle.mkdir(parents=True, exist_ok=True)
+    # Publish one build, even after repeated local render iterations. Previously
+    # fetched versions remain available in each browser's versioned cache.
+    for previous in bundle.parent.iterdir():
+        if previous.is_dir() and previous != bundle:
+            shutil.rmtree(previous)
     files = []
     for path in artifacts:
         output = bundle / path.name
@@ -86,5 +92,5 @@ def collect(base, root):
     (destination / 'manifest.json').write_text(json.dumps({'version': version,
         'kind': 'native-blender', 'blenderVersion': pins['blenderVersion'],
         'blenderRevision': pins['blenderRevision'], 'emscriptenVersion': pins['emscriptenVersion'],
-        'assetBase': f'assets/{version}/', 'files': files}, indent=2)+'\n')
+        'assetBase': f'assets/{version}/', 'uiFallback': (bundle / 'blender-ui.js').exists(), 'files': files}, indent=2)+'\n')
     return destination

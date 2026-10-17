@@ -94,3 +94,16 @@
      return strtod_l(nptr, endptr, c_loc);
  #elif defined(_WIN32)
      // Windows has _strtod_l
+--- a/src/libutil/ustring.cpp
++++ b/src/libutil/ustring.cpp
+@@ -404,7 +404,9 @@
+     OIIO_DASSERT(str.c_str() == c_str() && str.size() == length);
+     return;
+ 
+-#elif defined(_LIBCPP_VERSION) && !defined(__aarch64__)
++#elif defined(_LIBCPP_VERSION) && !defined(__aarch64__) && !defined(__EMSCRIPTEN__)
++    // Wasm32's current libc++ uses a different long-string layout. Use the
++    // ordinary string assignment below instead of fabricating private fields.
+     // FIXME -- we seem to do the wrong thing with libcpp on Mac M1. Disable
+     // when on aarch64 for now. Come back and fix then when I have easier
+     // access to an M1 Mac.

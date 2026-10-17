@@ -1,0 +1,84 @@
+diff --git a/source/blender/editors/render/render_internal.cc b/source/blender/editors/render/render_internal.cc
+index a37af352448..671f61dcc3c 100644
+--- a/source/blender/editors/render/render_internal.cc
++++ b/source/blender/editors/render/render_internal.cc
+@@ -8,6 +8,9 @@
+ 
+ #include <cstddef>
+ #include <cstring>
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebRenderCapabilities.hh"
++#endif
+ 
+ #include "MEM_guardedalloc.h"
+ 
+@@ -235,6 +238,10 @@ static void get_render_operator_frame_range(wmOperator *render_operator,
+ /* executes blocking render */
+ static wmOperatorStatus screen_render_exec(bContext *C, wmOperator *op)
+ {
++#ifdef WITH_GHOST_WEB
++  if (!GHOST_web_render_supported(CTX_data_scene(C), op->reports)) return OPERATOR_CANCELLED;
++#endif
++
+   ViewLayer *single_layer = nullptr;
+   Render *re;
+   Image *ima;
+@@ -916,6 +923,10 @@ static void clean_viewport_memory(Main *bmain, Scene *scene)
+ /* using context, starts job */
+ static wmOperatorStatus screen_render_invoke(bContext *C, wmOperator *op, const wmEvent *event)
+ {
++#ifdef WITH_GHOST_WEB
++  if (!GHOST_web_render_supported(CTX_data_scene(C), op->reports)) return OPERATOR_CANCELLED;
++#endif
++
+   /* new render clears all callbacks */
+   Main *bmain = CTX_data_main(C);
+   ViewLayer *single_layer = nullptr;
+diff --git a/source/blender/editors/render/render_view.cc b/source/blender/editors/render/render_view.cc
+index 83d0e37932e..4599738b9bf 100644
+--- a/source/blender/editors/render/render_view.cc
++++ b/source/blender/editors/render/render_view.cc
+@@ -33,6 +33,9 @@
+ #include "wm_window.hh"
+ 
+ #include "render_intern.hh"
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebRenderDisplay.hh"
++#endif
+ 
+ namespace blender {
+ 
+@@ -131,6 +134,9 @@ static ScrArea *find_area_image_empty(bContext *C)
+ 
+ ScrArea *render_view_open(bContext *C, int mx, int my, ReportList *reports)
+ {
++#ifdef WITH_GHOST_WEB
++  GHOST_WebRenderDisplay web_display(U.render_display_type);
++#endif
+   Main *bmain = CTX_data_main(C);
+   Scene *scene = CTX_data_scene(C);
+   ScrArea *area = nullptr;
+diff --git a/source/blender/windowmanager/intern/wm_jobs.cc b/source/blender/windowmanager/intern/wm_jobs.cc
+index 8d6cdb03031..34d813725cb 100644
+--- a/source/blender/windowmanager/intern/wm_jobs.cc
++++ b/source/blender/windowmanager/intern/wm_jobs.cc
+@@ -9,6 +9,9 @@
+  */
+ 
+ #include <cstring>
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebJobs.hh"
++#endif
+ 
+ #include "DNA_windowmanager_types.h"
+ 
+@@ -529,6 +532,9 @@ void WM_jobs_start(wmWindowManager *wm, wmJob *wm_job)
+         // printf("job started: %s\n", wm_job->name);
+ 
+         BLI_threadpool_init(&wm_job->threads, do_job_thread, 1);
++#ifdef WITH_GHOST_WEB
++        if (!GHOST_web_schedule_gpu_job(wm_job->job_type == WM_JOB_TYPE_RENDER, do_job_thread, wm_job, &wm_job->ready))
++#endif
+         BLI_threadpool_insert(&wm_job->threads, wm_job);
+       }
+ 

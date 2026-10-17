@@ -75,3 +75,25 @@ evidence files include screenshots and `acceptance.json`. This establishes the
 startup path; it does not establish complete editor or renderer compatibility.
 Remote asset downloads requiring subprocesses, extra windows, and Safari device
 validation remain incomplete.
+
+
+The [first Eevee render and recording](../docs/eevee-default-scene.md) use the
+unchanged factory cube scene at 1920×1080 and 64 samples. The render variant uses
+Emscripten JSPI for GPU readback waits. The build also links a UI variant without
+JSPI, and the loader selects it when stack switching is unavailable. Rendering
+on that variant reports an error through Blender. Its existence does not establish
+Safari compatibility.
+
+To repeat browser checks against the server above:
+
+```sh
+node web/tests/native.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
+node web/tests/render.cjs
+```
+
+The render check needs a hardware WebGPU adapter with the capabilities described
+in the render document. The UI checks use Chromium's software WebGPU adapter.
+The render check records a browser video, saves the original Render Result as a
+PNG, compares scene settings before and after, and fails on WebGPU validation or
+shader translation errors. Outputs are in `build/native/render-evidence`.
