@@ -284,8 +284,9 @@ class WebGPUBackend : public GPUBackend {
       wgpuBindGroupRelease(bg);
     }
     wgpuBindGroupLayoutRelease(bgl);
-    /* Isolate this dispatch in its own command buffer (see flush_encoder). */
-    ctx->flush_encoder();
+    /* Pass boundaries provide compute ordering inside the shared encoder.
+     * Submit at sample boundaries and before in-place queue uploads/readback. */
+    if (getenv("WGPU_SUBMIT_PER_DISPATCH")) ctx->flush_encoder();
     debug_sum_ssbos(ctx, sh);
   }
   /* DEBUG: ENV.WGPU_SUM_SHADER=<substr> — after each matching dispatch, copy
@@ -633,7 +634,7 @@ class WebGPUBackend : public GPUBackend {
       wgpuBindGroupRelease(bg);
     }
     wgpuBindGroupLayoutRelease(bgl);
-    ctx->flush_encoder();
+    if (getenv("WGPU_SUBMIT_PER_DISPATCH")) ctx->flush_encoder();
     debug_sum_ssbos(ctx, sh);
   }
 

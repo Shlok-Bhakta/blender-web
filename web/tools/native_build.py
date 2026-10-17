@@ -130,6 +130,21 @@ def check_switch_lowering(base):
     print(result, end="", flush=True)
 
 
+def check_shader_adaptation(base):
+    source = ROOT / "web/native/tests/shader_adaptation.cc"
+    host = base / "shader-adaptation-host"
+    wasm = base / "shader-adaptation.js"
+    subprocess.run(["g++", "-std=c++20", "-O2", str(source), "-o", str(host)], check=True)
+    subprocess.run(["em++", "-std=c++20", "-O2", str(source), "-sENVIRONMENT=node",
+                    "-sEXIT_RUNTIME=1", "-o", str(wasm)], check=True)
+    expected = subprocess.check_output([str(host)], text=True, timeout=60)
+    actual = subprocess.check_output(["node", str(wasm)], text=True, timeout=60)
+    if expected != actual:
+        raise RuntimeError("Shader adaptation differs between host and Wasm")
+    (base / "shader-adaptation-check.json").write_text(actual)
+    print(actual, end="", flush=True)
+
+
 def check_shader_translation(base, prefix):
     dawn = base / "gpu-deps/src/dawn"
     libraries = base / "gpu-deps/build"
@@ -245,6 +260,7 @@ def main():
             check_python(base, prefix)
             check_shader_translation(base, prefix)
             check_switch_lowering(base)
+            check_shader_adaptation(base)
     if args.check_deps:
         check_dependencies(source, base, prefix, args.jobs)
     subprocess.run(["emcmake", "cmake", f"-DBLENDER_WEB_APPLICATION={'ON' if args.app else 'OFF'}", "-DBLENDER_WEB_JSPI=ON", "-G", "Unix Makefiles", "-S", str(source), "-B", str(base / "editor"),

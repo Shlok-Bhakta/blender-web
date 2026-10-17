@@ -1,12 +1,18 @@
 {
   "browserVersion": "145.0.7632.6",
-  "bundleVersion": "4041f5f0a819526a52d1",
+  "bundleVersion": "196271829ccba0d61f46",
   "engine": "BLENDER_EEVEE",
   "settingsUnchanged": true,
+  "referencePixelsEqual": true,
   "width": 1920,
   "height": 1080,
   "samples": 64,
-  "renderSeconds": 29.06,
+  "renderSeconds": 11.597,
+  "renderRuns": [
+    11.597,
+    3.141,
+    3.842
+  ],
   "adapter": {
     "vendor": "amd",
     "architecture": "gcn-5",
@@ -15,8 +21,8 @@
     "features": [
       "depth32float-stencil8",
       "rg11b10ufloat-renderable",
-      "bgra8unorm-storage",
       "texture-formats-tier1",
+      "bgra8unorm-storage",
       "chromium-experimental-multi-draw-indirect",
       "texture-compression-bc",
       "dual-source-blending",
@@ -29,9 +35,9 @@
       "depth-clip-control",
       "texture-compression-bc-sliced-3d",
       "timestamp-query",
+      "clip-distances",
       "shader-f16",
       "texture-formats-tier2",
-      "clip-distances",
       "primitive-index",
       "texture-component-swizzle",
       "subgroups"
@@ -43,8 +49,8 @@
   "foregroundPixels": 244885,
   "opaquePixels": 2073600,
   "browserErrors": 0,
-  "clipStart": 31.225,
-  "clipEnd": 71.403,
+  "clipStart": 20.707,
+  "clipEnd": 56.374,
   "defaults": {
     "engine": "BLENDER_EEVEE",
     "width": 1920,

@@ -34,8 +34,9 @@ canvas and loading status; the editors are drawn by Blender itself.
 
 The initial application uses Blender's lite preset to omit optional systems such
 as Cycles. Native C++ uses `-O3`, Wasm SIMD, pthreads, and Wasm exceptions.
-oneTBB handles Blender's parallel tasks. The current runtime starts a pool of 12
-workers and permits additional pthreads. Shared memory starts at 512 MiB and can
+oneTBB handles Blender's parallel tasks. The runtime sizes its initial pthread pool from the browser's reported logical
+CPU count, plus two workers for platform work. It prestarts between four and 64
+workers and permits additional pthreads when needed. Shared memory starts at 512 MiB and can
 grow to 4 GiB, subject to browser and device limits. This first backend maps one
 native window to one canvas; additional browser windows remain follow-up work.
 Desktop Chromium is the initial validation target. iOS Safari needs device testing.
@@ -97,3 +98,19 @@ in the render document. The UI checks use Chromium's software WebGPU adapter.
 The render check records a browser video, saves the original Render Result as a
 PNG, compares scene settings before and after, and fails on WebGPU validation or
 shader translation errors. Outputs are in `build/native/render-evidence`.
+
+To profile a cold render followed by repeat renders in the same session:
+
+```sh
+WEB_RENDER_PROFILE=1 WEB_RENDER_REPEATS=3 \
+  WEB_RENDER_OUTPUT=build/native/render-profile node web/tests/render.cjs
+python3 web/tools/summarize_render_profile.py build/native/render-profile
+```
+
+Each run writes a Chromium CPU/timeline trace, WebGPU API counts and CPU call
+costs, asynchronous map waits, and Linux GPU utilization samples when available.
+Open `browser-trace-0.json` in Chromium DevTools' Performance panel. API call times
+measure CPU overhead; they do not measure GPU execution time. Detailed tracing
+adds overhead, so compare normal acceptance runs separately for user timings.
+The first render uses an empty IndexedDB shader cache in a fresh browser context.
+Repeat renders reuse translations and pipelines within that session.

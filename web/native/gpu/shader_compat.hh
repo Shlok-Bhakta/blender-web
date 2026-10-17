@@ -7,6 +7,31 @@
 #include <utility>
 #include "shader_switch.hh"
 
+/* libc++'s unanchored regex search tries the expression at every source byte.
+ * Generated shaders can be hundreds of KiB. Find the literal prefix first and
+ * only run the expression at candidates, preserving replacement formatting. */
+inline std::string webgpu_replace_prefixed(const std::string &source,
+                                           const std::string &prefix,
+                                           const std::regex &pattern,
+                                           const char *replacement)
+{
+  std::string result;
+  size_t copied = 0, cursor = 0;
+  while ((cursor = source.find(prefix, cursor)) != std::string::npos) {
+    std::match_results<std::string::const_iterator> match;
+    if (std::regex_search(source.begin() + cursor, source.end(), match, pattern,
+                          std::regex_constants::match_continuous)) {
+      result.append(source, copied, cursor - copied);
+      result += match.format(replacement);
+      cursor += match.length();
+      copied = cursor;
+    }
+    else cursor += prefix.size();
+  }
+  result.append(source, copied, source.size() - copied);
+  return result;
+}
+
 /* WGSL storage atomics cannot also be read or copied as ordinary integers.
  * Adapt only the WebGPU shader input; retain Blender's original shader files. */
 inline bool webgpu_adapt_draw_command(const std::string &source,
@@ -22,18 +47,32 @@ inline bool webgpu_adapt_draw_command(const std::string &source,
     }
   };
   /* GLSL preprocessor expressions do not support C's conditional operator. */
-  adapted = std::regex_replace(adapted,
+  adapted = webgpu_replace_prefixed(adapted, "defined(SRT_CONSTANT_use_clipping)",
       std::regex(R"(defined\(SRT_CONSTANT_use_clipping\)\s*\?\s*\(SRT_CONSTANT_use_clipping == 1\)\s*:\s*(?:\\\s*)?defined\(USE_WORLD_CLIP_PLANES\))"),
       "((defined(SRT_CONSTANT_use_clipping) && (SRT_CONSTANT_use_clipping == 1)) || "
       "(!defined(SRT_CONSTANT_use_clipping) && defined(USE_WORLD_CLIP_PLANES)))");
   /* WGSL forbids NaN literals. These vertices are deliberately discarded, so
    * place them outside the homogeneous clip volume instead. */
   replace("float4(NAN_FLT)", "float4(2.0, 2.0, 2.0, 1.0)");
-  adapted = std::regex_replace(adapted,
+  adapted = webgpu_replace_prefixed(adapted, "#",
       std::regex(R"((#[ \t]*define[ \t]+ATTR_FALLTHROUGH)[^\n]*)"), "$1 web_fallthrough_marker");
-  adapted = std::regex_replace(adapted,
-      std::regex(R"((^|\n)([ \t]*#[ \t]*define[ \t]+GBUFFER_LAYER_MAX\b))"),
-      "$1#undef GBUFFER_LAYER_MAX\n$2");
+  if (adapted.find("GBUFFER_LAYER_MAX") != std::string::npos) {
+    size_t line = 0;
+    const std::regex directive(R"([ \t]*#[ \t]*define[ \t]+GBUFFER_LAYER_MAX\b)");
+    while (line < adapted.size()) {
+      size_t first = adapted.find_first_not_of(" \t", line);
+      if (first != std::string::npos && adapted[first] == '#' &&
+          std::regex_search(adapted.cbegin() + line, adapted.cend(), directive,
+                            std::regex_constants::match_continuous)) {
+        const std::string undef = "#undef GBUFFER_LAYER_MAX\n";
+        adapted.insert(line, undef);
+        line += undef.size();
+      }
+      line = adapted.find('\n', line);
+      if (line == std::string::npos) break;
+      line++;
+    }
+  }
   if (raw) return true;
   for (const char *texture : {"object_id_tx", "object_id_buffer", "outline_id_tx"}) {
     replace(std::string("texture(") + texture + ",", std::string("wgpu_uint_texture(") + texture + ",");
@@ -43,8 +82,11 @@ inline bool webgpu_adapt_draw_command(const std::string &source,
   // engine or shader name. Sampling uses the same buffer, avoiding atlas copies.
   std::regex atomic_resource(R"(buffer\s+_web_atomic_(\w+)\s*\{)");
   std::vector<std::string> atomic_names;
-  for (auto it = std::sregex_iterator(adapted.begin(), adapted.end(), atomic_resource);
-       it != std::sregex_iterator(); ++it) atomic_names.push_back((*it)[1]);
+  for (size_t cursor = 0; (cursor = adapted.find("buffer", cursor)) != std::string::npos; cursor += 6) {
+    std::match_results<std::string::const_iterator> match;
+    if (std::regex_search(adapted.cbegin() + cursor, adapted.cend(), match, atomic_resource,
+                          std::regex_constants::match_continuous)) atomic_names.push_back(match[1]);
+  }
   for (const auto &resource : atomic_names) {
     if (resource.rfind("sample_", 0) == 0) {
       const std::string name = resource.substr(7);
@@ -58,7 +100,7 @@ inline bool webgpu_adapt_draw_command(const std::string &source,
     }
   }
   if (vertex) {
-    adapted = std::regex_replace(adapted,
+    adapted = webgpu_replace_prefixed(adapted, "layout(",
         std::regex(R"((layout\([^)]*\)\s*)(?:(?:readonly|writeonly|restrict)\s+)*buffer\s)"),
         "$1readonly buffer ");
   }

@@ -5,7 +5,7 @@ const path = require('node:path');
 const {chromium} = require('playwright');
 const {PNG} = require('pngjs');
 const {ready, consoleCommand, messages} = require('./native.cjs');
-const output = path.resolve(__dirname, '../../build/native/render-evidence');
+const output = path.resolve(process.env.WEB_RENDER_OUTPUT || path.join(__dirname, '../../build/native/render-evidence'));
 const snapshot = `dict(engine=s.render.engine,width=s.render.resolution_x,height=s.render.resolution_y,percent=s.render.resolution_percentage,samples=s.eevee.taa_render_samples,frame=s.frame_current,camera=s.camera.name,display=bpy.context.preferences.view.render_display_type,view_transform=s.view_settings.view_transform,look=s.view_settings.look,exposure=s.view_settings.exposure,gamma=s.view_settings.gamma,objects=[dict(name=o.name,type=o.type,location=list(o.location),rotation=list(o.rotation_euler),scale=list(o.scale)) for o in sorted(s.objects,key=lambda o:o.name)],light_energy=bpy.data.objects['Light'].data.energy,camera_lens=s.camera.data.lens,eevee={p.identifier:getattr(s.eevee,p.identifier) for p in s.eevee.bl_rna.properties if p.type in ('BOOLEAN','INT','FLOAT','STRING','ENUM') and not p.is_readonly and not getattr(p,'is_array',False)})`;
 const flags = process.env.WEB_RENDER_SOFTWARE === '1' ?
  ['--enable-unsafe-webgpu','--enable-unsafe-swiftshader','--use-angle=swiftshader','--enable-features=Vulkan','--use-vulkan=swiftshader'] :
@@ -17,6 +17,7 @@ async function main() {
   const context = await browser.newContext({viewport:{width:1280,height:800},recordVideo:{dir:output,size:{width:1280,height:800}}});
   const created = Date.now();
   const page = await context.newPage();
+  const profile = process.env.WEB_RENDER_PROFILE === '1' ? await require('./render-profile.cjs').profileRender(browser, page, output) : null;
   const fatal = [];
   page.on('console', message => {
     const text=message.text(); messages.push(text);
@@ -37,21 +38,30 @@ async function main() {
     assert.deepEqual(before.objects.map(x=>x.name),['Camera','Cube','Light']);
     await page.screenshot({path:path.join(output,'before-render.png')});
     const clipStart=(Date.now()-created)/1000;
-    await page.waitForTimeout(2000);
-    // Use Blender's native Render menu so the recording shows the action.
-    await page.mouse.click(118,13);
-    await page.waitForTimeout(700);
-    await page.screenshot({path:path.join(output,'render-menu.png')});
-    const started=Date.now();
-    await page.mouse.click(160,41);
-    const deadline=Date.now()+600000;
-    while(!messages.some(x=>x.includes('WEB_GPU_JOB complete'))) {
-      if(fatal.length) throw new Error(fatal.join('\n'));
-      if(Date.now()>deadline) throw new Error('Default Eevee render did not complete');
-      await page.waitForTimeout(500);
+    const renderRuns=[];
+    const repeats=Number(process.env.WEB_RENDER_REPEATS || 1);
+    assert(Number.isInteger(repeats) && repeats >= 1 && repeats <= 10);
+    for (let run=0;run<repeats;run++) {
+      await page.waitForTimeout(2000);
+      // Use Blender's native Render menu so the recording shows the action.
+      await page.mouse.click(118,13);
+      await page.waitForTimeout(700);
+      await page.screenshot({path:path.join(output,`render-menu-${run}.png`)});
+      if (profile) await profile.start();
+      const previous=messages.length;
+      const started=Date.now();
+      await page.mouse.click(160,41);
+      const deadline=Date.now()+600000;
+      while(!messages.slice(previous).some(x=>x.includes('WEB_GPU_JOB complete'))) {
+        if(fatal.length) throw new Error(fatal.join('\n'));
+        if(Date.now()>deadline) throw new Error('Default Eevee render did not complete');
+        await page.waitForTimeout(100);
+      }
+      renderRuns.push((Date.now()-started)/1000);
+      assert(messages.slice(previous).some(x=>x.includes('WEB_READBACK 1920x1080 channels=4')&&x.includes('success=1')),'Each render must receive real 1920x1080 pixels');
+      if (profile) await profile.stop(run);
     }
-    const renderSeconds=(Date.now()-started)/1000;
-    assert(messages.some(x=>x.includes('WEB_READBACK 1920x1080 channels=4')&&x.includes('success=1')),'Native RenderResult must receive real pixels');
+    const renderSeconds=renderRuns[0];
     await page.waitForTimeout(2000);
     await page.mouse.move(600,400);
     await page.keyboard.press('Home');
@@ -76,15 +86,29 @@ async function main() {
     }
     assert(opaque>png.width*png.height*.99,'Factory world must remain opaque');
     assert(foreground>30000&&foreground<png.width*png.height*.6,'Expected a visible cube against the factory world');
+    let referencePixelsEqual;
+    if (process.env.WEB_RENDER_REFERENCE) {
+      const reference=PNG.sync.read(fs.readFileSync(process.env.WEB_RENDER_REFERENCE));
+      assert.deepEqual([png.width,png.height],[reference.width,reference.height]);
+      let changed=0, maxDelta=0;
+      for (let i=0;i<png.data.length;i++) {
+        const delta=Math.abs(png.data[i]-reference.data[i]);
+        if (delta) changed++;
+        maxDelta=Math.max(maxDelta,delta);
+      }
+      assert.equal(changed,0,`Rendered channels differ from reference: ${changed}, max delta ${maxDelta}`);
+      referencePixelsEqual=true;
+    }
     assert.deepEqual(fatal,[]);
     const bundleVersion=await page.evaluate(async()=>(await(await fetch('manifest.json')).json()).version);
-    const report={browserVersion:browser.version(),bundleVersion,engine:before.engine,settingsUnchanged:true,width:png.width,height:png.height,samples:before.samples,renderSeconds,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
+    const report={browserVersion:browser.version(),bundleVersion,engine:before.engine,settingsUnchanged:true,referencePixelsEqual,width:png.width,height:png.height,samples:before.samples,renderSeconds,renderRuns,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
   } catch(error) {
     await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});
     throw error;
   } finally {
+    if (profile) await profile.dispose();
     const video=page.video();
     await context.close();
     if(video) fs.writeFileSync(path.join(output,'video-path.txt'),await video.path());

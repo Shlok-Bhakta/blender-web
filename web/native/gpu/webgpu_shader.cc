@@ -592,7 +592,10 @@ static bool glsl_to_wgsl(const std::string &glsl,
   }
   std::string preprocessing_source, adapted;
   webgpu_adapt_draw_command(glsl, name, preprocessing_source, kind == shaderc_vertex_shader, true);
-  shaderc::Compiler compiler;
+  /* Compiler lifetime owns glslang's process/builtin caches. Recreating it for
+   * every stage repeatedly tears down those caches. Keep one per CPU worker;
+   * compilation options and all per-shader results remain local. */
+  static thread_local shaderc::Compiler compiler;
   shaderc::CompileOptions opts;
   opts.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_0);
   auto preprocessed = compiler.PreprocessGlsl(preprocessing_source, kind, name, opts);

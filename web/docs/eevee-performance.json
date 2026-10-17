@@ -1,0 +1,280 @@
+{
+  "measuredAt": "2026-10-17T17:15:45.325175+00:00",
+  "cpu": "AMD Ryzen 5 PRO 3400GE w/ Radeon Vega Graphics",
+  "browserVersion": "145.0.7632.6",
+  "adapter": {
+    "vendor": "amd",
+    "architecture": "gcn-5",
+    "device": "",
+    "description": "",
+    "features": [
+      "depth32float-stencil8",
+      "rg11b10ufloat-renderable",
+      "texture-formats-tier1",
+      "bgra8unorm-storage",
+      "chromium-experimental-multi-draw-indirect",
+      "texture-compression-bc",
+      "dual-source-blending",
+      "core-features-and-limits",
+      "chromium-experimental-timestamp-query-inside-passes",
+      "float32-filterable",
+      "indirect-first-instance",
+      "float32-blendable",
+      "texture-compression-etc2",
+      "depth-clip-control",
+      "texture-compression-bc-sliced-3d",
+      "timestamp-query",
+      "clip-distances",
+      "shader-f16",
+      "texture-formats-tier2",
+      "primitive-index",
+      "texture-component-swizzle",
+      "subgroups"
+    ],
+    "maxComputeInvocationsPerWorkgroup": 1024,
+    "maxStorageTexturesPerShaderStage": 8,
+    "maxStorageBufferBindingSize": 2147483648
+  },
+  "width": 1920,
+  "height": 1080,
+  "samples": 64,
+  "settingsUnchanged": true,
+  "referencePixelsEqual": true,
+  "browserErrors": 0,
+  "method": "Sequential runs on the same host and hardware adapter. Each browser context starts with empty IndexedDB. Video capture is enabled in both. Detailed tracing is disabled for the render timings. Repeat renders use the same session. One cold run per build; not a statistical benchmark.",
+  "baseline": {
+    "bundleVersion": "4041f5f0a819526a52d1",
+    "renderSeconds": [
+      28.248,
+      3.227,
+      3.936
+    ]
+  },
+  "optimized": {
+    "bundleVersion": "196271829ccba0d61f46",
+    "renderSeconds": [
+      11.597,
+      3.141,
+      3.842
+    ]
+  },
+  "coldSpeedup": 2.436,
+  "profilingNote": "Separate traced runs. Sampled CPU time and API call duration are not GPU execution time. GPU utilization uses Linux sysfs samples at 100 ms. Baseline GPU utilization was not sampled.",
+  "baselineProfile": {
+    "sampledRenderCpuMs": 34978.76,
+    "hotspotsCpuMs": {
+      "shaderTranslation": 34720.11,
+      "shaderAdapter": 19791.43,
+      "shadercCompilation": 13245.53,
+      "builtinSymbolSetup": 9481.4
+    },
+    "apiCpuCalls": {
+      "createTexture": {
+        "count": 99,
+        "ms": 2.03
+      },
+      "createCommandEncoder": {
+        "count": 2168,
+        "ms": 11.915
+      },
+      "beginRenderPass": {
+        "count": 924,
+        "ms": 16.72
+      },
+      "createBuffer": {
+        "count": 1330,
+        "ms": 12.475
+      },
+      "writeBuffer": {
+        "count": 3118,
+        "ms": 68.535
+      },
+      "createBindGroup": {
+        "count": 1628,
+        "ms": 36.095
+      },
+      "createRenderPipeline": {
+        "count": 108,
+        "ms": 4.015
+      },
+      "finish": {
+        "count": 2168,
+        "ms": 10.015
+      },
+      "submit": {
+        "count": 2168,
+        "ms": 54.75
+      },
+      "writeTexture": {
+        "count": 35,
+        "ms": 32.85
+      },
+      "beginComputePass": {
+        "count": 1876,
+        "ms": 8.79
+      },
+      "createShaderModule": {
+        "count": 65,
+        "ms": 7.675
+      },
+      "createComputePipeline": {
+        "count": 31,
+        "ms": 0.495
+      },
+      "mapAsync": {
+        "count": 65,
+        "ms": 2.035
+      }
+    },
+    "asyncWaits": {
+      "mapAsync": {
+        "count": 65,
+        "ms": 2661.77
+      }
+    }
+  },
+  "optimizedColdProfile": {
+    "sampledRenderCpuMs": 6315.24,
+    "hotspotsCpuMs": {
+      "shaderTranslation": 6071.69,
+      "shaderAdapter": 673.56,
+      "shadercCompilation": 3823.04,
+      "builtinSymbolSetup": 0.0
+    },
+    "apiCpuCalls": {
+      "createTexture": {
+        "count": 99,
+        "ms": 1.805
+      },
+      "createCommandEncoder": {
+        "count": 362,
+        "ms": 4.92
+      },
+      "beginRenderPass": {
+        "count": 924,
+        "ms": 15.635
+      },
+      "createBuffer": {
+        "count": 2441,
+        "ms": 20.59
+      },
+      "writeBuffer": {
+        "count": 3118,
+        "ms": 57.845
+      },
+      "createBindGroup": {
+        "count": 1876,
+        "ms": 37.055
+      },
+      "createRenderPipeline": {
+        "count": 108,
+        "ms": 4.07
+      },
+      "finish": {
+        "count": 362,
+        "ms": 2.32
+      },
+      "submit": {
+        "count": 362,
+        "ms": 19.28
+      },
+      "writeTexture": {
+        "count": 35,
+        "ms": 21.385
+      },
+      "beginComputePass": {
+        "count": 1876,
+        "ms": 10.0
+      },
+      "createShaderModule": {
+        "count": 65,
+        "ms": 7.21
+      },
+      "createComputePipeline": {
+        "count": 31,
+        "ms": 0.61
+      },
+      "mapAsync": {
+        "count": 65,
+        "ms": 2.62
+      }
+    },
+    "asyncWaits": {
+      "mapAsync": {
+        "count": 65,
+        "ms": 3189.17
+      }
+    },
+    "gpuBusyPercent": {
+      "mean": 25.83,
+      "max": 100,
+      "samples": 117
+    }
+  },
+  "optimizedRepeatProfile": {
+    "sampledRenderCpuMs": 170.05,
+    "hotspotsCpuMs": {
+      "shaderTranslation": 0.0,
+      "shaderAdapter": 0.0,
+      "shadercCompilation": 0.0,
+      "builtinSymbolSetup": 0.0
+    },
+    "apiCpuCalls": {
+      "createTexture": {
+        "count": 93,
+        "ms": 1.73
+      },
+      "createCommandEncoder": {
+        "count": 349,
+        "ms": 2.905
+      },
+      "beginRenderPass": {
+        "count": 911,
+        "ms": 16.07
+      },
+      "createBuffer": {
+        "count": 2451,
+        "ms": 23.955
+      },
+      "writeBuffer": {
+        "count": 3098,
+        "ms": 43.37
+      },
+      "createBindGroup": {
+        "count": 1868,
+        "ms": 42.56
+      },
+      "finish": {
+        "count": 349,
+        "ms": 2.245
+      },
+      "submit": {
+        "count": 349,
+        "ms": 16.71
+      },
+      "writeTexture": {
+        "count": 20,
+        "ms": 12.94
+      },
+      "beginComputePass": {
+        "count": 1881,
+        "ms": 9.355
+      },
+      "mapAsync": {
+        "count": 65,
+        "ms": 2.77
+      }
+    },
+    "asyncWaits": {
+      "mapAsync": {
+        "count": 65,
+        "ms": 2622.86
+      }
+    },
+    "gpuBusyPercent": {
+      "mean": 85.74,
+      "max": 100,
+      "samples": 34
+    }
+  }
+}

@@ -8,8 +8,8 @@ normal PNG writer and browser filesystem.
 
 ![Eevee Render Result in Blender's original Image Editor](eevee-default-scene.png)
 
-The recording shows the native Render → Render Image command and the completed
-image. It runs at normal speed. Startup and the Python validation commands are
+The recording shows three native Render → Render Image commands and the completed
+images, including the first render and two repeat renders. It runs at normal speed. Startup and the Python validation commands are
 trimmed from the clip.
 
 The scene uses factory settings, including 1920×1080 at 100%, 64 Eevee samples,
@@ -20,11 +20,53 @@ in that snapshot changes. The one-canvas platform temporarily routes the render
 display into Blender's existing full-screen Image Editor and restores the user's
 window preference immediately afterward.
 
-The optimized build completed this cold run in **29.1 seconds**, including
-first-use shader compilation, in Chromium 145.0.7632.6 on Linux with an AMD GCN 5
-WebGPU adapter. The saved PNG is 1920×1080 and fully opaque, with 244,885
-foreground pixels. The acceptance check recorded zero browser or WebGPU
-validation errors. This is one run on this machine; performance will vary.
+The current build completed a cold render in **11.60 seconds**, including
+first-use shader compilation, in Chromium 145.0.7632.6 on Linux with an
+AMD GCN 5 WebGPU adapter. Repeat renders in that session took
+3.14 and 3.84 seconds. The saved PNG is 1920×1080 and fully opaque,
+with 244,885 foreground pixels. Its decoded pixel channels match the previous
+build's output exactly. The acceptance check recorded zero browser or WebGPU
+validation errors. These are measurements on this machine; performance will vary.
+
+## Render profiling and speed
+
+A same-machine comparison with detailed profiling disabled measured the previous
+build at **28.25 seconds** for a cold render and the current build at
+**11.60 seconds**, a **2.4× speedup**. Repeat renders were GPU-bound and stayed
+near three to four seconds in both builds. These are one cold run and two repeat
+runs per build, with video capture enabled, rather than a statistical benchmark.
+Both contexts started with an empty IndexedDB shader cache.
+
+Separate Chromium traces recorded GPU submissions falling from **2,168 to 362**,
+while preserving all 1,876 compute passes. Sampled render CPU time fell from
+34.98 to 6.32 seconds. Shader adaptation accounted for 19.79 seconds of that CPU
+time before the change and 0.67 seconds afterward. Tracing adds overhead; the
+unprofiled timings above are the user-facing comparison. In the optimized repeat
+render, Linux GPU busy samples averaged **85.74%** and peaked at **100%**.
+The [performance evidence](eevee-performance.json) preserves timings, adapter,
+CPU samples, API counts, asynchronous map waits, and the comparison method.
+
+The browser profile identified repeated full-source regular-expression scans in
+the WebGPU shader adapter as the largest CPU cost. The adapter now locates
+literal prefixes before matching a declaration, and checks preprocessor
+redefinitions by line. It preserves the translated shader input. Regression
+checks compare expected output on both the host and Wasm, including large
+shader sources, atomic buffers, clipping, and adjacent macro definitions.
+
+Shaderc also now keeps one compiler per CPU worker. This preserves glslang's
+built-in symbol cache between stages. The WebGPU backend batches compute passes
+in the current command encoder and submits at sample boundaries, explicit
+flushes, and upload/readback ordering boundaries. WebGPU pass boundaries retain
+compute dependencies. The existing copy-on-write and in-place upload guards
+remain active. `WGPU_SUBMIT_PER_DISPATCH` restores individual compute submissions
+for debugging.
+
+The initial pthread pool scales with the browser's logical CPU count, with two
+extra workers and an eager-start limit of 64. Additional pthreads may still be
+created. Device initialization already requests the high-performance adapter
+and its supported resource limits. The site does not reduce samples or
+resolution to gain speed.
+
 
 ## Shared backend work
 
