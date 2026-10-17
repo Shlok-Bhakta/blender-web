@@ -72,7 +72,7 @@ index 8d6cdb03031..34d813725cb 100644
  
  #include "DNA_windowmanager_types.h"
  
-@@ -529,6 +532,9 @@ void WM_jobs_start(wmWindowManager *wm, wmJob *wm_job)
+@@ -529,5 +532,8 @@ void WM_jobs_start(wmWindowManager *wm, wmJob *wm_job)
          // printf("job started: %s\n", wm_job->name);
  
          BLI_threadpool_init(&wm_job->threads, do_job_thread, 1);
@@ -81,4 +81,3 @@ index 8d6cdb03031..34d813725cb 100644
 +#endif
          BLI_threadpool_insert(&wm_job->threads, wm_job);
        }
- 
