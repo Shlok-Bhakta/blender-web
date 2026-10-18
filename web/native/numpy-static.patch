@@ -2,14 +2,14 @@
 +++ b/meson.build
 @@ -38,7 +38,10 @@
  endif
- 
+
  py = import('python').find_installation(pure: false)
 -py_dep = py.dependency()
 +# The generator runs on the host; every extension uses the target Python ABI.
 +py_dep = declare_dependency(include_directories: include_directories(
 +  run_command('python3', '-c', 'import os; print(os.environ["BLENDER_WEB_PYTHON_INCLUDE"])', check: true).stdout().strip()
 +))
- 
+
  if not cc.has_header('Python.h', dependencies: py_dep)
    error('Cannot compile `Python.h`. Perhaps you need to install python-dev|python-devel')
 --- a/vendored-meson/meson/mesonbuild/modules/python.py
