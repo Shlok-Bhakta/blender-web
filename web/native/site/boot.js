@@ -26,6 +26,26 @@
   const canvas = document.getElementById('canvas');
   canvas.width = innerWidth;
   canvas.height = innerHeight;
+  // GHOST owns the backing-buffer size. Notify its existing resize callback
+  // when layout or display scale changes, including browser zoom and moving
+  // between monitors. Coalesce layout notifications to one per animation frame.
+  let resizeFrame = 0;
+  const notifyResize = () => {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = 0;
+      window.dispatchEvent(new Event('resize'));
+    });
+  };
+  new ResizeObserver(notifyResize).observe(canvas);
+  visualViewport?.addEventListener('resize', notifyResize);
+  const watchScale = () => {
+    matchMedia(`(resolution: ${devicePixelRatio}dppx)`).addEventListener('change', () => {
+      notifyResize();
+      watchScale();
+    }, {once:true});
+  };
+  watchScale();
   canvas.addEventListener('contextmenu', event => event.preventDefault());
   window.Module = {
     canvas,

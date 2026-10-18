@@ -36,6 +36,7 @@ RECIPES = {
     "OPENCOLORIO": ("", ["-DOCIO_BUILD_APPS=OFF", "-DOCIO_BUILD_PYTHON=OFF", "-DOCIO_BUILD_TESTS=OFF", "-DOCIO_BUILD_GPU_TESTS=OFF", "-DOCIO_BUILD_DOCS=OFF", "-DOCIO_USE_SIMD=OFF", "-DOCIO_INSTALL_EXT_PACKAGES=NONE"]),
     "ROBINMAP": ("", ["-DTSL_ROBIN_MAP_BUILD_TESTS=OFF"]),
     "TBB": ("", ["-DTBB_TEST=OFF", "-DTBB_EXAMPLES=OFF", "-DTBB_STRICT=OFF", "-DTBBMALLOC_BUILD=OFF", "-DTBBMALLOC_PROXY_BUILD=OFF", "-DTBB_ENABLE_IPO=OFF", "-DTBB_DISABLE_HWLOC_AUTOMATIC_SEARCH=ON"]),
+    "OPENSUBDIV": ("", ["-DNO_EXAMPLES=ON", "-DNO_TUTORIALS=ON", "-DNO_REGRESSION=ON", "-DNO_PTEX=ON", "-DNO_DOC=ON", "-DNO_OMP=ON", "-DNO_TBB=OFF", "-DNO_CUDA=ON", "-DNO_OPENCL=ON", "-DNO_CLEW=ON", "-DNO_OPENGL=ON", "-DNO_METAL=ON", "-DNO_DX=ON", "-DNO_TESTS=ON", "-DNO_GLTESTS=ON", "-DNO_GLEW=ON", "-DNO_GLFW=ON"]),
     "TIFF": ("", ["-Dtiff-tools=OFF", "-Dtiff-tests=OFF", "-Dtiff-contrib=OFF", "-Dtiff-docs=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djbig=OFF"]),
     "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0"]),
 }
@@ -43,7 +44,7 @@ RECIPES = {
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
 CXX_PACKAGES = {"FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
-                "OPENCOLORIO", "TBB", "OPENIMAGEIO", "TIFF"}
+                "OPENCOLORIO", "TBB", "OPENSUBDIV", "OPENIMAGEIO", "TIFF"}
 
 
 def run(command, log):
@@ -77,6 +78,16 @@ def download(entry, downloads):
     finally:
         temporary.unlink(missing_ok=True)
     return archive
+
+
+def install_notices(source, prefix, name):
+    # Keep notices alongside the cached prefix. CI may restore installed
+    # libraries without restoring their extracted source trees.
+    destination = prefix / 'share/blender-web/licenses' / name.lower()
+    destination.mkdir(parents=True, exist_ok=True)
+    for notice in source.iterdir():
+        if notice.is_file() and notice.name.upper().startswith(('LICENSE', 'COPYING', 'COPYRIGHT', 'NOTICE')):
+            shutil.copy2(notice, destination / notice.name)
 
 
 def build(args):
@@ -114,10 +125,10 @@ def build(args):
         patch = ROOT / "web/native/patches" / f"{name.lower()}.patch"
         if patch.exists():
             signature["patch"] = hashlib.sha256(patch.read_bytes()).hexdigest()
-        if stamp.exists() and json.loads(stamp.read_text()) == json.loads(json.dumps(signature)):
+        cached = stamp.exists() and json.loads(stamp.read_text()) == json.loads(json.dumps(signature))
+        if cached and (prefix / 'share/blender-web/licenses' / name.lower()).is_dir():
             print(f"{name}: cached", flush=True)
             continue
-        print(f"{name}: compiling {lock[name]['VERSION']} for Wasm/pthreads", flush=True)
         source = directory / "source"
         source_record = directory / "source.json"
         if source_record.exists() and json.loads(source_record.read_text()) != lock[name]:
@@ -134,6 +145,11 @@ def build(args):
             roots[0].rename(source)
             extracted.rmdir()
         source_record.write_text(json.dumps(lock[name], indent=2) + "\n")
+        install_notices(source, prefix, name)
+        if cached:
+            print(f"{name}: cached", flush=True)
+            continue
+        print(f"{name}: compiling {lock[name]['VERSION']} for Wasm/pthreads", flush=True)
         if patch.exists():
             check = subprocess.run(["patch", "--silent", "--dry-run", "--forward", "-p1", "-i", str(patch)],
                                    cwd=source, capture_output=True)

@@ -9,13 +9,15 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--directory", type=Path, default=Path("build/web/dist"))
+    parser.add_argument("--directory", type=Path, default=Path("build/native/dist"),
+                        help="Static output directory; defaults to the native Blender application")
     parser.add_argument("--port", type=int, default=8080)
     parser.add_argument("--bind", default="127.0.0.1")
     parser.add_argument("--pages-mode", action="store_true")
     args = parser.parse_args()
     if not (args.directory / "manifest.json").is_file():
-        parser.error("Build the site first with python3 web/tools/build.py")
+        parser.error(f"Missing manifest.json in {args.directory}. Build the native application with "
+                     "python3 web/tools/native_build.py --app, or select another built site with --directory")
 
     class Handler(SimpleHTTPRequestHandler):
         extensions_map = {**SimpleHTTPRequestHandler.extensions_map, ".wasm": "application/wasm", ".js": "text/javascript"}

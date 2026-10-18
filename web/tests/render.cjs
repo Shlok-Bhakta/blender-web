@@ -14,7 +14,9 @@ async function main() {
   fs.mkdirSync(output,{recursive:true});
   fs.writeFileSync(path.join(output,'browser.log'),'');
   const browser = await chromium.launch({headless:true,args:flags});
-  const context = await browser.newContext({viewport:{width:1280,height:800},recordVideo:{dir:output,size:{width:1280,height:800}}});
+  const deviceScaleFactor=Number(process.env.WEB_RENDER_DEVICE_SCALE || 1);
+  assert(Number.isFinite(deviceScaleFactor) && deviceScaleFactor>0 && deviceScaleFactor<=4);
+  const context = await browser.newContext({viewport:{width:1280,height:800},deviceScaleFactor,recordVideo:{dir:output,size:{width:1280,height:800}}});
   const created = Date.now();
   const page = await context.newPage();
   const profile = process.env.WEB_RENDER_PROFILE === '1' ? await require('./render-profile.cjs').profileRender(browser, page, output) : null;
@@ -39,6 +41,8 @@ async function main() {
     await page.screenshot({path:path.join(output,'before-render.png')});
     const clipStart=(Date.now()-created)/1000;
     const renderRuns=[];
+    const resizeDuringRender=process.env.WEB_RENDER_RESIZE_DURING_RENDER === '1';
+    const renderResizeChecks=[];
     const repeats=Number(process.env.WEB_RENDER_REPEATS || 1);
     assert(Number.isInteger(repeats) && repeats >= 1 && repeats <= 10);
     for (let run=0;run<repeats;run++) {
@@ -52,11 +56,22 @@ async function main() {
       const started=Date.now();
       await page.mouse.click(160,41);
       const deadline=Date.now()+600000;
+      let resized=false;
       while(!messages.slice(previous).some(x=>x.includes('WEB_GPU_JOB complete'))) {
         if(fatal.length) throw new Error(fatal.join('\n'));
         if(Date.now()>deadline) throw new Error('Default Eevee render did not complete');
+        if (resizeDuringRender && !resized && messages.slice(previous).some(x=>x.includes('WEB_GPU_JOB begin'))) {
+          resized=true;
+          for (const size of [[1040,720],[1440,900],[1280,800]]) {
+            const jobActive=!messages.slice(previous).some(x=>x.includes('WEB_GPU_JOB complete'));
+            assert(jobActive,'Resize check must run during the native GPU job');
+            await page.setViewportSize({width:size[0],height:size[1]});
+            renderResizeChecks.push({run,css:size,jobActiveWhenRequested:jobActive});
+          }
+        }
         await page.waitForTimeout(100);
       }
+      if (resizeDuringRender) assert(resized,'Native render must exercise resizing');
       renderRuns.push((Date.now()-started)/1000);
       assert(messages.slice(previous).some(x=>x.includes('WEB_READBACK 1920x1080 channels=4')&&x.includes('success=1')),'Each render must receive real 1920x1080 pixels');
       if (profile) await profile.stop(run);
@@ -101,7 +116,7 @@ async function main() {
     }
     assert.deepEqual(fatal,[]);
     const bundleVersion=await page.evaluate(async()=>(await(await fetch('manifest.json')).json()).version);
-    const report={browserVersion:browser.version(),bundleVersion,engine:before.engine,settingsUnchanged:true,referencePixelsEqual,width:png.width,height:png.height,samples:before.samples,renderSeconds,renderRuns,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
+    const report={browserVersion:browser.version(),bundleVersion,deviceScaleFactor,renderResizeChecks,engine:before.engine,settingsUnchanged:true,referencePixelsEqual,width:png.width,height:png.height,samples:before.samples,renderSeconds,renderRuns,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
   } catch(error) {

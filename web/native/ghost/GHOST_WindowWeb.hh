@@ -37,15 +37,19 @@ class GHOST_WindowWeb : public GHOST_Window {
   }
   ~GHOST_WindowWeb() override = default;
 
-  void resize(uint32_t width, uint32_t height)
+  void resize(uint32_t width, uint32_t height, float scale)
   {
     width_ = width;
     height_ = height;
+    native_pixel_size_ = scale;
   }
 
   GHOST_TSuccess swapBufferAcquire() override
   {
-    return GHOST_kSuccess;
+    /* Blender can keep a window's context active across frames. Acquire is
+     * called before every draw, so resize the buffers here even when context
+     * activation was skipped. Resizing at presentation would lose that frame. */
+    return activateDrawingContext();
   }
 
   GHOST_TSuccess hasCursorShape(GHOST_TStandardCursor /*cursor_shape*/) override
@@ -140,7 +144,7 @@ class GHOST_WindowWeb : public GHOST_Window {
   GHOST_TSuccess swapBufferRelease() override
   {
     /* End of window frame: blit the backbuffer into the canvas surface. */
-    blender_webgpu_present(int(width_), int(height_));
+    blender_webgpu_present(int(width_ * native_pixel_size_), int(height_ * native_pixel_size_));
     return GHOST_kSuccess;
   }
   GHOST_Context *newDrawingContext(GHOST_TDrawingContextType /*type*/) override
@@ -151,7 +155,8 @@ class GHOST_WindowWeb : public GHOST_Window {
   {
     /* Ensure the GPU backend's window backbuffer matches the canvas BEFORE the
      * window manager draws into it. */
-    blender_webgpu_backbuffer_size(int(width_), int(height_));
+    blender_webgpu_backbuffer_size(int(width_ * native_pixel_size_),
+                                  int(height_ * native_pixel_size_));
     return GHOST_kSuccess;
   }
   GHOST_TSuccess setState(GHOST_TWindowState /*state*/) override

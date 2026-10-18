@@ -74,6 +74,9 @@ def collect(base, root):
             shutil.copy2(path, output)
     notices = destination / 'licenses'
     notices.mkdir(exist_ok=True)
+    installed_notices = base / 'deps/prefix/share/blender-web/licenses'
+    if installed_notices.is_dir():
+        shutil.copytree(installed_notices, notices / 'dependencies', dirs_exist_ok=True)
     shutil.copy2(root / 'LICENSE', notices / 'GPL-2.0.txt')
     shutil.copy2(root / 'web/native/THIRD_PARTY.md', notices / 'THIRD_PARTY.md')
     upstream = base / 'source' if (base / 'source').is_dir() else root

@@ -24,6 +24,7 @@ class GHOST_SystemWeb : public GHOST_System {
   GHOST_Buttons buttons_;
   GHOST_ModifierKeys modifiers_;
   uint32_t canvas_w_ = 1280, canvas_h_ = 720;
+  float canvas_scale_ = 1.0f;
 
  public:
   GHOST_SystemWeb();

@@ -1,8 +1,8 @@
 # Browser feature coverage
 
 The application uses an explicit [web configuration](config.cmake), independent
-of Blender's desktop lite preset. This is the first expansion toward a full
-browser build, not a claim of desktop feature parity. The static site's
+of Blender's desktop lite preset. Features are restored and verified in
+batches. The static site's
 `manifest.json` records the actual CMake `buildOptions` for its binary.
 
 | Feature | Configuration | Verification or remaining work |
@@ -16,7 +16,9 @@ browser build, not a claim of desktop feature parity. The static site's
 | Device file picker, uploads and downloads | Deferred | Native file IO currently sees WasmFS; connect user-selected device files and exported results to browser APIs |
 | Automatic `.blend` thumbnails | Deferred | Synchronous preview generation hangs outside a browser GPU job; a guarded GHOST save hook skips capture and restores the user's preview preference |
 | FBX Python exporter and NumPy/process-dependent add-ons | Deferred | Port NumPy, validate extension modules and adapt process-dependent code to browser workers; native FBX import is separate |
-| GMP, Manifold, OpenSubdiv, remeshing and UV SLIM | Deferred | Compile dependencies and validate the corresponding geometry operations |
+| OpenSubdiv CPU | Enabled | Catmull-Clark cubes at levels 1–3, simple subdivision, open boundaries and native viewport drawing |
+| OpenSubdiv GPU | Deferred | Patch-basis shaders and evaluator/draw validation for WebGPU; the platform selects CPU evaluation |
+| GMP, Manifold, remeshing and UV SLIM | Deferred | Compile dependencies and validate the corresponding geometry operations |
 | OpenVDB, NanoVDB, fluids and ocean simulation | Deferred | Port volume/FFT dependencies and measure memory use on real scenes |
 | USD, Alembic, Hydra and MaterialX | Deferred | Port dependencies, file IO and applicable rendering integration |
 | Audio, FFmpeg, video and time stretching | Deferred | Codec libraries plus browser audio/device integration |
@@ -46,20 +48,45 @@ directory while diagnosing a stalled operation.
 
 
 The [verified build report](../docs/web-features.acceptance.json) records bundle
-`86de92adb2a96198e4ab` under Chromium 145.0.7632.6. Both render and fallback UI
-bundles passed all feature checks, including save, overwrite backup and reopen
-after reload. The largest measured IK endpoint error was 0.00032 Blender units.
-The rigid body's center fell from Z=4 to Z=0.5 and remained on the floor through
-frame 100.
+`4ef171e2e987d290773b` under Chromium 145.0.7632.6. Both render and fallback UI
+bundles passed six native subdivision fixtures, import/export, IK, Bullet and
+save/reopen checks on SwiftShader. The render bundle also passed on AMD gcn-5,
+including drawing a subdivided cube with the GPU subdivision preference enabled.
+GHOST selects the CPU evaluator until WebGPU subdivision shaders are supported.
 
-Both original UI checks also passed resizing, native Python, persistent storage
-and offline reload. The 1920×1080, 64-sample Eevee output matches the earlier
-saved PNG pixel for pixel. The render Wasm grew from 107,830,788 to 109,574,040
-bytes, an increase of 1.66 MiB or 1.62%. These are functional regression checks,
-not a new repeated performance benchmark.
+The UI checks passed rapid resizes, canvas-only layout changes, zero-height
+recovery, and display densities of 1, 1.25 and 2 on both bundles. The render
+bundle also passed those checks on the hardware adapter. They compare GHOST's
+logical window size, Blender's physical editor bounds and UI scale, and WebGPU
+backbuffer sizes. Each resize must draw the selected cube before further input.
+After startup, the page contains only Blender's canvas. The local server now
+opens the native application by default; the old preview fixture needs an
+explicit directory.
+
+The hardware Eevee check starts at 2× display density and sends three window-size
+changes while the native GPU job is running. Its factory 1920×1080, 64-sample PNG
+matches the earlier reference pixel for pixel, with unchanged scene and render
+settings. The [browser recording](../docs/eevee-hidpi-resize.mp4) shows that check.
+These are functional regression checks, not a new repeated performance benchmark.
+
+The render Wasm grew from 109,574,040 to 110,074,709 bytes, an increase of
+500,669 bytes, or 0.48 MiB and 0.46%. Runtime data size is unchanged. Dependency
+license notices are stored in the cached install prefix and published with the
+site; a check also restores a prefix without its dependency sources.
+
+OpenSubdiv uses the release's pinned dependency and original CPU evaluator.
+The upstream edits add a guarded GHOST capability call and omit unused OpenGL
+includes for the web build. GHOST reports CSS window bounds and native pixel
+density, while its acquire hook sizes GPU buffers before each draw. The WebGPU
+backend releases cached bind groups and alias snapshots when buffers change size
+and when their context is disposed.
 
 Validation uses desktop Chromium with the repository's WebGPU launch flags.
-Feature/UI checks use SwiftShader; the Eevee check uses AMD gcn-5 hardware.
-Other browsers and mobile devices still need validation.
+Other browsers and mobile devices still need validation. Remaining dependency
+and integration work is listed in the matrix above.
+
+![Native subdivision in Blender on the hardware WebGPU adapter](../docs/web-subdivision.png)
+
+![Blender after resizing to a 2× display density](../docs/web-hidpi.png)
 
 ![Physics scene reopened from OPFS after a browser reload, at frame 1](../docs/web-features-reopened.png)

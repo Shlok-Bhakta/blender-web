@@ -96,6 +96,7 @@ class WebGPUContext : public Context {
   }
   std::unordered_map<uint64_t, WGPUTexture> snapshot_textures_;
   std::unordered_map<uint64_t, WGPUBuffer> snapshot_buffers_;
+  void clear_snapshot_cache();
 
   /* Debug capture: the WGPU handle (AddRef'd at draw time so it survives the
    * pooled texture being freed/reused) of the first content color texture; copied

@@ -1,12 +1,14 @@
 {
-  "bundleVersion": "86de92adb2a96198e4ab",
+  "bundleVersion": "4ef171e2e987d290773b",
   "blenderVersion": "5.2.2",
   "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
   "emscriptenVersion": "4.0.23",
+  "emsdkRevision": "fb4a370163946039f9b51e3ddc9939ce78cb5a41",
   "featureVariants": [
     {
       "buildOptions": {
         "bullet": true,
+        "opensubdiv": true,
         "io_wavefront_obj": true,
         "io_stl": true,
         "io_ply": true,
@@ -165,6 +167,140 @@
           }
         ]
       },
+      "subdivision": [
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 1,
+          "boundary": "ALL",
+          "vertices": 26,
+          "faces": 24,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 98,
+          "faces": 96,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 3,
+          "boundary": "ALL",
+          "vertices": 386,
+          "faces": 384,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "SIMPLE",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 98,
+          "faces": 96,
+          "bounds": [
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ]
+          ]
+        },
+        {
+          "primitive": "plane",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "PRESERVE_CORNERS",
+          "vertices": 25,
+          "faces": 16,
+          "bounds": [
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "primitive": "plane",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 25,
+          "faces": 16,
+          "bounds": [
+            [
+              -0.9166667461395264,
+              0.9166667461395264
+            ],
+            [
+              -0.9166667461395264,
+              0.9166667461395264
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ],
       "rigidBody": {
         "heights": {
           "1": 4,
@@ -177,28 +313,43 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99953,
+        "bytes": 99866,
         "saves": 2,
-        "backupBytes": 99946,
+        "backupBytes": 99866,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "d2cdb23bacd2f55e57767a1d8f3e9f4f50cb05fc110242c33cd6b249b59e23a6",
+        "sha256": "85a553c9742cc41fe0500615b73646bfc61ca99d5860b839f74c89dffe77e08b",
         "reopenedAfterBrowserReload": true
       },
-      "bundleVersion": "86de92adb2a96198e4ab",
+      "opensubdivNotices": {
+        "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
+        "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
+      },
+      "bundleVersion": "4ef171e2e987d290773b",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T05:05:28.890Z",
+      "measuredAt": "2026-10-18T07:09:00.525Z",
       "variant": "render",
-      "wasmBytes": 109574040,
-      "browserErrors": 0
+      "hardware": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": "",
+        "maxStorageBuffersPerShaderStage": 10
+      },
+      "wasmBytes": 110074709,
+      "browserErrors": 0,
+      "subdivisionEvaluator": "CPU",
+      "subdivisionViewport": true
     },
     {
       "buildOptions": {
         "bullet": true,
+        "opensubdiv": true,
         "io_wavefront_obj": true,
         "io_stl": true,
         "io_ply": true,
@@ -357,6 +508,140 @@
           }
         ]
       },
+      "subdivision": [
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 1,
+          "boundary": "ALL",
+          "vertices": 26,
+          "faces": 24,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 98,
+          "faces": 96,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 3,
+          "boundary": "ALL",
+          "vertices": 386,
+          "faces": 384,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "SIMPLE",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 98,
+          "faces": 96,
+          "bounds": [
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ]
+          ]
+        },
+        {
+          "primitive": "plane",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "PRESERVE_CORNERS",
+          "vertices": 25,
+          "faces": 16,
+          "bounds": [
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "primitive": "plane",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 25,
+          "faces": 16,
+          "bounds": [
+            [
+              -0.9166667461395264,
+              0.9166667461395264
+            ],
+            [
+              -0.9166667461395264,
+              0.9166667461395264
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ],
       "rigidBody": {
         "heights": {
           "1": 4,
@@ -369,24 +654,379 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99865,
+        "bytes": 99870,
         "saves": 2,
-        "backupBytes": 99921,
+        "backupBytes": 99955,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "661db1972ac9f6be5e0e0fd101c0efcbaf0b2eb043827b94121d186ae36c0578",
+        "sha256": "db67f179b32b952197b831f870b8a3dda04e7f27b2aaedb6d1c1a450ad43d753",
         "reopenedAfterBrowserReload": true
       },
-      "bundleVersion": "86de92adb2a96198e4ab",
+      "opensubdivNotices": {
+        "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
+        "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
+      },
+      "bundleVersion": "4ef171e2e987d290773b",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T05:06:32.278Z",
+      "measuredAt": "2026-10-18T07:09:54.629Z",
       "variant": "ui",
-      "wasmBytes": 109574040,
-      "browserErrors": 0
+      "hardware": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": "",
+        "maxStorageBuffersPerShaderStage": 10
+      },
+      "wasmBytes": 110074709,
+      "browserErrors": 0,
+      "subdivisionEvaluator": "CPU",
+      "subdivisionViewport": true
+    },
+    {
+      "buildOptions": {
+        "bullet": true,
+        "opensubdiv": true,
+        "io_wavefront_obj": true,
+        "io_stl": true,
+        "io_ply": true,
+        "io_fbx": true
+      },
+      "importExport": {
+        "obj": {
+          "bytes": 923,
+          "vertices": 8,
+          "polygons": 6,
+          "uniquePositions": 8,
+          "surfaceArea": 24.00000000000006,
+          "volume": 8.000000238418608,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ]
+          ]
+        },
+        "stl": {
+          "bytes": 684,
+          "vertices": 8,
+          "polygons": 12,
+          "uniquePositions": 8,
+          "surfaceArea": 24,
+          "volume": 8,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "ply": {
+          "bytes": 632,
+          "vertices": 14,
+          "polygons": 6,
+          "uniquePositions": 8,
+          "surfaceArea": 24,
+          "volume": 8,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "fbx": {
+          "bytes": 701,
+          "edgeLengths": [
+            1,
+            1,
+            1.4142135623730951
+          ],
+          "vertices": 3,
+          "polygons": 1,
+          "uniquePositions": 3,
+          "surfaceArea": 0.5,
+          "volume": 0,
+          "bounds": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "ik": {
+        "LEGACY": [
+          {
+            "target": [
+              1,
+              1,
+              0
+            ],
+            "endpoint": [
+              1.0000383853912354,
+              1.000020980834961,
+              -4.791030107907136e-21
+            ],
+            "error": 4.374509910777551e-05
+          },
+          {
+            "target": [
+              -0.75,
+              1.25,
+              0
+            ],
+            "endpoint": [
+              -0.7500970363616943,
+              1.2500967979431152,
+              -2.778003369198088e-20
+            ],
+            "error": 0.00013706165503967233
+          }
+        ],
+        "ITASC": [
+          {
+            "target": [
+              1,
+              1,
+              0
+            ],
+            "endpoint": [
+              1.0002764463424683,
+              1.0001600980758667,
+              5.663303437577727e-19
+            ],
+            "error": 0.0003194588771036091
+          },
+          {
+            "target": [
+              -0.75,
+              1.25,
+              0
+            ],
+            "endpoint": [
+              -0.7502056360244751,
+              1.2502079010009766,
+              7.783308927920375e-19
+            ],
+            "error": 0.00029241922092943824
+          }
+        ]
+      },
+      "subdivision": [
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 1,
+          "boundary": "ALL",
+          "vertices": 26,
+          "faces": 24,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 98,
+          "faces": 96,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "CATMULL_CLARK",
+          "level": 3,
+          "boundary": "ALL",
+          "vertices": 386,
+          "faces": 384,
+          "bounds": [
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ],
+            [
+              -0.8395062685012817,
+              0.8395062685012817
+            ]
+          ]
+        },
+        {
+          "primitive": "cube",
+          "mode": "SIMPLE",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 98,
+          "faces": 96,
+          "bounds": [
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ]
+          ]
+        },
+        {
+          "primitive": "plane",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "PRESERVE_CORNERS",
+          "vertices": 25,
+          "faces": 16,
+          "bounds": [
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "primitive": "plane",
+          "mode": "CATMULL_CLARK",
+          "level": 2,
+          "boundary": "ALL",
+          "vertices": 25,
+          "faces": 16,
+          "bounds": [
+            [
+              -0.9166667461395264,
+              0.9166667461395264
+            ],
+            [
+              -0.9166667461395264,
+              0.9166667461395264
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "rigidBody": {
+        "heights": {
+          "1": 4,
+          "10": 3.3060760498046875,
+          "50": 0.5,
+          "100": 0.5
+        },
+        "frames": 100,
+        "collision": true
+      },
+      "blendFile": {
+        "path": "/user/blender-web/home/web-feature-scene.blend",
+        "bytes": 99955,
+        "saves": 2,
+        "backupBytes": 99869,
+        "previewPreferencePreserved": true,
+        "expectedObjects": [
+          "WebFallingCube",
+          "WebFloor"
+        ],
+        "compression": "zstd",
+        "sha256": "5b150875c487d5a7790ed8c6df4ebd212b9fefd723a633c8fdddd367bbb78b53",
+        "reopenedAfterBrowserReload": true
+      },
+      "opensubdivNotices": {
+        "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
+        "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
+      },
+      "bundleVersion": "4ef171e2e987d290773b",
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-18T06:58:57.407Z",
+      "variant": "render",
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": "",
+        "maxStorageBuffersPerShaderStage": 10
+      },
+      "wasmBytes": 110074709,
+      "browserErrors": 0,
+      "subdivisionEvaluator": "CPU",
+      "subdivisionViewport": true
     }
   ],
   "nativeChecks": {
@@ -404,26 +1044,423 @@
   "uiChecks": [
     {
       "variant": "render",
+      "hardware": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "bundleVersion": "4ef171e2e987d290773b",
+      "measuredAt": "2026-10-18T07:02:27.051Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 829,
+      "colors": 837,
       "resize": true,
+      "resizeChecks": [
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 385,
+          "cubePixels": 480,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            960,
+            640
+          ],
+          "scale": 1,
+          "pixels": "960x640",
+          "colors": 434,
+          "cubePixels": 443,
+          "window": [
+            960,
+            640
+          ],
+          "editors": [
+            958,
+            614
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 385,
+          "cubePixels": 480,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 2,
+          "pixels": "2080x1440",
+          "colors": 527,
+          "cubePixels": 2492,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            2076,
+            1387
+          ],
+          "uiScale": 2
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1.25,
+          "pixels": "1300x900",
+          "colors": 540,
+          "cubePixels": 609,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1298,
+            867
+          ],
+          "uiScale": 1.25
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 383,
+          "cubePixels": 480,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        }
+      ],
+      "canvasOnly": true,
+      "browserErrors": 0,
       "nativePythonConsole": true,
       "persistentStorage": true,
       "offlineReload": true
     },
     {
       "variant": "ui",
+      "hardware": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "bundleVersion": "4ef171e2e987d290773b",
+      "measuredAt": "2026-10-18T07:07:29.674Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 829,
+      "colors": 845,
       "resize": true,
+      "resizeChecks": [
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 440,
+          "cubePixels": 479,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            960,
+            640
+          ],
+          "scale": 1,
+          "pixels": "960x640",
+          "colors": 409,
+          "cubePixels": 450,
+          "window": [
+            960,
+            640
+          ],
+          "editors": [
+            958,
+            614
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 437,
+          "cubePixels": 479,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 2,
+          "pixels": "2080x1440",
+          "colors": 524,
+          "cubePixels": 2486,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            2076,
+            1387
+          ],
+          "uiScale": 2
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1.25,
+          "pixels": "1300x900",
+          "colors": 549,
+          "cubePixels": 602,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1298,
+            867
+          ],
+          "uiScale": 1.25
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 437,
+          "cubePixels": 479,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        }
+      ],
+      "canvasOnly": true,
+      "browserErrors": 0,
+      "nativePythonConsole": true,
+      "persistentStorage": true,
+      "offlineReload": true
+    },
+    {
+      "variant": "render",
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "bundleVersion": "4ef171e2e987d290773b",
+      "measuredAt": "2026-10-18T07:08:19.725Z",
+      "originalUI": true,
+      "startupCube": true,
+      "webgpu": true,
+      "isolated": true,
+      "workers": 18,
+      "colors": 1472,
+      "resize": true,
+      "resizeChecks": [
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 665,
+          "cubePixels": 448,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            960,
+            640
+          ],
+          "scale": 1,
+          "pixels": "960x640",
+          "colors": 611,
+          "cubePixels": 419,
+          "window": [
+            960,
+            640
+          ],
+          "editors": [
+            958,
+            614
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 665,
+          "cubePixels": 448,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 2,
+          "pixels": "2080x1440",
+          "colors": 913,
+          "cubePixels": 2404,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            2076,
+            1387
+          ],
+          "uiScale": 2
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1.25,
+          "pixels": "1300x900",
+          "colors": 815,
+          "cubePixels": 573,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1298,
+            867
+          ],
+          "uiScale": 1.25
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 665,
+          "cubePixels": 448,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        }
+      ],
+      "canvasOnly": true,
+      "browserErrors": 0,
       "nativePythonConsole": true,
       "persistentStorage": true,
       "offlineReload": true
@@ -431,15 +1468,43 @@
   ],
   "eevee": {
     "browserVersion": "145.0.7632.6",
-    "bundleVersion": "86de92adb2a96198e4ab",
+    "bundleVersion": "4ef171e2e987d290773b",
+    "deviceScaleFactor": 2,
+    "renderResizeChecks": [
+      {
+        "run": 0,
+        "css": [
+          1040,
+          720
+        ],
+        "jobActiveWhenRequested": true
+      },
+      {
+        "run": 0,
+        "css": [
+          1440,
+          900
+        ],
+        "jobActiveWhenRequested": true
+      },
+      {
+        "run": 0,
+        "css": [
+          1280,
+          800
+        ],
+        "jobActiveWhenRequested": true
+      }
+    ],
     "engine": "BLENDER_EEVEE",
     "settingsUnchanged": true,
+    "referencePixelsEqual": true,
     "width": 1920,
     "height": 1080,
     "samples": 64,
-    "renderSeconds": 8.271,
+    "renderSeconds": 8.894,
     "renderRuns": [
-      8.271
+      8.894
     ],
     "adapter": {
       "vendor": "amd",
@@ -449,8 +1514,8 @@
       "features": [
         "depth32float-stencil8",
         "rg11b10ufloat-renderable",
-        "texture-formats-tier1",
         "bgra8unorm-storage",
+        "texture-formats-tier1",
         "chromium-experimental-multi-draw-indirect",
         "texture-compression-bc",
         "dual-source-blending",
@@ -462,10 +1527,10 @@
         "texture-compression-etc2",
         "depth-clip-control",
         "texture-compression-bc-sliced-3d",
+        "shader-f16",
         "texture-formats-tier2",
         "timestamp-query",
         "clip-distances",
-        "shader-f16",
         "primitive-index",
         "texture-component-swizzle",
         "subgroups"
@@ -477,8 +1542,8 @@
     "foregroundPixels": 244885,
     "opaquePixels": 2073600,
     "browserErrors": 0,
-    "clipStart": 20.076,
-    "clipEnd": 39.492,
+    "clipStart": 20.484,
+    "clipEnd": 41.333,
     "defaults": {
       "engine": "BLENDER_EEVEE",
       "width": 1920,
@@ -615,17 +1680,45 @@
     "maxChannelDelta": 0,
     "pixelsEqual": true
   },
+  "cachedPrefixNotices": {
+    "cachedPrefixWithoutSources": true,
+    "licensePreserved": true
+  },
+  "defaultServer": {
+    "defaultServesNativeBlender": true,
+    "legacyPreviewControls": false
+  },
   "downloadSize": {
-    "previousBundleVersion": "196271829ccba0d61f46",
-    "previousWasmBytes": 107830788,
-    "currentWasmBytes": 109574040,
-    "addedBytes": 1743252,
-    "addedMiB": 1.6624946594238281,
-    "growthPercent": 1.6166551616037417
+    "previousBundleVersion": "86de92adb2a96198e4ab",
+    "previousWasmBytes": 109574040,
+    "currentWasmBytes": 110074709,
+    "addedBytes": 500669,
+    "addedMiB": 0.4774751663208008,
+    "growthPercent": 0.45692300840600564,
+    "runtimeDataBytes": 69047362
   },
   "limitations": [
     "Automatic blend-file previews are skipped during Save; the preview preference is restored afterward.",
     "Native file IO uses WasmFS/OPFS. Device file picker and download integration remain deferred.",
-    "Cycles and the other optional dependency ports remain deferred; see web/native/FEATURES.md."
-  ]
+    "Cycles and the other optional dependency ports remain deferred; see web/native/FEATURES.md.",
+    "OpenSubdiv uses CPU evaluation; GPU subdivision remains deferred.",
+    "Desktop Chromium was tested with the repository WebGPU launch flags; other browsers and mobile devices need validation."
+  ],
+  "recording": {
+    "path": "web/docs/eevee-hidpi-resize.mp4",
+    "sha256": "af61015eec85e88b490c80b9d4e8f9440d06bb09529a085f050e68649957fa43",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "24/1"
+      }
+    ],
+    "format": {
+      "duration": "20.833333"
+    }
+  }
 }

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-"""Exercise real importers, both IK solvers, Bullet and native blend files."""
+"""Exercise native modeling, importers, IK, Bullet and blend files."""
 import bpy
 import json
 import math
@@ -36,11 +36,55 @@ def mesh_signature(obj):
 
 def run():
     result = {'buildOptions': {key: getattr(bpy.app.build_options, key) for key in
-                              ('bullet', 'io_wavefront_obj', 'io_stl', 'io_ply', 'io_fbx')},
+                              ('bullet', 'opensubdiv', 'io_wavefront_obj', 'io_stl', 'io_ply', 'io_fbx')},
               'importExport': {}, 'ik': {}}
     assert all(result['buildOptions'].values()), result['buildOptions']
     directory = Path('/tmp/web-features')
     directory.mkdir(exist_ok=True)
+    result['subdivision'] = []
+    # Leave the user's GPU preference enabled to exercise the platform's CPU
+    # fallback, rather than bypassing the integration with a test-only setting.
+    gpu_subdivision = bpy.context.preferences.system.use_gpu_subdivision
+    bpy.context.preferences.system.use_gpu_subdivision = True
+    for primitive, mode, level, vertices, faces, boundary in (
+            ('cube', 'CATMULL_CLARK', 1, 26, 24, 'ALL'),
+            ('cube', 'CATMULL_CLARK', 2, 98, 96, 'ALL'),
+            ('cube', 'CATMULL_CLARK', 3, 386, 384, 'ALL'),
+            ('cube', 'SIMPLE', 2, 98, 96, 'ALL'),
+            ('plane', 'CATMULL_CLARK', 2, 25, 16, 'PRESERVE_CORNERS'),
+            ('plane', 'CATMULL_CLARK', 2, 25, 16, 'ALL')):
+        clear()
+        getattr(bpy.ops.mesh, 'primitive_' + primitive + '_add')()
+        obj = bpy.context.object
+        modifier = obj.modifiers.new('WebSubdivision', 'SUBSURF')
+        modifier.subdivision_type = mode
+        modifier.levels = level
+        modifier.boundary_smooth = boundary
+        modifier.use_limit_surface = True
+        evaluated = obj.evaluated_get(bpy.context.evaluated_depsgraph_get())
+        mesh = evaluated.to_mesh()
+        try:
+            assert len(mesh.vertices) == vertices, (primitive, mode, level, len(mesh.vertices))
+            assert len(mesh.polygons) == faces
+            assert all(len(p.vertices) == 4 for p in mesh.polygons)
+            points = [v.co.copy() for v in mesh.vertices]
+            assert all(math.isfinite(c) for p in points for c in p)
+            bounds = [[min(p[i] for p in points), max(p[i] for p in points)] for i in range(3)]
+            assert all(abs(lo + hi) < 1e-5 for lo, hi in bounds), bounds
+            if primitive == 'cube' and mode == 'CATMULL_CLARK':
+                assert all(.5 < hi < 1 for lo, hi in bounds), bounds
+            elif primitive == 'plane' and boundary == 'ALL':
+                assert all(.5 < hi < 1 for lo, hi in bounds[:2]), bounds
+                assert abs(bounds[2][0]) < 1e-6 and abs(bounds[2][1]) < 1e-6
+            else:
+                expected = [1, 1, 0 if primitive == 'plane' else 1]
+                assert all(abs(hi-value) < 1e-5 for (_, hi), value in zip(bounds, expected)), bounds
+            result['subdivision'].append(dict(primitive=primitive, mode=mode, level=level, boundary=boundary,
+                                              vertices=vertices, faces=faces, bounds=bounds))
+        finally:
+            evaluated.to_mesh_clear()
+    bpy.context.preferences.system.use_gpu_subdivision = gpu_subdivision
+    emit('FEATURE_PROGRESS', 'opensubdiv')
     for extension, exporter, importer in (
             ('obj', bpy.ops.wm.obj_export, bpy.ops.wm.obj_import),
             ('stl', bpy.ops.wm.stl_export, bpy.ops.wm.stl_import),

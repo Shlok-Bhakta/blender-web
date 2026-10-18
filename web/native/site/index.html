@@ -2,11 +2,11 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blender Web</title>
+<title>Blender</title>
 <style>
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#252525;color:#ddd;font:14px system-ui}
-canvas{display:block;width:100%;height:100%;outline:none}
-#status{position:fixed;top:16px;left:16px;background:#252525ee;padding:12px;pointer-events:none;max-width:80vw}
+canvas{position:fixed;inset:0;display:block;width:100%;height:100%;height:100dvh;outline:none;touch-action:none}
+#status{position:fixed;inset:0;display:grid;place-items:center;background:#252525;pointer-events:none;padding:24px}
 </style>
 <canvas id="canvas" tabindex="0" aria-label="Blender application"></canvas>
 <div id="status" role="status">Loading Blender…</div>

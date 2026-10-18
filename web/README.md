@@ -27,7 +27,7 @@ Emscripten 4.0.23 with `emsdk install 4.0.23` and `emsdk activate 4.0.23`.
 ```sh
 source /path/to/emsdk/emsdk_env.sh
 python3 web/tools/build.py
-python3 web/tools/serve.py --pages-mode
+python3 web/tools/serve.py --directory build/web/dist --pages-mode
 ```
 
 Open `http://localhost:8080`. Drag or touch-drag to orbit, scroll to zoom, and

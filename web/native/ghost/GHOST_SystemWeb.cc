@@ -6,6 +6,8 @@
  * \ingroup GHOST
  */
 
+#include <algorithm>
+#include <cmath>
 #include <cstring>
 
 #include <emscripten/emscripten.h>
@@ -125,12 +127,9 @@ GHOST_TSuccess GHOST_SystemWeb::init()
     return GHOST_kFailure;
   }
 
-  /* Canvas size: authoritative from the page (set once by the harness). */
-  double w = 0, h = 0;
-  if (emscripten_get_element_css_size(WEB_CANVAS, &w, &h) == EMSCRIPTEN_RESULT_SUCCESS && w > 0) {
-    canvas_w_ = uint32_t(w);
-    canvas_h_ = uint32_t(h);
-  }
+  /* GHOST bounds and input use CSS pixels. Blender multiplies by the native
+   * pixel size for rendering, as on desktop high-DPI platforms. */
+  handleResize();
 
   /* Input callbacks, delivered on this (the Blender main) thread whenever it
    * yields to its event loop. */
@@ -182,6 +181,7 @@ GHOST_IWindow *GHOST_SystemWeb::createWindow(const char *title,
   /* Register with the window manager so validWindow() passes — otherwise every
    * GHOST event is dropped as "invalid window" in wm_window's event handler. */
   window_manager_->addWindow(window_);
+  window_->resize(canvas_w_, canvas_h_, canvas_scale_);
   window_manager_->setActiveWindow(window_);
   pushEvent(std::unique_ptr<const GHOST_IEvent>(
       new GHOST_Event(getMilliSeconds(), GHOST_kEventWindowSize, window_)));
@@ -293,14 +293,41 @@ bool GHOST_SystemWeb::handleKey(int event_type, const EmscriptenKeyboardEvent *e
 bool GHOST_SystemWeb::handleResize()
 {
   double w = 0, h = 0;
-  if (emscripten_get_element_css_size(WEB_CANVAS, &w, &h) != EMSCRIPTEN_RESULT_SUCCESS || w <= 0) {
+  if (emscripten_get_element_css_size(WEB_CANVAS, &w, &h) != EMSCRIPTEN_RESULT_SUCCESS ||
+      !std::isfinite(w) || !std::isfinite(h) || w < 1 || h < 1)
+  {
+    /* Hidden/minimized canvases retain their last usable drawing buffers. */
     return false;
   }
-  canvas_w_ = uint32_t(w);
-  canvas_h_ = uint32_t(h);
-  emscripten_set_canvas_element_size(WEB_CANVAS, canvas_w_, canvas_h_);
+  const uint32_t width = uint32_t(w), height = uint32_t(h);
+  const double ratio = emscripten_get_device_pixel_ratio();
+  const int limit = EM_ASM_INT({
+    return Module.preinitializedWebGPUDevice?.limits.maxTextureDimension2D || 8192;
+  });
+  const float scale = float(std::min({std::isfinite(ratio) && ratio > 0 ? ratio : 1.0,
+                                     double(limit) / width,
+                                     double(limit) / height}));
+  const bool dpi_changed = canvas_scale_ != scale;
+  const bool size_changed = canvas_w_ != width || canvas_h_ != height;
+  canvas_w_ = width;
+  canvas_h_ = height;
+  canvas_scale_ = scale;
+  const int pixel_w = std::max(1, int(width * scale));
+  const int pixel_h = std::max(1, int(height * scale));
+  int old_w = 0, old_h = 0;
+  emscripten_get_canvas_element_size(WEB_CANVAS, &old_w, &old_h);
+  if (old_w != pixel_w || old_h != pixel_h) {
+    emscripten_set_canvas_element_size(WEB_CANVAS, pixel_w, pixel_h);
+  }
+  if (!size_changed && !dpi_changed) {
+    return false;
+  }
   if (window_) {
-    window_->resize(canvas_w_, canvas_h_);
+    window_->resize(canvas_w_, canvas_h_, canvas_scale_);
+    if (dpi_changed) {
+      pushEvent(std::unique_ptr<const GHOST_IEvent>(
+          new GHOST_Event(getMilliSeconds(), GHOST_kEventWindowDPIHintChanged, window_)));
+    }
     pushEvent(std::unique_ptr<const GHOST_IEvent>(new GHOST_Event(getMilliSeconds(), GHOST_kEventWindowSize, window_)));
   }
   return true;

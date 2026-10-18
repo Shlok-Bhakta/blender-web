@@ -164,6 +164,8 @@ WebGPUContext::WebGPUContext(GHOST_IWindow * /*ghost_window*/,
 
 WebGPUContext::~WebGPUContext()
 {
+  clear_bind_group_cache();
+  clear_snapshot_cache();
   if (readback_buffer_) wgpuBufferRelease(readback_buffer_);
   g_all_contexts.erase(std::remove(g_all_contexts.begin(), g_all_contexts.end(), this),
                        g_all_contexts.end());
@@ -974,6 +976,22 @@ WGPUSampler WebGPUContext::nearest_sampler()
   return nearest_sampler_;
 }
 
+void WebGPUContext::clear_snapshot_cache()
+{
+  for (auto &item : snapshot_textures_) {
+    if (item.second) {
+      wgpuTextureRelease(item.second);
+    }
+  }
+  snapshot_textures_.clear();
+  for (auto &item : snapshot_buffers_) {
+    if (item.second) {
+      wgpuBufferRelease(item.second);
+    }
+  }
+  snapshot_buffers_.clear();
+}
+
 void WebGPUContext::backbuffer_ensure(int w, int h)
 {
   if (device_ == nullptr || w <= 0 || h <= 0) {
@@ -983,6 +1001,15 @@ void WebGPUContext::backbuffer_ensure(int w, int h)
     return;
   }
   render_pass_end();
+  if (backbuffer_color_) {
+    /* Bind groups retain texture views; alias snapshots are cached by size.
+     * Resizing must release these references to old drawing buffers. Release
+     * handles, rather than destroying GPU resources used by queued commands. */
+    for (WebGPUContext *ctx : g_all_contexts) {
+      ctx->clear_bind_group_cache();
+      ctx->clear_snapshot_cache();
+    }
+  }
   if (backbuffer_color_) {
     GPU_texture_free(backbuffer_color_);
     backbuffer_color_ = nullptr;

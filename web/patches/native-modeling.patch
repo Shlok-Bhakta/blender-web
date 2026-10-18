@@ -1,0 +1,57 @@
+diff --git a/intern/opensubdiv/internal/evaluator/gpu_compute_evaluator.cc b/intern/opensubdiv/internal/evaluator/gpu_compute_evaluator.cc
+--- a/intern/opensubdiv/internal/evaluator/gpu_compute_evaluator.cc
++++ b/intern/opensubdiv/internal/evaluator/gpu_compute_evaluator.cc
+@@ -2,7 +2,9 @@
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later */
+ 
+-#include <epoxy/gl.h>
++#ifndef WITH_GHOST_WEB
++#  include <epoxy/gl.h>
++#endif
+ 
+ #include "gpu_compute_evaluator.h"
+ 
+diff --git a/source/blender/blenkernel/intern/subdiv_modifier.cc b/source/blender/blenkernel/intern/subdiv_modifier.cc
+--- a/source/blender/blenkernel/intern/subdiv_modifier.cc
++++ b/source/blender/blenkernel/intern/subdiv_modifier.cc
+@@ -1,6 +1,10 @@
+ /* SPDX-FileCopyrightText: 2021 Blender Authors
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later */
++
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebSubdivision.hh"
++#endif
+ 
+ #include "BKE_subdiv_modifier.hh"
+ 
+@@ -86,6 +90,11 @@
+ 
+ static bool is_subdivision_evaluation_possible_on_gpu()
+ {
++#ifdef WITH_GHOST_WEB
++  if (!GHOST_web_subdivision_gpu_supported()) {
++    return false;
++  }
++#endif
+   if (GPU_backend_get_type() == GPU_BACKEND_NONE) {
+     return false;
+   }
+diff --git a/intern/opensubdiv/internal/evaluator/eval_output_gpu.h b/intern/opensubdiv/internal/evaluator/eval_output_gpu.h
+--- a/intern/opensubdiv/internal/evaluator/eval_output_gpu.h
++++ b/intern/opensubdiv/internal/evaluator/eval_output_gpu.h
+@@ -11,9 +11,11 @@
+ #include "internal/evaluator/gpu_compute_evaluator.h"
+ #include "internal/evaluator/gpu_patch_table.hh"
+ 
+-#include <opensubdiv/osd/glPatchTable.h>
+-#include <opensubdiv/osd/glVertexBuffer.h>
++#ifndef WITH_GHOST_WEB
++#  include <opensubdiv/osd/glPatchTable.h>
++#  include <opensubdiv/osd/glVertexBuffer.h>
++#endif
+ 
+ #include "gpu_vertex_buffer_wrapper.hh"
+ 
+ namespace blender::opensubdiv {

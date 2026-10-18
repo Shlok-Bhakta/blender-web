@@ -103,6 +103,34 @@ The render check records a browser video, saves the original Render Result as a
 PNG, compares scene settings before and after, and fails on WebGPU validation or
 shader translation errors. Outputs are in `build/native/render-evidence`.
 
+The UI check also exercises rapid window resizing, canvas layout changes,
+zero-sized canvas recovery, and display scales of 1, 1.25 and 2. It checks
+GHOST's logical dimensions through native Python, the editors' physical pixel
+bounds, and the WebGPU backbuffer sizes. The running page must contain only the
+Blender canvas. Both render and fallback bundles run these checks in CI.
+Set `WEB_TEST_HARDWARE=1` to repeat the UI/resize check with the hardware Vulkan
+adapter and save its evidence in `build/native/evidence-hardware`.
+The same setting runs `features.cjs` on hardware and writes
+`build/native/feature-evidence-hardware`, including the subdivision viewport.
+Set `WEB_RENDER_DEVICE_SCALE=2` to check startup, native Render menu input and
+Eevee rendering on a high-DPI display. `WEB_RENDER_REFERENCE` accepts a saved
+PNG and requires an exact match of decoded pixels.
+`WEB_RENDER_RESIZE_DURING_RENDER=1` also changes the window size three times
+while the native GPU job is running and checks that the render completes.
+
+OpenSubdiv is built from the release's pinned source with SIMD and pthreads.
+Subdivision modifiers currently use its CPU evaluator. Feature checks cover
+Catmull-Clark cubes at three levels, simple subdivision, an open plane, and
+native viewport drawing. GPU subdivision and Cycles remain separate work.
+
+Browser layout and display-density changes notify GHOST's resize callback.
+GHOST retains CSS coordinates for window bounds and input, reports display
+density as the native pixel size, and sends Blender's size/DPI events. The GPU
+backend recreates its physical drawing buffers and surface at that size.
+Zero-sized canvases retain their last usable buffers, and display density is
+limited by the device's maximum texture dimension. Resize also releases cached
+bind groups and alias snapshots that could retain resources at old sizes.
+
 To profile a cold render followed by repeat renders in the same session:
 
 ```sh

@@ -20,7 +20,7 @@ in that snapshot changes. The one-canvas platform temporarily routes the render
 display into Blender's existing full-screen Image Editor and restores the user's
 window preference immediately afterward.
 
-The current build completed a cold render in **11.60 seconds**, including
+The profiled build completed a cold render in **11.60 seconds**, including
 first-use shader compilation, in Chromium 145.0.7632.6 on Linux with an
 AMD GCN 5 WebGPU adapter. Repeat renders in that session took
 3.14 and 3.84 seconds. The saved PNG is 1920×1080 and fully opaque,
@@ -31,7 +31,7 @@ validation errors. These are measurements on this machine; performance will vary
 ## Render profiling and speed
 
 A same-machine comparison with detailed profiling disabled measured the previous
-build at **28.25 seconds** for a cold render and the current build at
+build at **28.25 seconds** for a cold render and the optimized build at
 **11.60 seconds**, a **2.4× speedup**. Repeat renders were GPU-bound and stayed
 near three to four seconds in both builds. These are one cold run and two repeat
 runs per build, with video capture enabled, rather than a statistical benchmark.
@@ -67,6 +67,20 @@ created. Device initialization already requests the high-performance adapter
 and its supported resource limits. The site does not reduce samples or
 resolution to gain speed.
 
+
+## Subdivision and high-DPI regression check
+
+The [expanded feature build](web-features.acceptance.json) adds OpenSubdiv CPU
+modeling and GHOST display-density handling. Its [browser recording](eevee-hidpi-resize.mp4)
+shows the native Eevee check at 2× display density. Three window-size changes are
+requested while the GPU job runs. The unchanged factory 1920×1080, 64-sample
+output matches the earlier reference PNG pixel for pixel, with zero browser or
+WebGPU errors.
+
+Both bundles also pass native UI checks at 1×, 1.25× and 2× density, including
+rapid resizing, zero-height recovery, storage and offline reload. The hardware
+adapter passes the same resize checks. These are functional checks; the profiling
+measurements above and repeated animation baseline below remain separate results.
 
 ## 50-frame spinning cube baseline
 

@@ -9,3 +9,7 @@ IK solvers and ufbx importer. Their original source notices are retained in the
 pinned source. Bullet uses the zlib license; ufbx is available under its included
 MIT license or public-domain dedication. The browser license directory includes
 the ufbx license and Bullet's source license notice.
+
+OpenSubdiv is built from Blender's pinned release dependency and retains its
+upstream notices and license. Packaging copies those files from the dependency
+source into the static site's license directory.

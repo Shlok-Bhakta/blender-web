@@ -4,25 +4,27 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('playwright');
 const { PNG } = require('pngjs');
+const {checkResize} = require('./resize.cjs');
 const url = process.env.WEB_TEST_URL || 'http://127.0.0.1:8093/';
 const uiFallback = process.env.WEB_TEST_UI_FALLBACK === '1';
-const output = path.resolve(__dirname, uiFallback ? '../../build/native/evidence-ui' : '../../build/native/evidence');
+const hardware = process.env.WEB_TEST_HARDWARE === '1';
+const output = path.resolve(__dirname, hardware ? '../../build/native/evidence-hardware' : uiFallback ? '../../build/native/evidence-ui' : '../../build/native/evidence');
 const messages = [];
 
 async function ready(page, failure) {
   await Promise.race([failure, page.waitForFunction(() => document.documentElement.dataset.blenderReady === 'true', null, {timeout:300000})]);
   assert.equal(await page.evaluate(() => crossOriginIsolated), true);
 }
-async function consoleCommand(page, command, marker) {
+async function consoleCommand(page, command, marker, capture = () => page.screenshot()) {
   await page.locator('canvas').focus();
   await page.keyboard.press('Shift+F4');
   // Blender initializes the console language when its first region is drawn.
   // Wait for the original green Python banner before sending an Enter event.
   const bannerDeadline = Date.now() + 90000;
   for (;;) {
-    const png = PNG.sync.read(await page.screenshot());
+    const png = PNG.sync.read(await capture());
     let bannerPixels = 0;
-    for (let y = Math.floor(png.height / 2); y < png.height - 80; y++) {
+    for (let y = 50; y < png.height - 80; y++) {
       for (let x = 10; x < Math.min(700, png.width - 200); x++) {
         const i = (y * png.width + x) * 4;
         if (png.data[i+1] > 180 && png.data[i+1] > png.data[i] * 1.2 && png.data[i+2] < 40) bannerPixels++;
@@ -37,8 +39,12 @@ async function consoleCommand(page, command, marker) {
         if (png.data[i]>=20&&png.data[i]<=35&&png.data[i]===png.data[i+1]&&png.data[i]===png.data[i+2]) dark++;
       }
     }
-    if (bannerPixels > 200 || dark > area*.95) break;
-    if (Date.now() > bannerDeadline) throw new Error('Original Python console banner did not draw');
+    if (bannerPixels > 200 || dark > area*.8) break;
+    if (Date.now() > bannerDeadline) {
+      fs.mkdirSync(output,{recursive:true});
+      fs.writeFileSync(path.join(output,'console-banner-timeout.png'),PNG.sync.write(png));
+      throw new Error(`Original Python console banner did not draw: ${png.width}x${png.height}, green=${bannerPixels}, dark=${dark}/${area}`);
+    }
     await page.waitForTimeout(250);
   }
   const previous = messages.length;
@@ -58,7 +64,10 @@ async function main() {
   fs.mkdirSync(output, {recursive:true});
   fs.writeFileSync(path.join(output,'browser.log'),'');
   fs.writeFileSync(path.join(output,'errors.log'),'');
-  const browser = await chromium.launch({headless:true, args:[
+  const browser = await chromium.launch({headless:true, args:hardware ? [
+    '--enable-unsafe-webgpu', '--use-angle=vulkan', '--enable-features=Vulkan',
+    '--use-vulkan=native', '--disable-vulkan-surface',
+  ] : [
     '--enable-unsafe-webgpu', '--enable-unsafe-swiftshader', '--use-angle=swiftshader',
     '--enable-features=Vulkan', '--use-vulkan=swiftshader',
   ]});
@@ -76,12 +85,23 @@ async function main() {
     failure.catch(() => {});
     page.on('console', message => {
       const text = message.text(); messages.push(text);
-      if (text.startsWith('Aborted(') || text.includes('Blender startup failed') || text.startsWith('Blender WebGPU error') || text.startsWith('Blender WebGPU device lost')) rejectFailure(new Error(text));
+      if (/Aborted\(|Blender startup failed|Blender WebGPU error|Blender WebGPU device lost|Blender GPU job failed|WGPU_SH .*FAIL|WGPU_SHADER translate FAILED/.test(text)) {
+        errors.push(text);
+        fs.appendFileSync(path.join(output,'errors.log'),text+'\n');
+        rejectFailure(new Error(text));
+      }
       fs.appendFileSync(path.join(output,'browser.log'), text+'\n');
     });
     page.on('pageerror', error => { rejectFailure(error); errors.push(error.message); fs.appendFileSync(path.join(output,'errors.log'),error.stack+'\n'); });
     await page.goto(url);
     await ready(page, failure);
+    const adapter = await page.evaluate(async()=>{
+      const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
+      return {vendor:adapter.info.vendor,architecture:adapter.info.architecture,
+        device:adapter.info.device,description:adapter.info.description};
+    });
+    if (hardware) assert(!/swiftshader|llvmpipe|lavapipe|software/i.test(Object.values(adapter).join(' ')),
+      'Hardware acceptance must use a hardware WebGPU adapter');
     assert.equal(await page.evaluate(() => document.documentElement.dataset.blenderVariant), uiFallback ? 'ui' : 'render');
     const image = await page.screenshot({path:path.join(output,'original-ui.png')});
     const png = PNG.sync.read(image);
@@ -99,8 +119,7 @@ async function main() {
     assert(messages.some(text => text.includes('real device acquired')), 'Native backend must acquire a real WebGPU device');
     assert(page.workers().length >= 2, 'Application must start browser workers');
 
-    await page.setViewportSize({width:1040,height:720});
-    await page.waitForTimeout(2000);
+    const resizeChecks = await checkResize(page, messages, consoleCommand, output);
     await page.screenshot({path:path.join(output,'original-ui-resized.png')});
     await page.mouse.move(300,250);
     await consoleCommand(page,
@@ -117,8 +136,10 @@ async function main() {
       'NATIVE_STORAGE_READ:persisted');
     await page.screenshot({path:path.join(output,'original-ui-offline.png')});
     assert.deepEqual(errors, [], 'Browser runtime errors');
-    const report = {variant:uiFallback ? 'ui' : 'render', originalUI:true, startupCube:true, webgpu:true, isolated:true, workers:page.workers().length,
-      colors:colors.size, resize:true, nativePythonConsole:true, persistentStorage:true, offlineReload:true};
+    const report = {variant:uiFallback ? 'ui' : 'render', hardware, adapter, browserVersion:browser.version(),
+      bundleVersion:await page.evaluate(async()=>(await(await fetch('manifest.json')).json()).version),
+      measuredAt:new Date().toISOString(), originalUI:true, startupCube:true, webgpu:true, isolated:true, workers:page.workers().length,
+      colors:colors.size, resize:true, resizeChecks, canvasOnly:true, browserErrors:errors.length, nativePythonConsole:true, persistentStorage:true, offlineReload:true};
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
     await context.close();

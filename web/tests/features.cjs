@@ -6,12 +6,16 @@ const crypto = require('node:crypto');
 const {chromium} = require('playwright');
 const {ready, consoleCommand, messages} = require('./native.cjs');
 const uiFallback = process.env.WEB_TEST_UI_FALLBACK === '1';
-const output = path.resolve(uiFallback ? 'build/native/feature-evidence-ui' : 'build/native/feature-evidence');
+const hardware = process.env.WEB_TEST_HARDWARE === '1';
+const output = path.resolve(hardware ? 'build/native/feature-evidence-hardware' : uiFallback ? 'build/native/feature-evidence-ui' : 'build/native/feature-evidence');
 
 async function main() {
   fs.mkdirSync(output, {recursive:true});
   messages.length = 0;
-  const browser = await chromium.launch({headless:true, args:[
+  const browser = await chromium.launch({headless:true, args:hardware ? [
+    '--enable-unsafe-webgpu', '--use-angle=vulkan', '--enable-features=Vulkan',
+    '--use-vulkan=native', '--disable-vulkan-surface',
+  ] : [
     '--enable-unsafe-webgpu', '--enable-unsafe-swiftshader', '--use-angle=swiftshader',
     '--enable-features=Vulkan', '--use-vulkan=swiftshader',
   ]});
@@ -29,7 +33,7 @@ async function main() {
     const text = message.text(); messages.push(text); fs.writeSync(log,text+'\n');
     if (text.startsWith('FEATURE_COMPLETE:')) report = JSON.parse(text.slice(17));
     if (text.startsWith('FEATURE_FAILED:')) failure = text;
-    if (/Aborted\(|Blender WebGPU error|Blender WebGPU device lost|Blender startup failed/.test(text)) errors.push(text);
+    if (/Aborted\(|Blender WebGPU error|Blender WebGPU device lost|Blender startup failed|Blender GPU job failed|WGPU_SH .*FAIL|WGPU_SHADER translate FAILED/.test(text)) errors.push(text);
   });
   page.on('pageerror', e => errors.push(e.stack));
   try {
@@ -37,7 +41,7 @@ async function main() {
     await ready(page, new Promise(()=>{}));
     assert.equal(await page.evaluate(()=>document.documentElement.dataset.blenderVariant),uiFallback ? 'ui' : 'render');
     const manifest = await page.evaluate(async()=>fetch('manifest.json').then(r=>r.json()));
-    for (const flag of ['WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
+    for (const flag of ['WITH_OPENSUBDIV','WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
       assert.equal(manifest.buildOptions[flag],true,flag);
     }
     await page.evaluate(source=>Module.FS.writeFile('/tmp/web-features.py',source),
@@ -53,6 +57,15 @@ async function main() {
     await consoleCommand(page,"exec(compile(open('/tmp/web-features.py').read(), '/tmp/web-features.py', 'exec'))",'FEATURE_DONE:');
     assert(!failure,failure);
     assert(report,'Native Python must finish all feature checks');
+    report.opensubdivNotices = {};
+    for (const name of ['LICENSE.txt','NOTICE.txt']) {
+      const response=await page.request.get(new URL(`licenses/dependencies/opensubdiv/${name}`,page.url()).href);
+      assert.equal(response.status(),200,`Published OpenSubdiv ${name}`);
+      const bytes=await response.body();
+      const installed=fs.readFileSync(path.resolve('build/native/deps/prefix/share/blender-web/licenses/opensubdiv',name));
+      assert(bytes.equals(installed),'Dependency notices must survive a cached-prefix build');
+      report.opensubdivNotices[name]=crypto.createHash('sha256').update(bytes).digest('hex');
+    }
     const base64 = await page.evaluate(file=>{
       const bytes=Module.FS.readFile(file), pieces=[];
       for(let offset=0;offset<bytes.length;offset+=32768) pieces.push(String.fromCharCode(...bytes.subarray(offset,offset+32768)));
@@ -83,10 +96,25 @@ async function main() {
     report.browserVersion = browser.version();
     report.measuredAt = new Date().toISOString();
     report.variant = uiFallback ? 'ui' : 'render';
+    report.hardware = hardware;
+    report.adapter = await page.evaluate(async()=>{
+      const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
+      return {vendor:adapter.info.vendor,architecture:adapter.info.architecture,
+        device:adapter.info.device,description:adapter.info.description,
+        maxStorageBuffersPerShaderStage:adapter.limits.maxStorageBuffersPerShaderStage};
+    });
+    if (hardware) assert(!/swiftshader|llvmpipe|lavapipe|software/i.test(JSON.stringify(report.adapter)),
+      'Hardware feature acceptance must use a hardware WebGPU adapter');
     report.wasmBytes = manifest.files.find(file=>file.name.endsWith(uiFallback ? '/blender-ui.wasm' : '/blender.wasm')).bytes;
     report.browserErrors = errors.length;
-    fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     await page.screenshot({path:path.join(output,'reopened-scene.png')});
+    await page.mouse.move(300,250);
+    await consoleCommand(page,"import bpy, os; bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False); bpy.ops.mesh.primitive_cube_add(); bpy.context.preferences.system.use_gpu_subdivision=True; bpy.context.object.modifiers.new('WebSubdivision', 'SUBSURF').levels=2; os.write(1,b'FEATURE_SUBDIVISION_VIEWPORT\\n')",'FEATURE_SUBDIVISION_VIEWPORT');
+    await page.screenshot({path:path.join(output,'subdivision-scene.png')});
+    assert.deepEqual(errors,[],'Subdivision viewport must draw without WebGPU errors');
+    report.subdivisionEvaluator='CPU';
+    report.subdivisionViewport=true;
+    fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
   } catch (e) {
     await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});
