@@ -2,18 +2,22 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const os = require('node:os');
 const {chromium} = require('playwright');
 const url = process.env.WEB_TEST_URL || 'http://127.0.0.1:8093/';
 const output = path.resolve(__dirname, process.env.WEB_TEST_UI_FALLBACK === '1' ?
   '../../build/native/loading-evidence-ui' : '../../build/native/loading-evidence');
 async function main() {
   fs.mkdirSync(output, {recursive:true});
-  const browser = await chromium.launch({headless:true,args:[
-    '--enable-unsafe-webgpu','--enable-unsafe-swiftshader','--use-angle=swiftshader',
-    '--enable-features=Vulkan','--use-vulkan=swiftshader',
-  ]});
-  try {
-    const context = await browser.newContext({viewport:{width:1280,height:800}});
+  const profile=fs.mkdtempSync(path.join(os.tmpdir(),'blender-web-cache-'));
+  let context,page,networkAssets=0;
+  const errors=[];
+  async function startBrowser() {
+    context = await chromium.launchPersistentContext(profile,{headless:true,
+      viewport:{width:1280,height:800},args:[
+        '--enable-unsafe-webgpu','--enable-unsafe-swiftshader','--use-angle=swiftshader',
+        '--enable-features=Vulkan','--use-vulkan=swiftshader',
+      ]});
     if (process.env.WEB_TEST_UI_FALLBACK === '1') await context.addInitScript(() => {
       delete WebAssembly.promising; delete WebAssembly.Suspending;
     });
@@ -23,20 +27,25 @@ async function main() {
         if (event.data?.type === 'blender-download') window.downloads.push(event.data);
       });
     });
-    let networkAssets = 0;
     context.on('request', request => {
       if (request.serviceWorker() && /\/assets\//.test(request.url())) networkAssets++;
     });
-    const page = await context.newPage();
-    const errors = [];
+    page = context.pages()[0] || await context.newPage();
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => {
       if (/Blender startup failed|Aborted\(|Blender WebGPU error/.test(message.text())) errors.push(message.text());
     });
+  }
+  try {
+    await startBrowser();
     const runs = [];
-    for (const mode of ['cold','warm','offline']) {
+    for (const mode of ['cold','warm','offline','restarted-offline']) {
+      if (mode==='restarted-offline') {
+        await context.close();
+        await startBrowser();
+      }
       const before = networkAssets;
-      if (mode === 'offline') await context.setOffline(true);
+      if (mode.endsWith('offline')) await context.setOffline(true);
       await page.goto(url);
       if (mode === 'cold') {
         await page.waitForFunction(() => document.querySelector('progress')?.value > 0 &&
@@ -83,6 +92,9 @@ async function main() {
     await page.screenshot({path:path.join(output,'ready.png')});
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify({runs,browserErrors:errors},null,2)+'\n');
     console.log(JSON.stringify(runs));
-  } finally { await browser.close(); }
+  } finally {
+    await context?.close();
+    fs.rmSync(profile,{recursive:true,force:true});
+  }
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

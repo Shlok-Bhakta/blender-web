@@ -1,0 +1,116 @@
+name: Publish validated Blender Web
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release containing blender-web-pages.tar.gz
+        required: true
+        type: string
+      sha256:
+        description: SHA-256 of the tested archive
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: validated-pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/tests/package-lock.json
+      - name: Download and verify the recorded build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          EXPECTED_SHA256: ${{ inputs.sha256 }}
+        run: |
+          mkdir -p build/prebuilt-site
+          gh release download "$RELEASE_TAG" --pattern blender-web-pages.tar.gz --dir build
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, tarfile
+          archive = pathlib.Path('build/blender-web-pages.tar.gz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == os.environ['EXPECTED_SHA256']
+          acceptance = json.loads(pathlib.Path('web/docs/web-features.acceptance.json').read_text())
+          assert os.environ['EXPECTED_SHA256'] == acceptance['deploymentArchive']['sha256']
+          assert archive.stat().st_size == acceptance['deploymentArchive']['bytes']
+          site = pathlib.Path('build/prebuilt-site')
+          with tarfile.open(archive) as bundle:
+              bundle.extractall(site, filter='data')
+          manifest = json.loads((site / 'manifest.json').read_text())
+          assert manifest['version'] == acceptance['bundleVersion'], 'Build must match committed acceptance evidence'
+          assert manifest['blenderRevision'] == acceptance['blenderRevision']
+          assert manifest['files'] == acceptance['downloadSize']['files']
+          for entry in manifest['files']:
+              file = site / entry['name']
+              assert file.is_relative_to(site) and '..' not in file.parts
+              assert file.stat().st_size == entry['bytes']
+              assert hashlib.sha256(file.read_bytes()).hexdigest() == entry['sha256']
+          print('Verified recorded bundle', manifest['version'])
+          PY
+      - name: Install browser tests
+        working-directory: web/tests
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Check packaged runtime before publishing
+        run: |
+          python3 web/tools/serve.py --directory build/prebuilt-site --pages-mode > "$RUNNER_TEMP/blender-prebuilt-server.log" 2>&1 &
+          WEB_SERVER_PID=$!
+          trap 'kill "$WEB_SERVER_PID"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8080/manifest.json > /dev/null; then break; fi
+            sleep 1
+          done
+          export WEB_TEST_URL=http://127.0.0.1:8080/
+          node web/tests/cache.cjs
+          node web/tests/loading.cjs
+          WEB_TEST_UI_FALLBACK=1 node web/tests/loading.cjs
+          node web/tests/native.cjs
+          WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
+          export WEB_FEATURE_NOTICES_REPORT=web/docs/web-features.acceptance.json
+          node web/tests/features.cjs
+          WEB_TEST_UI_FALLBACK=1 node web/tests/features.cjs
+          WEB_RENDER_SOFTWARE=1 node web/tests/cycles.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validated-build-browser-evidence
+          path: |
+            build/native/loading-evidence*
+            build/native/cache-evidence
+            build/native/evidence*
+            build/native/feature-evidence*
+            build/native/cycles-evidence
+          if-no-files-found: ignore
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/prebuilt-site
+  deploy:
+    needs: verify
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified static files
+        id: deployment
+        uses: actions/deploy-pages@v4

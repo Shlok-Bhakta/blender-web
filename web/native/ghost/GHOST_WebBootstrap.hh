@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 #pragma once
 #include <emscripten.h>
+#include <blender-web-numpy.hh>
 #include <emscripten/wasmfs.h>
 #include <sys/stat.h>
 #include <cstdlib>
@@ -25,6 +26,7 @@ inline bool GHOST_web_bootstrap(int argc, const char **argv,
                                 int (*entry)(int, const char **))
 {
   if (web_device_ready) {
+    GHOST_web_register_numpy();
     auto backend = wasmfs_create_opfs_backend();
     if (!backend || wasmfs_create_directory("/user", 0777, backend)) {
       fprintf(stderr, "Persistent browser storage unavailable; this session uses memory\n");

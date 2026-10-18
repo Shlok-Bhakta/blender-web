@@ -61,12 +61,10 @@ class WebGPUTexture : public Texture {
                   eGPUDataFormat format,
                   const void *data,
                   uint unpack_row_length = 0) override;
-  void update_sub(int /*offset*/[3],
-                  int /*extent*/[3],
-                  eGPUDataFormat /*format*/,
-                  GPUPixelBuffer * /*pixbuf*/) override
-  {
-  }
+  void update_sub(int offset[3],
+                  int extent[3],
+                  eGPUDataFormat format,
+                  GPUPixelBuffer *pixbuf) override;
 
   void generate_mipmap() override;
   void copy_to(Texture *dst, IndexRange mip_levels) override;

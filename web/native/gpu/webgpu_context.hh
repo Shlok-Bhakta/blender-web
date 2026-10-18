@@ -256,6 +256,7 @@ class WebGPUContext : public Context {
   WGPURenderPassEncoder render_pass() const { return render_pass_; }
   /* Submit recorded commands to the queue (ends any active pass first). */
   void submit();
+  void wait_for_queue();
 
   /* Debug capture: remember the FIRST content color texture (first-wins). AddRefs
    * the WGPU handle so it stays valid even after the pooled gpu::Texture is freed.

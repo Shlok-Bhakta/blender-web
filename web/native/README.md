@@ -6,7 +6,7 @@ Python API, fonts, and startup scene. The separate `web/site` fixture remains
 available for platform tests. The original interface and startup cube render through WebGPU in Chromium.
 
 Activate the SDK pinned in `web/upstream.json`. Install CMake, a C/C++ host
-compiler, Make, Ninja, Git LFS, and Python 3, then run:
+compiler, Make, Ninja, Git LFS, Python 3, and uv, then run:
 
 ```sh
 python3 web/tools/native_build.py --app --jobs 8 --check-deps
@@ -22,7 +22,8 @@ stops after CMake generation. Without `--app`, the command builds the smaller
 original editor archive checkpoint with Python and the GPU backend disabled.
 
 Dependencies use the versions and source hashes from Blender's pinned release.
-The application adds threaded CPython 3.13, shaderc, SPIR-V Tools, and Tint. Their
+The application adds threaded CPython 3.13, static NumPy extensions, GMP,
+Manifold, shaderc, SPIR-V Tools, and Tint. Their
 recipes and pins are in `shader-deps/`. Source attribution is in
 [THIRD_PARTY.md](THIRD_PARTY.md). Build logs and dependency reports are stored in
 `build/native`; the dependency prefix is `build/native/deps/prefix`.
@@ -35,7 +36,7 @@ canvas and loading status; the editors are drawn by Blender itself.
 The application uses an explicit web feature configuration, including native
 OBJ/STL/PLY import/export, FBX import, both IK solvers and Bullet rigid bodies.
 The [feature matrix](FEATURES.md) tracks enabled systems and remaining ports,
-including Cycles. Native C++ uses `-O3`, Wasm SIMD, pthreads, and Wasm exceptions.
+including Cycles CPU final rendering. Native C++ uses `-O3`, Wasm SIMD, pthreads, and Wasm exceptions.
 oneTBB handles Blender's parallel tasks. The runtime sizes its initial pthread pool from the browser's reported logical
 CPU count, plus two workers for platform work. It prestarts between four and 64
 workers and permits additional pthreads when needed. Shared memory starts at 512 MiB and can
@@ -68,7 +69,7 @@ could not be saved. Existing version caches remain available; old content is not
 yet automatically pruned. The first visit after upgrading from the previous
 URL-based cache format downloads the selected runtime once.
 
-Run `node web/tests/loading.cjs` for cold, warm and offline startup checks against
+Run `node web/tests/loading.cjs` for cold, warm, offline and browser-restart offline checks against
 the native server. Set `WEB_TEST_UI_FALLBACK=1` to check the other runtime. Run
 `node web/tests/cache.cjs` for a small deployment fixture that checks reuse across
 versions, old-tab offline reads, changed-file downloads and quota failures.
@@ -150,7 +151,8 @@ while the native GPU job is running and checks that the render completes.
 OpenSubdiv is built from the release's pinned source with SIMD and pthreads.
 Subdivision modifiers currently use its CPU evaluator. Feature checks cover
 Catmull-Clark cubes at three levels, simple subdivision, an open plane, and
-native viewport drawing. GPU subdivision and Cycles remain separate work.
+native viewport drawing. GPU subdivision remains separate work. Cycles CPU final rendering and the new
+modeling dependencies are described in [feature coverage](FEATURES.md).
 
 Browser layout and display-density changes notify GHOST's resize callback.
 GHOST retains CSS coordinates for window bounds and input, reports display
@@ -202,3 +204,15 @@ installed. Keep other CPU/GPU workloads idle for an isolated-machine result;
 conditions in the published report. GPU busy counters cover the whole device.
 The measured benchmark and output animation are linked in the
 [render documentation](../docs/eevee-default-scene.md).
+
+
+A validated local build can also be published with the manual
+`Publish validated Blender Web` workflow. Run the browser checks, create the
+recording, then run `python3 web/tools/native_acceptance.py`. Commit the evidence
+with its matching source changes. The acceptance tool produces
+`build/native/blender-web-pages.tar.gz` and records its checksum. Attach the
+archive to a release targeting that commit, then supply the release tag and
+archive SHA-256 to the workflow. It verifies the
+committed bundle version and every runtime file, then repeats startup, cache,
+resize/storage, modeling and Cycles checks before GitHub Pages deployment. The automatic
+source-build workflow remains available and builds the application itself.

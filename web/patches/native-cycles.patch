@@ -1,0 +1,69 @@
+--- a/intern/cycles/session/session.cpp
++++ b/intern/cycles/session/session.cpp
+@@ -3,6 +3,9 @@
+  * SPDX-License-Identifier: Apache-2.0 */
+ 
+ #include <cstring>
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebCycles.hh"
++#endif
+ 
+ #include "device/cpu/device.h"
+ #include "device/device.h"
+@@ -77,6 +80,9 @@
+   };
+ 
+   /* Create session thread. */
++#ifdef WITH_GHOST_WEB
++  if (GHOST_web_cycles_session_use_thread())
++#endif
+   session_thread_ = make_unique<thread>([this] { thread_run(); });
+ }
+ 
+@@ -93,6 +99,12 @@
+   session_thread_cond_.notify_all();
+ 
+   /* Destroy session thread. */
++#ifdef WITH_GHOST_WEB
++  if (GHOST_web_cycles_session_join(session_thread_.get(), [this] {
++        path_trace_->flush_display();
++        path_trace_->set_display_driver(nullptr);
++      }))
++#endif
+   session_thread_->join();
+   session_thread_.reset();
+ 
+@@ -113,6 +125,11 @@
+ 
+ void Session::start()
+ {
++#ifdef WITH_GHOST_WEB
++  if (GHOST_web_cycles_session_start(session_thread_.get(), params.background,
++                                    [this] { thread_render(); },
++                                    [this](const char *message) { progress.set_error(message); })) return;
++#endif
+   {
+     /* Signal session thread to start rendering. */
+     const thread_scoped_lock session_thread_lock(session_thread_mutex_);
+--- a/intern/cycles/blender/session.cpp
++++ b/intern/cycles/blender/session.cpp
+@@ -3,6 +3,9 @@
+  * SPDX-License-Identifier: Apache-2.0 */
+ 
+ #include <cstdlib>
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebCycles.hh"
++#endif
+ 
+ #include "DEG_depsgraph_query.hh"
+ #include "DNA_screen_types.h"
+@@ -1114,6 +1117,9 @@
+ 
+ void BlenderSession::ensure_display_driver_if_needed()
+ {
++#ifdef WITH_GHOST_WEB
++  if (!GHOST_web_cycles_progressive_display()) return;
++#endif
+   if (display_driver_) {
+     /* Driver is already created. */
+     return;

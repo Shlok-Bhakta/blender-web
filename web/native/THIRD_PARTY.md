@@ -13,3 +13,11 @@ the ufbx license and Bullet's source license notice.
 OpenSubdiv is built from Blender's pinned release dependency and retains its
 upstream notices and license. Packaging copies those files from the dependency
 source into the static site's license directory.
+
+GMP, Manifold and NumPy use the versions and source checksums specified by the
+pinned Blender release. Their licenses, including NumPy's bundled notices, are
+stored under the dependency prefix and published in `licenses/dependencies/`.
+NumPy's original numeric implementations are linked as static CPython modules.
+The build patch changes Meson's extension target type and isolates legacy random
+helper names so the modules can share one Wasm binary. Cycles' CPU code is part
+of the pinned Blender source, under its existing Apache-2.0 notices.

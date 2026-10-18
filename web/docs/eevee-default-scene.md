@@ -221,3 +221,9 @@ Safari rendering, additional windows, arbitrary scenes, all render passes,
 blocking Python render calls, Workbench final renders and Cycles require further
 work. The GPU job currently pauses the normal Blender UI loop, so interactive
 progress updates and cancellation also need work. No quality settings were reduced to obtain this first image.
+
+
+The [new browser walkthrough](modeling-cycles-walkthrough.mp4) also shows the
+restored modeling tools, NumPy, offline save/reopen and a first Cycles CPU render.
+Its [feature coverage and acceptance evidence](../native/FEATURES.md) describe
+which operations and render settings were checked.

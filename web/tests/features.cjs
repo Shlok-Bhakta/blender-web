@@ -7,7 +7,7 @@ const {chromium} = require('playwright');
 const {ready, consoleCommand, messages} = require('./native.cjs');
 const uiFallback = process.env.WEB_TEST_UI_FALLBACK === '1';
 const hardware = process.env.WEB_TEST_HARDWARE === '1';
-const output = path.resolve(hardware ? 'build/native/feature-evidence-hardware' : uiFallback ? 'build/native/feature-evidence-ui' : 'build/native/feature-evidence');
+const output = path.resolve(process.env.WEB_FEATURE_OUTPUT || (hardware ? 'build/native/feature-evidence-hardware' : uiFallback ? 'build/native/feature-evidence-ui' : 'build/native/feature-evidence'));
 
 async function main() {
   fs.mkdirSync(output, {recursive:true});
@@ -41,7 +41,16 @@ async function main() {
     await ready(page, new Promise(()=>{}));
     assert.equal(await page.evaluate(()=>document.documentElement.dataset.blenderVariant),uiFallback ? 'ui' : 'render');
     const manifest = await page.evaluate(async()=>fetch('manifest.json').then(r=>r.json()));
-    for (const flag of ['WITH_OPENSUBDIV','WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
+    // Packaged-build CI has no compiler prefix. Match its notices against the
+    // committed report that was checked against the real installed sources.
+    let recordedNotices;
+    if (process.env.WEB_FEATURE_NOTICES_REPORT) {
+      const evidence=JSON.parse(fs.readFileSync(process.env.WEB_FEATURE_NOTICES_REPORT,'utf8'));
+      assert.equal(evidence.bundleVersion,manifest.version,'Notices must belong to this tested build');
+      recordedNotices=evidence.featureVariants.find(result=>result.variant===(uiFallback?'ui':'render') && !result.hardware);
+      assert(recordedNotices,'Missing recorded notice checks');
+    }
+    for (const flag of ['WITH_GMP','WITH_MANIFOLD','WITH_MOD_REMESH','WITH_UV_SLIM','WITH_QUADRIFLOW','WITH_PYTHON_NUMPY','WITH_CYCLES','WITH_OPENSUBDIV','WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
       assert.equal(manifest.buildOptions[flag],true,flag);
     }
     await page.evaluate(source=>Module.FS.writeFile('/tmp/web-features.py',source),
@@ -57,15 +66,32 @@ async function main() {
     await consoleCommand(page,"exec(compile(open('/tmp/web-features.py').read(), '/tmp/web-features.py', 'exec'))",'FEATURE_DONE:');
     assert(!failure,failure);
     assert(report,'Native Python must finish all feature checks');
-    report.opensubdivNotices = {};
-    for (const name of ['LICENSE.txt','NOTICE.txt']) {
-      const response=await page.request.get(new URL(`licenses/dependencies/opensubdiv/${name}`,page.url()).href);
-      assert.equal(response.status(),200,`Published OpenSubdiv ${name}`);
-      const bytes=await response.body();
-      const installed=fs.readFileSync(path.resolve('build/native/deps/prefix/share/blender-web/licenses/opensubdiv',name));
-      assert(bytes.equals(installed),'Dependency notices must survive a cached-prefix build');
-      report.opensubdivNotices[name]=crypto.createHash('sha256').update(bytes).digest('hex');
+    report.dependencyNotices = {};
+    for (const [dependency,names] of Object.entries({
+      opensubdiv:['LICENSE.txt','NOTICE.txt'], gmp:['COPYINGv2','COPYING.LESSERv3'],
+      manifold:['LICENSE'], numpy:['LICENSE.txt','LICENSES_bundled.txt'],
+    })) {
+      const notices=report.dependencyNotices[dependency]={};
+      for (const name of names) {
+        const response=await page.request.get(new URL(`licenses/dependencies/${dependency}/${name}`,page.url()).href);
+        assert.equal(response.status(),200,`Published ${dependency} ${name}`);
+        const bytes=await response.body();
+        const digest=crypto.createHash('sha256').update(bytes).digest('hex');
+        if (recordedNotices) assert.equal(digest,recordedNotices.dependencyNotices[dependency][name]);
+        else {
+          const installed=fs.readFileSync(path.resolve('build/native/deps/prefix/share/blender-web/licenses',dependency,name));
+          assert(bytes.equals(installed),'Dependency notices must survive a cached-prefix build');
+        }
+        notices[name]=digest;
+      }
     }
+    const cyclesLicense=await page.request.get(new URL('licenses/cycles/Apache2-license.txt',page.url()).href);
+    assert.equal(cyclesLicense.status(),200,'Publish Cycles license');
+    const license=await cyclesLicense.body();
+    report.cyclesLicense=crypto.createHash('sha256').update(license).digest('hex');
+    if (recordedNotices) assert.equal(report.cyclesLicense,recordedNotices.cyclesLicense);
+    else assert(license.equals(fs.readFileSync('blender/intern/cycles/doc/license/Apache2-license.txt')));
+    report.opensubdivNotices=report.dependencyNotices.opensubdiv;
     const base64 = await page.evaluate(file=>{
       const bytes=Module.FS.readFile(file), pieces=[];
       for(let offset=0;offset<bytes.length;offset+=32768) pieces.push(String.fromCharCode(...bytes.subarray(offset,offset+32768)));
@@ -114,6 +140,16 @@ async function main() {
     assert.deepEqual(errors,[],'Subdivision viewport must draw without WebGPU errors');
     report.subdivisionEvaluator='CPU';
     report.subdivisionViewport=true;
+    await page.evaluate(source=>Module.FS.writeFile('/tmp/modeling.py',source),
+      fs.readFileSync(path.join(__dirname,'modeling.py'),'utf8'));
+    await consoleCommand(page,"exec(compile(open('/tmp/modeling.py').read(), '/tmp/modeling.py', 'exec'))",'MODELING_DONE');
+    const modelingFailure=messages.find(text=>text.includes('MODELING_FAILED:'));
+    assert(!modelingFailure,modelingFailure);
+    const completed=messages.findLast(text=>text.includes('MODELING_COMPLETE:'));
+    assert(completed,'Native modeling and NumPy checks must complete');
+    report.modeling=JSON.parse(completed.slice(completed.indexOf('MODELING_COMPLETE:')+'MODELING_COMPLETE:'.length));
+    await page.screenshot({path:path.join(output,'quadriflow-scene.png')});
+    assert.deepEqual(errors,[],'New modeling features must draw without WebGPU errors');
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
   } catch (e) {

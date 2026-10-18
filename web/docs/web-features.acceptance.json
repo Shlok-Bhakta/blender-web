@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "4ef171e2e987d290773b",
+  "bundleVersion": "656d089684b1079cf65a",
   "blenderVersion": "5.2.2",
   "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
   "emscriptenVersion": "4.0.23",
@@ -313,25 +313,43 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99866,
+        "bytes": 99945,
         "saves": 2,
-        "backupBytes": 99866,
+        "backupBytes": 99884,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "85a553c9742cc41fe0500615b73646bfc61ca99d5860b839f74c89dffe77e08b",
+        "sha256": "ba180fbd2ac06310f0809673a6a8229c2d3cb49016c727ef7cc33ec58c8ce9f1",
         "reopenedAfterBrowserReload": true
       },
+      "dependencyNotices": {
+        "opensubdiv": {
+          "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
+          "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
+        },
+        "gmp": {
+          "COPYINGv2": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+          "COPYING.LESSERv3": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c"
+        },
+        "manifold": {
+          "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "numpy": {
+          "LICENSE.txt": "1be1df33863f97a7bc1c4d67980bd6c69c9a6fef0a5ee76e6ad6cb91e56e8491",
+          "LICENSES_bundled.txt": "7fe52683ce840a3103e9cc82fe92252b2c533061ca4f9b8d6f3d4d835f7c32f9"
+        }
+      },
+      "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
       "opensubdivNotices": {
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "4ef171e2e987d290773b",
+      "bundleVersion": "656d089684b1079cf65a",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T07:09:00.525Z",
+      "measuredAt": "2026-10-18T21:00:29.927Z",
       "variant": "render",
       "hardware": false,
       "adapter": {
@@ -341,10 +359,280 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 110074709,
+      "wasmBytes": 124769805,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
-      "subdivisionViewport": true
+      "subdivisionViewport": true,
+      "modeling": {
+        "numpy": {
+          "version": "2.3.4",
+          "linalg": true,
+          "fft": true,
+          "random": true,
+          "legacyRandomMatchesDesktop": true,
+          "modernRandomMatchesDesktop": true,
+          "ufuncs": true,
+          "stridedArrays": true,
+          "rnaBuffers": true
+        },
+        "booleans": [
+          {
+            "solver": "EXACT",
+            "operation": "UNION",
+            "vertices": 16,
+            "faces": 14,
+            "volume": 11.999999999999998,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "EXACT",
+            "operation": "INTERSECT",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                0,
+                1
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "EXACT",
+            "operation": "DIFFERENCE",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                0
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "UNION",
+            "vertices": 16,
+            "faces": 10,
+            "volume": 11.999999999999998,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "INTERSECT",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                0,
+                1
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "DIFFERENCE",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                0
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          }
+        ],
+        "remesh": [
+          {
+            "mode": "SMOOTH",
+            "vertices": 1352,
+            "faces": 1350,
+            "volume": 7.96840046995754,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ]
+            ]
+          },
+          {
+            "mode": "SHARP",
+            "vertices": 1352,
+            "faces": 1350,
+            "volume": 8.000015735636508,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ]
+            ]
+          }
+        ],
+        "uv": [
+          {
+            "method": "MINIMUM_STRETCH",
+            "loops": 100,
+            "finite": true
+          }
+        ],
+        "fbxExportImport": {
+          "bytes": 11900,
+          "vertices": 8,
+          "faces": 6,
+          "volume": 7.999999999999999,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "fbxLegacyImport": {
+          "vertices": 8,
+          "faces": 6,
+          "volume": 7.999999999999999,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "quadriflow": {
+          "vertices": 86,
+          "faces": 84,
+          "volume": 3.610595005295686,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -0.955015242099762,
+              1
+            ],
+            [
+              -0.9645399451255798,
+              0.9466832876205444
+            ],
+            [
+              -0.9620139598846436,
+              0.9828922152519226
+            ]
+          ]
+        }
+      }
     },
     {
       "buildOptions": {
@@ -654,25 +942,43 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99870,
+        "bytes": 99885,
         "saves": 2,
-        "backupBytes": 99955,
+        "backupBytes": 99973,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "db67f179b32b952197b831f870b8a3dda04e7f27b2aaedb6d1c1a450ad43d753",
+        "sha256": "adba757f7fbde9e7b93a4885c3172449c1f0e61f8683f8c01d57ddcb175a9649",
         "reopenedAfterBrowserReload": true
       },
+      "dependencyNotices": {
+        "opensubdiv": {
+          "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
+          "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
+        },
+        "gmp": {
+          "COPYINGv2": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+          "COPYING.LESSERv3": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c"
+        },
+        "manifold": {
+          "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "numpy": {
+          "LICENSE.txt": "1be1df33863f97a7bc1c4d67980bd6c69c9a6fef0a5ee76e6ad6cb91e56e8491",
+          "LICENSES_bundled.txt": "7fe52683ce840a3103e9cc82fe92252b2c533061ca4f9b8d6f3d4d835f7c32f9"
+        }
+      },
+      "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
       "opensubdivNotices": {
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "4ef171e2e987d290773b",
+      "bundleVersion": "656d089684b1079cf65a",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T07:09:54.629Z",
+      "measuredAt": "2026-10-18T21:03:54.306Z",
       "variant": "ui",
       "hardware": false,
       "adapter": {
@@ -682,10 +988,280 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 110074709,
+      "wasmBytes": 124769805,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
-      "subdivisionViewport": true
+      "subdivisionViewport": true,
+      "modeling": {
+        "numpy": {
+          "version": "2.3.4",
+          "linalg": true,
+          "fft": true,
+          "random": true,
+          "legacyRandomMatchesDesktop": true,
+          "modernRandomMatchesDesktop": true,
+          "ufuncs": true,
+          "stridedArrays": true,
+          "rnaBuffers": true
+        },
+        "booleans": [
+          {
+            "solver": "EXACT",
+            "operation": "UNION",
+            "vertices": 16,
+            "faces": 14,
+            "volume": 11.999999999999998,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "EXACT",
+            "operation": "INTERSECT",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                0,
+                1
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "EXACT",
+            "operation": "DIFFERENCE",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                0
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "UNION",
+            "vertices": 16,
+            "faces": 10,
+            "volume": 11.999999999999998,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "INTERSECT",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                0,
+                1
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "DIFFERENCE",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                0
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          }
+        ],
+        "remesh": [
+          {
+            "mode": "SMOOTH",
+            "vertices": 1352,
+            "faces": 1350,
+            "volume": 7.96840046995754,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ]
+            ]
+          },
+          {
+            "mode": "SHARP",
+            "vertices": 1352,
+            "faces": 1350,
+            "volume": 8.000015735636508,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ]
+            ]
+          }
+        ],
+        "uv": [
+          {
+            "method": "MINIMUM_STRETCH",
+            "loops": 100,
+            "finite": true
+          }
+        ],
+        "fbxExportImport": {
+          "bytes": 11900,
+          "vertices": 8,
+          "faces": 6,
+          "volume": 7.999999999999999,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "fbxLegacyImport": {
+          "vertices": 8,
+          "faces": 6,
+          "volume": 7.999999999999999,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "quadriflow": {
+          "vertices": 86,
+          "faces": 84,
+          "volume": 3.610595005295686,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -0.955015242099762,
+              1
+            ],
+            [
+              -0.9645399451255798,
+              0.9466832876205444
+            ],
+            [
+              -0.9620139598846436,
+              0.9828922152519226
+            ]
+          ]
+        }
+      }
     },
     {
       "buildOptions": {
@@ -995,25 +1571,43 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99955,
+        "bytes": 99969,
         "saves": 2,
-        "backupBytes": 99869,
+        "backupBytes": 99966,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "5b150875c487d5a7790ed8c6df4ebd212b9fefd723a633c8fdddd367bbb78b53",
+        "sha256": "4cdac195738a77f877842f9e6fa0a5376803e36d444e3285af399a65e1564c8c",
         "reopenedAfterBrowserReload": true
       },
+      "dependencyNotices": {
+        "opensubdiv": {
+          "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
+          "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
+        },
+        "gmp": {
+          "COPYINGv2": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+          "COPYING.LESSERv3": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c"
+        },
+        "manifold": {
+          "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "numpy": {
+          "LICENSE.txt": "1be1df33863f97a7bc1c4d67980bd6c69c9a6fef0a5ee76e6ad6cb91e56e8491",
+          "LICENSES_bundled.txt": "7fe52683ce840a3103e9cc82fe92252b2c533061ca4f9b8d6f3d4d835f7c32f9"
+        }
+      },
+      "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
       "opensubdivNotices": {
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "4ef171e2e987d290773b",
+      "bundleVersion": "656d089684b1079cf65a",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T06:58:57.407Z",
+      "measuredAt": "2026-10-18T21:02:29.263Z",
       "variant": "render",
       "hardware": true,
       "adapter": {
@@ -1023,24 +1617,282 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 110074709,
+      "wasmBytes": 124769805,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
-      "subdivisionViewport": true
+      "subdivisionViewport": true,
+      "modeling": {
+        "numpy": {
+          "version": "2.3.4",
+          "linalg": true,
+          "fft": true,
+          "random": true,
+          "legacyRandomMatchesDesktop": true,
+          "modernRandomMatchesDesktop": true,
+          "ufuncs": true,
+          "stridedArrays": true,
+          "rnaBuffers": true
+        },
+        "booleans": [
+          {
+            "solver": "EXACT",
+            "operation": "UNION",
+            "vertices": 16,
+            "faces": 14,
+            "volume": 11.999999999999998,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "EXACT",
+            "operation": "INTERSECT",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                0,
+                1
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "EXACT",
+            "operation": "DIFFERENCE",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                0
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "UNION",
+            "vertices": 16,
+            "faces": 10,
+            "volume": 11.999999999999998,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "INTERSECT",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                0,
+                1
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          },
+          {
+            "solver": "MANIFOLD",
+            "operation": "DIFFERENCE",
+            "vertices": 8,
+            "faces": 6,
+            "volume": 3.9999999999999996,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1,
+                0
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                1
+              ]
+            ]
+          }
+        ],
+        "remesh": [
+          {
+            "mode": "SMOOTH",
+            "vertices": 1352,
+            "faces": 1350,
+            "volume": 7.96840046995754,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ]
+            ]
+          },
+          {
+            "mode": "SHARP",
+            "vertices": 1352,
+            "faces": 1350,
+            "volume": 8.000015735636508,
+            "manifold": true,
+            "finite": true,
+            "bounds": [
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ],
+              [
+                -1.0000017881393433,
+                0.9999995231628418
+              ]
+            ]
+          }
+        ],
+        "uv": [
+          {
+            "method": "MINIMUM_STRETCH",
+            "loops": 100,
+            "finite": true
+          }
+        ],
+        "fbxExportImport": {
+          "bytes": 11900,
+          "vertices": 8,
+          "faces": 6,
+          "volume": 7.999999999999999,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "fbxLegacyImport": {
+          "vertices": 8,
+          "faces": 6,
+          "volume": 7.999999999999999,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "quadriflow": {
+          "vertices": 86,
+          "faces": 84,
+          "volume": 3.610595005295686,
+          "manifold": true,
+          "finite": true,
+          "bounds": [
+            [
+              -0.955015242099762,
+              1
+            ],
+            [
+              -0.9645399451255798,
+              0.9466832876205444
+            ],
+            [
+              -0.9620139598846436,
+              0.9828922152519226
+            ]
+          ]
+        }
+      }
     }
   ],
-  "nativeChecks": {
-    "expressions": {
-      "expressionCases": 21
-    },
-    "shaderProcessor": {
-      "shaderProcessorCases": 2,
-      "hostMatchesWasm": true
-    },
-    "imageCache": {
-      "imageCacheNamespaces": true
-    }
-  },
   "uiChecks": [
     {
       "variant": "render",
@@ -1052,14 +1904,14 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "4ef171e2e987d290773b",
-      "measuredAt": "2026-10-18T07:02:27.051Z",
+      "bundleVersion": "656d089684b1079cf65a",
+      "measuredAt": "2026-10-18T21:00:57.510Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 837,
+      "colors": 838,
       "resize": true,
       "resizeChecks": [
         {
@@ -1088,7 +1940,7 @@
           ],
           "scale": 1,
           "pixels": "960x640",
-          "colors": 434,
+          "colors": 438,
           "cubePixels": 443,
           "window": [
             960,
@@ -1126,7 +1978,7 @@
           ],
           "scale": 2,
           "pixels": "2080x1440",
-          "colors": 527,
+          "colors": 524,
           "cubePixels": 2492,
           "window": [
             1040,
@@ -1145,7 +1997,7 @@
           ],
           "scale": 1.25,
           "pixels": "1300x900",
-          "colors": 540,
+          "colors": 544,
           "cubePixels": 609,
           "window": [
             1040,
@@ -1164,7 +2016,7 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 383,
+          "colors": 384,
           "cubePixels": 480,
           "window": [
             1040,
@@ -1193,14 +2045,14 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "4ef171e2e987d290773b",
-      "measuredAt": "2026-10-18T07:07:29.674Z",
+      "bundleVersion": "656d089684b1079cf65a",
+      "measuredAt": "2026-10-18T21:04:47.951Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 845,
+      "colors": 838,
       "resize": true,
       "resizeChecks": [
         {
@@ -1210,8 +2062,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 440,
-          "cubePixels": 479,
+          "colors": 385,
+          "cubePixels": 480,
           "window": [
             1040,
             720
@@ -1229,8 +2081,8 @@
           ],
           "scale": 1,
           "pixels": "960x640",
-          "colors": 409,
-          "cubePixels": 450,
+          "colors": 432,
+          "cubePixels": 443,
           "window": [
             960,
             640
@@ -1248,8 +2100,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 437,
-          "cubePixels": 479,
+          "colors": 384,
+          "cubePixels": 480,
           "window": [
             1040,
             720
@@ -1267,8 +2119,8 @@
           ],
           "scale": 2,
           "pixels": "2080x1440",
-          "colors": 524,
-          "cubePixels": 2486,
+          "colors": 530,
+          "cubePixels": 2492,
           "window": [
             1040,
             720
@@ -1286,8 +2138,8 @@
           ],
           "scale": 1.25,
           "pixels": "1300x900",
-          "colors": 549,
-          "cubePixels": 602,
+          "colors": 547,
+          "cubePixels": 609,
           "window": [
             1040,
             720
@@ -1305,8 +2157,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 437,
-          "cubePixels": 479,
+          "colors": 384,
+          "cubePixels": 480,
           "window": [
             1040,
             720
@@ -1334,14 +2186,14 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "4ef171e2e987d290773b",
-      "measuredAt": "2026-10-18T07:08:19.725Z",
+      "bundleVersion": "656d089684b1079cf65a",
+      "measuredAt": "2026-10-18T21:05:45.216Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 1472,
+      "colors": 1473,
       "resize": true,
       "resizeChecks": [
         {
@@ -1351,8 +2203,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 665,
-          "cubePixels": 448,
+          "colors": 596,
+          "cubePixels": 452,
           "window": [
             1040,
             720
@@ -1370,8 +2222,8 @@
           ],
           "scale": 1,
           "pixels": "960x640",
-          "colors": 611,
-          "cubePixels": 419,
+          "colors": 634,
+          "cubePixels": 416,
           "window": [
             960,
             640
@@ -1389,8 +2241,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 665,
-          "cubePixels": 448,
+          "colors": 597,
+          "cubePixels": 452,
           "window": [
             1040,
             720
@@ -1408,8 +2260,8 @@
           ],
           "scale": 2,
           "pixels": "2080x1440",
-          "colors": 913,
-          "cubePixels": 2404,
+          "colors": 921,
+          "cubePixels": 2410,
           "window": [
             1040,
             720
@@ -1427,8 +2279,8 @@
           ],
           "scale": 1.25,
           "pixels": "1300x900",
-          "colors": 815,
-          "cubePixels": 573,
+          "colors": 803,
+          "cubePixels": 576,
           "window": [
             1040,
             720
@@ -1446,8 +2298,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 665,
-          "cubePixels": 448,
+          "colors": 596,
+          "cubePixels": 452,
           "window": [
             1040,
             720
@@ -1468,7 +2320,7 @@
   ],
   "eevee": {
     "browserVersion": "145.0.7632.6",
-    "bundleVersion": "4ef171e2e987d290773b",
+    "bundleVersion": "656d089684b1079cf65a",
     "deviceScaleFactor": 2,
     "renderResizeChecks": [
       {
@@ -1502,9 +2354,9 @@
     "width": 1920,
     "height": 1080,
     "samples": 64,
-    "renderSeconds": 8.894,
+    "renderSeconds": 9.707,
     "renderRuns": [
-      8.894
+      9.707
     ],
     "adapter": {
       "vendor": "amd",
@@ -1514,8 +2366,8 @@
       "features": [
         "depth32float-stencil8",
         "rg11b10ufloat-renderable",
-        "bgra8unorm-storage",
         "texture-formats-tier1",
+        "bgra8unorm-storage",
         "chromium-experimental-multi-draw-indirect",
         "texture-compression-bc",
         "dual-source-blending",
@@ -1527,9 +2379,9 @@
         "texture-compression-etc2",
         "depth-clip-control",
         "texture-compression-bc-sliced-3d",
-        "shader-f16",
         "texture-formats-tier2",
         "timestamp-query",
+        "shader-f16",
         "clip-distances",
         "primitive-index",
         "texture-component-swizzle",
@@ -1542,8 +2394,8 @@
     "foregroundPixels": 244885,
     "opaquePixels": 2073600,
     "browserErrors": 0,
-    "clipStart": 20.484,
-    "clipEnd": 41.333,
+    "clipStart": 26.667,
+    "clipEnd": 48.469,
     "defaults": {
       "engine": "BLENDER_EEVEE",
       "width": 1920,
@@ -1674,51 +2526,214 @@
       }
     }
   },
-  "eeveePixelComparison": {
-    "reference": "web/docs/eevee-default-scene-render.png",
-    "changedChannels": 0,
-    "maxChannelDelta": 0,
-    "pixelsEqual": true
+  "cycles": {
+    "bundleVersion": "656d089684b1079cf65a",
+    "browserVersion": "145.0.7632.6",
+    "engine": "CYCLES",
+    "device": "CPU",
+    "samples": 16,
+    "size": [
+      128,
+      128
+    ],
+    "denoising": false,
+    "adaptiveSampling": false,
+    "seed": 0,
+    "softwareDisplay": false,
+    "clipStart": 21.721,
+    "clipEnd": 30.67,
+    "renderSeconds": 1.916,
+    "meanAbsoluteError": 0.0008341471354166666,
+    "outlierFraction": 0,
+    "errors": [],
+    "adapter": {
+      "vendor": "amd",
+      "architecture": "gcn-5",
+      "device": "",
+      "description": ""
+    },
+    "videoPath": "/home/crabcake/Projects/blender-web/build/native/cycles-evidence/51636b7f0f7222758e6da8ab826f259a.webm"
   },
-  "cachedPrefixNotices": {
-    "cachedPrefixWithoutSources": true,
-    "licensePreserved": true
+  "nativeChecks": {
+    "dependency-check": {
+      "threads": 4,
+      "checksum": 562954449584128,
+      "pngRoundtrip": true,
+      "pngMetadata": true,
+      "colorTransform": true,
+      "woff2": true,
+      "exceptions": true,
+      "longjmp": true
+    },
+    "expression-check": {
+      "expressionCases": 21
+    },
+    "image-cache-check": {
+      "imageCacheNamespaces": true
+    },
+    "numpy-cache-check": {
+      "cachedWithoutSourcesOrHostPython": true,
+      "regularArchives": 44,
+      "compiledModules": 13
+    },
+    "opensubdiv-cache-check": {
+      "cachedPrefixWithoutSources": true,
+      "licensePreserved": true
+    },
+    "python-check": {
+      "pythonVersion": "3.13.13",
+      "embeddedModules": true,
+      "numpyVersion": "2.3.4",
+      "numpyCompiledModules": true
+    },
+    "rna-cold-check": {
+      "emptyOutputDirectory": true,
+      "generatedSources": 76,
+      "prototypeBytes": 723119,
+      "prototypeSHA256": "03d1dc95579915fa5e809ee5852b0848173921e2934eff8e1a15e487b89133be"
+    },
+    "server-default-check": {
+      "defaultServesNativeBlender": true,
+      "legacyPreviewControls": false
+    },
+    "shader-adaptation-check": {
+      "shaderAdaptationCases": 18
+    },
+    "shader-check": {
+      "shaderProcessorCases": 2,
+      "hostMatchesWasm": true
+    },
+    "shader-switch-check": {
+      "switchCases": 72
+    },
+    "shader-translation-check": {
+      "shaderRecoveryUnwinds": true,
+      "translationAfterRecovery": true
+    }
   },
-  "defaultServer": {
-    "defaultServesNativeBlender": true,
-    "legacyPreviewControls": false
-  },
-  "downloadSize": {
-    "previousBundleVersion": "86de92adb2a96198e4ab",
-    "previousWasmBytes": 109574040,
-    "currentWasmBytes": 110074709,
-    "addedBytes": 500669,
-    "addedMiB": 0.4774751663208008,
-    "growthPercent": 0.45692300840600564,
-    "runtimeDataBytes": 69047362
-  },
-  "limitations": [
-    "Automatic blend-file previews are skipped during Save; the preview preference is restored afterward.",
-    "Native file IO uses WasmFS/OPFS. Device file picker and download integration remain deferred.",
-    "Cycles and the other optional dependency ports remain deferred; see web/native/FEATURES.md.",
-    "OpenSubdiv uses CPU evaluation; GPU subdivision remains deferred.",
-    "Desktop Chromium was tested with the repository WebGPU launch flags; other browsers and mobile devices need validation."
-  ],
   "recording": {
-    "path": "web/docs/eevee-hidpi-resize.mp4",
-    "sha256": "af61015eec85e88b490c80b9d4e8f9440d06bb09529a085f050e68649957fa43",
-    "programs": [],
-    "stream_groups": [],
-    "streams": [
+    "bundleVersion": "656d089684b1079cf65a",
+    "chapters": [
       {
-        "codec_name": "h264",
-        "width": 1280,
-        "height": 800,
-        "r_frame_rate": "24/1"
+        "seconds": 0.114,
+        "title": "Loading Blender; runtime files are cached for later visits"
+      },
+      {
+        "seconds": 23.321,
+        "title": "Original Blender UI and default cube"
+      },
+      {
+        "seconds": 31.814,
+        "title": "GMP exact Boolean: cylinder cut through a cube"
+      },
+      {
+        "seconds": 39.054,
+        "title": "Manifold Boolean: the same cylinder cut"
+      },
+      {
+        "seconds": 46.097,
+        "title": "Native QuadriFlow remeshing: visible quad edges"
+      },
+      {
+        "seconds": 52.662,
+        "title": "NumPy builds a 1,600-vertex wave inside Blender"
+      },
+      {
+        "seconds": 59.072,
+        "title": "Save a native .blend file to persistent browser storage"
+      },
+      {
+        "seconds": 63.687,
+        "title": "Offline reload: cached Blender starts with no network"
+      },
+      {
+        "seconds": 78.148,
+        "title": "Reopen the saved NumPy wave after an offline reload"
+      },
+      {
+        "seconds": 90.4,
+        "title": "Cycles CPU render: 128 x 128, 16 samples. Checked against desktop Blender."
       }
     ],
-    "format": {
-      "duration": "20.833333"
-    }
+    "durationSeconds": 99.36,
+    "bytes": 1942346,
+    "source": "Playwright browser recordings",
+    "captions": true,
+    "cyclesReferenceMeanAbsoluteError": 0.0008341471354166666,
+    "sha256": "2720d3e991d46f532ae8e2fac1e116e080dbfeada368bf0e494b4102a2b31b9d",
+    "path": "web/docs/modeling-cycles-walkthrough.mp4"
+  },
+  "cyclesReference": {
+    "engine": "CYCLES",
+    "device": "CPU",
+    "samples": 16,
+    "size": [
+      128,
+      128
+    ],
+    "seconds": 0.4869623677805066,
+    "denoising": false,
+    "seed": 0,
+    "blenderVersion": "5.2.2",
+    "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
+    "emscriptenVersion": "4.0.23",
+    "emsdkRevision": "fb4a370163946039f9b51e3ddc9939ce78cb5a41",
+    "reference": "Desktop Blender CPU render, factory startup scene with the recorded resolution and sample settings",
+    "imageSHA256": "1bde65f7c86e7132f2c91738cb19db192c15c9af843243dcb45b5de27c0dc31b"
+  },
+  "downloadSize": {
+    "renderBytes": 199930451,
+    "uiFallbackBytes": 199926213,
+    "files": [
+      {
+        "name": "assets/656d089684b1079cf65a/blender.js",
+        "bytes": 723280,
+        "sha256": "41893d0ccac152bdf403175f928cff475242c77328b0082cd4bff682b1ae8b7b"
+      },
+      {
+        "name": "assets/656d089684b1079cf65a/blender.wasm",
+        "bytes": 124769805,
+        "sha256": "9d50a30b5a44e627bf4a035b681f448d9818c45ae11dc4e6556e5ec503502ef5"
+      },
+      {
+        "name": "assets/656d089684b1079cf65a/blender.data",
+        "bytes": 74437366,
+        "sha256": "6d7eb5804873e2291ee568fe07ab9e1b6e594d8e5cfde5743833bac3b731af06"
+      },
+      {
+        "name": "assets/656d089684b1079cf65a/blender-ui.js",
+        "bytes": 719042,
+        "sha256": "fa1a4743642a4db03967dfcaf5c041479dc4b0dda8a14bcd3497e7b76417f77f"
+      },
+      {
+        "name": "assets/656d089684b1079cf65a/blender-ui.wasm",
+        "bytes": 124769805,
+        "sha256": "9d50a30b5a44e627bf4a035b681f448d9818c45ae11dc4e6556e5ec503502ef5"
+      }
+    ]
+  },
+  "patchHashes": {
+    "ghost-web.patch": "20ac3be393babb2a4839e34dcaaec44a426c82843677a22dc8099866bf88042b",
+    "native-cycles.patch": "062ad4f57c1c70dd53cd39044db00bbec4b78c3fe638e413f05f416a3c277a43",
+    "native-files.patch": "0ad7c1ce76abed4cc2d29e6f60346b98aed2eb2a5361ea650aca7529420b1cb5",
+    "native-modeling.patch": "fc283434af6676034c6695e0504569048a819f4f73d0390d9a3527ba294079bb",
+    "native-portability.patch": "f4cbb70f573d67b98b5ad834de2ae61a47509c5e8b9cf4b208bfd5ea2c9a57a7",
+    "native-python-clock.patch": "54ade682e6b19207eaca638637fc0652e64d2d0c078c1364201e516c33323930",
+    "native-render.patch": "0d91beb3d1154ae930ab181c19d9b08fc351b33f269df26537525a3277306e08",
+    "native-ui.patch": "7d16584318f8c7ee10718ec86a1187a3b5fe15e08061a1da8f695953a81e1238",
+    "native-web.patch": "9367abc01b9d9674b1f6949e9b897a7ee669a0f4164063ae91c9dd2af27078d7"
+  },
+  "limitations": [
+    "Cycles CPU acceptance uses the factory cube at 128x128 and 16 samples, with denoising and adaptive sampling disabled.",
+    "Cycles GPU, denoising, progressive display and rendered viewport are not supported.",
+    "Final rendering requires the JSPI bundle in current desktop Chromium.",
+    "NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.",
+    "Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.",
+    "Functional checks ran with other host activity and are not an isolated performance benchmark."
+  ],
+  "deploymentArchive": {
+    "name": "blender-web-pages.tar.gz",
+    "bytes": 102165244,
+    "sha256": "5aeb7c75efde080cbfc594a46166efe458a67076e66445756f1d179cdfccdf9b"
   }
 }

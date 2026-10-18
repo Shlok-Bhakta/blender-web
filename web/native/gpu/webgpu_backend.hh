@@ -24,11 +24,13 @@
 #include "gpu_capabilities_private.hh"
 #include "gpu_platform_private.hh"
 #include "gpu_shader_private.hh"
+#include "gpu_state_private.hh"
 
 #include "webgpu_batch.hh"
 #include "webgpu_context.hh"
 #include "webgpu_framebuffer.hh"
 #include "webgpu_index_buffer.hh"
+#include "webgpu_pixel_buffer.hh"
 #include "webgpu_shader.hh"
 #include "webgpu_storage_buffer.hh"
 #include "webgpu_texture.hh"
@@ -41,6 +43,21 @@
 #include "gpu_query.hh"
 
 namespace blender::gpu {
+
+class WebGPUFence : public Fence {
+ public:
+  void signal() override
+  {
+    if (WebGPUContext *context = WebGPUContext::get()) context->submit();
+    signalled_ = true;
+  }
+  void wait() override
+  {
+    if (!signalled_) return;
+    if (WebGPUContext *context = WebGPUContext::get()) context->wait_for_queue();
+    signalled_ = false;
+  }
+};
 
 /* Real WebGPU occlusion queries with ONE-ROUND-STALE results: the async resolve
  * of round N is served to round N+1 (get_occlusion_result is synchronous but
@@ -660,9 +677,8 @@ class WebGPUBackend : public GPUBackend {
 
   IndexBuf *indexbuf_alloc() override { return new WebGPUIndexBuf; }
 
-  /* TODO: still stubs — implement as the render path starts exercising them. */
-  Fence *fence_alloc() override { return nullptr; }
-  PixelBuffer *pixelbuf_alloc(size_t /*size*/) override { return nullptr; }
+  Fence *fence_alloc() override { return new WebGPUFence; }
+  PixelBuffer *pixelbuf_alloc(size_t size) override { return new WebGPUPixelBuffer(size); }
   /* Occlusion queries: WebGPU supports them, but reading results back is async
    * (ResolveQuerySet → buffer map) while get_occlusion_result() is synchronous —
    * same no-JSPI wall as all readbacks. Return a counting stub with zero

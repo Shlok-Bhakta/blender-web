@@ -15,26 +15,43 @@ batches. The static site's
 | Native `.blend` persistence | Enabled | Save physics scene to OPFS and reopen after browser reload |
 | Device file picker, uploads and downloads | Deferred | Native file IO currently sees WasmFS; connect user-selected device files and exported results to browser APIs |
 | Automatic `.blend` thumbnails | Deferred | Synchronous preview generation hangs outside a browser GPU job; a guarded GHOST save hook skips capture and restores the user's preview preference |
-| FBX Python exporter and NumPy/process-dependent add-ons | Deferred | Port NumPy, validate extension modules and adapt process-dependent code to browser workers; native FBX import is separate |
+| NumPy and FBX Python exporter | Enabled | Static NumPy extensions, linear algebra, FFT, both random APIs, RNA array transfer and FBX export/native import round trip |
+| Process-dependent add-ons and extension marketplace | Deferred | Native subprocesses, multiprocessing and arbitrary dynamic extensions are unavailable; the marketplace downloader currently reports a Python startup error |
 | OpenSubdiv CPU | Enabled | Catmull-Clark cubes at levels 1–3, simple subdivision, open boundaries and native viewport drawing |
 | OpenSubdiv GPU | Deferred | Patch-basis shaders and evaluator/draw validation for WebGPU; the platform selects CPU evaluation |
-| GMP, Manifold, remeshing and UV SLIM | Deferred | Compile dependencies and validate the corresponding geometry operations |
+| GMP and Manifold Boolean solvers | Enabled | Both solvers: union, intersection and difference with volume, bounds and closed-mesh checks |
+| Octree remeshing, QuadriFlow and UV SLIM | Enabled | Smooth/sharp remesh, closed quad topology and minimum-stretch UV unwrap |
 | OpenVDB, NanoVDB, fluids and ocean simulation | Deferred | Port volume/FFT dependencies and measure memory use on real scenes |
 | USD, Alembic, Hydra and MaterialX | Deferred | Port dependencies, file IO and applicable rendering integration |
 | Audio, FFmpeg, video and time stretching | Deferred | Codec libraries plus browser audio/device integration |
-| Cycles CPU | Deferred | Wasm kernel/dependency work and image correctness checks |
+| Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
+| Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
 | Tracking, Freestyle and remaining image/vector formats | Deferred | Build dependencies and exercise actual operations |
 | Translation, text shaping and IME | Deferred | HarfBuzz/FriBidi and browser text input integration |
 | Additional windows, NDOF devices and XR | Deferred | Browser platform/device integration |
 
-The next dependency batches should start with GMP and Manifold for geometry
-operations, then NumPy for Python tools and add-ons. After that, prioritize
-OpenVDB/NanoVDB and FFTW for volumes and simulation, followed by Alembic and USD
-for scene exchange. Each batch needs real operation and file round-trip checks.
-FFmpeg/audio also needs browser playback integration. Cycles CPU is a separate
-kernel port, and Cycles GPU needs a WebGPU device implementation. Larger downloads
-alone do not enable these features. The next batches remain unported.
+GMP 6.3.0, Manifold 3.5.2 and NumPy 2.3.4 follow the pinned release's
+versions and checksums. NumPy uses its original numeric code as static CPython
+extensions. Its linear algebra build uses bundled routines without BLAS.
+The shared Wasm SIMD and pthread settings also apply to these libraries.
+
+Cycles uses its CPU kernels and worker pool. Native CUDA, HIP, Metal and oneAPI
+devices are disabled. Eevee's WebGPU backend does not supply a Cycles GPU device.
+The session controller stays on the UI worker, which owns browser GPU handles.
+CPU final renders write through Blender's original output driver, then the Image
+Editor displays the completed result. Progressive GPU display is disabled because
+CPython's JavaScript function-call trampoline cannot suspend for GPU waits.
+Selecting a Cycles rendered viewport reports an unsupported-mode error.
+The WebGPU binding adapter also handles the final single-level mipmap dispatch.
+Blender binds its unused second output to the first output's texture; WebGPU
+requires distinct writable bindings, so the adapter supplies unused storage for
+that second output. The 128-pixel Cycles Image Editor check exercises this case.
+
+The next dependency groups are OpenVDB/NanoVDB and FFTW for volumes and
+simulation, followed by Alembic and USD for scene exchange. Audio and FFmpeg also
+need browser playback integration. Device file selection and download/export
+integration remain separate from the persistent browser filesystem.
 
 The restored Bullet, IK and importer code is already part of the pinned Blender
 source. It compiles with the existing Wasm SIMD, pthread and exception settings.
@@ -55,32 +72,57 @@ Set `WEB_FEATURE_PROFILE=1` to capture a Chromium V8 CPU trace in the evidence
 directory while diagnosing a stalled operation.
 
 
-The [verified build report](../docs/web-features.acceptance.json) records bundle
-`4ef171e2e987d290773b` under Chromium 145.0.7632.6. Both render and fallback UI
-bundles passed six native subdivision fixtures, import/export, IK, Bullet and
-save/reopen checks on SwiftShader. The render bundle also passed on AMD gcn-5,
-including drawing a subdivided cube with the GPU subdivision preference enabled.
-GHOST selects the CPU evaluator until WebGPU subdivision shaders are supported.
+[Watch the browser walkthrough](../docs/modeling-cycles-walkthrough.mp4).
+It shows both Boolean solvers cutting a cylinder through a cube, QuadriFlow's
+quad edges, a NumPy-generated wave, saving that wave as a native `.blend`,
+reloading offline and reopening it, then a Cycles CPU render.
 
-The UI checks passed rapid resizes, canvas-only layout changes, zero-height
-recovery, and display densities of 1, 1.25 and 2 on both bundles. The render
-bundle also passed those checks on the hardware adapter. They compare GHOST's
-logical window size, Blender's physical editor bounds and UI scale, and WebGPU
-backbuffer sizes. Each resize must draw the selected cube before further input.
-After startup, the page contains only Blender's canvas. The local server now
-opens the native application by default; the old preview fixture needs an
-explicit directory.
+<!-- WEB_RECORDING_CHAPTERS -->
+| Time | What to inspect |
+| --- | --- |
+| 0:00 | Loading Blender; runtime files are cached for later visits |
+| 0:23 | Original Blender UI and default cube |
+| 0:31 | GMP exact Boolean: cylinder cut through a cube |
+| 0:39 | Manifold Boolean: the same cylinder cut |
+| 0:46 | Native QuadriFlow remeshing: visible quad edges |
+| 0:52 | NumPy builds a 1,600-vertex wave inside Blender |
+| 0:59 | Save a native .blend file to persistent browser storage |
+| 1:03 | Offline reload: cached Blender starts with no network |
+| 1:18 | Reopen the saved NumPy wave after an offline reload |
+| 1:30 | Cycles CPU render: 128 x 128, 16 samples. Checked against desktop Blender. |
+<!-- /WEB_RECORDING_CHAPTERS -->
 
-The hardware Eevee check starts at 2× display density and sends three window-size
-changes while the native GPU job is running. Its factory 1920×1080, 64-sample PNG
-matches the earlier reference pixel for pixel, with unchanged scene and render
-settings. The [browser recording](../docs/eevee-hidpi-resize.mp4) shows that check.
-These are functional regression checks, not a new repeated performance benchmark.
+The [acceptance report](../docs/web-features.acceptance.json) records the tested
+bundle, exact runtime hashes, browser adapters, modeling results, rendering
+comparisons and recording checksum. Its build uses the original pinned Blender
+5.2.2 release. Both render and fallback UI bundles exercise native import/export,
+FBX round trips, IK, Bullet, subdivision, Booleans, remeshing, UV SLIM, NumPy and
+save/reopen. The render bundle also runs those operations on the AMD adapter.
 
-The render Wasm grew from 109,574,040 to 110,074,709 bytes, an increase of
-500,669 bytes, or 0.48 MiB and 0.46%. Runtime data size is unchanged. Dependency
-license notices are stored in the cached install prefix and published with the
-site; a check also restores a prefix without its dependency sources.
+Resize checks cover rapid changes, zero-height recovery and display densities
+of 1, 1.25 and 2. They compare GHOST's logical window size, Blender's editor
+bounds and UI scale, and WebGPU backbuffer sizes. Each resize must draw the cube
+before further input. The page contains only Blender's canvas after startup.
+
+The hardware Eevee check uses the factory 1920×1080, 64-sample scene, starts at
+2× display density and changes window size during the GPU job. Its saved PNG is
+compared pixel for pixel with the earlier reference. The Cycles CPU check uses
+128×128, 16 samples, seed 0, with denoising and adaptive sampling disabled. Its
+saved PNG is compared with the same settings in desktop Blender 5.2.2. These are
+functional checks; host activity makes their timings unsuitable as an isolated
+performance benchmark.
+
+The selected runtime is about 190.7 MiB before HTTP compression, including
+Python, NumPy and Blender's data. Only one browser variant downloads. The two
+variants currently have identical Wasm bytes, so their content-hash cache entry
+can also be shared. The [cache report](../docs/loading-cache.acceptance.json)
+checks cold, warm, offline and browser-restart offline startup for both variants.
+
+![GMP exact Boolean in the browser](../docs/web-modeling-exact.png)
+
+![NumPy-generated geometry in Blender](../docs/web-modeling-numpy.png)
+
+![Cycles CPU result in Blender's Image Editor](../docs/cycles-browser.png)
 
 OpenSubdiv uses the release's pinned dependency and original CPU evaluator.
 The upstream edits add a guarded GHOST capability call and omit unused OpenGL

@@ -1,0 +1,50 @@
+{
+  "bundleVersion": "656d089684b1079cf65a",
+  "chapters": [
+    {
+      "seconds": 0.114,
+      "title": "Loading Blender; runtime files are cached for later visits"
+    },
+    {
+      "seconds": 23.321,
+      "title": "Original Blender UI and default cube"
+    },
+    {
+      "seconds": 31.814,
+      "title": "GMP exact Boolean: cylinder cut through a cube"
+    },
+    {
+      "seconds": 39.054,
+      "title": "Manifold Boolean: the same cylinder cut"
+    },
+    {
+      "seconds": 46.097,
+      "title": "Native QuadriFlow remeshing: visible quad edges"
+    },
+    {
+      "seconds": 52.662,
+      "title": "NumPy builds a 1,600-vertex wave inside Blender"
+    },
+    {
+      "seconds": 59.072,
+      "title": "Save a native .blend file to persistent browser storage"
+    },
+    {
+      "seconds": 63.687,
+      "title": "Offline reload: cached Blender starts with no network"
+    },
+    {
+      "seconds": 78.148,
+      "title": "Reopen the saved NumPy wave after an offline reload"
+    },
+    {
+      "seconds": 90.4,
+      "title": "Cycles CPU render: 128 x 128, 16 samples. Checked against desktop Blender."
+    }
+  ],
+  "durationSeconds": 99.36,
+  "bytes": 1942346,
+  "source": "Playwright browser recordings",
+  "captions": true,
+  "cyclesReferenceMeanAbsoluteError": 0.0008341471354166666
+}

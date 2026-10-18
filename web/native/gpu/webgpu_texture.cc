@@ -536,6 +536,22 @@ bool WebGPUTexture::init_internal(gpu::Texture *src,
   return view_ != nullptr;
 }
 
+void WebGPUTexture::update_sub(int offset[3], int extent[3], eGPUDataFormat format,
+                               GPUPixelBuffer *pixbuf)
+{
+  if (!pixbuf) return;
+  PixelBuffer *buffer = unwrap(pixbuf);
+  const uint64_t bytes = uint64_t(std::max(extent[0], 1)) *
+                         std::max(extent[1], 1) * std::max(extent[2], 1) *
+                         to_bytesize(format_, format);
+  if (bytes > buffer->get_size()) {
+    fprintf(stderr, "Blender WebGPU error: pixel buffer upload exceeds storage\n");
+    return;
+  }
+  update_sub(0, offset, extent, format, buffer->map());
+  buffer->unmap();
+}
+
 void WebGPUTexture::update_sub(int mip,
                                int offset[3],
                                int extent[3],

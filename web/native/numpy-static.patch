@@ -1,0 +1,60 @@
+--- a/meson.build
++++ b/meson.build
+@@ -38,7 +38,10 @@
+ endif
+ 
+ py = import('python').find_installation(pure: false)
+-py_dep = py.dependency()
++# The generator runs on the host; every extension uses the target Python ABI.
++py_dep = declare_dependency(include_directories: include_directories(
++  run_command('python3', '-c', 'import os; print(os.environ["BLENDER_WEB_PYTHON_INCLUDE"])', check: true).stdout().strip()
++))
+ 
+ if not cc.has_header('Python.h', dependencies: py_dep)
+   error('Cannot compile `Python.h`. Perhaps you need to install python-dev|python-devel')
+--- a/vendored-meson/meson/mesonbuild/modules/python.py
++++ b/vendored-meson/meson/mesonbuild/modules/python.py
+@@ -10,7 +10,7 @@
+ from .. import mesonlib
+ from .. import mlog
+ from ..options import UserFeatureOption
+-from ..build import known_shmod_kwargs, CustomTarget, CustomTargetIndex, BuildTarget, GeneratedList, StructuredSources, ExtractedObjects, SharedModule
++from ..build import known_shmod_kwargs, CustomTarget, CustomTargetIndex, BuildTarget, GeneratedList, StructuredSources, ExtractedObjects, SharedModule, StaticLibrary
+ from ..dependencies import NotFoundDependency
+ from ..dependencies.detect import get_dep_identifier, find_external_dependency
+ from ..dependencies.python import BasicPythonExternalProgram, python_factory, _PythonDependencyBase
+@@ -144,6 +144,12 @@
+     @typed_pos_args('python.extension_module', str, varargs=(str, mesonlib.File, CustomTarget, CustomTargetIndex, GeneratedList, StructuredSources, ExtractedObjects, BuildTarget))
+     @typed_kwargs('python.extension_module', *_MOD_KWARGS, _DEFAULTABLE_SUBDIR_KW, _LIMITED_API_KW, allow_unknown=True)
+     def extension_module_method(self, args: T.Tuple[str, T.List[BuildTargetSource]], kwargs: ExtensionModuleKw) -> 'SharedModule':
++        if os.environ.get('BLENDER_WEB_STATIC_NUMPY'):
++            kwargs.pop('subdir', None)
++            kwargs.pop('limited_api', None)
++            kwargs['install'] = False
++            kwargs = {key: value for key, value in kwargs.items() if key in StaticLibrary.known_kwargs}
++            return self.interpreter.build_target(self.current_node, args, kwargs, StaticLibrary)
+         if 'install_dir' in kwargs:
+             if kwargs['subdir'] is not None:
+                 raise InvalidArguments('"subdir" and "install_dir" are mutually exclusive')
+--- a/numpy/_core/meson.build
++++ b/numpy/_core/meson.build
+@@ -727,7 +727,7 @@
+ ]
+ if cc.get_argument_syntax() != 'msvc'
+   cpp_args_common += [
+-    '-fno-exceptions',  # no exception support
++    host_machine.system() == 'emscripten' ? '-fwasm-exceptions' : '-fno-exceptions',
+     '-fno-rtti',  # no runtime type information
+   ]
+ endif
+--- a/numpy/random/meson.build
++++ b/numpy/random/meson.build
+@@ -76,7 +76,7 @@
+       'src/distributions/distributions.c',
+       'src/legacy/legacy-distributions.c'
+     ],
+-    ['-DNP_RANDOM_LEGACY=1'], [npymath_lib],
++    ['-DNP_RANDOM_LEGACY=1', '-include', meson.current_source_dir() / 'blender-web-legacy.h'], [npymath_lib],
+   ],
+ ]
+ foreach gen: random_pyx_sources

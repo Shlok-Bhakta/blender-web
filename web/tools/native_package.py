@@ -23,6 +23,13 @@ def stage(base, source, prefix):
         shutil.copytree(origin, destination, ignore=shutil.ignore_patterns(
             '__pycache__', '*.pyc', 'test', 'tests', 'idlelib', 'tkinter',
             'turtledemo', 'ensurepip', 'config-3.13-*', '*.a', '*.xcf'))
+    shutil.copy2(source / 'intern/ghost/web/native/ghost/GHOST_WebClock.py',
+                 blender / 'scripts/modules/_bpy_ghost_web_clock.py')
+    # Cycles' Python engine is installed from intern/cycles, outside scripts/.
+    # Its CPU kernels are compiled into the binary; do not preload GPU sources.
+    cycles = source / 'intern/cycles/blender/addon'
+    shutil.copytree(cycles, blender / 'scripts/addons_core/cycles', dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
     for path in (blender / 'datafiles').rglob('*'):
         if path.is_file() and path.stat().st_size < 1024 and path.read_bytes().startswith(b'version https://git-lfs.github.com/spec/v1'):
             raise RuntimeError(f'Unhydrated Blender asset: {path}')
@@ -83,6 +90,8 @@ def collect(base, root):
     shutil.copy2(root / 'web/native/THIRD_PARTY.md', notices / 'THIRD_PARTY.md')
     upstream = base / 'source' if (base / 'source').is_dir() else root
     shutil.copy2(upstream / 'extern/ufbx/LICENSE', notices / 'ufbx-LICENSE.txt')
+    shutil.copytree(upstream / 'intern/cycles/doc/license', notices / 'cycles',
+                    dirs_exist_ok=True, ignore=shutil.ignore_patterns('CMakeLists.txt'))
     bullet = (upstream / 'extern/bullet2/src/btBulletDynamicsCommon.h').read_text()
     (notices / 'Bullet-LICENSE.txt').write_text(bullet.split('*/', 1)[0] + '*/\n')
     origins = list((base / 'deps').glob('*/source')) + list((base / 'gpu-deps/src').glob('*'))

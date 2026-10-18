@@ -16,6 +16,10 @@ function(blender_web_configure_application)
     "${CMAKE_PREFIX_PATH}/lib/libshaderc_combined.a"
     -Wl,--start-group ${absl_libs} -Wl,--end-group
   )
+  include("${CMAKE_PREFIX_PATH}/lib/blender-web-numpy/libraries.cmake")
+  target_include_directories(blender PRIVATE "${CMAKE_PREFIX_PATH}/include" ${PYTHON_INCLUDE_DIRS})
+  target_link_libraries(blender PRIVATE
+    -Wl,--start-group ${BLENDER_WEB_NUMPY_LIBRARIES} -Wl,--end-group)
   set_property(TARGET blender APPEND PROPERTY LINK_DEPENDS
     "${CMAKE_BINARY_DIR}/../assets.sha256"
     "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shader-cache.js")

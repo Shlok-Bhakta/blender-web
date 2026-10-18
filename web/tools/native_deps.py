@@ -37,6 +37,8 @@ RECIPES = {
     "ROBINMAP": ("", ["-DTSL_ROBIN_MAP_BUILD_TESTS=OFF"]),
     "TBB": ("", ["-DTBB_TEST=OFF", "-DTBB_EXAMPLES=OFF", "-DTBB_STRICT=OFF", "-DTBBMALLOC_BUILD=OFF", "-DTBBMALLOC_PROXY_BUILD=OFF", "-DTBB_ENABLE_IPO=OFF", "-DTBB_DISABLE_HWLOC_AUTOMATIC_SEARCH=ON"]),
     "OPENSUBDIV": ("", ["-DNO_EXAMPLES=ON", "-DNO_TUTORIALS=ON", "-DNO_REGRESSION=ON", "-DNO_PTEX=ON", "-DNO_DOC=ON", "-DNO_OMP=ON", "-DNO_TBB=OFF", "-DNO_CUDA=ON", "-DNO_OPENCL=ON", "-DNO_CLEW=ON", "-DNO_OPENGL=ON", "-DNO_METAL=ON", "-DNO_DX=ON", "-DNO_TESTS=ON", "-DNO_GLTESTS=ON", "-DNO_GLEW=ON", "-DNO_GLFW=ON"]),
+    "GMP": ("", ["--host=none", "--enable-cxx", "--disable-assembly", "--disable-shared", "--enable-static"]),
+    "MANIFOLD": ("", ["-DMANIFOLD_JSBIND=OFF", "-DMANIFOLD_CBIND=OFF", "-DMANIFOLD_PYBIND=OFF", "-DMANIFOLD_PAR=ON", "-DMANIFOLD_CROSS_SECTION=OFF", "-DMANIFOLD_EXPORT=OFF", "-DMANIFOLD_DEBUG=OFF", "-DMANIFOLD_TEST=OFF", "-DMANIFOLD_DOWNLOADS=OFF"]),
     "TIFF": ("", ["-Dtiff-tools=OFF", "-Dtiff-tests=OFF", "-Dtiff-contrib=OFF", "-Dtiff-docs=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djbig=OFF"]),
     "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0"]),
 }
@@ -44,14 +46,14 @@ RECIPES = {
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
 CXX_PACKAGES = {"FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
-                "OPENCOLORIO", "TBB", "OPENSUBDIV", "OPENIMAGEIO", "TIFF"}
+                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "OPENIMAGEIO", "TIFF"}
 
 
-def run(command, log):
+def run(command, log, cwd=None, env=None):
     with log.open("a") as output:
         output.write("\n" + " ".join(map(str, command)) + "\n")
         output.flush()
-        result = subprocess.run(list(map(str, command)), stdout=output, stderr=subprocess.STDOUT)
+        result = subprocess.run(list(map(str, command)), stdout=output, stderr=subprocess.STDOUT, cwd=cwd, env=env)
     if result.returncode:
         raise RuntimeError(f"Command failed; see {log}\n" + "\n".join(log.read_text().splitlines()[-45:]))
 
@@ -172,6 +174,17 @@ def build(args):
         if any(previous.get(key) != configuration.get(key) for key in ("toolchain", "sdk", "source")):
             shutil.rmtree(directory / "build", ignore_errors=True)
         configured.write_text(json.dumps(configuration, indent=2) + "\n")
+        if name == "GMP":
+            work = directory / 'build'
+            work.mkdir(exist_ok=True)
+            run(["env", "CC=emcc", "CXX=em++", "AR=emar", "RANLIB=emranlib", "NM=emnm",
+                 f"CFLAGS=-O3 {C_FLAGS}", f"CXXFLAGS=-O3 {CXX_FLAGS}",
+                 "emconfigure", source / 'configure', f"--prefix={prefix}",
+                 f"--srcdir={source}", *options], log, cwd=work)
+            run(["emmake", "make", f"-j{args.jobs}"], log, cwd=work)
+            run(["emmake", "make", "install"], log, cwd=work)
+            stamp.write_text(json.dumps(signature, indent=2) + "\n")
+            continue
         run(["emcmake", "cmake", "-S", source / subdir, "-B", directory / "build",
              f"-DCMAKE_TOOLCHAIN_FILE={ROOT / 'web/native/toolchain.cmake'}",
              f"-DCMAKE_INSTALL_PREFIX={prefix}", f"-DCMAKE_PREFIX_PATH={prefix}",

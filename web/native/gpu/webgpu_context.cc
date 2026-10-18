@@ -1605,6 +1605,15 @@ WGPUBindGroup WebGPUContext::build_bind_group(WebGPUShader *shader,
         WebGPUTexture *t = (slot >= 0 && slot < WEBGPU_MAX_IMAGE) ? bound_image_[slot] : nullptr;
         /* Storage bindings require a single-mip view. */
         e.textureView = t ? t->wgpu_storage_view() : nullptr;
+        /* The builtin generates up to two mip levels per dispatch. For its
+         * final single-level dispatch Blender binds the last mip to both output
+         * slots. Output 2 is unused, but WebGPU still rejects the writable alias.
+         * Give only that inactive binding distinct storage. */
+        if (slot == 2 && t != nullptr && t == bound_image_[1] &&
+            shader->name_get().startswith("gpu_shader_2D_update_mipmaps_"))
+        {
+          e.textureView = dummy_storage_view(b.storage_format, b.view_dim);
+        }
         /* Blender sometimes binds a dummy of a DIFFERENT format than the shader
          * declares (GL reinterprets; WebGPU rejects and the whole draw would be
          * dropped). Substitute a throwaway dummy of the declared format. */
@@ -2104,6 +2113,28 @@ bool WebGPUContext::read_color_sync(WGPUTexture tex,
 void WebGPUContext::flush()
 {
   submit();
+}
+
+void WebGPUContext::wait_for_queue()
+{
+  submit();
+  /* Outside a promising GPU job, fence consumers are ordered uploads/draws.
+   * They share this queue and WriteTexture has already copied its host bytes.
+   * No mapped GPU memory or native graphics interop is exposed to CPU callers. */
+  if (!queue_ || !emscripten_has_asyncify() || !GHOST_web_gpu_job_active()) return;
+  WGPUQueueWorkDoneCallbackInfo callback = {};
+  callback.mode = WGPUCallbackMode_WaitAnyOnly;
+  callback.callback = [](WGPUQueueWorkDoneStatus value, WGPUStringView, void *, void *) {
+    if (value != WGPUQueueWorkDoneStatus_Success) {
+      fprintf(stderr, "Blender WebGPU error: queue fence completion failed\n");
+    }
+  };
+  const WGPUFuture future = wgpuQueueOnSubmittedWorkDone(queue_, callback);
+  WGPUFutureWaitInfo info = {future, false};
+  if (wgpuInstanceWaitAny(webgpu_instance(), 1, &info, UINT64_MAX) != WGPUWaitStatus_Success)
+  {
+    fprintf(stderr, "Blender WebGPU error: queue fence failed\n");
+  }
 }
 
 void WebGPUContext::finish()

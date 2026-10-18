@@ -8,6 +8,7 @@ from pathlib import Path
 import subprocess
 
 from prepare import ROOT
+from native_numpy import build as build_numpy
 
 
 def build(base, jobs):
@@ -48,4 +49,6 @@ def build(base, jobs):
                     'sha256': hashlib.sha256(artifact.read_bytes()).hexdigest()})
             stamp.write_text(json.dumps(report, indent=2)+'\n')
         reports.append(json.loads(stamp.read_text()))
+        if name == 'python':
+            reports.append(build_numpy(base, jobs))
     (base / 'application-dependencies.json').write_text(json.dumps(reports, indent=2)+'\n')

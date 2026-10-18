@@ -169,8 +169,9 @@ def check_python(base, prefix):
     executable = base / "python-check.js"
     subprocess.run(["em++", "-O2", "-pthread", "-msimd128", "-fwasm-exceptions",
         f"-I{prefix / 'include/python3.13'}", f"-I{prefix / 'include'}", str(ROOT / "web/native/tests/python.cc"),
+        "-Wl,--start-group", *map(str, sorted((prefix / "lib/blender-web-numpy").glob("*.a"))),
         str(prefix / "lib/libpython3.13.a"), str(prefix / "lib/libexpat.a"),
-        str(prefix / "lib/libz.a"), "-sUSE_BZIP2=1",
+        str(prefix / "lib/libz.a"), "-Wl,--end-group", "-sUSE_BZIP2=1",
         "-sENVIRONMENT=node", "-sEXIT_RUNTIME=1", "-sALLOW_MEMORY_GROWTH=1",
         "-sSTACK_SIZE=8388608", "-sWASMFS=1", "-sFORCE_FILESYSTEM=1", "--preload-file",
         f"{base / 'assets/python3.13'}@/python/lib/python3.13", "-o", str(executable)], check=True)
@@ -203,7 +204,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -227,6 +228,19 @@ def prepare_native(base, full_assets=False):
             subprocess.run(["git", "lfs", "checkout", "release/datafiles/**"], cwd=source, check=True)
             asset_stamp.write_text(revision)
     return source
+
+
+def generate_rna_checkpoint(base, source, output=None):
+    # /fast bypasses CMake's dependency phase. Generate headers before any
+    # hand-written RNA objects compile, including on an empty CI build tree.
+    directory = output or base / "editor/source/blender/makesrna/intern"
+    directory.mkdir(parents=True, exist_ok=True)
+    subprocess.run([str(base / "editor/bin/makesrna.js"),
+                    str(source / "source/blender/makesdna") + "/",
+                    str(directory) + "/", str(directory.parent) + "/"],
+                   env={**os.environ, "_BLENDER_WEB_BUILD_": "1"}, check=True)
+    if not (directory.parent / "RNA_prototypes.hh").is_file():
+        raise RuntimeError("RNA generator did not produce its public prototype header")
 
 
 def main():
@@ -284,7 +298,7 @@ def main():
             subprocess.run([*command, "datatoc", "shader_tool", "makesrna"], check=True)
             # Make's upstream /fast rules compile each original archive without
             # recursively building every linked editor/render library first.
-            # bf_rna runs the original generator rules before the UI uses them.
+            generate_rna_checkpoint(base, source)
             for target in EDITOR_ARCHIVES:
                 subprocess.run([*command, f"{target}/fast"], check=True)
             archives = []
@@ -304,7 +318,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 

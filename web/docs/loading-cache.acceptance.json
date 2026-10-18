@@ -4,29 +4,38 @@
       {
         "mode": "cold",
         "networkRequests": 3,
-        "totalBytes": 179783951,
-        "cacheBytes": 661880,
-        "progressUpdates": 54,
+        "totalBytes": 199930451,
+        "cacheBytes": 723280,
+        "progressUpdates": 87,
         "canvasOnly": true,
-        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+        "bundleVersion": "656d089684b1079cf65a"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 179783951,
-        "cacheBytes": 179783951,
+        "totalBytes": 199930451,
+        "cacheBytes": 199930451,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+        "bundleVersion": "656d089684b1079cf65a"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 179783951,
-        "cacheBytes": 179783951,
+        "totalBytes": 199930451,
+        "cacheBytes": 199930451,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+        "bundleVersion": "656d089684b1079cf65a"
+      },
+      {
+        "mode": "restarted-offline",
+        "networkRequests": 0,
+        "totalBytes": 199930451,
+        "cacheBytes": 199930451,
+        "progressUpdates": 21,
+        "canvasOnly": true,
+        "bundleVersion": "656d089684b1079cf65a"
       }
     ],
     "browserErrors": []
@@ -36,29 +45,38 @@
       {
         "mode": "cold",
         "networkRequests": 3,
-        "totalBytes": 179779713,
-        "cacheBytes": 657642,
-        "progressUpdates": 56,
+        "totalBytes": 199926213,
+        "cacheBytes": 719042,
+        "progressUpdates": 117,
         "canvasOnly": true,
-        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+        "bundleVersion": "656d089684b1079cf65a"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 179779713,
-        "cacheBytes": 179779713,
-        "progressUpdates": 18,
+        "totalBytes": 199926213,
+        "cacheBytes": 199926213,
+        "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+        "bundleVersion": "656d089684b1079cf65a"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 179779713,
-        "cacheBytes": 179779713,
+        "totalBytes": 199926213,
+        "cacheBytes": 199926213,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+        "bundleVersion": "656d089684b1079cf65a"
+      },
+      {
+        "mode": "restarted-offline",
+        "networkRequests": 0,
+        "totalBytes": 199926213,
+        "cacheBytes": 199926213,
+        "progressUpdates": 21,
+        "canvasOnly": true,
+        "bundleVersion": "656d089684b1079cf65a"
       }
     ],
     "browserErrors": []
@@ -70,22 +88,149 @@
     "offline": true,
     "quotaFailureLoads": true
   },
-  "limitations": [
-    "Whole-file cache; interrupted files are downloaded again.",
-    "A changed Wasm binary is downloaded in full.",
-    "The browser can decline persistence or evict cached site data.",
-    "Old version caches are retained; automatic pruning is deferred."
-  ],
   "nativeRegression": {
-    "bundleVersion": "4d2a5eaab9fcb1fe29a4",
+    "variant": "render",
+    "hardware": false,
+    "adapter": {
+      "vendor": "google",
+      "architecture": "swiftshader",
+      "device": "",
+      "description": ""
+    },
     "browserVersion": "145.0.7632.6",
+    "bundleVersion": "656d089684b1079cf65a",
+    "measuredAt": "2026-10-18T21:00:57.510Z",
     "originalUI": true,
     "startupCube": true,
+    "webgpu": true,
+    "isolated": true,
+    "workers": 18,
+    "colors": 838,
     "resize": true,
+    "resizeChecks": [
+      {
+        "css": [
+          1040,
+          720
+        ],
+        "scale": 1,
+        "pixels": "1040x720",
+        "colors": 385,
+        "cubePixels": 480,
+        "window": [
+          1040,
+          720
+        ],
+        "editors": [
+          1038,
+          694
+        ],
+        "uiScale": 1
+      },
+      {
+        "css": [
+          960,
+          640
+        ],
+        "scale": 1,
+        "pixels": "960x640",
+        "colors": 438,
+        "cubePixels": 443,
+        "window": [
+          960,
+          640
+        ],
+        "editors": [
+          958,
+          614
+        ],
+        "uiScale": 1
+      },
+      {
+        "css": [
+          1040,
+          720
+        ],
+        "scale": 1,
+        "pixels": "1040x720",
+        "colors": 385,
+        "cubePixels": 480,
+        "window": [
+          1040,
+          720
+        ],
+        "editors": [
+          1038,
+          694
+        ],
+        "uiScale": 1
+      },
+      {
+        "css": [
+          1040,
+          720
+        ],
+        "scale": 2,
+        "pixels": "2080x1440",
+        "colors": 524,
+        "cubePixels": 2492,
+        "window": [
+          1040,
+          720
+        ],
+        "editors": [
+          2076,
+          1387
+        ],
+        "uiScale": 2
+      },
+      {
+        "css": [
+          1040,
+          720
+        ],
+        "scale": 1.25,
+        "pixels": "1300x900",
+        "colors": 544,
+        "cubePixels": 609,
+        "window": [
+          1040,
+          720
+        ],
+        "editors": [
+          1298,
+          867
+        ],
+        "uiScale": 1.25
+      },
+      {
+        "css": [
+          1040,
+          720
+        ],
+        "scale": 1,
+        "pixels": "1040x720",
+        "colors": 384,
+        "cubePixels": 480,
+        "window": [
+          1040,
+          720
+        ],
+        "editors": [
+          1038,
+          694
+        ],
+        "uiScale": 1
+      }
+    ],
     "canvasOnly": true,
     "browserErrors": 0,
     "nativePythonConsole": true,
     "persistentStorage": true,
     "offlineReload": true
-  }
+  },
+  "limitations": [
+    "Only complete runtime files are cached; interrupted files restart.",
+    "Browsers may evict storage. Old content is not yet automatically pruned."
+  ]
 }
