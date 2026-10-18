@@ -84,6 +84,7 @@ jobs:
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           mkdir -p build/native
+          python3 web/tests/dependency_download.py
           python3 web/tools/native_build.py --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
       - uses: actions/cache/save@v4
         if: steps.native-deps.outputs.cache-hit != 'true'

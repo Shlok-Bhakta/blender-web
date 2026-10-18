@@ -10,6 +10,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tarfile
+import urllib.error
 import urllib.request
 
 from prepare import ROOT
@@ -69,17 +70,27 @@ def download(entry, downloads):
     if "github.com/" in url and "/archive/" in url:
         repo, ref = url.split("github.com/", 1)[1].split("/archive/", 1)
         url = f"https://codeload.github.com/{repo}/tar.gz/{ref.removesuffix('.tar.gz')}"
+    urls = [url]
+    if url.startswith("https://gmplib.org/download/gmp/"):
+        # Some CI clients receive an HTTP-200 bot challenge from gmplib.org.
+        # GNU's mirror carries the same archive; keep Blender's exact checksum.
+        urls.append("https://ftp.gnu.org/gnu/gmp/" + entry["FILE"])
     temporary = archive.with_suffix(archive.suffix + ".partial")
-    try:
-        with urllib.request.urlopen(url, timeout=120) as response, temporary.open("wb") as output:
-            shutil.copyfileobj(response, output)
-        actual = hashlib.new(algorithm, temporary.read_bytes()).hexdigest()
-        if actual != entry["HASH"]:
-            raise RuntimeError(f"Checksum mismatch for {entry['FILE']}: {actual}")
-        temporary.replace(archive)
-    finally:
-        temporary.unlink(missing_ok=True)
-    return archive
+    failures = []
+    for url in urls:
+        try:
+            with urllib.request.urlopen(url, timeout=120) as response, temporary.open("wb") as output:
+                shutil.copyfileobj(response, output)
+            actual = hashlib.new(algorithm, temporary.read_bytes()).hexdigest()
+            if actual == entry["HASH"]:
+                temporary.replace(archive)
+                return archive
+            failures.append(f"Checksum mismatch from {url}: {actual}")
+        except (urllib.error.URLError, TimeoutError) as error:
+            failures.append(f"Download failed from {url}: {error}")
+        finally:
+            temporary.unlink(missing_ok=True)
+    raise RuntimeError(f"Cannot download {entry['FILE']}: " + "; ".join(failures))
 
 
 def install_notices(source, prefix, name):
