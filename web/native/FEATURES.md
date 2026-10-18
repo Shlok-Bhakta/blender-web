@@ -28,6 +28,14 @@ batches. The static site's
 | Translation, text shaping and IME | Deferred | HarfBuzz/FriBidi and browser text input integration |
 | Additional windows, NDOF devices and XR | Deferred | Browser platform/device integration |
 
+The next dependency batches should start with GMP and Manifold for geometry
+operations, then NumPy for Python tools and add-ons. After that, prioritize
+OpenVDB/NanoVDB and FFTW for volumes and simulation, followed by Alembic and USD
+for scene exchange. Each batch needs real operation and file round-trip checks.
+FFmpeg/audio also needs browser playback integration. Cycles CPU is a separate
+kernel port, and Cycles GPU needs a WebGPU device implementation. Larger downloads
+alone do not enable these features. The next batches remain unported.
+
 The restored Bullet, IK and importer code is already part of the pinned Blender
 source. It compiles with the existing Wasm SIMD, pthread and exception settings.
 No feature-specific edits to upstream algorithms are required for this group.

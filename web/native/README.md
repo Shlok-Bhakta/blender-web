@@ -46,8 +46,37 @@ Desktop Chromium is the initial validation target. iOS Safari needs device testi
 Runtime scripts, fonts, color-management data, and Python's standard library are
 packaged into the preload data file. User files live under `/user/blender-web/home` in WasmFS's
 OPFS backend. If persistent storage is unavailable, that session uses memory.
-The loader caches versioned JS/Wasm/data in Cache Storage and translated WGSL in
-IndexedDB. Versioned URLs keep a tab's code and data matched across deployments.
+The loader shows byte progress for the selected JS/Wasm/data bundle, including
+bytes reused from cache. After downloading it shows startup status until the
+first Blender frame, then removes the loading overlay completely. Sizes are
+uncompressed runtime bytes, not compressed network transfer sizes.
+
+The service worker caches each complete runtime file in Cache Storage under its
+SHA-256 content hash. Versioned request URLs keep a tab's code and data matched
+across deployments; unchanged files reuse the same stored response even when a
+new shell or another library changes the build version. Old tabs retain access
+to their original cached files after a new worker activates. A cache write runs
+alongside the response so Wasm streaming compilation can start immediately.
+Only the selected render or fallback runtime is fetched. Interrupted files must
+be fetched again; this does not yet resume downloads at arbitrary byte offsets.
+
+Warm and offline reloads need no runtime asset network requests. Translated WGSL
+is cached separately in IndexedDB, and user files use OPFS. The loader requests
+persistent storage, but browsers can decline or evict site storage. If a runtime
+cache write fails, the download still loads and the overlay reports that it
+could not be saved. Existing version caches remain available; old content is not
+yet automatically pruned. The first visit after upgrading from the previous
+URL-based cache format downloads the selected runtime once.
+
+Run `node web/tests/loading.cjs` for cold, warm and offline startup checks against
+the native server. Set `WEB_TEST_UI_FALLBACK=1` to check the other runtime. Run
+`node web/tests/cache.cjs` for a small deployment fixture that checks reuse across
+versions, old-tab offline reads, changed-file downloads and quota failures.
+The [startup/cache report](../docs/loading-cache.acceptance.json) records both
+runtimes fetching three files on a cold start and zero runtime asset network
+requests on warm and offline starts. Every start reached Blender's first frame.
+
+![Blender download progress](../docs/loading-progress.png)
 
 All upstream changes live in guarded patch files in `web/patches/`. New platform,
 GPU, startup, and build code lives under `intern/ghost/web` and `web/native`, then

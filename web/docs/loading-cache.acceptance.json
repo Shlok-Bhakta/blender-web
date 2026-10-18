@@ -1,0 +1,91 @@
+{
+  "render": {
+    "runs": [
+      {
+        "mode": "cold",
+        "networkRequests": 3,
+        "totalBytes": 179783951,
+        "cacheBytes": 661880,
+        "progressUpdates": 54,
+        "canvasOnly": true,
+        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+      },
+      {
+        "mode": "warm",
+        "networkRequests": 0,
+        "totalBytes": 179783951,
+        "cacheBytes": 179783951,
+        "progressUpdates": 21,
+        "canvasOnly": true,
+        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+      },
+      {
+        "mode": "offline",
+        "networkRequests": 0,
+        "totalBytes": 179783951,
+        "cacheBytes": 179783951,
+        "progressUpdates": 21,
+        "canvasOnly": true,
+        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+      }
+    ],
+    "browserErrors": []
+  },
+  "uiFallback": {
+    "runs": [
+      {
+        "mode": "cold",
+        "networkRequests": 3,
+        "totalBytes": 179779713,
+        "cacheBytes": 657642,
+        "progressUpdates": 56,
+        "canvasOnly": true,
+        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+      },
+      {
+        "mode": "warm",
+        "networkRequests": 0,
+        "totalBytes": 179779713,
+        "cacheBytes": 179779713,
+        "progressUpdates": 18,
+        "canvasOnly": true,
+        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+      },
+      {
+        "mode": "offline",
+        "networkRequests": 0,
+        "totalBytes": 179779713,
+        "cacheBytes": 179779713,
+        "progressUpdates": 21,
+        "canvasOnly": true,
+        "bundleVersion": "4d2a5eaab9fcb1fe29a4"
+      }
+    ],
+    "browserErrors": []
+  },
+  "deployments": {
+    "crossDeploymentReuse": true,
+    "oldTabOffline": true,
+    "changedFileDownloads": 1,
+    "offline": true,
+    "quotaFailureLoads": true
+  },
+  "limitations": [
+    "Whole-file cache; interrupted files are downloaded again.",
+    "A changed Wasm binary is downloaded in full.",
+    "The browser can decline persistence or evict cached site data.",
+    "Old version caches are retained; automatic pruning is deferred."
+  ],
+  "nativeRegression": {
+    "bundleVersion": "4d2a5eaab9fcb1fe29a4",
+    "browserVersion": "145.0.7632.6",
+    "originalUI": true,
+    "startupCube": true,
+    "resize": true,
+    "canvasOnly": true,
+    "browserErrors": 0,
+    "nativePythonConsole": true,
+    "persistentStorage": true,
+    "offlineReload": true
+  }
+}

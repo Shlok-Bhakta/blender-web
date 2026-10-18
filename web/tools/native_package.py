@@ -69,7 +69,9 @@ def collect(base, root):
     for path in shell.iterdir():
         output = destination / path.name
         if path.name == 'sw.js':
-            output.write_text(path.read_text().replace('__VERSION__', version))
+            output.write_text(path.read_text().replace('__VERSION__', version).replace(
+                '__ASSETS__', json.dumps({entry['name']: {'sha256': entry['sha256'], 'bytes': entry['bytes']}
+                                         for entry in files})))
         else:
             shutil.copy2(path, output)
     notices = destination / 'licenses'
