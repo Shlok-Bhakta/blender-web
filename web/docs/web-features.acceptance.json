@@ -1,0 +1,631 @@
+{
+  "bundleVersion": "86de92adb2a96198e4ab",
+  "blenderVersion": "5.2.2",
+  "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
+  "emscriptenVersion": "4.0.23",
+  "featureVariants": [
+    {
+      "buildOptions": {
+        "bullet": true,
+        "io_wavefront_obj": true,
+        "io_stl": true,
+        "io_ply": true,
+        "io_fbx": true
+      },
+      "importExport": {
+        "obj": {
+          "bytes": 923,
+          "vertices": 8,
+          "polygons": 6,
+          "uniquePositions": 8,
+          "surfaceArea": 24.00000000000006,
+          "volume": 8.000000238418608,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ]
+          ]
+        },
+        "stl": {
+          "bytes": 684,
+          "vertices": 8,
+          "polygons": 12,
+          "uniquePositions": 8,
+          "surfaceArea": 24,
+          "volume": 8,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "ply": {
+          "bytes": 632,
+          "vertices": 14,
+          "polygons": 6,
+          "uniquePositions": 8,
+          "surfaceArea": 24,
+          "volume": 8,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "fbx": {
+          "bytes": 701,
+          "edgeLengths": [
+            1,
+            1,
+            1.4142135623730951
+          ],
+          "vertices": 3,
+          "polygons": 1,
+          "uniquePositions": 3,
+          "surfaceArea": 0.5,
+          "volume": 0,
+          "bounds": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "ik": {
+        "LEGACY": [
+          {
+            "target": [
+              1,
+              1,
+              0
+            ],
+            "endpoint": [
+              1.0000383853912354,
+              1.000020980834961,
+              -4.791030107907136e-21
+            ],
+            "error": 4.374509910777551e-05
+          },
+          {
+            "target": [
+              -0.75,
+              1.25,
+              0
+            ],
+            "endpoint": [
+              -0.7500970363616943,
+              1.2500967979431152,
+              -2.778003369198088e-20
+            ],
+            "error": 0.00013706165503967233
+          }
+        ],
+        "ITASC": [
+          {
+            "target": [
+              1,
+              1,
+              0
+            ],
+            "endpoint": [
+              1.0002764463424683,
+              1.0001600980758667,
+              5.663303437577727e-19
+            ],
+            "error": 0.0003194588771036091
+          },
+          {
+            "target": [
+              -0.75,
+              1.25,
+              0
+            ],
+            "endpoint": [
+              -0.7502056360244751,
+              1.2502079010009766,
+              7.783308927920375e-19
+            ],
+            "error": 0.00029241922092943824
+          }
+        ]
+      },
+      "rigidBody": {
+        "heights": {
+          "1": 4,
+          "10": 3.3060760498046875,
+          "50": 0.5,
+          "100": 0.5
+        },
+        "frames": 100,
+        "collision": true
+      },
+      "blendFile": {
+        "path": "/user/blender-web/home/web-feature-scene.blend",
+        "bytes": 99953,
+        "saves": 2,
+        "backupBytes": 99946,
+        "previewPreferencePreserved": true,
+        "expectedObjects": [
+          "WebFallingCube",
+          "WebFloor"
+        ],
+        "compression": "zstd",
+        "sha256": "d2cdb23bacd2f55e57767a1d8f3e9f4f50cb05fc110242c33cd6b249b59e23a6",
+        "reopenedAfterBrowserReload": true
+      },
+      "bundleVersion": "86de92adb2a96198e4ab",
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-18T05:05:28.890Z",
+      "variant": "render",
+      "wasmBytes": 109574040,
+      "browserErrors": 0
+    },
+    {
+      "buildOptions": {
+        "bullet": true,
+        "io_wavefront_obj": true,
+        "io_stl": true,
+        "io_ply": true,
+        "io_fbx": true
+      },
+      "importExport": {
+        "obj": {
+          "bytes": 923,
+          "vertices": 8,
+          "polygons": 6,
+          "uniquePositions": 8,
+          "surfaceArea": 24.00000000000006,
+          "volume": 8.000000238418608,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ],
+            [
+              -1.0000001192092896,
+              1.0000001192092896
+            ]
+          ]
+        },
+        "stl": {
+          "bytes": 684,
+          "vertices": 8,
+          "polygons": 12,
+          "uniquePositions": 8,
+          "surfaceArea": 24,
+          "volume": 8,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "ply": {
+          "bytes": 632,
+          "vertices": 14,
+          "polygons": 6,
+          "uniquePositions": 8,
+          "surfaceArea": 24,
+          "volume": 8,
+          "bounds": [
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        "fbx": {
+          "bytes": 701,
+          "edgeLengths": [
+            1,
+            1,
+            1.4142135623730951
+          ],
+          "vertices": 3,
+          "polygons": 1,
+          "uniquePositions": 3,
+          "surfaceArea": 0.5,
+          "volume": 0,
+          "bounds": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "ik": {
+        "LEGACY": [
+          {
+            "target": [
+              1,
+              1,
+              0
+            ],
+            "endpoint": [
+              1.0000383853912354,
+              1.000020980834961,
+              -4.791030107907136e-21
+            ],
+            "error": 4.374509910777551e-05
+          },
+          {
+            "target": [
+              -0.75,
+              1.25,
+              0
+            ],
+            "endpoint": [
+              -0.7500970363616943,
+              1.2500967979431152,
+              -2.778003369198088e-20
+            ],
+            "error": 0.00013706165503967233
+          }
+        ],
+        "ITASC": [
+          {
+            "target": [
+              1,
+              1,
+              0
+            ],
+            "endpoint": [
+              1.0002764463424683,
+              1.0001600980758667,
+              5.663303437577727e-19
+            ],
+            "error": 0.0003194588771036091
+          },
+          {
+            "target": [
+              -0.75,
+              1.25,
+              0
+            ],
+            "endpoint": [
+              -0.7502056360244751,
+              1.2502079010009766,
+              7.783308927920375e-19
+            ],
+            "error": 0.00029241922092943824
+          }
+        ]
+      },
+      "rigidBody": {
+        "heights": {
+          "1": 4,
+          "10": 3.3060760498046875,
+          "50": 0.5,
+          "100": 0.5
+        },
+        "frames": 100,
+        "collision": true
+      },
+      "blendFile": {
+        "path": "/user/blender-web/home/web-feature-scene.blend",
+        "bytes": 99865,
+        "saves": 2,
+        "backupBytes": 99921,
+        "previewPreferencePreserved": true,
+        "expectedObjects": [
+          "WebFallingCube",
+          "WebFloor"
+        ],
+        "compression": "zstd",
+        "sha256": "661db1972ac9f6be5e0e0fd101c0efcbaf0b2eb043827b94121d186ae36c0578",
+        "reopenedAfterBrowserReload": true
+      },
+      "bundleVersion": "86de92adb2a96198e4ab",
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-18T05:06:32.278Z",
+      "variant": "ui",
+      "wasmBytes": 109574040,
+      "browserErrors": 0
+    }
+  ],
+  "nativeChecks": {
+    "expressions": {
+      "expressionCases": 21
+    },
+    "shaderProcessor": {
+      "shaderProcessorCases": 2,
+      "hostMatchesWasm": true
+    },
+    "imageCache": {
+      "imageCacheNamespaces": true
+    }
+  },
+  "uiChecks": [
+    {
+      "variant": "render",
+      "originalUI": true,
+      "startupCube": true,
+      "webgpu": true,
+      "isolated": true,
+      "workers": 18,
+      "colors": 829,
+      "resize": true,
+      "nativePythonConsole": true,
+      "persistentStorage": true,
+      "offlineReload": true
+    },
+    {
+      "variant": "ui",
+      "originalUI": true,
+      "startupCube": true,
+      "webgpu": true,
+      "isolated": true,
+      "workers": 18,
+      "colors": 829,
+      "resize": true,
+      "nativePythonConsole": true,
+      "persistentStorage": true,
+      "offlineReload": true
+    }
+  ],
+  "eevee": {
+    "browserVersion": "145.0.7632.6",
+    "bundleVersion": "86de92adb2a96198e4ab",
+    "engine": "BLENDER_EEVEE",
+    "settingsUnchanged": true,
+    "width": 1920,
+    "height": 1080,
+    "samples": 64,
+    "renderSeconds": 8.271,
+    "renderRuns": [
+      8.271
+    ],
+    "adapter": {
+      "vendor": "amd",
+      "architecture": "gcn-5",
+      "device": "",
+      "description": "",
+      "features": [
+        "depth32float-stencil8",
+        "rg11b10ufloat-renderable",
+        "texture-formats-tier1",
+        "bgra8unorm-storage",
+        "chromium-experimental-multi-draw-indirect",
+        "texture-compression-bc",
+        "dual-source-blending",
+        "core-features-and-limits",
+        "chromium-experimental-timestamp-query-inside-passes",
+        "float32-filterable",
+        "indirect-first-instance",
+        "float32-blendable",
+        "texture-compression-etc2",
+        "depth-clip-control",
+        "texture-compression-bc-sliced-3d",
+        "texture-formats-tier2",
+        "timestamp-query",
+        "clip-distances",
+        "shader-f16",
+        "primitive-index",
+        "texture-component-swizzle",
+        "subgroups"
+      ],
+      "maxComputeInvocationsPerWorkgroup": 1024,
+      "maxStorageTexturesPerShaderStage": 8,
+      "maxStorageBufferBindingSize": 2147483648
+    },
+    "foregroundPixels": 244885,
+    "opaquePixels": 2073600,
+    "browserErrors": 0,
+    "clipStart": 20.076,
+    "clipEnd": 39.492,
+    "defaults": {
+      "engine": "BLENDER_EEVEE",
+      "width": 1920,
+      "height": 1080,
+      "percent": 100,
+      "samples": 64,
+      "frame": 1,
+      "camera": "Camera",
+      "display": "WINDOW",
+      "view_transform": "AgX",
+      "look": "None",
+      "exposure": 0,
+      "gamma": 1,
+      "objects": [
+        {
+          "name": "Camera",
+          "type": "CAMERA",
+          "location": [
+            7.358891487121582,
+            -6.925790786743164,
+            4.958309173583984
+          ],
+          "rotation": [
+            1.1093189716339111,
+            0,
+            0.8149281740188599
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "name": "Cube",
+          "type": "MESH",
+          "location": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "name": "Light",
+          "type": "LIGHT",
+          "location": [
+            4.076245307922363,
+            1.0054539442062378,
+            5.903861999511719
+          ],
+          "rotation": [
+            0.6503279805183411,
+            0.055217113345861435,
+            1.8663908243179321
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "light_energy": 1000,
+      "camera_lens": 50,
+      "eevee": {
+        "gi_diffuse_bounces": 3,
+        "gi_cubemap_resolution": "512",
+        "gi_visibility_resolution": "32",
+        "gi_glossy_clamp": 0,
+        "gi_irradiance_pool_size": "16",
+        "taa_samples": 16,
+        "taa_render_samples": 64,
+        "use_taa_reprojection": true,
+        "ray_tracing_method": "SCREEN",
+        "use_shadow_jitter_viewport": false,
+        "clamp_surface_direct": 0,
+        "clamp_surface_indirect": 10,
+        "clamp_volume_direct": 0,
+        "clamp_volume_indirect": 0,
+        "direct_light_intensity": 1,
+        "indirect_light_intensity": 1,
+        "volumetric_start": 0.10000000149011612,
+        "volumetric_end": 100,
+        "volumetric_tile_size": "8",
+        "volumetric_samples": 64,
+        "volumetric_sample_distribution": 0.800000011920929,
+        "volumetric_ray_depth": 16,
+        "volumetric_light_clamp": 0,
+        "use_volumetric_shadows": false,
+        "volumetric_shadow_samples": 16,
+        "use_volume_custom_range": false,
+        "use_fast_gi": true,
+        "fast_gi_thickness_near": 0.10000000149011612,
+        "fast_gi_quality": 0.25,
+        "fast_gi_step_count": 8,
+        "fast_gi_ray_count": 2,
+        "fast_gi_method": "GLOBAL_ILLUMINATION",
+        "fast_gi_distance": 0,
+        "fast_gi_bias": 0.05000000074505806,
+        "fast_gi_resolution": "2",
+        "bokeh_max_size": 100,
+        "bokeh_threshold": 1,
+        "bokeh_neighbor_max": 10,
+        "use_bokeh_jittered": false,
+        "bokeh_overblur": 5,
+        "motion_blur_depth_scale": 100,
+        "motion_blur_max": 32,
+        "motion_blur_steps": 1,
+        "use_shadows": true,
+        "shadow_pool_size": "512",
+        "shadow_ray_count": 1,
+        "shadow_step_count": 6,
+        "light_threshold": 0.009999999776482582,
+        "use_overscan": false,
+        "overscan_size": 3,
+        "use_raytracing": false,
+        "shadow_resolution_scale": 1
+      }
+    }
+  },
+  "eeveePixelComparison": {
+    "reference": "web/docs/eevee-default-scene-render.png",
+    "changedChannels": 0,
+    "maxChannelDelta": 0,
+    "pixelsEqual": true
+  },
+  "downloadSize": {
+    "previousBundleVersion": "196271829ccba0d61f46",
+    "previousWasmBytes": 107830788,
+    "currentWasmBytes": 109574040,
+    "addedBytes": 1743252,
+    "addedMiB": 1.6624946594238281,
+    "growthPercent": 1.6166551616037417
+  },
+  "limitations": [
+    "Automatic blend-file previews are skipped during Save; the preview preference is restored afterward.",
+    "Native file IO uses WasmFS/OPFS. Device file picker and download integration remain deferred.",
+    "Cycles and the other optional dependency ports remain deferred; see web/native/FEATURES.md."
+  ]
+}

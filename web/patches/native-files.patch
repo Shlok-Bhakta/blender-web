@@ -1,0 +1,25 @@
+diff --git a/source/blender/windowmanager/intern/wm_files.cc b/source/blender/windowmanager/intern/wm_files.cc
+index 39c8fa5df12..a061c5a58a5 100644
+--- a/source/blender/windowmanager/intern/wm_files.cc
++++ b/source/blender/windowmanager/intern/wm_files.cc
+@@ -155,6 +155,10 @@
+ 
+ #include "CLG_log.h"
+ 
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebFilePreview.hh"
++#endif
++
+ namespace blender {
+ 
+ static RecentFile *wm_file_history_find(const char *filepath);
+@@ -2102,6 +2106,9 @@ static bool wm_file_write(bContext *C,
+                           bool use_save_as_copy,
+                           ReportList *reports)
+ {
++#ifdef WITH_GHOST_WEB
++  GHOST_WebFilePreview web_file_preview(U.file_preview_type);
++#endif
+   Main *bmain = CTX_data_main(C);
+   BlendThumbnail *thumb = nullptr, *main_thumb = nullptr;
+   ImBuf *ibuf_thumb = nullptr;

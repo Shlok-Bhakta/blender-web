@@ -4,6 +4,7 @@
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 
 
@@ -75,6 +76,10 @@ def collect(base, root):
     notices.mkdir(exist_ok=True)
     shutil.copy2(root / 'LICENSE', notices / 'GPL-2.0.txt')
     shutil.copy2(root / 'web/native/THIRD_PARTY.md', notices / 'THIRD_PARTY.md')
+    upstream = base / 'source' if (base / 'source').is_dir() else root
+    shutil.copy2(upstream / 'extern/ufbx/LICENSE', notices / 'ufbx-LICENSE.txt')
+    bullet = (upstream / 'extern/bullet2/src/btBulletDynamicsCommon.h').read_text()
+    (notices / 'Bullet-LICENSE.txt').write_text(bullet.split('*/', 1)[0] + '*/\n')
     origins = list((base / 'deps').glob('*/source')) + list((base / 'gpu-deps/src').glob('*'))
     origins += list((base / 'gpu-deps/src').glob('*/third_party/*'))
     for origin in origins:
@@ -89,8 +94,14 @@ def collect(base, root):
         'Official Blender release source is pinned in web/upstream.json and the blender submodule.\n'
         'WebGPU backend attribution and dependency notices are in licenses/.\n')
     pins = json.loads((root / 'web/upstream.json').read_text())
+    # Record the configured binary's options, rather than inferring capabilities
+    # from whichever preset happened to be used by the caller.
+    options = dict(re.findall(r'^(WITH_\w+):BOOL=(ON|OFF)$',
+                             (base / 'editor/CMakeCache.txt').read_text(), re.MULTILINE))
     (destination / 'manifest.json').write_text(json.dumps({'version': version,
         'kind': 'native-blender', 'blenderVersion': pins['blenderVersion'],
         'blenderRevision': pins['blenderRevision'], 'emscriptenVersion': pins['emscriptenVersion'],
-        'assetBase': f'assets/{version}/', 'uiFallback': (bundle / 'blender-ui.js').exists(), 'files': files}, indent=2)+'\n')
+        'assetBase': f'assets/{version}/', 'uiFallback': (bundle / 'blender-ui.js').exists(),
+        'buildOptions': {key: value == 'ON' for key, value in sorted(options.items())},
+        'files': files}, indent=2)+'\n')
     return destination

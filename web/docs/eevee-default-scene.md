@@ -168,7 +168,8 @@ These facilities live in GHOST, the WebGPU backend and dependency patches. Small
 `WITH_GHOST_WEB` hooks connect them to the original render operators and jobs.
 They provide common infrastructure for future Workbench and Cycles work; this
 recording establishes Eevee's factory scene only. Cycles is still omitted from
-the current lite build.
+the current web build. The [feature matrix](../native/FEATURES.md) tracks the
+subsequent expansion beyond the original lite configuration.
 
 OpenImageIO also needs a Wasm-specific fix. Its private libc++ string-layout
 shortcut corrupts interned metadata names longer than ten characters on this

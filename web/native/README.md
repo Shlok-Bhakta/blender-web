@@ -32,8 +32,10 @@ mouse, wheel, and resize events from the canvas. A WebGPU backend translates
 Blender's generated GLSL through shaderc and Tint into WGSL. The frontend is a
 canvas and loading status; the editors are drawn by Blender itself.
 
-The initial application uses Blender's lite preset to omit optional systems such
-as Cycles. Native C++ uses `-O3`, Wasm SIMD, pthreads, and Wasm exceptions.
+The application uses an explicit web feature configuration, including native
+OBJ/STL/PLY import/export, FBX import, both IK solvers and Bullet rigid bodies.
+The [feature matrix](FEATURES.md) tracks enabled systems and remaining ports,
+including Cycles. Native C++ uses `-O3`, Wasm SIMD, pthreads, and Wasm exceptions.
 oneTBB handles Blender's parallel tasks. The runtime sizes its initial pthread pool from the browser's reported logical
 CPU count, plus two workers for platform work. It prestarts between four and 64
 workers and permits additional pthreads when needed. Shared memory starts at 512 MiB and can
@@ -90,6 +92,8 @@ To repeat browser checks against the server above:
 ```sh
 node web/tests/native.cjs
 WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
+node web/tests/features.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/features.cjs
 node web/tests/render.cjs
 ```
 

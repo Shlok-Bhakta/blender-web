@@ -42,6 +42,8 @@ async function consoleCommand(page, command, marker) {
     await page.waitForTimeout(250);
   }
   const previous = messages.length;
+  // A loaded blend file can restore the input that was active during Save.
+  await page.keyboard.press('Shift+Enter');
   await page.keyboard.type(command, {delay:5});
   await page.keyboard.press('Enter');
   const until = Date.now() + 90000;
