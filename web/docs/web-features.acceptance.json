@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "656d089684b1079cf65a",
+  "bundleVersion": "7e35e48849404ebeac92",
   "blenderVersion": "5.2.2",
   "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
   "emscriptenVersion": "4.0.23",
@@ -313,16 +313,16 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99945,
+        "bytes": 99854,
         "saves": 2,
-        "backupBytes": 99884,
+        "backupBytes": 99942,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "ba180fbd2ac06310f0809673a6a8229c2d3cb49016c727ef7cc33ec58c8ce9f1",
+        "sha256": "764b598e427a4a9a0518194b234f4b02292f50e2cfa08db3100f2a619ae8471e",
         "reopenedAfterBrowserReload": true
       },
       "dependencyNotices": {
@@ -340,6 +340,12 @@
         "numpy": {
           "LICENSE.txt": "1be1df33863f97a7bc1c4d67980bd6c69c9a6fef0a5ee76e6ad6cb91e56e8491",
           "LICENSES_bundled.txt": "7fe52683ce840a3103e9cc82fe92252b2c533061ca4f9b8d6f3d4d835f7c32f9"
+        },
+        "fftw": {
+          "COPYING": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+        },
+        "alembic": {
+          "LICENSE.txt": "00a7b288ee40635e15adf85703b0fb3be3ef2f3000beb74d21c1f19b19147906"
         }
       },
       "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
@@ -347,9 +353,9 @@
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "656d089684b1079cf65a",
+      "bundleVersion": "7e35e48849404ebeac92",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T21:00:29.927Z",
+      "measuredAt": "2026-10-19T03:49:13.696Z",
       "variant": "render",
       "hardware": false,
       "adapter": {
@@ -359,7 +365,7 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 124769805,
+      "wasmBytes": 127501277,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
       "subdivisionViewport": true,
@@ -942,16 +948,16 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99885,
+        "bytes": 99855,
         "saves": 2,
-        "backupBytes": 99973,
+        "backupBytes": 99919,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "adba757f7fbde9e7b93a4885c3172449c1f0e61f8683f8c01d57ddcb175a9649",
+        "sha256": "2f1219fbfd123bdcfc6f4c35274d427c096a926c553de9dbcb5ee3d6e3f162b7",
         "reopenedAfterBrowserReload": true
       },
       "dependencyNotices": {
@@ -969,6 +975,12 @@
         "numpy": {
           "LICENSE.txt": "1be1df33863f97a7bc1c4d67980bd6c69c9a6fef0a5ee76e6ad6cb91e56e8491",
           "LICENSES_bundled.txt": "7fe52683ce840a3103e9cc82fe92252b2c533061ca4f9b8d6f3d4d835f7c32f9"
+        },
+        "fftw": {
+          "COPYING": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+        },
+        "alembic": {
+          "LICENSE.txt": "00a7b288ee40635e15adf85703b0fb3be3ef2f3000beb74d21c1f19b19147906"
         }
       },
       "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
@@ -976,9 +988,9 @@
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "656d089684b1079cf65a",
+      "bundleVersion": "7e35e48849404ebeac92",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T21:03:54.306Z",
+      "measuredAt": "2026-10-19T03:50:57.899Z",
       "variant": "ui",
       "hardware": false,
       "adapter": {
@@ -988,7 +1000,7 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 124769805,
+      "wasmBytes": 127501277,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
       "subdivisionViewport": true,
@@ -1571,16 +1583,16 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99969,
+        "bytes": 99852,
         "saves": 2,
-        "backupBytes": 99966,
+        "backupBytes": 99852,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "4cdac195738a77f877842f9e6fa0a5376803e36d444e3285af399a65e1564c8c",
+        "sha256": "790df8a722faf2bd81cd50e32155391863bfb78cdbbae2e45c7b31be903f32db",
         "reopenedAfterBrowserReload": true
       },
       "dependencyNotices": {
@@ -1598,6 +1610,12 @@
         "numpy": {
           "LICENSE.txt": "1be1df33863f97a7bc1c4d67980bd6c69c9a6fef0a5ee76e6ad6cb91e56e8491",
           "LICENSES_bundled.txt": "7fe52683ce840a3103e9cc82fe92252b2c533061ca4f9b8d6f3d4d835f7c32f9"
+        },
+        "fftw": {
+          "COPYING": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+        },
+        "alembic": {
+          "LICENSE.txt": "00a7b288ee40635e15adf85703b0fb3be3ef2f3000beb74d21c1f19b19147906"
         }
       },
       "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
@@ -1605,9 +1623,9 @@
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "656d089684b1079cf65a",
+      "bundleVersion": "7e35e48849404ebeac92",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-18T21:02:29.263Z",
+      "measuredAt": "2026-10-19T03:52:11.963Z",
       "variant": "render",
       "hardware": true,
       "adapter": {
@@ -1617,7 +1635,7 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 124769805,
+      "wasmBytes": 127501277,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
       "subdivisionViewport": true,
@@ -1904,14 +1922,14 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "656d089684b1079cf65a",
-      "measuredAt": "2026-10-18T21:00:57.510Z",
+      "bundleVersion": "7e35e48849404ebeac92",
+      "measuredAt": "2026-10-19T03:53:41.943Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 838,
+      "colors": 837,
       "resize": true,
       "resizeChecks": [
         {
@@ -1921,8 +1939,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 385,
-          "cubePixels": 480,
+          "colors": 437,
+          "cubePixels": 479,
           "window": [
             1040,
             720
@@ -1940,8 +1958,8 @@
           ],
           "scale": 1,
           "pixels": "960x640",
-          "colors": 438,
-          "cubePixels": 443,
+          "colors": 408,
+          "cubePixels": 450,
           "window": [
             960,
             640
@@ -1959,8 +1977,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 385,
-          "cubePixels": 480,
+          "colors": 437,
+          "cubePixels": 479,
           "window": [
             1040,
             720
@@ -1978,8 +1996,8 @@
           ],
           "scale": 2,
           "pixels": "2080x1440",
-          "colors": 524,
-          "cubePixels": 2492,
+          "colors": 527,
+          "cubePixels": 2486,
           "window": [
             1040,
             720
@@ -1997,8 +2015,8 @@
           ],
           "scale": 1.25,
           "pixels": "1300x900",
-          "colors": 544,
-          "cubePixels": 609,
+          "colors": 549,
+          "cubePixels": 602,
           "window": [
             1040,
             720
@@ -2016,8 +2034,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 384,
-          "cubePixels": 480,
+          "colors": 437,
+          "cubePixels": 479,
           "window": [
             1040,
             720
@@ -2045,8 +2063,8 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "656d089684b1079cf65a",
-      "measuredAt": "2026-10-18T21:04:47.951Z",
+      "bundleVersion": "7e35e48849404ebeac92",
+      "measuredAt": "2026-10-19T03:56:29.108Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
@@ -2081,7 +2099,7 @@
           ],
           "scale": 1,
           "pixels": "960x640",
-          "colors": 432,
+          "colors": 435,
           "cubePixels": 443,
           "window": [
             960,
@@ -2138,7 +2156,7 @@
           ],
           "scale": 1.25,
           "pixels": "1300x900",
-          "colors": 547,
+          "colors": 540,
           "cubePixels": 609,
           "window": [
             1040,
@@ -2186,14 +2204,14 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "656d089684b1079cf65a",
-      "measuredAt": "2026-10-18T21:05:45.216Z",
+      "bundleVersion": "7e35e48849404ebeac92",
+      "measuredAt": "2026-10-19T03:49:30.996Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 1473,
+      "colors": 1468,
       "resize": true,
       "resizeChecks": [
         {
@@ -2203,8 +2221,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 596,
-          "cubePixels": 452,
+          "colors": 665,
+          "cubePixels": 448,
           "window": [
             1040,
             720
@@ -2222,8 +2240,8 @@
           ],
           "scale": 1,
           "pixels": "960x640",
-          "colors": 634,
-          "cubePixels": 416,
+          "colors": 611,
+          "cubePixels": 419,
           "window": [
             960,
             640
@@ -2241,8 +2259,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 597,
-          "cubePixels": 452,
+          "colors": 665,
+          "cubePixels": 448,
           "window": [
             1040,
             720
@@ -2260,8 +2278,8 @@
           ],
           "scale": 2,
           "pixels": "2080x1440",
-          "colors": 921,
-          "cubePixels": 2410,
+          "colors": 913,
+          "cubePixels": 2404,
           "window": [
             1040,
             720
@@ -2279,8 +2297,8 @@
           ],
           "scale": 1.25,
           "pixels": "1300x900",
-          "colors": 803,
-          "cubePixels": 576,
+          "colors": 815,
+          "cubePixels": 573,
           "window": [
             1040,
             720
@@ -2298,8 +2316,8 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 596,
-          "cubePixels": 452,
+          "colors": 665,
+          "cubePixels": 448,
           "window": [
             1040,
             720
@@ -2320,7 +2338,7 @@
   ],
   "eevee": {
     "browserVersion": "145.0.7632.6",
-    "bundleVersion": "656d089684b1079cf65a",
+    "bundleVersion": "7e35e48849404ebeac92",
     "deviceScaleFactor": 2,
     "renderResizeChecks": [
       {
@@ -2354,10 +2372,12 @@
     "width": 1920,
     "height": 1080,
     "samples": 64,
-    "renderSeconds": 9.707,
+    "renderSeconds": 13.283,
     "renderRuns": [
-      9.707
+      13.283
     ],
+    "handlerSeconds": [],
+    "videoCaptured": true,
     "adapter": {
       "vendor": "amd",
       "architecture": "gcn-5",
@@ -2394,8 +2414,8 @@
     "foregroundPixels": 244885,
     "opaquePixels": 2073600,
     "browserErrors": 0,
-    "clipStart": 26.667,
-    "clipEnd": 48.469,
+    "clipStart": 41.521,
+    "clipEnd": 67.095,
     "defaults": {
       "engine": "BLENDER_EEVEE",
       "width": 1920,
@@ -2527,7 +2547,7 @@
     }
   },
   "cycles": {
-    "bundleVersion": "656d089684b1079cf65a",
+    "bundleVersion": "7e35e48849404ebeac92",
     "browserVersion": "145.0.7632.6",
     "engine": "CYCLES",
     "device": "CPU",
@@ -2540,9 +2560,21 @@
     "adaptiveSampling": false,
     "seed": 0,
     "softwareDisplay": false,
-    "clipStart": 21.721,
-    "clipEnd": 30.67,
-    "renderSeconds": 1.916,
+    "clipStart": 12.936,
+    "clipEnd": 25.878,
+    "renderSeconds": 1.216,
+    "renderRuns": [
+      1.216,
+      0.204,
+      0.205
+    ],
+    "handlerSeconds": [
+      0.32405972480773926,
+      0.07227492332458496,
+      0.08294987678527832
+    ],
+    "threads": 8,
+    "videoCaptured": false,
     "meanAbsoluteError": 0.0008341471354166666,
     "outlierFraction": 0,
     "errors": [],
@@ -2551,10 +2583,17 @@
       "architecture": "gcn-5",
       "device": "",
       "description": ""
-    },
-    "videoPath": "/home/crabcake/Projects/blender-web/build/native/cycles-evidence/51636b7f0f7222758e6da8ab826f259a.webm"
+    }
   },
   "nativeChecks": {
+    "alembic-check": {
+      "alembicOgawa": true,
+      "desktopAnimationSamples": 12,
+      "vertices": 676,
+      "faces": 625,
+      "writeRead": true,
+      "wasmFS": true
+    },
     "dependency-check": {
       "threads": 4,
       "checksum": 562954449584128,
@@ -2567,6 +2606,12 @@
     },
     "expression-check": {
       "expressionCases": 21
+    },
+    "fftw-check": {
+      "fftwDouble": true,
+      "fftwFloat": true,
+      "transformSize": 4096,
+      "requestedThreads": 3
     },
     "image-cache-check": {
       "imageCacheNamespaces": true
@@ -2612,56 +2657,682 @@
     }
   },
   "recording": {
-    "bundleVersion": "656d089684b1079cf65a",
+    "bundleVersion": "7e35e48849404ebeac92",
     "chapters": [
       {
-        "seconds": 0.114,
-        "title": "Loading Blender; runtime files are cached for later visits"
+        "seconds": 0.001,
+        "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
       },
       {
-        "seconds": 23.321,
-        "title": "Original Blender UI and default cube"
+        "seconds": 16.552,
+        "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
       },
       {
-        "seconds": 31.814,
-        "title": "GMP exact Boolean: cylinder cut through a cube"
+        "seconds": 21.506,
+        "title": "Alembic ocean cache in the original Blender viewport"
       },
       {
-        "seconds": 39.054,
-        "title": "Manifold Boolean: the same cylinder cut"
+        "seconds": 31.271,
+        "title": "Scrub the cached animation from frame 1 through frame 12"
       },
       {
-        "seconds": 46.097,
-        "title": "Native QuadriFlow remeshing: visible quad edges"
-      },
-      {
-        "seconds": 52.662,
-        "title": "NumPy builds a 1,600-vertex wave inside Blender"
-      },
-      {
-        "seconds": 59.072,
-        "title": "Save a native .blend file to persistent browser storage"
-      },
-      {
-        "seconds": 63.687,
-        "title": "Offline reload: cached Blender starts with no network"
-      },
-      {
-        "seconds": 78.148,
-        "title": "Reopen the saved NumPy wave after an offline reload"
-      },
-      {
-        "seconds": 90.4,
-        "title": "Cycles CPU render: 128 x 128, 16 samples. Checked against desktop Blender."
+        "seconds": 39.188,
+        "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
       }
     ],
-    "durationSeconds": 99.36,
-    "bytes": 1942346,
-    "source": "Playwright browser recordings",
+    "durationSeconds": 61.08,
+    "bytes": 2078289,
+    "source": "Hardware Chromium browser recording",
     "captions": true,
-    "cyclesReferenceMeanAbsoluteError": 0.0008341471354166666,
-    "sha256": "2720d3e991d46f532ae8e2fac1e116e080dbfeada368bf0e494b4102a2b31b9d",
-    "path": "web/docs/modeling-cycles-walkthrough.mp4"
+    "path": "web/docs/ocean-alembic-walkthrough.mp4",
+    "sha256": "4fc9dfa8b852bb1c4d670a5af4b7ae1ce86308752c97f92562f6e035ac85334e"
+  },
+  "oceanAlembic": {
+    "browserVariants": [
+      {
+        "ocean": {
+          "resolution": 5,
+          "vertices": 676,
+          "faces": 625,
+          "frames": [
+            1,
+            6,
+            12
+          ],
+          "foam": true,
+          "desktopMaxCoordinateError": 4.76837158203125e-07
+        },
+        "alembic": {
+          "format": "Ogawa",
+          "bytes": 619605,
+          "path": "/user/blender-web/home/browser-ocean.abc",
+          "roundtripMaxError": 0,
+          "desktopImportMaxError": 0,
+          "animatedHierarchyMaxError": 0,
+          "sha256": "a4ecc018033a9d9f91a94ed86ca78b4b6c58e29bfe67804a5bdd14c6164ed14a"
+        },
+        "bundleVersion": "7e35e48849404ebeac92",
+        "variant": "render",
+        "hardware": false,
+        "browserVersion": "145.0.7632.6",
+        "adapter": {
+          "vendor": "google",
+          "architecture": "swiftshader",
+          "device": "",
+          "description": ""
+        },
+        "offlineReopen": true,
+        "errors": [],
+        "chapters": [
+          {
+            "seconds": 0.001,
+            "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
+          },
+          {
+            "seconds": 30.041,
+            "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
+          },
+          {
+            "seconds": 40.614,
+            "title": "Alembic ocean cache in the original Blender viewport"
+          },
+          {
+            "seconds": 58.163,
+            "title": "Scrub the cached animation from frame 1 through frame 12"
+          },
+          {
+            "seconds": 75.135,
+            "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
+          }
+        ],
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence/415b50a0f717dcd909bcc6f2a48420f7.webm"
+      },
+      {
+        "ocean": {
+          "resolution": 5,
+          "vertices": 676,
+          "faces": 625,
+          "frames": [
+            1,
+            6,
+            12
+          ],
+          "foam": true,
+          "desktopMaxCoordinateError": 4.76837158203125e-07
+        },
+        "alembic": {
+          "format": "Ogawa",
+          "bytes": 619605,
+          "path": "/user/blender-web/home/browser-ocean.abc",
+          "roundtripMaxError": 0,
+          "desktopImportMaxError": 0,
+          "animatedHierarchyMaxError": 0,
+          "sha256": "7fe58080823e429bb5bd2191bf019357c7a505f29d3eb42997b5022726cadc39"
+        },
+        "bundleVersion": "7e35e48849404ebeac92",
+        "variant": "ui",
+        "hardware": false,
+        "browserVersion": "145.0.7632.6",
+        "adapter": {
+          "vendor": "google",
+          "architecture": "swiftshader",
+          "device": "",
+          "description": ""
+        },
+        "offlineReopen": true,
+        "errors": [],
+        "chapters": [
+          {
+            "seconds": 0.001,
+            "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
+          },
+          {
+            "seconds": 28.929,
+            "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
+          },
+          {
+            "seconds": 42.118,
+            "title": "Alembic ocean cache in the original Blender viewport"
+          },
+          {
+            "seconds": 63.175,
+            "title": "Scrub the cached animation from frame 1 through frame 12"
+          },
+          {
+            "seconds": 83.127,
+            "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
+          }
+        ],
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence-ui/00d098dbf926f4d817859b22106118b9.webm"
+      },
+      {
+        "ocean": {
+          "resolution": 5,
+          "vertices": 676,
+          "faces": 625,
+          "frames": [
+            1,
+            6,
+            12
+          ],
+          "foam": true,
+          "desktopMaxCoordinateError": 4.76837158203125e-07
+        },
+        "alembic": {
+          "format": "Ogawa",
+          "bytes": 619580,
+          "path": "/user/blender-web/home/browser-ocean.abc",
+          "roundtripMaxError": 0,
+          "desktopImportMaxError": 0,
+          "animatedHierarchyMaxError": 0,
+          "sha256": "b6eaa7c118422732e64aab3dae11d174e307b5eae78058a8cf33688a3b66819f"
+        },
+        "bundleVersion": "7e35e48849404ebeac92",
+        "variant": "render",
+        "hardware": true,
+        "browserVersion": "145.0.7632.6",
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "gcn-5",
+          "device": "",
+          "description": ""
+        },
+        "offlineReopen": true,
+        "errors": [],
+        "chapters": [
+          {
+            "seconds": 0.001,
+            "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
+          },
+          {
+            "seconds": 16.552,
+            "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
+          },
+          {
+            "seconds": 21.506,
+            "title": "Alembic ocean cache in the original Blender viewport"
+          },
+          {
+            "seconds": 31.271,
+            "title": "Scrub the cached animation from frame 1 through frame 12"
+          },
+          {
+            "seconds": 39.188,
+            "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
+          }
+        ],
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence-hardware/29e27c4b5f9f508081f24b12c2fa5828.webm"
+      }
+    ],
+    "browserExportInDesktop": {
+      "blenderVersion": "5.2.2 LTS",
+      "blenderRevision": "d13f752e3b9c",
+      "maxCoordinateError": 0.0,
+      "frames": [
+        1,
+        6,
+        12
+      ],
+      "browserArchiveSHA256": "b6eaa7c118422732e64aab3dae11d174e307b5eae78058a8cf33688a3b66819f"
+    }
+  },
+  "performance": {
+    "bundleVersion": "7e35e48849404ebeac92",
+    "blenderVersion": "5.2.2 LTS",
+    "measuredAt": "2026-10-19T03:44:08.600423+00:00",
+    "generatedAt": "2026-10-19T03:48:42.139260+00:00",
+    "host": {
+      "cpu": "AMD Ryzen 5 PRO 3400GE w/ Radeon Vega Graphics",
+      "logicalCPUs": 8,
+      "system": "Linux-7.0.0-31-generic-x86_64-with-glibc2.39",
+      "memTotalKiB": 14238840,
+      "gpu": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      }
+    },
+    "comparisons": [
+      {
+        "task": "Mesh construction",
+        "grid": 128,
+        "faces": 258064,
+        "vertices": 259081,
+        "native": {
+          "seconds": [
+            0.025682724080979824,
+            0.017324683722108603,
+            0.016503204125910997
+          ],
+          "medianSeconds": 0.017324683722108603,
+          "firstSeconds": 0.025682724080979824,
+          "warmMedianSeconds": 0.0169139439240098,
+          "minSeconds": 0.016503204125910997,
+          "maxSeconds": 0.025682724080979824
+        },
+        "browser": {
+          "seconds": [
+            0.06474018096923828,
+            0.03775978088378906,
+            0.032135009765625
+          ],
+          "medianSeconds": 0.03775978088378906,
+          "firstSeconds": 0.06474018096923828,
+          "warmMedianSeconds": 0.03494739532470703,
+          "minSeconds": 0.032135009765625,
+          "maxSeconds": 0.06474018096923828
+        },
+        "browserOverNative": 2.1795365208083166
+      },
+      {
+        "task": "CPU subdivision",
+        "grid": 128,
+        "faces": 258064,
+        "vertices": 259081,
+        "native": {
+          "seconds": [
+            0.06405955133959651,
+            0.0538740293122828,
+            0.04856074182316661
+          ],
+          "medianSeconds": 0.0538740293122828,
+          "firstSeconds": 0.06405955133959651,
+          "warmMedianSeconds": 0.051217385567724705,
+          "minSeconds": 0.04856074182316661,
+          "maxSeconds": 0.06405955133959651
+        },
+        "browser": {
+          "seconds": [
+            0.16730499267578125,
+            0.08611512184143066,
+            0.08815503120422363
+          ],
+          "medianSeconds": 0.08815503120422363,
+          "firstSeconds": 0.16730499267578125,
+          "warmMedianSeconds": 0.08713507652282715,
+          "minSeconds": 0.08611512184143066,
+          "maxSeconds": 0.16730499267578125
+        },
+        "browserOverNative": 1.636317764413531
+      },
+      {
+        "task": "Mesh construction",
+        "grid": 256,
+        "faces": 1040400,
+        "vertices": 1042441,
+        "native": {
+          "seconds": [
+            0.07731524994596839,
+            0.05857375496998429,
+            0.0630065449513495
+          ],
+          "medianSeconds": 0.0630065449513495,
+          "firstSeconds": 0.07731524994596839,
+          "warmMedianSeconds": 0.060790149960666895,
+          "minSeconds": 0.05857375496998429,
+          "maxSeconds": 0.07731524994596839
+        },
+        "browser": {
+          "seconds": [
+            0.13154983520507812,
+            0.13452482223510742,
+            0.12670016288757324
+          ],
+          "medianSeconds": 0.13154983520507812,
+          "firstSeconds": 0.13154983520507812,
+          "warmMedianSeconds": 0.13061249256134033,
+          "minSeconds": 0.12670016288757324,
+          "maxSeconds": 0.13452482223510742
+        },
+        "browserOverNative": 2.087875716826789
+      },
+      {
+        "task": "CPU subdivision",
+        "grid": 256,
+        "faces": 1040400,
+        "vertices": 1042441,
+        "native": {
+          "seconds": [
+            0.20501641696318984,
+            0.18053532112389803,
+            0.1721350960433483
+          ],
+          "medianSeconds": 0.18053532112389803,
+          "firstSeconds": 0.20501641696318984,
+          "warmMedianSeconds": 0.17633520858362317,
+          "minSeconds": 0.1721350960433483,
+          "maxSeconds": 0.20501641696318984
+        },
+        "browser": {
+          "seconds": [
+            0.29161500930786133,
+            0.2701702117919922,
+            0.24331998825073242
+          ],
+          "medianSeconds": 0.2701702117919922,
+          "firstSeconds": 0.29161500930786133,
+          "warmMedianSeconds": 0.2567451000213623,
+          "minSeconds": 0.24331998825073242,
+          "maxSeconds": 0.29161500930786133
+        },
+        "browserOverNative": 1.4964950354871522
+      },
+      {
+        "task": "Mesh construction",
+        "grid": 384,
+        "faces": 2347024,
+        "vertices": 2350089,
+        "native": {
+          "seconds": [
+            0.14918681792914867,
+            0.1503201420418918,
+            0.12586348876357079
+          ],
+          "medianSeconds": 0.14918681792914867,
+          "firstSeconds": 0.14918681792914867,
+          "warmMedianSeconds": 0.1380918154027313,
+          "minSeconds": 0.12586348876357079,
+          "maxSeconds": 0.1503201420418918
+        },
+        "browser": {
+          "seconds": [
+            0.29336023330688477,
+            0.24571990966796875,
+            0.28676509857177734
+          ],
+          "medianSeconds": 0.28676509857177734,
+          "firstSeconds": 0.29336023330688477,
+          "warmMedianSeconds": 0.26624250411987305,
+          "minSeconds": 0.24571990966796875,
+          "maxSeconds": 0.29336023330688477
+        },
+        "browserOverNative": 1.922187915476332
+      },
+      {
+        "task": "CPU subdivision",
+        "grid": 384,
+        "faces": 2347024,
+        "vertices": 2350089,
+        "native": {
+          "seconds": [
+            0.45803749607875943,
+            0.479555272962898,
+            0.35640339320525527
+          ],
+          "medianSeconds": 0.45803749607875943,
+          "firstSeconds": 0.45803749607875943,
+          "warmMedianSeconds": 0.41797933308407664,
+          "minSeconds": 0.35640339320525527,
+          "maxSeconds": 0.479555272962898
+        },
+        "browser": {
+          "seconds": [
+            0.5924699306488037,
+            0.5157601833343506,
+            0.5666697025299072
+          ],
+          "medianSeconds": 0.5666697025299072,
+          "firstSeconds": 0.5924699306488037,
+          "warmMedianSeconds": 0.5412149429321289,
+          "minSeconds": 0.5157601833343506,
+          "maxSeconds": 0.5924699306488037
+        },
+        "browserOverNative": 1.2371688068796631
+      },
+      {
+        "task": "Ocean 12-frame evaluation",
+        "native": {
+          "seconds": [
+            0.9863348207436502,
+            0.8051515771076083,
+            0.8191023422405124
+          ],
+          "medianSeconds": 0.8191023422405124,
+          "firstSeconds": 0.9863348207436502,
+          "warmMedianSeconds": 0.8121269596740603,
+          "minSeconds": 0.8051515771076083,
+          "maxSeconds": 0.9863348207436502
+        },
+        "browser": {
+          "seconds": [
+            0.8877499103546143,
+            0.83024001121521,
+            0.8830249309539795
+          ],
+          "medianSeconds": 0.8830249309539795,
+          "firstSeconds": 0.8877499103546143,
+          "warmMedianSeconds": 0.8566324710845947,
+          "minSeconds": 0.83024001121521,
+          "maxSeconds": 0.8877499103546143
+        },
+        "browserOverNative": 1.0780398070143689
+      },
+      {
+        "task": "Cycles CPU render",
+        "native": {
+          "seconds": [
+            0.04408192401751876,
+            0.023343232925981283,
+            0.023361810017377138
+          ],
+          "medianSeconds": 0.023361810017377138,
+          "firstSeconds": 0.04408192401751876,
+          "warmMedianSeconds": 0.02335252147167921,
+          "minSeconds": 0.023343232925981283,
+          "maxSeconds": 0.04408192401751876
+        },
+        "browser": {
+          "seconds": [
+            0.32405972480773926,
+            0.07227492332458496,
+            0.08294987678527832
+          ],
+          "medianSeconds": 0.08294987678527832,
+          "firstSeconds": 0.32405972480773926,
+          "warmMedianSeconds": 0.07761240005493164,
+          "minSeconds": 0.07227492332458496,
+          "maxSeconds": 0.32405972480773926
+        },
+        "browserOverNative": 3.550661388119242
+      },
+      {
+        "task": "Eevee GPU render",
+        "native": {
+          "seconds": [
+            1.4297205000184476,
+            1.0515168327838182,
+            1.0704038073308766
+          ],
+          "medianSeconds": 1.0704038073308766,
+          "firstSeconds": 1.4297205000184476,
+          "warmMedianSeconds": 1.0609603200573474,
+          "minSeconds": 1.0515168327838182,
+          "maxSeconds": 1.4297205000184476
+        },
+        "browser": {
+          "seconds": [
+            7.147209882736206,
+            3.1732544898986816,
+            2.9086596965789795
+          ],
+          "medianSeconds": 3.1732544898986816,
+          "firstSeconds": 7.147209882736206,
+          "warmMedianSeconds": 3.0409570932388306,
+          "minSeconds": 2.9086596965789795,
+          "maxSeconds": 7.147209882736206
+        },
+        "browserOverNative": 2.964539614083963
+      }
+    ],
+    "memory": {
+      "native": {
+        "peakPssMiB": 653.0732421875,
+        "lifecyclePeakPssMiB": 653.0732421875,
+        "baselinePssMiB": 268.4990234375,
+        "peakAboveBaselineMiB": 384.57421875,
+        "afterCleanupPssMiB": 355.2490234375,
+        "stagesPssMiB": {
+          "baseline": 268.4990234375,
+          "grid-128-repeat-0": 305.7138671875,
+          "grid-128-repeat-1": 307.1904296875,
+          "grid-128-repeat-2": 307.2177734375,
+          "grid-256-repeat-0": 437.5654296875,
+          "grid-256-repeat-1": 428.9287109375,
+          "grid-256-repeat-2": 429.8349609375,
+          "grid-384-repeat-0": 653.0732421875,
+          "grid-384-repeat-1": 644.7138671875,
+          "grid-384-repeat-2": 648.4091796875,
+          "ocean-repeat-0": 354.7646484375,
+          "ocean-repeat-1": 355.060546875,
+          "ocean-repeat-2": 355.2490234375,
+          "after-cleanup": 355.2490234375
+        }
+      },
+      "browser": {
+        "peakPssMiB": 1594.494140625,
+        "lifecyclePeakPssMiB": 2123.9296875,
+        "baselinePssMiB": 1255.97265625,
+        "peakAboveBaselineMiB": 338.521484375,
+        "afterCleanupPssMiB": 1594.4658203125,
+        "stagesPssMiB": {
+          "baseline": 1255.97265625,
+          "grid-128-repeat-0": 1288.083984375,
+          "grid-128-repeat-1": 1315.2646484375,
+          "grid-128-repeat-2": 1291.7255859375,
+          "grid-256-repeat-0": 1390.7490234375,
+          "grid-256-repeat-1": 1400.5830078125,
+          "grid-256-repeat-2": 1402.265625,
+          "grid-384-repeat-0": 1567.591796875,
+          "grid-384-repeat-1": 1584.904296875,
+          "grid-384-repeat-2": 1585.73046875,
+          "ocean-repeat-0": 1593.1552734375,
+          "ocean-repeat-1": 1594.1572265625,
+          "ocean-repeat-2": 1594.4609375,
+          "after-cleanup": 1594.4658203125
+        }
+      },
+      "wasmHeapCapacityBytes": 644284416,
+      "wasmMaximumBytes": 4294967296
+    },
+    "eevee": {
+      "nativeAdapter": {
+        "vendor": "AMD",
+        "renderer": "AMD Radeon Vega 11 Graphics (radeonsi, raven, ACO, DRM 3.64, 7.0.0-31-generic)",
+        "backend": "OPENGL"
+      },
+      "browserAdapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": "",
+        "features": [
+          "depth32float-stencil8",
+          "rg11b10ufloat-renderable",
+          "texture-formats-tier1",
+          "bgra8unorm-storage",
+          "chromium-experimental-multi-draw-indirect",
+          "texture-compression-bc",
+          "dual-source-blending",
+          "core-features-and-limits",
+          "chromium-experimental-timestamp-query-inside-passes",
+          "float32-filterable",
+          "indirect-first-instance",
+          "float32-blendable",
+          "texture-compression-etc2",
+          "depth-clip-control",
+          "texture-compression-bc-sliced-3d",
+          "clip-distances",
+          "texture-formats-tier2",
+          "timestamp-query",
+          "shader-f16",
+          "primitive-index",
+          "texture-component-swizzle",
+          "subgroups"
+        ],
+        "maxComputeInvocationsPerWorkgroup": 1024,
+        "maxStorageTexturesPerShaderStage": 8,
+        "maxStorageBufferBindingSize": 2147483648
+      },
+      "pixelComparison": {
+        "width": 1920,
+        "height": 1080,
+        "meanAbsoluteChannelError": 0.03305475180041152,
+        "outlierFraction": 0
+      }
+    },
+    "profiling": {
+      "measuredSeparately": true,
+      "timingsExcludedFromBaseline": true,
+      "runs": [
+        {
+          "hotspotsCpuMs": {
+            "shaderTranslation": 5985.83,
+            "shaderAdapter": 625.63,
+            "shadercCompilation": 3773.8,
+            "builtinSymbolSetup": 0.41
+          },
+          "sampledRenderCpuMs": 6228.26,
+          "gpuBusyPercent": {
+            "mean": 27.55,
+            "max": 100,
+            "samples": 114
+          },
+          "queueSubmits": 362
+        },
+        {
+          "hotspotsCpuMs": {
+            "shaderTranslation": 0.0,
+            "shaderAdapter": 0.0,
+            "shadercCompilation": 0.0,
+            "builtinSymbolSetup": 0.0
+          },
+          "sampledRenderCpuMs": 130.83,
+          "gpuBusyPercent": {
+            "mean": 82.26,
+            "max": 100,
+            "samples": 34
+          },
+          "queueSubmits": 349
+        }
+      ]
+    },
+    "method": {
+      "repeats": 3,
+      "renderThreads": 8,
+      "subdivisionLevel": 2,
+      "subdivisionEvaluator": "CPU",
+      "cyclesSize": [
+        128,
+        128
+      ],
+      "cyclesSamples": 16,
+      "cyclesDenoising": false,
+      "cyclesAdaptiveSampling": false,
+      "eeveeSize": [
+        1920,
+        1080
+      ],
+      "eeveeSamples": 64,
+      "memory": "Linux proportional set size, entire Chromium tree versus native Blender tree; 200ms sampling",
+      "timers": "Python perf_counter for both builds; render_pre to render_post for both renderers",
+      "videoDuringTimings": false,
+      "limitations": [
+        "Native uses background mode; browser includes its UI, GPU process and JavaScript workers. Baseline and incremental memory are reported separately.",
+        "Mesh timings cover CPU construction and evaluation, not interactive viewport frame rate.",
+        "Each case runs three times in one process, in fixed order. First and warm timings are included; these are small local baselines, not a broad production-scene benchmark.",
+        "Both use the same pinned Blender release and scene settings. Native CPU ISA/accelerators and the Wasm build differ.",
+        "First-run means the first render in that process. Global GPU driver caches are not cleared. Native Eevee and browser WebGPU use different graphics APIs on the same hardware.",
+        "Physical memory sampling has overhead and may miss sub-200ms peaks. Wasm capacity is not physical usage, and its linear memory cannot shrink after growth.",
+        "PSS does not fully account for driver-managed GPU memory; the scene-size test measures CPU geometry memory, not total VRAM.",
+        "The 4 GiB Wasm32 limit is configured for this build. Larger desktop-scale allocations have not been ported or validated."
+      ]
+    },
+    "workloadSHA256": {
+      "performance.py": "90177a19b4865868027c800fcc49ed2217c0f99652aa97f3c04c778b7240d25e",
+      "cycles_timing.py": "8dc01a2071ab04fb85b86a43605c46e89bf7ca0d7b832f6d328379331f206125",
+      "eevee_timing.py": "544a2d37e7ea7bed41e47b51e2d92e4e108953e1589d4f6706c4ee6a79836116"
+    }
   },
   "cyclesReference": {
     "engine": "CYCLES",
@@ -2682,33 +3353,33 @@
     "imageSHA256": "1bde65f7c86e7132f2c91738cb19db192c15c9af843243dcb45b5de27c0dc31b"
   },
   "downloadSize": {
-    "renderBytes": 199930451,
-    "uiFallbackBytes": 199926213,
+    "renderBytes": 202661923,
+    "uiFallbackBytes": 202657685,
     "files": [
       {
-        "name": "assets/656d089684b1079cf65a/blender.js",
+        "name": "assets/7e35e48849404ebeac92/blender.js",
         "bytes": 723280,
-        "sha256": "41893d0ccac152bdf403175f928cff475242c77328b0082cd4bff682b1ae8b7b"
+        "sha256": "213a202618e0e7a375935cbf41fb01aee0e276ccd2d2fb5049f48cc58227b768"
       },
       {
-        "name": "assets/656d089684b1079cf65a/blender.wasm",
-        "bytes": 124769805,
-        "sha256": "9d50a30b5a44e627bf4a035b681f448d9818c45ae11dc4e6556e5ec503502ef5"
+        "name": "assets/7e35e48849404ebeac92/blender.wasm",
+        "bytes": 127501277,
+        "sha256": "b820f56cd1ded376aacdc3478572d1b70c7e4c1eda38bbfb04688f35edfde852"
       },
       {
-        "name": "assets/656d089684b1079cf65a/blender.data",
+        "name": "assets/7e35e48849404ebeac92/blender.data",
         "bytes": 74437366,
         "sha256": "6d7eb5804873e2291ee568fe07ab9e1b6e594d8e5cfde5743833bac3b731af06"
       },
       {
-        "name": "assets/656d089684b1079cf65a/blender-ui.js",
+        "name": "assets/7e35e48849404ebeac92/blender-ui.js",
         "bytes": 719042,
-        "sha256": "fa1a4743642a4db03967dfcaf5c041479dc4b0dda8a14bcd3497e7b76417f77f"
+        "sha256": "560323a55b54cb862811017ae8fe23923f0afa333bdaa79bb067f130844a8564"
       },
       {
-        "name": "assets/656d089684b1079cf65a/blender-ui.wasm",
-        "bytes": 124769805,
-        "sha256": "9d50a30b5a44e627bf4a035b681f448d9818c45ae11dc4e6556e5ec503502ef5"
+        "name": "assets/7e35e48849404ebeac92/blender-ui.wasm",
+        "bytes": 127501277,
+        "sha256": "b820f56cd1ded376aacdc3478572d1b70c7e4c1eda38bbfb04688f35edfde852"
       }
     ]
   },
@@ -2729,11 +3400,13 @@
     "Final rendering requires the JSPI bundle in current desktop Chromium.",
     "NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.",
     "Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.",
+    "Ocean acceptance uses resolution 5 and 12 animation frames. OpenVDB, fluids and ocean disk-cache baking are not covered.",
+    "Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.",
     "Functional checks ran with other host activity and are not an isolated performance benchmark."
   ],
   "deploymentArchive": {
     "name": "blender-web-pages.tar.gz",
-    "bytes": 102165244,
-    "sha256": "5aeb7c75efde080cbfc594a46166efe458a67076e66445756f1d179cdfccdf9b"
+    "bytes": 103949200,
+    "sha256": "2c6cfed702dfacae4c49fd4666fe820259eda292f2916dbc7cb5de7f018be269"
   }
 }

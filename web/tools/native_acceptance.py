@@ -28,10 +28,15 @@ def main():
           ['evidence', 'evidence-ui', 'evidence-hardware']]
     eevee = read(base / 'render-evidence/acceptance.json')
     cycles = read(base / 'cycles-evidence/acceptance.json')
-    recording = read(docs / 'modeling-recording.json')
+    recording = read(docs / 'ocean-recording.json')
+    oceans = [read(base / name / 'acceptance.json') for name in
+              ['ocean-evidence', 'ocean-evidence-ui', 'ocean-evidence-hardware']]
+    desktop_ocean = read(base / 'ocean-evidence-hardware/desktop-verification.json')
+    performance = read(docs / 'native-web-performance.json')
+    assert performance['bundleVersion'] == version
     loading = [read(base / name / 'acceptance.json') for name in
                ['loading-evidence', 'loading-evidence-ui']]
-    for report in [*features, *ui, eevee, cycles, recording]:
+    for report in [*features, *ui, *oceans, eevee, cycles, recording]:
         assert report['bundleVersion'] == version, 'Mixed browser build evidence'
     for report in loading:
         assert {run['mode'] for run in report['runs']} == {'cold','warm','offline','restarted-offline'}
@@ -40,7 +45,10 @@ def main():
     assert all(report['browserErrors'] == 0 for report in [*features, *ui, eevee])
     assert eevee['referencePixelsEqual']
     assert not cycles['errors']
-    video = docs / 'modeling-cycles-walkthrough.mp4'
+    assert all(not report['errors'] and report['offlineReopen'] for report in oceans)
+    assert desktop_ocean['browserArchiveSHA256'] == oceans[2]['alembic']['sha256']
+    assert desktop_ocean['maxCoordinateError'] < 2e-4
+    video = docs / 'ocean-alembic-walkthrough.mp4'
     recording['sha256'] = hashlib.sha256(video.read_bytes()).hexdigest()
     recording['path'] = str(video.relative_to(ROOT))
     selected = lambda variant: sum(file['bytes'] for file in manifest['files'] if
@@ -49,6 +57,8 @@ def main():
     report = {'bundleVersion':version, **read(ROOT / 'web/upstream.json'),
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,
               'nativeChecks':native, 'recording':recording,
+              'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
+              'performance':performance,
               'cyclesReference':{**read(docs / 'cycles-cpu-reference.json'),
                   'imageSHA256':hashlib.sha256((docs / 'cycles-cpu-reference.png').read_bytes()).hexdigest()},
               'downloadSize':{'renderBytes':selected('blender'),
@@ -62,6 +72,8 @@ def main():
                   'Final rendering requires the JSPI bundle in current desktop Chromium.',
                   'NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.',
                   'Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.',
+                  'Ocean acceptance uses resolution 5 and 12 animation frames. OpenVDB, fluids and ocean disk-cache baking are not covered.',
+                  'Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.',
                   'Functional checks ran with other host activity and are not an isolated performance benchmark.']}
     archive = base / 'blender-web-pages.tar.gz'
     def normalize(member):

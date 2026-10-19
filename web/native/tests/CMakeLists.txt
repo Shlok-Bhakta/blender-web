@@ -15,3 +15,24 @@ target_link_options(dependencies PRIVATE -pthread -msimd128 -fwasm-exceptions
   -sINITIAL_MEMORY=134217728 -sMAXIMUM_MEMORY=1073741824
   "SHELL:--embed-file ${BLENDER_SOURCE}/release/datafiles/fonts/Inter.woff2@/Inter.woff2"
 )
+
+find_package(Fftw3 REQUIRED)
+find_library(FFTW_DOUBLE_THREADS NAMES fftw3_threads REQUIRED)
+add_executable(fftw-check fftw.cc)
+target_include_directories(fftw-check PRIVATE ${FFTW3_INCLUDE_DIRS})
+target_compile_options(fftw-check PRIVATE -pthread -msimd128 -fwasm-exceptions)
+target_link_libraries(fftw-check PRIVATE
+  ${FFTW_DOUBLE_THREADS} ${FFTW3_LIBRARY_THREADS_F} ${FFTW3_LIBRARY_D} ${FFTW3_LIBRARY_F})
+target_link_options(fftw-check PRIVATE -pthread -msimd128 -fwasm-exceptions
+  -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8 -sEXIT_RUNTIME=1
+  -sSTACK_SIZE=8388608 -sALLOW_MEMORY_GROWTH=1)
+
+find_package(Alembic REQUIRED)
+add_executable(alembic-check alembic.cc)
+target_include_directories(alembic-check PRIVATE ${ALEMBIC_INCLUDE_DIRS})
+target_link_libraries(alembic-check PRIVATE ${ALEMBIC_LIBRARIES} Imath::Imath)
+target_compile_options(alembic-check PRIVATE -pthread -msimd128 -fwasm-exceptions)
+target_link_options(alembic-check PRIVATE -pthread -msimd128 -fwasm-exceptions
+  -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=4 -sEXIT_RUNTIME=1
+  -sSTACK_SIZE=8388608 -sALLOW_MEMORY_GROWTH=1 -sWASMFS=1 -sFORCE_FILESYSTEM=1
+  "SHELL:--embed-file ${CMAKE_CURRENT_LIST_DIR}/../../tests/fixtures/ocean-alembic/desktop-ocean.abc@/desktop-ocean.abc")

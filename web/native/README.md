@@ -23,7 +23,7 @@ original editor archive checkpoint with Python and the GPU backend disabled.
 
 Dependencies use the versions and source hashes from Blender's pinned release.
 The application adds threaded CPython 3.13, static NumPy extensions, GMP,
-Manifold, shaderc, SPIR-V Tools, and Tint. Their
+Manifold, FFTW, Alembic, shaderc, SPIR-V Tools, and Tint. Their
 recipes and pins are in `shader-deps/`. Source attribution is in
 [THIRD_PARTY.md](THIRD_PARTY.md). Build logs and dependency reports are stored in
 `build/native`; the dependency prefix is `build/native/deps/prefix`.
@@ -124,6 +124,8 @@ node web/tests/native.cjs
 WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
 node web/tests/features.cjs
 WEB_TEST_UI_FALLBACK=1 node web/tests/features.cjs
+node web/tests/ocean-alembic.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/ocean-alembic.cjs
 node web/tests/render.cjs
 ```
 

@@ -1,0 +1,458 @@
+{
+  "bundleVersion": "7e35e48849404ebeac92",
+  "blenderVersion": "5.2.2 LTS",
+  "measuredAt": "2026-10-19T03:44:08.600423+00:00",
+  "generatedAt": "2026-10-19T03:48:42.139260+00:00",
+  "host": {
+    "cpu": "AMD Ryzen 5 PRO 3400GE w/ Radeon Vega Graphics",
+    "logicalCPUs": 8,
+    "system": "Linux-7.0.0-31-generic-x86_64-with-glibc2.39",
+    "memTotalKiB": 14238840,
+    "gpu": {
+      "vendor": "amd",
+      "architecture": "gcn-5",
+      "device": "",
+      "description": ""
+    }
+  },
+  "comparisons": [
+    {
+      "task": "Mesh construction",
+      "grid": 128,
+      "faces": 258064,
+      "vertices": 259081,
+      "native": {
+        "seconds": [
+          0.025682724080979824,
+          0.017324683722108603,
+          0.016503204125910997
+        ],
+        "medianSeconds": 0.017324683722108603,
+        "firstSeconds": 0.025682724080979824,
+        "warmMedianSeconds": 0.0169139439240098,
+        "minSeconds": 0.016503204125910997,
+        "maxSeconds": 0.025682724080979824
+      },
+      "browser": {
+        "seconds": [
+          0.06474018096923828,
+          0.03775978088378906,
+          0.032135009765625
+        ],
+        "medianSeconds": 0.03775978088378906,
+        "firstSeconds": 0.06474018096923828,
+        "warmMedianSeconds": 0.03494739532470703,
+        "minSeconds": 0.032135009765625,
+        "maxSeconds": 0.06474018096923828
+      },
+      "browserOverNative": 2.1795365208083166
+    },
+    {
+      "task": "CPU subdivision",
+      "grid": 128,
+      "faces": 258064,
+      "vertices": 259081,
+      "native": {
+        "seconds": [
+          0.06405955133959651,
+          0.0538740293122828,
+          0.04856074182316661
+        ],
+        "medianSeconds": 0.0538740293122828,
+        "firstSeconds": 0.06405955133959651,
+        "warmMedianSeconds": 0.051217385567724705,
+        "minSeconds": 0.04856074182316661,
+        "maxSeconds": 0.06405955133959651
+      },
+      "browser": {
+        "seconds": [
+          0.16730499267578125,
+          0.08611512184143066,
+          0.08815503120422363
+        ],
+        "medianSeconds": 0.08815503120422363,
+        "firstSeconds": 0.16730499267578125,
+        "warmMedianSeconds": 0.08713507652282715,
+        "minSeconds": 0.08611512184143066,
+        "maxSeconds": 0.16730499267578125
+      },
+      "browserOverNative": 1.636317764413531
+    },
+    {
+      "task": "Mesh construction",
+      "grid": 256,
+      "faces": 1040400,
+      "vertices": 1042441,
+      "native": {
+        "seconds": [
+          0.07731524994596839,
+          0.05857375496998429,
+          0.0630065449513495
+        ],
+        "medianSeconds": 0.0630065449513495,
+        "firstSeconds": 0.07731524994596839,
+        "warmMedianSeconds": 0.060790149960666895,
+        "minSeconds": 0.05857375496998429,
+        "maxSeconds": 0.07731524994596839
+      },
+      "browser": {
+        "seconds": [
+          0.13154983520507812,
+          0.13452482223510742,
+          0.12670016288757324
+        ],
+        "medianSeconds": 0.13154983520507812,
+        "firstSeconds": 0.13154983520507812,
+        "warmMedianSeconds": 0.13061249256134033,
+        "minSeconds": 0.12670016288757324,
+        "maxSeconds": 0.13452482223510742
+      },
+      "browserOverNative": 2.087875716826789
+    },
+    {
+      "task": "CPU subdivision",
+      "grid": 256,
+      "faces": 1040400,
+      "vertices": 1042441,
+      "native": {
+        "seconds": [
+          0.20501641696318984,
+          0.18053532112389803,
+          0.1721350960433483
+        ],
+        "medianSeconds": 0.18053532112389803,
+        "firstSeconds": 0.20501641696318984,
+        "warmMedianSeconds": 0.17633520858362317,
+        "minSeconds": 0.1721350960433483,
+        "maxSeconds": 0.20501641696318984
+      },
+      "browser": {
+        "seconds": [
+          0.29161500930786133,
+          0.2701702117919922,
+          0.24331998825073242
+        ],
+        "medianSeconds": 0.2701702117919922,
+        "firstSeconds": 0.29161500930786133,
+        "warmMedianSeconds": 0.2567451000213623,
+        "minSeconds": 0.24331998825073242,
+        "maxSeconds": 0.29161500930786133
+      },
+      "browserOverNative": 1.4964950354871522
+    },
+    {
+      "task": "Mesh construction",
+      "grid": 384,
+      "faces": 2347024,
+      "vertices": 2350089,
+      "native": {
+        "seconds": [
+          0.14918681792914867,
+          0.1503201420418918,
+          0.12586348876357079
+        ],
+        "medianSeconds": 0.14918681792914867,
+        "firstSeconds": 0.14918681792914867,
+        "warmMedianSeconds": 0.1380918154027313,
+        "minSeconds": 0.12586348876357079,
+        "maxSeconds": 0.1503201420418918
+      },
+      "browser": {
+        "seconds": [
+          0.29336023330688477,
+          0.24571990966796875,
+          0.28676509857177734
+        ],
+        "medianSeconds": 0.28676509857177734,
+        "firstSeconds": 0.29336023330688477,
+        "warmMedianSeconds": 0.26624250411987305,
+        "minSeconds": 0.24571990966796875,
+        "maxSeconds": 0.29336023330688477
+      },
+      "browserOverNative": 1.922187915476332
+    },
+    {
+      "task": "CPU subdivision",
+      "grid": 384,
+      "faces": 2347024,
+      "vertices": 2350089,
+      "native": {
+        "seconds": [
+          0.45803749607875943,
+          0.479555272962898,
+          0.35640339320525527
+        ],
+        "medianSeconds": 0.45803749607875943,
+        "firstSeconds": 0.45803749607875943,
+        "warmMedianSeconds": 0.41797933308407664,
+        "minSeconds": 0.35640339320525527,
+        "maxSeconds": 0.479555272962898
+      },
+      "browser": {
+        "seconds": [
+          0.5924699306488037,
+          0.5157601833343506,
+          0.5666697025299072
+        ],
+        "medianSeconds": 0.5666697025299072,
+        "firstSeconds": 0.5924699306488037,
+        "warmMedianSeconds": 0.5412149429321289,
+        "minSeconds": 0.5157601833343506,
+        "maxSeconds": 0.5924699306488037
+      },
+      "browserOverNative": 1.2371688068796631
+    },
+    {
+      "task": "Ocean 12-frame evaluation",
+      "native": {
+        "seconds": [
+          0.9863348207436502,
+          0.8051515771076083,
+          0.8191023422405124
+        ],
+        "medianSeconds": 0.8191023422405124,
+        "firstSeconds": 0.9863348207436502,
+        "warmMedianSeconds": 0.8121269596740603,
+        "minSeconds": 0.8051515771076083,
+        "maxSeconds": 0.9863348207436502
+      },
+      "browser": {
+        "seconds": [
+          0.8877499103546143,
+          0.83024001121521,
+          0.8830249309539795
+        ],
+        "medianSeconds": 0.8830249309539795,
+        "firstSeconds": 0.8877499103546143,
+        "warmMedianSeconds": 0.8566324710845947,
+        "minSeconds": 0.83024001121521,
+        "maxSeconds": 0.8877499103546143
+      },
+      "browserOverNative": 1.0780398070143689
+    },
+    {
+      "task": "Cycles CPU render",
+      "native": {
+        "seconds": [
+          0.04408192401751876,
+          0.023343232925981283,
+          0.023361810017377138
+        ],
+        "medianSeconds": 0.023361810017377138,
+        "firstSeconds": 0.04408192401751876,
+        "warmMedianSeconds": 0.02335252147167921,
+        "minSeconds": 0.023343232925981283,
+        "maxSeconds": 0.04408192401751876
+      },
+      "browser": {
+        "seconds": [
+          0.32405972480773926,
+          0.07227492332458496,
+          0.08294987678527832
+        ],
+        "medianSeconds": 0.08294987678527832,
+        "firstSeconds": 0.32405972480773926,
+        "warmMedianSeconds": 0.07761240005493164,
+        "minSeconds": 0.07227492332458496,
+        "maxSeconds": 0.32405972480773926
+      },
+      "browserOverNative": 3.550661388119242
+    },
+    {
+      "task": "Eevee GPU render",
+      "native": {
+        "seconds": [
+          1.4297205000184476,
+          1.0515168327838182,
+          1.0704038073308766
+        ],
+        "medianSeconds": 1.0704038073308766,
+        "firstSeconds": 1.4297205000184476,
+        "warmMedianSeconds": 1.0609603200573474,
+        "minSeconds": 1.0515168327838182,
+        "maxSeconds": 1.4297205000184476
+      },
+      "browser": {
+        "seconds": [
+          7.147209882736206,
+          3.1732544898986816,
+          2.9086596965789795
+        ],
+        "medianSeconds": 3.1732544898986816,
+        "firstSeconds": 7.147209882736206,
+        "warmMedianSeconds": 3.0409570932388306,
+        "minSeconds": 2.9086596965789795,
+        "maxSeconds": 7.147209882736206
+      },
+      "browserOverNative": 2.964539614083963
+    }
+  ],
+  "memory": {
+    "native": {
+      "peakPssMiB": 653.0732421875,
+      "lifecyclePeakPssMiB": 653.0732421875,
+      "baselinePssMiB": 268.4990234375,
+      "peakAboveBaselineMiB": 384.57421875,
+      "afterCleanupPssMiB": 355.2490234375,
+      "stagesPssMiB": {
+        "baseline": 268.4990234375,
+        "grid-128-repeat-0": 305.7138671875,
+        "grid-128-repeat-1": 307.1904296875,
+        "grid-128-repeat-2": 307.2177734375,
+        "grid-256-repeat-0": 437.5654296875,
+        "grid-256-repeat-1": 428.9287109375,
+        "grid-256-repeat-2": 429.8349609375,
+        "grid-384-repeat-0": 653.0732421875,
+        "grid-384-repeat-1": 644.7138671875,
+        "grid-384-repeat-2": 648.4091796875,
+        "ocean-repeat-0": 354.7646484375,
+        "ocean-repeat-1": 355.060546875,
+        "ocean-repeat-2": 355.2490234375,
+        "after-cleanup": 355.2490234375
+      }
+    },
+    "browser": {
+      "peakPssMiB": 1594.494140625,
+      "lifecyclePeakPssMiB": 2123.9296875,
+      "baselinePssMiB": 1255.97265625,
+      "peakAboveBaselineMiB": 338.521484375,
+      "afterCleanupPssMiB": 1594.4658203125,
+      "stagesPssMiB": {
+        "baseline": 1255.97265625,
+        "grid-128-repeat-0": 1288.083984375,
+        "grid-128-repeat-1": 1315.2646484375,
+        "grid-128-repeat-2": 1291.7255859375,
+        "grid-256-repeat-0": 1390.7490234375,
+        "grid-256-repeat-1": 1400.5830078125,
+        "grid-256-repeat-2": 1402.265625,
+        "grid-384-repeat-0": 1567.591796875,
+        "grid-384-repeat-1": 1584.904296875,
+        "grid-384-repeat-2": 1585.73046875,
+        "ocean-repeat-0": 1593.1552734375,
+        "ocean-repeat-1": 1594.1572265625,
+        "ocean-repeat-2": 1594.4609375,
+        "after-cleanup": 1594.4658203125
+      }
+    },
+    "wasmHeapCapacityBytes": 644284416,
+    "wasmMaximumBytes": 4294967296
+  },
+  "eevee": {
+    "nativeAdapter": {
+      "vendor": "AMD",
+      "renderer": "AMD Radeon Vega 11 Graphics (radeonsi, raven, ACO, DRM 3.64, 7.0.0-31-generic)",
+      "backend": "OPENGL"
+    },
+    "browserAdapter": {
+      "vendor": "amd",
+      "architecture": "gcn-5",
+      "device": "",
+      "description": "",
+      "features": [
+        "depth32float-stencil8",
+        "rg11b10ufloat-renderable",
+        "texture-formats-tier1",
+        "bgra8unorm-storage",
+        "chromium-experimental-multi-draw-indirect",
+        "texture-compression-bc",
+        "dual-source-blending",
+        "core-features-and-limits",
+        "chromium-experimental-timestamp-query-inside-passes",
+        "float32-filterable",
+        "indirect-first-instance",
+        "float32-blendable",
+        "texture-compression-etc2",
+        "depth-clip-control",
+        "texture-compression-bc-sliced-3d",
+        "clip-distances",
+        "texture-formats-tier2",
+        "timestamp-query",
+        "shader-f16",
+        "primitive-index",
+        "texture-component-swizzle",
+        "subgroups"
+      ],
+      "maxComputeInvocationsPerWorkgroup": 1024,
+      "maxStorageTexturesPerShaderStage": 8,
+      "maxStorageBufferBindingSize": 2147483648
+    },
+    "pixelComparison": {
+      "width": 1920,
+      "height": 1080,
+      "meanAbsoluteChannelError": 0.03305475180041152,
+      "outlierFraction": 0
+    }
+  },
+  "profiling": {
+    "measuredSeparately": true,
+    "timingsExcludedFromBaseline": true,
+    "runs": [
+      {
+        "hotspotsCpuMs": {
+          "shaderTranslation": 5985.83,
+          "shaderAdapter": 625.63,
+          "shadercCompilation": 3773.8,
+          "builtinSymbolSetup": 0.41
+        },
+        "sampledRenderCpuMs": 6228.26,
+        "gpuBusyPercent": {
+          "mean": 27.55,
+          "max": 100,
+          "samples": 114
+        },
+        "queueSubmits": 362
+      },
+      {
+        "hotspotsCpuMs": {
+          "shaderTranslation": 0.0,
+          "shaderAdapter": 0.0,
+          "shadercCompilation": 0.0,
+          "builtinSymbolSetup": 0.0
+        },
+        "sampledRenderCpuMs": 130.83,
+        "gpuBusyPercent": {
+          "mean": 82.26,
+          "max": 100,
+          "samples": 34
+        },
+        "queueSubmits": 349
+      }
+    ]
+  },
+  "method": {
+    "repeats": 3,
+    "renderThreads": 8,
+    "subdivisionLevel": 2,
+    "subdivisionEvaluator": "CPU",
+    "cyclesSize": [
+      128,
+      128
+    ],
+    "cyclesSamples": 16,
+    "cyclesDenoising": false,
+    "cyclesAdaptiveSampling": false,
+    "eeveeSize": [
+      1920,
+      1080
+    ],
+    "eeveeSamples": 64,
+    "memory": "Linux proportional set size, entire Chromium tree versus native Blender tree; 200ms sampling",
+    "timers": "Python perf_counter for both builds; render_pre to render_post for both renderers",
+    "videoDuringTimings": false,
+    "limitations": [
+      "Native uses background mode; browser includes its UI, GPU process and JavaScript workers. Baseline and incremental memory are reported separately.",
+      "Mesh timings cover CPU construction and evaluation, not interactive viewport frame rate.",
+      "Each case runs three times in one process, in fixed order. First and warm timings are included; these are small local baselines, not a broad production-scene benchmark.",
+      "Both use the same pinned Blender release and scene settings. Native CPU ISA/accelerators and the Wasm build differ.",
+      "First-run means the first render in that process. Global GPU driver caches are not cleared. Native Eevee and browser WebGPU use different graphics APIs on the same hardware.",
+      "Physical memory sampling has overhead and may miss sub-200ms peaks. Wasm capacity is not physical usage, and its linear memory cannot shrink after growth.",
+      "PSS does not fully account for driver-managed GPU memory; the scene-size test measures CPU geometry memory, not total VRAM.",
+      "The 4 GiB Wasm32 limit is configured for this build. Larger desktop-scale allocations have not been ported or validated."
+    ]
+  },
+  "workloadSHA256": {
+    "performance.py": "90177a19b4865868027c800fcc49ed2217c0f99652aa97f3c04c778b7240d25e",
+    "cycles_timing.py": "8dc01a2071ab04fb85b86a43605c46e89bf7ca0d7b832f6d328379331f206125",
+    "eevee_timing.py": "544a2d37e7ea7bed41e47b51e2d92e4e108953e1589d4f6706c4ee6a79836116"
+  }
+}

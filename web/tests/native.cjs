@@ -15,7 +15,7 @@ async function ready(page, failure) {
   await Promise.race([failure, page.waitForFunction(() => document.documentElement.dataset.blenderReady === 'true', null, {timeout:300000})]);
   assert.equal(await page.evaluate(() => crossOriginIsolated), true);
 }
-async function consoleCommand(page, command, marker, capture = () => page.screenshot()) {
+async function consoleCommand(page, command, marker, capture = () => page.screenshot(), timeoutMillis = 90000) {
   await page.locator('canvas').focus();
   await page.keyboard.press('Shift+F4');
   // Blender initializes the console language when its first region is drawn.
@@ -52,7 +52,7 @@ async function consoleCommand(page, command, marker, capture = () => page.screen
   await page.keyboard.press('Shift+Enter');
   await page.keyboard.type(command, {delay:5});
   await page.keyboard.press('Enter');
-  const until = Date.now() + 90000;
+  const until = Date.now() + timeoutMillis;
   while (!messages.slice(previous).some(text => text.includes(marker))) {
     if (Date.now() > until) throw new Error(`Native console did not report ${marker}`);
     await page.waitForTimeout(100);

@@ -21,3 +21,10 @@ NumPy's original numeric implementations are linked as static CPython modules.
 The build patch changes Meson's extension target type and isolates legacy random
 helper names so the modules can share one Wasm binary. Cycles' CPU code is part
 of the pinned Blender source, under its existing Apache-2.0 notices.
+
+FFTW 3.3.10 and Alembic 1.8.3 also use the pinned Blender release's source
+archives and checksums. Both float and double FFTW libraries are static builds
+with pthread support, under GPL-2.0-or-later. Alembic uses its original Ogawa
+reader/writer and existing Imath dependency, under BSD-3-Clause. HDF5 and
+external DCC plug-ins are disabled. Their original license files are published
+under `licenses/dependencies/fftw/` and `licenses/dependencies/alembic/`.

@@ -4,7 +4,7 @@ Blender 5.2.2 LTS compiled to WebAssembly with its original C++ interface and a 
 
 [Open Blender Web](https://shlok-bhakta.github.io/blender-web/) · [Build instructions](web/native/README.md)
 
-The browser build runs Blender's original editors, Python API, scene evaluation, and Workbench startup scene. After loading, the page contains only Blender's canvas. GHOST handles window size and display density; the WebGPU drawing buffers follow them. The initial target is desktop Chromium. Eevee renders the unchanged default cube scene at 1920×1080 and 64 samples. OpenSubdiv supplies CPU subdivision modeling. The build also includes GMP/Manifold Booleans, remeshing, UV SLIM, NumPy and Cycles CPU final rendering. Safari, mobile input, additional windows and Cycles GPU still need work.
+The browser build runs Blender's original editors, Python API, scene evaluation, and Workbench startup scene. After loading, the page contains only Blender's canvas. GHOST handles window size and display density; the WebGPU drawing buffers follow them. The initial target is desktop Chromium. Eevee renders the unchanged default cube scene at 1920×1080 and 64 samples. OpenSubdiv supplies CPU subdivision modeling. The build also includes GMP/Manifold Booleans, remeshing, UV SLIM, NumPy, FFTW oceans, Alembic scene exchange and Cycles CPU final rendering. Safari, mobile input, additional windows and Cycles GPU still need work.
 
 Activate Emscripten 4.0.23, then build and serve:
 
@@ -18,6 +18,10 @@ Open `http://localhost:8080`. GitHub Actions builds the original application, ru
 The `blender/` submodule pins the official stable release. Platform code lives in `intern/ghost/web/` and `web/native/`. Guarded patches in `web/patches/` connect it to upstream in an isolated build worktree, keeping the reference checkout clean. Native C++ uses optimization, SIMD, pthreads, and oneTBB.
 
 [Watch modeling, offline save/reopen and Cycles CPU](web/docs/modeling-cycles-walkthrough.mp4) · [Feature coverage and checks](web/native/FEATURES.md)
+
+[Watch native ocean animation and Alembic exchange](web/docs/ocean-alembic-walkthrough.mp4)
+
+[Native versus browser performance and RAM measurements](web/docs/native-web-performance.md)
 
 [Watch the first Eevee render](web/docs/eevee-default-scene.mp4) · [Render details and validation](web/docs/eevee-default-scene.md)
 

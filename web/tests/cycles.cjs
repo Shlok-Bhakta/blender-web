@@ -16,7 +16,9 @@ async function main() {
   ]:[
     '--enable-unsafe-webgpu','--use-angle=vulkan','--enable-features=Vulkan','--use-vulkan=native','--disable-vulkan-surface',
   ]});
-  const context=await browser.newContext({viewport:{width:1280,height:800},recordVideo:{dir:output,size:{width:1280,height:800}}});
+  const benchmark=process.env.WEB_CYCLES_BENCHMARK==='1';
+  const context=await browser.newContext({viewport:{width:1280,height:800},
+    ...(benchmark?{}:{recordVideo:{dir:output,size:{width:1280,height:800}}})});
   const created=Date.now();
   const page=await context.newPage();
   const errors=[];
@@ -31,20 +33,29 @@ async function main() {
     await page.mouse.move(300,250);
     // The native job executor owns the render wait, as for Eevee. Schedule it
     // with Blender's operator after restoring the viewport from the console.
-    const setup="import bpy; s=bpy.context.scene; s.render.engine='CYCLES'; s.cycles.device='CPU'; s.cycles.samples=16; s.cycles.use_denoising=False; s.cycles.use_adaptive_sampling=False; s.cycles.seed=0; s.render.resolution_x=128; s.render.resolution_y=128; s.render.resolution_percentage=100; s.render.image_settings.file_format='PNG'; s.render.filepath='/tmp/web-cycles.png'; __import__('os').write(1,b'CYCLES_CONFIGURED\\n')";
+    await page.evaluate(source=>Module.FS.writeFile('/tmp/cycles-timing.py',source),fs.readFileSync(path.join(__dirname,'cycles_timing.py'),'utf8'));
+    const setup="exec(compile(open('/tmp/cycles-timing.py').read(),'/tmp/cycles-timing.py','exec')); configure_cycles_timing(); __import__('os').write(1,b'CYCLES_CONFIGURED\\n')";
     await consoleCommand(page,setup,'CYCLES_CONFIGURED');
     const clipStart=(Date.now()-created)/1000;
-    await page.mouse.click(118,13);
-    await page.waitForTimeout(700);
-    const previous=messages.length,started=Date.now();
-    await page.mouse.click(160,41);
-    const deadline=Date.now()+300000;
-    while (!messages.slice(previous).some(text=>text.includes('WEB_GPU_JOB complete'))) {
-      if (errors.length) throw Error(errors.join('\n'));
-      if (Date.now()>deadline) throw Error('CPU render did not finish');
-      await page.waitForTimeout(100);
+    const repeats=Number(process.env.WEB_CYCLES_REPEATS||1),renderRuns=[];
+    assert(Number.isInteger(repeats)&&repeats>=1&&repeats<=10);
+    for(let run=0;run<repeats;run++) {
+      await page.mouse.click(118,13);
+      await page.waitForTimeout(700);
+      const previous=messages.length,started=Date.now();
+      await page.mouse.click(160,41);
+      const deadline=Date.now()+300000;
+      while (!messages.slice(previous).some(text=>text.includes('WEB_GPU_JOB complete'))) {
+        if (errors.length) throw Error(errors.join('\n'));
+        if (Date.now()>deadline) throw Error('CPU render did not finish');
+        await page.waitForTimeout(100);
+      }
+      renderRuns.push((Date.now()-started)/1000);
+      await page.waitForTimeout(1000);
     }
-    const renderSeconds=(Date.now()-started)/1000;
+    const renderSeconds=renderRuns[0];
+    const handlerSeconds=messages.filter(text=>text.startsWith('CYCLES_TIMING:')).map(text=>JSON.parse(text.slice('CYCLES_TIMING:'.length)).seconds);
+    assert.equal(handlerSeconds.length,repeats);
     await page.waitForTimeout(2000);
     await page.mouse.move(600,400);
     await page.keyboard.press('Home');
@@ -77,14 +88,14 @@ async function main() {
     const video=page.video();
     const manifest=await page.evaluate(async()=>(await(await fetch('manifest.json')).json()));
     const report={bundleVersion:manifest.version,browserVersion:browser.version(),engine:'CYCLES',device:'CPU',samples:16,size:[128,128],denoising:false,adaptiveSampling:false,seed:0,softwareDisplay:software,
-      clipStart,clipEnd,renderSeconds,meanAbsoluteError,outlierFraction,errors};
+      clipStart,clipEnd,renderSeconds,renderRuns,handlerSeconds,threads:8,videoCaptured:!benchmark,meanAbsoluteError,outlierFraction,errors};
     report.adapter=await page.evaluate(async()=>{
       const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
       return {vendor:adapter.info.vendor,architecture:adapter.info.architecture,
         device:adapter.info.device,description:adapter.info.description};
     });
     if (!software) assert(!/swiftshader|llvmpipe|lavapipe|software/i.test(JSON.stringify(report.adapter)));
-    await context.close();report.videoPath=await video.path();
+    await context.close();if(video) report.videoPath=await video.path();
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
   } finally {await browser.close();}

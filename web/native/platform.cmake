@@ -15,6 +15,12 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 find_program(PYTHON_EXECUTABLE python3 REQUIRED)
 
+# Upstream's optional Alembic tests also call this platform helper. The web
+# prefix contains only static Wasm libraries and package lookup is root-confined.
+macro(find_package_wrapper)
+  find_package(${ARGV})
+endmacro()
+
 include("${CMAKE_CURRENT_LIST_DIR}/dependencies.cmake")
 include(CheckSymbolExists)
 set(CMAKE_REQUIRED_INCLUDES ${FREETYPE_INCLUDE_DIRS})

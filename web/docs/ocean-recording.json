@@ -1,0 +1,31 @@
+{
+  "bundleVersion": "7e35e48849404ebeac92",
+  "chapters": [
+    {
+      "seconds": 0.001,
+      "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
+    },
+    {
+      "seconds": 16.552,
+      "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
+    },
+    {
+      "seconds": 21.506,
+      "title": "Alembic ocean cache in the original Blender viewport"
+    },
+    {
+      "seconds": 31.271,
+      "title": "Scrub the cached animation from frame 1 through frame 12"
+    },
+    {
+      "seconds": 39.188,
+      "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
+    }
+  ],
+  "durationSeconds": 61.08,
+  "bytes": 2078289,
+  "source": "Hardware Chromium browser recording",
+  "captions": true,
+  "path": "web/docs/ocean-alembic-walkthrough.mp4",
+  "sha256": "4fc9dfa8b852bb1c4d670a5af4b7ae1ce86308752c97f92562f6e035ac85334e"
+}

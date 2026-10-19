@@ -30,6 +30,10 @@ def check_dependencies(source, base, prefix, jobs):
                             text=True, stdout=subprocess.PIPE, timeout=120)
     print(result.stdout, end="", flush=True)
     (base / "dependency-check.json").write_text(json.dumps(json.loads(result.stdout), indent=2) + "\n")
+    for name in ("fftw", "alembic"):
+        output = subprocess.check_output(["node", str(checks / f"{name}-check.js")], text=True, timeout=60)
+        (base / f"{name}-check.json").write_text(json.dumps(json.loads(output), indent=2) + "\n")
+        print(output, end="", flush=True)
 
 
 def check_image_cache(base, prefix):

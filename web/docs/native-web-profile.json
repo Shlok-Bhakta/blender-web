@@ -1,0 +1,231 @@
+{
+  "browserVersion": "145.0.7632.6",
+  "bundleVersion": "7e35e48849404ebeac92",
+  "renderSeconds": 11.482,
+  "settingsUnchanged": true,
+  "browserErrors": 0,
+  "renderRuns": [
+    11.482,
+    3.48
+  ],
+  "runs": [
+    {
+      "apiCpuCalls": {
+        "createTexture": {
+          "count": 99,
+          "ms": 1.64
+        },
+        "createCommandEncoder": {
+          "count": 362,
+          "ms": 3.7
+        },
+        "beginRenderPass": {
+          "count": 924,
+          "ms": 17.465
+        },
+        "createBuffer": {
+          "count": 2442,
+          "ms": 27.125
+        },
+        "writeBuffer": {
+          "count": 3117,
+          "ms": 56.32
+        },
+        "createBindGroup": {
+          "count": 1876,
+          "ms": 37.77
+        },
+        "createRenderPipeline": {
+          "count": 108,
+          "ms": 4.195
+        },
+        "finish": {
+          "count": 362,
+          "ms": 2.45
+        },
+        "submit": {
+          "count": 362,
+          "ms": 16.695
+        },
+        "writeTexture": {
+          "count": 35,
+          "ms": 21.725
+        },
+        "beginComputePass": {
+          "count": 1876,
+          "ms": 10.025
+        },
+        "createShaderModule": {
+          "count": 65,
+          "ms": 11.055
+        },
+        "createComputePipeline": {
+          "count": 31,
+          "ms": 0.52
+        },
+        "mapAsync": {
+          "count": 65,
+          "ms": 2.665
+        }
+      },
+      "asyncWaits": {
+        "mapAsync": {
+          "count": 65,
+          "ms": 3067.23
+        }
+      },
+      "hotspotsCpuMs": {
+        "shaderTranslation": 5985.83,
+        "shaderAdapter": 625.63,
+        "shadercCompilation": 3773.8,
+        "builtinSymbolSetup": 0.41
+      },
+      "sampledRenderCpuMs": 6228.26,
+      "inclusiveCpuMs": {
+        "blender::do_job_thread(void*)": 6228.26,
+        "blender::render_startjob(void*, blender::wmJobWorkerStatus*)": 6228.26,
+        "(root)": 6228.26,
+        "blender::RE_RenderFrame(blender::Render*, blender::Main*, blender::Scene*, blender::ViewLayer*, blender::Object*, int, float, bool)": 6228.26,
+        "blender_web_run_gpu_jobs": 6228.26,
+        "blender::RE_engine_render(blender::Render*, bool)": 6227.6,
+        "blender::engine_render_view_layer(blender::Render*, blender::RenderEngine*, blender::ViewLayer*, bool, bool)": 6227.6,
+        "blender::do_render_full_pipeline(blender::Render*)": 6227.6,
+        "blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)": 6226.69,
+        "blender::DRW_render_to_image(blender::RenderEngine*, blender::Depsgraph*, std::__2::function<void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>, std::__2::function<void (blender::RenderResult*)>)": 6225.76,
+        "std::__2::__function::__func<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0, std::__2::allocator<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0>, void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>::operator()(blender::RenderEngine*&&, blender::RenderLayer*&&, blender::rcti&&)": 6202.15,
+        "blender::eevee::Instance::render_sample()": 6099.31,
+        "blender::gpu::WebGPUShader::ensure_translated()": 5985.83,
+        "blender::gpu::glsl_to_wgsl(std::__2::basic_string<char, std::__2::char_traits<char>, std::__2::allocator<char>> const&, shaderc_shader_kind, char const*, std::__2::basic_string<char, std::__2::char_traits<char>, std::__2::allocator<char>>&)": 5925.79,
+        "blender::eevee::ShadingView::render()": 5214.27,
+        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, bool)": 4700.13,
+        "blender::draw::detail::PassBase<blender::draw::command::DrawCommandBuf>::submit(blender::draw::command::RecordingState&) const": 4697.04,
+        "blender::eevee::DeferredLayer::render(blender::draw::View&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::VecBase<int, 2>, blender::eevee::RayTraceBuffer&, blender::gpu::Texture*)": 4074.57,
+        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, blender::draw::View&)": 3901.02,
+        "(anonymous namespace)::CompileToSpecifiedOutputType(shaderc_compiler*, char const*, unsigned long, shaderc_shader_kind, char const*, char const*, shaderc_compile_options*, shaderc_util::Compiler::OutputType)": 3773.8,
+        "shaderc_util::Compiler::Compile(shaderc_util::string_piece const&, EShLanguage, std::__2::basic_string<char, std::__2::char_traits<char>, std::__2::allocator<char>> const&, char const*, std::__2::function<EShLanguage (std::__2::basic_ostream<char, std::__2::char_traits<char>>*, shaderc_util::string_piece const&)> const&, shaderc_util::CountingIncluder&, shaderc_util::Compiler::OutputType, std::__2::basic_ostream<char, std::__2::char_traits<char>>*, unsigned long*, unsigned long*) const": 3769.86,
+        "blender::gpu::WebGPUBatch::record_draw(int, int, int, int, blender::gpu::StorageBuf*, int, long, long)": 3443.67,
+        "blender::gpu::WebGPUShader::vertex_module()": 3424.33,
+        "blender::gpu::WebGPUShader::compute_module()": 2561.68,
+        "blender::GPU_compute_dispatch(blender::gpu::Shader*, unsigned int, unsigned int, unsigned int, blender::gpu::shader::SpecializationConstants const*)": 2550.82,
+        "blender::gpu::WebGPUBackend::compute_dispatch(int, int, int)": 2547.6,
+        "blender::draw::command::Dispatch::execute(blender::draw::command::RecordingState&) const": 2427.25,
+        "blender::draw::command::Draw::execute(blender::draw::command::RecordingState&) const": 2418.16,
+        "blender::gpu::WebGPUBatch::draw(int, int, int, int)": 2417.46,
+        "blender::GPU_batch_draw_advanced(blender::gpu::Batch*, int, int, int, int)": 2417.46,
+        "glslang::TParseContext::parseShaderStrings(glslang::TPpContext&, glslang::TInputScanner&, bool)": 2295.92,
+        "blender::eevee::ShadowModule::render(blender::draw::View&, blender::VecBase<int, 2>)": 1379.93,
+        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawMultiBuf>&, blender::draw::View&)": 1308.74,
+        "glslang::TPpContext::tokenize(glslang::TPpToken&)": 1287.68,
+        "blender::draw::Manager::submit_only(blender::draw::detail::Pass<blender::draw::command::DrawMultiBuf>&, blender::draw::View&)": 1221.5
+      },
+      "gpuBusyPercent": {
+        "mean": 27.55,
+        "max": 100,
+        "samples": 114
+      }
+    },
+    {
+      "apiCpuCalls": {
+        "createTexture": {
+          "count": 93,
+          "ms": 1.285
+        },
+        "createCommandEncoder": {
+          "count": 349,
+          "ms": 2.905
+        },
+        "beginRenderPass": {
+          "count": 911,
+          "ms": 14.8
+        },
+        "createBuffer": {
+          "count": 2450,
+          "ms": 18.42
+        },
+        "writeBuffer": {
+          "count": 3098,
+          "ms": 41.905
+        },
+        "createBindGroup": {
+          "count": 1868,
+          "ms": 37.76
+        },
+        "finish": {
+          "count": 349,
+          "ms": 2.15
+        },
+        "submit": {
+          "count": 349,
+          "ms": 15.02
+        },
+        "writeTexture": {
+          "count": 20,
+          "ms": 13.2
+        },
+        "beginComputePass": {
+          "count": 1881,
+          "ms": 9.31
+        },
+        "mapAsync": {
+          "count": 65,
+          "ms": 2.345
+        }
+      },
+      "asyncWaits": {
+        "mapAsync": {
+          "count": 65,
+          "ms": 2719.465
+        }
+      },
+      "hotspotsCpuMs": {
+        "shaderTranslation": 0.0,
+        "shaderAdapter": 0.0,
+        "shadercCompilation": 0.0,
+        "builtinSymbolSetup": 0.0
+      },
+      "sampledRenderCpuMs": 130.83,
+      "inclusiveCpuMs": {
+        "blender::do_job_thread(void*)": 130.83,
+        "blender::render_startjob(void*, blender::wmJobWorkerStatus*)": 130.83,
+        "(root)": 130.83,
+        "blender::RE_RenderFrame(blender::Render*, blender::Main*, blender::Scene*, blender::ViewLayer*, blender::Object*, int, float, bool)": 130.83,
+        "blender_web_run_gpu_jobs": 130.83,
+        "blender::RE_engine_render(blender::Render*, bool)": 129.5,
+        "blender::engine_render_view_layer(blender::Render*, blender::RenderEngine*, blender::ViewLayer*, bool, bool)": 129.5,
+        "blender::do_render_full_pipeline(blender::Render*)": 129.5,
+        "blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)": 128.26,
+        "blender::DRW_render_to_image(blender::RenderEngine*, blender::Depsgraph*, std::__2::function<void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>, std::__2::function<void (blender::RenderResult*)>)": 127.31,
+        "std::__2::__function::__func<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0, std::__2::allocator<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0>, void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>::operator()(blender::RenderEngine*&&, blender::RenderLayer*&&, blender::rcti&&)": 110.47,
+        "blender::eevee::Instance::render_sample()": 83.85,
+        "blender::eevee::ShadingView::render()": 64.15,
+        "blender::eevee::DeferredLayer::render(blender::draw::View&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::VecBase<int, 2>, blender::eevee::RayTraceBuffer&, blender::gpu::Texture*)": 48.67,
+        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, bool)": 32.34,
+        "blender::draw::detail::PassBase<blender::draw::command::DrawCommandBuf>::submit(blender::draw::command::RecordingState&) const": 30.97,
+        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, blender::draw::View&)": 28.73,
+        "blender::eevee::ShadowModule::render(blender::draw::View&, blender::VecBase<int, 2>)": 23.5,
+        "blender::GPU_compute_dispatch(blender::gpu::Shader*, unsigned int, unsigned int, unsigned int, blender::gpu::shader::SpecializationConstants const*)": 20.02,
+        "blender::gpu::WebGPUContext::build_bind_group(blender::gpu::WebGPUShader*, std::__2::vector<blender::gpu::WgslResourceBinding, std::__2::allocator<blender::gpu::WgslResourceBinding>> const&, WGPUBindGroupLayoutImpl*)": 19.66,
+        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawMultiBuf>&, blender::draw::View&)": 18.54,
+        "blender::gpu::WebGPUBackend::compute_dispatch(int, int, int)": 18.48,
+        "blender::eevee::Instance::render_sync()": 18.05,
+        "blender::draw::command::Dispatch::execute(blender::draw::command::RecordingState&) const": 17.38,
+        "blender::GPU_texture_read(blender::gpu::Texture*, blender::eGPUDataFormat, int)": 16.0,
+        "blender::gpu::WebGPUContext::read_color_sync(WGPUTextureImpl*, WGPUTextureFormat, int, int, int, int, blender::eGPUDataFormat, int, void*, int, int)": 16.0,
+        "blender::gpu::WebGPUTexture::read(int, blender::eGPUDataFormat, void*)": 16.0,
+        "__memset": 13.4,
+        "blender::gpu::WebGPUBatch::record_draw(int, int, int, int, blender::gpu::StorageBuf*, int, long, long)": 12.84,
+        "emscripten_builtin_calloc": 12.43,
+        "blender::eevee::ShadowModule::end_sync()": 11.97,
+        "blender::eevee::Instance::end_sync()": 11.97,
+        "blender::render_result_passes_allocated_ensure(blender::RenderResult*)": 11.05,
+        "MEM_lockfree_calloc_arrayN_aligned(unsigned long, unsigned long, unsigned long, char const*)": 11.05,
+        "blender::RE_engine_end_result(blender::RenderEngine*, blender::RenderResult*, bool, bool, bool)": 10.92
+      },
+      "gpuBusyPercent": {
+        "mean": 82.26,
+        "max": 100,
+        "samples": 34
+      }
+    }
+  ]
+}

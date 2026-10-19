@@ -21,8 +21,10 @@ batches. The static site's
 | OpenSubdiv GPU | Deferred | Patch-basis shaders and evaluator/draw validation for WebGPU; the platform selects CPU evaluation |
 | GMP and Manifold Boolean solvers | Enabled | Both solvers: union, intersection and difference with volume, bounds and closed-mesh checks |
 | Octree remeshing, QuadriFlow and UV SLIM | Enabled | Smooth/sharp remesh, closed quad topology and minimum-stretch UV unwrap |
-| OpenVDB, NanoVDB, fluids and ocean simulation | Deferred | Port volume/FFT dependencies and measure memory use on real scenes |
-| USD, Alembic, Hydra and MaterialX | Deferred | Port dependencies, file IO and applicable rendering integration |
+| FFTW and Ocean modifier | Enabled | Float/double pthread FFT checks; native ocean animation, foam and UVs compared with desktop at three frames |
+| Alembic scene exchange | Enabled | Ogawa animation in both directions with desktop Blender, mesh deformation, UVs, parent transforms and persistent offline reopen |
+| OpenVDB, NanoVDB and fluids | Deferred | Port volume dependencies and measure memory use on real scenes |
+| USD, Hydra and MaterialX | Deferred | Port dependencies, file IO and applicable rendering integration |
 | Audio, FFmpeg, video and time stretching | Deferred | Codec libraries plus browser audio/device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
@@ -48,10 +50,48 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-The next dependency groups are OpenVDB/NanoVDB and FFTW for volumes and
-simulation, followed by Alembic and USD for scene exchange. Audio and FFmpeg also
+The next dependency groups are OpenVDB/NanoVDB for volumes and simulation,
+followed by USD for scene exchange. Audio and FFmpeg also
 need browser playback integration. Device file selection and download/export
 integration remain separate from the persistent browser filesystem.
+
+FFTW 3.3.10 builds its original float and double libraries with pthread support.
+The Ocean modifier uses Blender's original simulation and evaluation code.
+Alembic 1.8.3 uses the original Ogawa archive implementation and the existing
+Imath dependency. Neither feature needs an upstream algorithm patch.
+HDF5 archives, ocean disk-cache baking and other Alembic schema types remain
+outside this acceptance check. The tested ocean has 676 vertices and 625 faces,
+with animation samples at frames 1, 6 and 12. Coordinate and UV comparisons
+use an absolute tolerance of 0.0002 against the same pinned desktop release.
+
+[Watch the ocean and Alembic browser recording](../docs/ocean-alembic-walkthrough.mp4).
+It shows the cached ocean in Blender's viewport, timeline scrubbing, then an
+offline reload and reopening the same animation from OPFS.
+
+<!-- OCEAN_RECORDING_CHAPTERS -->
+| Time | What to inspect |
+| --- | --- |
+| 0:00 | Blender starts with FFTW ocean simulation and Alembic enabled |
+| 0:16 | Check ocean waves and exchange animated Alembic files with desktop Blender |
+| 0:21 | Alembic ocean cache in the original Blender viewport |
+| 0:31 | Scrub the cached animation from frame 1 through frame 12 |
+| 0:39 | Reload offline and reopen the Alembic cache from persistent browser storage |
+<!-- /OCEAN_RECORDING_CHAPTERS -->
+
+![Alembic ocean animation reopened offline](../docs/web-ocean-alembic.png)
+
+Run
+`node web/tests/ocean-alembic.cjs` for the render variant,
+`WEB_TEST_UI_FALLBACK=1 node web/tests/ocean-alembic.cjs` for the fallback,
+and `WEB_TEST_HARDWARE=1 node web/tests/ocean-alembic.cjs` for hardware capture.
+The fixtures and desktop regeneration command live in
+`web/tests/fixtures/ocean-alembic/README.txt`. To verify a browser export in the
+pinned desktop executable, run:
+
+```sh
+blender -b --factory-startup --python-exit-code 1 \
+  --python web/tests/verify_ocean_desktop.py -- build/native/ocean-evidence-hardware
+```
 
 The restored Bullet, IK and importer code is already part of the pinned Blender
 source. It compiles with the existing Wasm SIMD, pthread and exception settings.
@@ -98,6 +138,10 @@ comparisons and recording checksum. Its build uses the original pinned Blender
 5.2.2 release. Both render and fallback UI bundles exercise native import/export,
 FBX round trips, IK, Bullet, subdivision, Booleans, remeshing, UV SLIM, NumPy and
 save/reopen. The render bundle also runs those operations on the AMD adapter.
+Its `oceanAlembic` section contains the three browser variants and the independent
+desktop check of the browser's exported animation. Its current recording entry
+refers to the ocean/Alembic walkthrough. The earlier modeling/Cycles recording
+above documents the preceding feature batch.
 
 Resize checks cover rapid changes, zero-height recovery and display densities
 of 1, 1.25 and 2. They compare GHOST's logical window size, Blender's editor
@@ -112,7 +156,7 @@ saved PNG is compared with the same settings in desktop Blender 5.2.2. These are
 functional checks; host activity makes their timings unsuitable as an isolated
 performance benchmark.
 
-The selected runtime is about 190.7 MiB before HTTP compression, including
+The selected runtime is about 193.3 MiB before HTTP compression, including
 Python, NumPy and Blender's data. Only one browser variant downloads. The two
 variants currently have identical Wasm bytes, so their content-hash cache entry
 can also be shared. The [cache report](../docs/loading-cache.acceptance.json)
@@ -134,6 +178,14 @@ and when their context is disposed.
 Validation uses desktop Chromium with the repository's WebGPU launch flags.
 Other browsers and mobile devices still need validation. Remaining dependency
 and integration work is listed in the matrix above.
+
+The [native/browser comparison](../docs/native-web-performance.md) records three
+runs per workload on the same machine, including a 2.35-million-face CPU
+subdivision case, ocean animation, Cycles CPU and the unchanged Eevee cube.
+It separates CPU scene-memory growth from the larger browser baseline and
+startup peaks. The configured Wasm32 heap limit remains 4 GiB; these checks do
+not establish desktop-scale RAM parity or interactive viewport frame rate for
+the largest evaluated mesh.
 
 ![Native subdivision in Blender on the hardware WebGPU adapter](../docs/web-subdivision.png)
 

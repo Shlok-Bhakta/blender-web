@@ -16,7 +16,9 @@ async function main() {
   const browser = await chromium.launch({headless:true,args:flags});
   const deviceScaleFactor=Number(process.env.WEB_RENDER_DEVICE_SCALE || 1);
   assert(Number.isFinite(deviceScaleFactor) && deviceScaleFactor>0 && deviceScaleFactor<=4);
-  const context = await browser.newContext({viewport:{width:1280,height:800},deviceScaleFactor,recordVideo:{dir:output,size:{width:1280,height:800}}});
+  const benchmark=process.env.WEB_RENDER_BENCHMARK==='1';
+  const context = await browser.newContext({viewport:{width:1280,height:800},deviceScaleFactor,
+    ...(benchmark?{}:{recordVideo:{dir:output,size:{width:1280,height:800}}})});
   const created = Date.now();
   const page = await context.newPage();
   const profile = process.env.WEB_RENDER_PROFILE === '1' ? await require('./render-profile.cjs').profileRender(browser, page, output) : null;
@@ -38,6 +40,10 @@ async function main() {
     assert.equal(before.engine,'BLENDER_EEVEE');
     assert.deepEqual([before.width,before.height,before.percent,before.samples],[1920,1080,100,64]);
     assert.deepEqual(before.objects.map(x=>x.name),['Camera','Cube','Light']);
+    if(process.env.WEB_RENDER_TIMING==='1') {
+      await page.evaluate(source=>Module.FS.writeFile('/tmp/eevee-timing.py',source),fs.readFileSync(path.join(__dirname,'eevee_timing.py'),'utf8'));
+      await consoleCommand(page,"exec(compile(open('/tmp/eevee-timing.py').read(),'/tmp/eevee-timing.py','exec')); configure_eevee_timing(); __import__('os').write(1,b'EEVEE_TIMING_READY\\n')",'EEVEE_TIMING_READY');
+    }
     await page.screenshot({path:path.join(output,'before-render.png')});
     const clipStart=(Date.now()-created)/1000;
     const renderRuns=[];
@@ -77,6 +83,8 @@ async function main() {
       if (profile) await profile.stop(run);
     }
     const renderSeconds=renderRuns[0];
+    const handlerSeconds=messages.filter(text=>text.startsWith('EEVEE_TIMING:')).map(text=>JSON.parse(text.slice('EEVEE_TIMING:'.length)).seconds);
+    if(process.env.WEB_RENDER_TIMING==='1') assert.equal(handlerSeconds.length,repeats);
     await page.waitForTimeout(2000);
     await page.mouse.move(600,400);
     await page.keyboard.press('Home');
@@ -116,7 +124,7 @@ async function main() {
     }
     assert.deepEqual(fatal,[]);
     const bundleVersion=await page.evaluate(async()=>(await(await fetch('manifest.json')).json()).version);
-    const report={browserVersion:browser.version(),bundleVersion,deviceScaleFactor,renderResizeChecks,engine:before.engine,settingsUnchanged:true,referencePixelsEqual,width:png.width,height:png.height,samples:before.samples,renderSeconds,renderRuns,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
+    const report={browserVersion:browser.version(),bundleVersion,deviceScaleFactor,renderResizeChecks,engine:before.engine,settingsUnchanged:true,referencePixelsEqual,width:png.width,height:png.height,samples:before.samples,renderSeconds,renderRuns,handlerSeconds,videoCaptured:!benchmark,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
   } catch(error) {

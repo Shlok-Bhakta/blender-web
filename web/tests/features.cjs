@@ -50,7 +50,7 @@ async function main() {
       recordedNotices=evidence.featureVariants.find(result=>result.variant===(uiFallback?'ui':'render') && !result.hardware);
       assert(recordedNotices,'Missing recorded notice checks');
     }
-    for (const flag of ['WITH_GMP','WITH_MANIFOLD','WITH_MOD_REMESH','WITH_UV_SLIM','WITH_QUADRIFLOW','WITH_PYTHON_NUMPY','WITH_CYCLES','WITH_OPENSUBDIV','WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
+    for (const flag of ['WITH_FFTW3','WITH_MOD_OCEANSIM','WITH_ALEMBIC','WITH_GMP','WITH_MANIFOLD','WITH_MOD_REMESH','WITH_UV_SLIM','WITH_QUADRIFLOW','WITH_PYTHON_NUMPY','WITH_CYCLES','WITH_OPENSUBDIV','WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
       assert.equal(manifest.buildOptions[flag],true,flag);
     }
     await page.evaluate(source=>Module.FS.writeFile('/tmp/web-features.py',source),
@@ -70,6 +70,7 @@ async function main() {
     for (const [dependency,names] of Object.entries({
       opensubdiv:['LICENSE.txt','NOTICE.txt'], gmp:['COPYINGv2','COPYING.LESSERv3'],
       manifold:['LICENSE'], numpy:['LICENSE.txt','LICENSES_bundled.txt'],
+      fftw:['COPYING'], alembic:['LICENSE.txt'],
     })) {
       const notices=report.dependencyNotices[dependency]={};
       for (const name of names) {

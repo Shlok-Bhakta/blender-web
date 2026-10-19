@@ -40,6 +40,8 @@ RECIPES = {
     "OPENSUBDIV": ("", ["-DNO_EXAMPLES=ON", "-DNO_TUTORIALS=ON", "-DNO_REGRESSION=ON", "-DNO_PTEX=ON", "-DNO_DOC=ON", "-DNO_OMP=ON", "-DNO_TBB=OFF", "-DNO_CUDA=ON", "-DNO_OPENCL=ON", "-DNO_CLEW=ON", "-DNO_OPENGL=ON", "-DNO_METAL=ON", "-DNO_DX=ON", "-DNO_TESTS=ON", "-DNO_GLTESTS=ON", "-DNO_GLEW=ON", "-DNO_GLFW=ON"]),
     "GMP": ("", ["--host=none", "--enable-cxx", "--disable-assembly", "--disable-shared", "--enable-static"]),
     "MANIFOLD": ("", ["-DMANIFOLD_JSBIND=OFF", "-DMANIFOLD_CBIND=OFF", "-DMANIFOLD_PYBIND=OFF", "-DMANIFOLD_PAR=ON", "-DMANIFOLD_CROSS_SECTION=OFF", "-DMANIFOLD_EXPORT=OFF", "-DMANIFOLD_DEBUG=OFF", "-DMANIFOLD_TEST=OFF", "-DMANIFOLD_DOWNLOADS=OFF"]),
+    "FFTW": ("", ["-DENABLE_THREADS=ON", "-DWITH_COMBINED_THREADS=OFF", "-DBUILD_TESTS=OFF"]),
+    "ALEMBIC": ("", ["-DUSE_PYALEMBIC=OFF", "-DUSE_ARNOLD=OFF", "-DUSE_MAYA=OFF", "-DUSE_PRMAN=OFF", "-DUSE_HDF5=OFF", "-DUSE_TESTS=OFF", "-DUSE_BINARIES=OFF", "-DALEMBIC_SHARED_LIBS=OFF"]),
     "TIFF": ("", ["-Dtiff-tools=OFF", "-Dtiff-tests=OFF", "-Dtiff-contrib=OFF", "-Dtiff-docs=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djbig=OFF"]),
     "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0"]),
 }
@@ -47,7 +49,7 @@ RECIPES = {
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
 CXX_PACKAGES = {"FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
-                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "OPENIMAGEIO", "TIFF"}
+                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENIMAGEIO", "TIFF"}
 
 
 def run(command, log, cwd=None, env=None):
@@ -194,6 +196,21 @@ def build(args):
                  f"--srcdir={source}", *options], log, cwd=work)
             run(["emmake", "make", f"-j{args.jobs}"], log, cwd=work)
             run(["emmake", "make", "install"], log, cwd=work)
+            stamp.write_text(json.dumps(signature, indent=2) + "\n")
+            continue
+        if name == "FFTW":
+            # Blender uses double precision for oceans and float/threaded float
+            # transforms elsewhere. Install both original implementations.
+            for precision in ("double", "float"):
+                work = directory / "build" / precision
+                run(["emcmake", "cmake", "-S", source, "-B", work,
+                     f"-DCMAKE_TOOLCHAIN_FILE={ROOT / 'web/native/toolchain.cmake'}",
+                     f"-DCMAKE_INSTALL_PREFIX={prefix}", "-DCMAKE_BUILD_TYPE=Release",
+                     f"-DCMAKE_C_FLAGS={C_FLAGS}", "-DBUILD_SHARED_LIBS=OFF",
+                     f"-DENABLE_FLOAT={'ON' if precision == 'float' else 'OFF'}",
+                     *options], log)
+                run(["cmake", "--build", work, "--parallel", args.jobs], log)
+                run(["cmake", "--install", work], log)
             stamp.write_text(json.dumps(signature, indent=2) + "\n")
             continue
         run(["emcmake", "cmake", "-S", source / subdir, "-B", directory / "build",

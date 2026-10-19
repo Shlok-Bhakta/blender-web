@@ -4,38 +4,38 @@
       {
         "mode": "cold",
         "networkRequests": 3,
-        "totalBytes": 199930451,
+        "totalBytes": 202661923,
         "cacheBytes": 723280,
-        "progressUpdates": 87,
+        "progressUpdates": 92,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 199930451,
-        "cacheBytes": 199930451,
+        "totalBytes": 202661923,
+        "cacheBytes": 202661923,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 199930451,
-        "cacheBytes": 199930451,
+        "totalBytes": 202661923,
+        "cacheBytes": 202661923,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       },
       {
         "mode": "restarted-offline",
         "networkRequests": 0,
-        "totalBytes": 199930451,
-        "cacheBytes": 199930451,
+        "totalBytes": 202661923,
+        "cacheBytes": 202661923,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       }
     ],
     "browserErrors": []
@@ -45,38 +45,38 @@
       {
         "mode": "cold",
         "networkRequests": 3,
-        "totalBytes": 199926213,
+        "totalBytes": 202657685,
         "cacheBytes": 719042,
-        "progressUpdates": 117,
+        "progressUpdates": 89,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 199926213,
-        "cacheBytes": 199926213,
-        "progressUpdates": 21,
+        "totalBytes": 202657685,
+        "cacheBytes": 202657685,
+        "progressUpdates": 18,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 199926213,
-        "cacheBytes": 199926213,
+        "totalBytes": 202657685,
+        "cacheBytes": 202657685,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       },
       {
         "mode": "restarted-offline",
         "networkRequests": 0,
-        "totalBytes": 199926213,
-        "cacheBytes": 199926213,
+        "totalBytes": 202657685,
+        "cacheBytes": 202657685,
         "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "656d089684b1079cf65a"
+        "bundleVersion": "7e35e48849404ebeac92"
       }
     ],
     "browserErrors": []
@@ -98,14 +98,14 @@
       "description": ""
     },
     "browserVersion": "145.0.7632.6",
-    "bundleVersion": "656d089684b1079cf65a",
-    "measuredAt": "2026-10-18T21:00:57.510Z",
+    "bundleVersion": "7e35e48849404ebeac92",
+    "measuredAt": "2026-10-19T03:53:41.943Z",
     "originalUI": true,
     "startupCube": true,
     "webgpu": true,
     "isolated": true,
     "workers": 18,
-    "colors": 838,
+    "colors": 837,
     "resize": true,
     "resizeChecks": [
       {
@@ -115,8 +115,8 @@
         ],
         "scale": 1,
         "pixels": "1040x720",
-        "colors": 385,
-        "cubePixels": 480,
+        "colors": 437,
+        "cubePixels": 479,
         "window": [
           1040,
           720
@@ -134,8 +134,8 @@
         ],
         "scale": 1,
         "pixels": "960x640",
-        "colors": 438,
-        "cubePixels": 443,
+        "colors": 408,
+        "cubePixels": 450,
         "window": [
           960,
           640
@@ -153,8 +153,8 @@
         ],
         "scale": 1,
         "pixels": "1040x720",
-        "colors": 385,
-        "cubePixels": 480,
+        "colors": 437,
+        "cubePixels": 479,
         "window": [
           1040,
           720
@@ -172,8 +172,8 @@
         ],
         "scale": 2,
         "pixels": "2080x1440",
-        "colors": 524,
-        "cubePixels": 2492,
+        "colors": 527,
+        "cubePixels": 2486,
         "window": [
           1040,
           720
@@ -191,8 +191,8 @@
         ],
         "scale": 1.25,
         "pixels": "1300x900",
-        "colors": 544,
-        "cubePixels": 609,
+        "colors": 549,
+        "cubePixels": 602,
         "window": [
           1040,
           720
@@ -210,8 +210,8 @@
         ],
         "scale": 1,
         "pixels": "1040x720",
-        "colors": 384,
-        "cubePixels": 480,
+        "colors": 437,
+        "cubePixels": 479,
         "window": [
           1040,
           720

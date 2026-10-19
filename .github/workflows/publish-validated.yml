@@ -86,6 +86,8 @@ jobs:
           export WEB_FEATURE_NOTICES_REPORT=web/docs/web-features.acceptance.json
           node web/tests/features.cjs
           WEB_TEST_UI_FALLBACK=1 node web/tests/features.cjs
+          node web/tests/ocean-alembic.cjs
+          WEB_TEST_UI_FALLBACK=1 node web/tests/ocean-alembic.cjs
           WEB_RENDER_SOFTWARE=1 node web/tests/cycles.cjs
       - uses: actions/upload-artifact@v4
         if: always()
@@ -97,6 +99,7 @@ jobs:
             build/native/evidence*
             build/native/feature-evidence*
             build/native/cycles-evidence
+            build/native/ocean-evidence*
           if-no-files-found: ignore
       - uses: actions/upload-pages-artifact@v3
         with:
