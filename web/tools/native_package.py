@@ -8,7 +8,7 @@ import re
 import shutil
 
 
-def stage(base, source, prefix):
+def stage(base, source, prefix, shader_seed=True):
     target = base / 'assets'
     target.mkdir(exist_ok=True)
     blender = target / '5.2'
@@ -25,6 +25,13 @@ def stage(base, source, prefix):
             'turtledemo', 'ensurepip', 'config-3.13-*', '*.a', '*.xcf'))
     shutil.copy2(source / 'intern/ghost/web/native/ghost/GHOST_WebClock.py',
                  blender / 'scripts/modules/_bpy_ghost_web_clock.py')
+    seed = source / 'intern/ghost/web/native/shader-seed.json'
+    if shader_seed and seed.is_file():
+        from native_shader_seed import translator_inputs
+        metadata = json.loads(seed.read_text())
+        if metadata['translatorInputs'] != translator_inputs():
+            raise RuntimeError('Shader seed is stale; recapture using native_shader_seed.py')
+        shutil.copy2(seed, blender / 'datafiles/shader-seed.json')
     # Cycles' Python engine is installed from intern/cycles, outside scripts/.
     # Its CPU kernels are compiled into the binary; do not preload GPU sources.
     cycles = source / 'intern/cycles/blender/addon'
@@ -90,6 +97,7 @@ def collect(base, root):
     shutil.copy2(root / 'web/native/THIRD_PARTY.md', notices / 'THIRD_PARTY.md')
     upstream = base / 'source' if (base / 'source').is_dir() else root
     shutil.copy2(upstream / 'extern/ufbx/LICENSE', notices / 'ufbx-LICENSE.txt')
+    shutil.copy2(upstream / 'extern/mantaflow/LICENSE', notices / 'mantaflow-LICENSE.txt')
     shutil.copytree(upstream / 'intern/cycles/doc/license', notices / 'cycles',
                     dirs_exist_ok=True, ignore=shutil.ignore_patterns('CMakeLists.txt'))
     bullet = (upstream / 'extern/bullet2/src/btBulletDynamicsCommon.h').read_text()
@@ -112,10 +120,16 @@ def collect(base, root):
     # from whichever preset happened to be used by the caller.
     options = dict(re.findall(r'^(WITH_\w+):BOOL=(ON|OFF)$',
                              (base / 'editor/CMakeCache.txt').read_text(), re.MULTILINE))
+    seed = base / 'assets/5.2/datafiles/shader-seed.json'
+    seed_info = None
+    if seed.exists():
+        seed_info = {'entries':len(json.loads(seed.read_text())['entries']),
+                     'sha256':hashlib.sha256(seed.read_bytes()).hexdigest()}
     (destination / 'manifest.json').write_text(json.dumps({'version': version,
         'kind': 'native-blender', 'blenderVersion': pins['blenderVersion'],
         'blenderRevision': pins['blenderRevision'], 'emscriptenVersion': pins['emscriptenVersion'],
         'assetBase': f'assets/{version}/', 'uiFallback': (bundle / 'blender-ui.js').exists(),
         'buildOptions': {key: value == 'ON' for key, value in sorted(options.items())},
+        'shaderSeed':seed_info,
         'files': files}, indent=2)+'\n')
     return destination

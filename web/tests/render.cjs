@@ -32,6 +32,23 @@ async function main() {
   try {
     await page.goto(process.env.WEB_TEST_URL || 'http://127.0.0.1:8093/');
     await ready(page,new Promise(()=>{}));
+    let shaderOverrideEntries=0;
+    if(process.env.WEB_RENDER_SHADER_OVERRIDES) {
+      const entries=JSON.parse(fs.readFileSync(process.env.WEB_RENDER_SHADER_OVERRIDES,'utf8'));
+      const installed=await Promise.all(page.workers().map(worker=>Promise.race([
+        worker.evaluate(entries=>{
+          if(!globalThis.__WGSL_CACHE__) return 0;
+          for(const [key,value] of entries) globalThis.__WGSL_CACHE__.set(key,value);
+          return entries.length;
+        },entries),new Promise(resolve=>setTimeout(()=>resolve(0),1500)),
+      ])));
+      shaderOverrideEntries=installed.reduce((sum,count)=>sum+count,0);
+      assert.equal(shaderOverrideEntries,entries.length,'Shader experiment must reach the GPU owner');
+    }
+    if(process.env.WEB_RENDER_DUMP_GLSL) {
+      await page.mouse.move(300,250);
+      await consoleCommand(page,"import os; os.environ['WGPU_DUMP_GLSL_STDERR']="+JSON.stringify(process.env.WEB_RENDER_DUMP_GLSL)+"; os.write(1,b'GLSL_CAPTURE_READY\\n')",'GLSL_CAPTURE_READY');
+    }
     assert.equal(await page.evaluate(()=>typeof WebAssembly.promising==='function'),true,'Rendering requires JSPI');
     const adapter=await page.evaluate(async()=>{const a=await navigator.gpu.requestAdapter();return {vendor:a.info.vendor,architecture:a.info.architecture,device:a.info.device,description:a.info.description,features:[...a.features],maxComputeInvocationsPerWorkgroup:a.limits.maxComputeInvocationsPerWorkgroup,maxStorageTexturesPerShaderStage:a.limits.maxStorageTexturesPerShaderStage,maxStorageBufferBindingSize:a.limits.maxStorageBufferBindingSize};});
     await page.mouse.move(300,250);
@@ -123,9 +140,21 @@ async function main() {
       referencePixelsEqual=true;
     }
     assert.deepEqual(fatal,[]);
-    const bundleVersion=await page.evaluate(async()=>(await(await fetch('manifest.json')).json()).version);
-    const report={browserVersion:browser.version(),bundleVersion,deviceScaleFactor,renderResizeChecks,engine:before.engine,settingsUnchanged:true,referencePixelsEqual,width:png.width,height:png.height,samples:before.samples,renderSeconds,renderRuns,handlerSeconds,videoCaptured:!benchmark,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
+    const manifest=await page.evaluate(async()=>(await(await fetch('manifest.json')).json()));
+    const bundleVersion=manifest.version;
+    const shaderSeedEntries=Number(messages.find(line=>line.startsWith('WEB_WGSL_SEED entries='))?.split('=')[1] || 0);
+    if(manifest.shaderSeed) assert.equal(shaderSeedEntries,manifest.shaderSeed.entries,'Native startup must load the bundled shaders');
+    const report={browserVersion:browser.version(),bundleVersion,shaderSeedEntries,shaderOverrideEntries,deviceScaleFactor,renderResizeChecks,engine:before.engine,settingsUnchanged:true,referencePixelsEqual,width:png.width,height:png.height,samples:before.samples,renderSeconds,renderRuns,handlerSeconds,videoCaptured:!benchmark,adapter,foregroundPixels:foreground,opaquePixels:opaque,browserErrors:0,clipStart,clipEnd,defaults:before};
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
+    if(process.env.WEB_RENDER_EXPORT_SHADER_CACHE==='1') {
+      const caches=await Promise.all(page.workers().map(worker=>Promise.race([
+        worker.evaluate(()=>globalThis.__WGSL_CACHE__ ? [...globalThis.__WGSL_CACHE__] : null),
+        new Promise(resolve=>setTimeout(()=>resolve(null),1500)),
+      ])));
+      const entries=[...new Map(caches.filter(Boolean).flat())].sort((a,b)=>a[0].localeCompare(b[0]));
+      assert(entries.length>50,'Shader seed must contain the native UI and Eevee shaders');
+      fs.writeFileSync(path.join(output,'shader-cache.json'),JSON.stringify(entries)+'\n');
+    }
     console.log(JSON.stringify(report));
   } catch(error) {
     await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});

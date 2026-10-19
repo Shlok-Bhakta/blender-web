@@ -44,3 +44,17 @@ endif()
 if(WITH_ALEMBIC)
   find_package(Alembic REQUIRED)
 endif()
+if(WITH_OPENVDB)
+  find_package(OpenVDB REQUIRED)
+  find_library(WEB_BLOSC_LIBRARY NAMES blosc REQUIRED)
+  add_library(Web::OpenVDB STATIC IMPORTED)
+  set_target_properties(Web::OpenVDB PROPERTIES
+    IMPORTED_LOCATION "${OPENVDB_LIBRARY}"
+    INTERFACE_INCLUDE_DIRECTORIES "${OPENVDB_INCLUDE_DIRS}"
+    INTERFACE_COMPILE_DEFINITIONS OPENVDB_STATICLIB
+    INTERFACE_LINK_LIBRARIES "${WEB_BLOSC_LIBRARY};zstd::libzstd_static;ZLIB::ZLIB;TBB::tbb")
+  set(OPENVDB_LIBRARIES Web::OpenVDB)
+endif()
+if(WITH_NANOVDB)
+  find_package(NanoVDB REQUIRED)
+endif()

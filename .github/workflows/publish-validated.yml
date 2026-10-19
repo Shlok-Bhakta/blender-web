@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        group: [startup, ui, features, ocean, cycles]
+        group: [startup, ui, features, ocean, volume, cycles]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -106,6 +106,10 @@ jobs:
             cycles)
               WEB_RENDER_SOFTWARE=1 node web/tests/cycles.cjs
               ;;
+            volume)
+              node web/tests/volume.cjs
+              WEB_TEST_UI_FALLBACK=1 node web/tests/volume.cjs
+              ;;
             *) exit 1 ;;
           esac
       - uses: actions/upload-artifact@v4
@@ -119,6 +123,7 @@ jobs:
             build/native/feature-evidence*
             build/native/cycles-evidence
             build/native/ocean-evidence*
+            build/native/volume-evidence*
           if-no-files-found: ignore
       - uses: actions/upload-pages-artifact@v3
         if: matrix.group == 'startup'

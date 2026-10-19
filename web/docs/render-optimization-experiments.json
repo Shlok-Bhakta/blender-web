@@ -1,0 +1,574 @@
+{
+  "controlBundle": "7e35e48849404ebeac92",
+  "browserVersion": "145.0.7632.6",
+  "control": {
+    "handlerSeconds": [
+      7.6399500370025635,
+      3.0277700424194336,
+      3.1080949306488037
+    ],
+    "referencePixelsEqual": true
+  },
+  "rejectedExperiments": [
+    {
+      "name": "Submit snapshot copies with the following pass",
+      "bundleVersion": "a1a2b5281c32b3150e52",
+      "handlerSeconds": [
+        7.697244882583618,
+        3.1194052696228027,
+        3.126114845275879
+      ],
+      "referencePixelsEqual": true,
+      "accepted": false,
+      "reason": "No measurable render improvement"
+    },
+    {
+      "name": "shaderc performance optimization for deferred lighting fragments",
+      "handlerSeconds": [
+        7.945135116577148,
+        3.3189947605133057,
+        3.2716898918151855
+      ],
+      "shaderOverrides": 2,
+      "accepted": false,
+      "reason": "Slower warm renders and 5 reference channels differed by 1 on a 0\u2013255 scale",
+      "probeSourceSHA256": "20568c29d787347784e1940213a0520006a9af4b34697c6087c6241ce969d773"
+    },
+    {
+      "name": "Selected SPIR-V local variable/SSA transformations without loop unrolling",
+      "bundleVersion": "7e35e48849404ebeac92",
+      "handlerSeconds": [
+        13.472180366516113,
+        3.2055349349975586,
+        2.9744298458099365
+      ],
+      "referencePixelsEqual": true,
+      "shaderOverrides": 2,
+      "accepted": false,
+      "reason": "No measurable warm-render improvement",
+      "probeSourceSHA256": "2b38d8d2e3ca584749d4bdc857ec85411cd775751a66caa09410d07214ec37e8"
+    }
+  ],
+  "gpuTimestampProfile": {
+    "bundleVersion": "7e35e48849404ebeac92",
+    "runs": [
+      {
+        "profiledRenderSeconds": 11.622,
+        "timings": [
+          {
+            "passes": 2800,
+            "overflow": 0,
+            "invalid": 2,
+            "groups": {
+              "render:eevee_deferred_light_double,eevee_deferred_light_single": {
+                "count": 64,
+                "milliseconds": 1541.68624
+              },
+              "compute:eevee_shadow_tilemap_init": {
+                "count": 128,
+                "milliseconds": 263.92496000000006
+              },
+              "compute:eevee_film_comp": {
+                "count": 64,
+                "milliseconds": 203.22351999999995
+              },
+              "compute:eevee_shadow_page_free": {
+                "count": 128,
+                "milliseconds": 114.61264000000004
+              },
+              "render:clear": {
+                "count": 306,
+                "milliseconds": 99.56624000000001
+              },
+              "render:MADefault_Surface_deferred_mesh": {
+                "count": 64,
+                "milliseconds": 51.27471999999999
+              },
+              "compute:eevee_lightprobe_sphere_convolve": {
+                "count": 4,
+                "milliseconds": 49.549119999999995
+              },
+              "render:eevee_deferred_combine": {
+                "count": 64,
+                "milliseconds": 48.25055999999998
+              },
+              "render:eevee_deferred_tile_classify": {
+                "count": 64,
+                "milliseconds": 45.04592
+              },
+              "compute:eevee_shadow_tag_usage_opaque": {
+                "count": 64,
+                "milliseconds": 38.09824000000001
+              },
+              "render:eevee_renderpass_clear": {
+                "count": 64,
+                "milliseconds": 33.64912
+              },
+              "compute:eevee_hiz_update": {
+                "count": 64,
+                "milliseconds": 32.80208
+              },
+              "render:WOWorld_world_world": {
+                "count": 70,
+                "milliseconds": 31.385759999999998
+              },
+              "compute:eevee_light_culling_zbin": {
+                "count": 64,
+                "milliseconds": 18.324959999999994
+              },
+              "compute:eevee_lookdev_copy_world": {
+                "count": 1,
+                "milliseconds": 15.85792
+              },
+              "compute:eevee_shadow_view_visibility": {
+                "count": 64,
+                "milliseconds": 9.182879999999995
+              },
+              "render:MADefault_Surface_depth_velocity_mesh": {
+                "count": 64,
+                "milliseconds": 7.0451200000000025
+              },
+              "compute:eevee_shadow_tilemap_finalize": {
+                "count": 64,
+                "milliseconds": 5.668319999999999
+              },
+              "compute:eevee_lightprobe_sphere_remap": {
+                "count": 1,
+                "milliseconds": 5.23168
+              },
+              "compute:eevee_light_shadow_setup": {
+                "count": 64,
+                "milliseconds": 5.030879999999999
+              },
+              "render:OCIO_Display": {
+                "count": 2,
+                "milliseconds": 4.80944
+              },
+              "render:MADefault_Surface_shadow_mesh": {
+                "count": 64,
+                "milliseconds": 3.526399999999999
+              },
+              "compute:gpu_shader_2D_update_mipmaps_sfloat_16_16_16_16": {
+                "count": 5,
+                "milliseconds": 2.6601600000000003
+              },
+              "compute:draw_command_generate": {
+                "count": 192,
+                "milliseconds": 2.194560000000001
+              },
+              "compute:eevee_shadow_page_clear": {
+                "count": 64,
+                "milliseconds": 2.11584
+              },
+              "render:present_flip_blit": {
+                "count": 2,
+                "milliseconds": 2.0911999999999997
+              },
+              "compute:eevee_shadow_page_mask": {
+                "count": 64,
+                "milliseconds": 2.034560000000001
+              },
+              "compute:eevee_shadow_tilemap_amend": {
+                "count": 64,
+                "milliseconds": 1.66064
+              },
+              "compute:eevee_light_culling_tile": {
+                "count": 64,
+                "milliseconds": 1.4172800000000005
+              },
+              "render:overlay_background": {
+                "count": 2,
+                "milliseconds": 1.3948800000000001
+              },
+              "render:image_engine_image_shader": {
+                "count": 1,
+                "milliseconds": 1.2624
+              },
+              "compute:eevee_shadow_tilemap_bounds": {
+                "count": 64,
+                "milliseconds": 1.2243199999999996
+              },
+              "compute:eevee_light_culling_cull": {
+                "count": 64,
+                "milliseconds": 0.9980800000000001
+              },
+              "compute:draw_visibility_compute": {
+                "count": 66,
+                "milliseconds": 0.9022399999999998
+              },
+              "compute:eevee_light_culling_sort": {
+                "count": 64,
+                "milliseconds": 0.8657600000000002
+              },
+              "compute:eevee_shadow_page_allocate": {
+                "count": 64,
+                "milliseconds": 0.8639999999999998
+              },
+              "compute:eevee_shadow_page_defrag": {
+                "count": 64,
+                "milliseconds": 0.7286399999999998
+              },
+              "render:gpu_shader_text": {
+                "count": 8,
+                "milliseconds": 0.6017600000000001
+              },
+              "compute:eevee_lightprobe_sphere_select": {
+                "count": 64,
+                "milliseconds": 0.58512
+              },
+              "compute:eevee_shadow_tilemap_rendermap": {
+                "count": 64,
+                "milliseconds": 0.5211200000000001
+              },
+              "compute:eevee_shadow_tilemap_bounds_init": {
+                "count": 64,
+                "milliseconds": 0.5089600000000002
+              },
+              "render:eevee_light_shape_display": {
+                "count": 64,
+                "milliseconds": 0.49568000000000006
+              },
+              "compute:draw_view_finalize": {
+                "count": 64,
+                "milliseconds": 0.4449599999999997
+              },
+              "compute:eevee_shadow_tag_update_propagate": {
+                "count": 64,
+                "milliseconds": 0.42543999999999954
+              },
+              "render:overlay_grid_background,overlay_grid_next,overlay_grid_image": {
+                "count": 2,
+                "milliseconds": 0.33440000000000003
+              },
+              "render:overlay_edit_mesh_depth": {
+                "count": 2,
+                "milliseconds": 0.31135999999999997
+              },
+              "render:gpu_shader_2D_widget_base,gpu_shader_text": {
+                "count": 2,
+                "milliseconds": 0.25695999999999997
+              },
+              "render:gpu_shader_text,gpu_shader_3D_uniform_color,gpu_shader_2D_widget_base": {
+                "count": 2,
+                "milliseconds": 0.25296
+              },
+              "render:gpu_shader_2D_widget_base,gpu_shader_text,gpu_shader_2D_widget_base_inst": {
+                "count": 1,
+                "milliseconds": 0.21424
+              },
+              "render:gpu_shader_text,gpu_shader_2D_widget_base,gpu_shader_2D_widget_base_inst": {
+                "count": 2,
+                "milliseconds": 0.20832
+              },
+              "render:gpu_shader_text,gpu_shader_2D_widget_base": {
+                "count": 2,
+                "milliseconds": 0.20672000000000001
+              },
+              "render:image_engine_color_shader": {
+                "count": 1,
+                "milliseconds": 0.19824
+              },
+              "compute:draw_resource_finalize": {
+                "count": 3,
+                "milliseconds": 0.10944000000000001
+              },
+              "compute:eevee_lightprobe_sphere_irradiance": {
+                "count": 1,
+                "milliseconds": 0.10784
+              },
+              "render:gpu_shader_2D_widget_base,gpu_shader_3D_uniform_color,gpu_shader_text": {
+                "count": 1,
+                "milliseconds": 0.08912
+              },
+              "render:gpu_shader_3D_uniform_color": {
+                "count": 1,
+                "milliseconds": 0.07584
+              },
+              "compute:eevee_lightprobe_sphere_sunlight": {
+                "count": 1,
+                "milliseconds": 0.07168
+              },
+              "render:eevee_shadow_tag_update": {
+                "count": 1,
+                "milliseconds": 0.06656
+              },
+              "render:gpu_shader_2D_widget_base,gpu_shader_3D_uniform_color": {
+                "count": 1,
+                "milliseconds": 0.06464
+              },
+              "render:gpu_shader_2D_widget_base": {
+                "count": 1,
+                "milliseconds": 0.04928
+              },
+              "compute:eevee_lightprobe_volume_world": {
+                "count": 1,
+                "milliseconds": 0.03744
+              },
+              "compute:eevee_vertex_copy": {
+                "count": 1,
+                "milliseconds": 0.02992
+              }
+            }
+          }
+        ]
+      },
+      {
+        "profiledRenderSeconds": 3.295,
+        "timings": [
+          {
+            "passes": 2792,
+            "overflow": 0,
+            "invalid": 2,
+            "groups": {
+              "render:eevee_deferred_light_double,eevee_deferred_light_single": {
+                "count": 64,
+                "milliseconds": 1369.2147200000006
+              },
+              "compute:eevee_shadow_tilemap_init": {
+                "count": 128,
+                "milliseconds": 213.59392000000003
+              },
+              "compute:eevee_film_comp": {
+                "count": 64,
+                "milliseconds": 180.52047999999996
+              },
+              "render:clear": {
+                "count": 304,
+                "milliseconds": 134.36784000000011
+              },
+              "compute:eevee_shadow_page_free": {
+                "count": 128,
+                "milliseconds": 95.77984000000001
+              },
+              "render:eevee_deferred_combine": {
+                "count": 64,
+                "milliseconds": 43.40656
+              },
+              "render:MADefault_Surface_deferred_mesh": {
+                "count": 64,
+                "milliseconds": 43.15711999999998
+              },
+              "render:eevee_deferred_tile_classify": {
+                "count": 64,
+                "milliseconds": 32.08672
+              },
+              "compute:eevee_shadow_tag_usage_opaque": {
+                "count": 64,
+                "milliseconds": 31.711679999999998
+              },
+              "render:eevee_renderpass_clear": {
+                "count": 64,
+                "milliseconds": 30.391039999999993
+              },
+              "compute:eevee_lightprobe_sphere_convolve": {
+                "count": 4,
+                "milliseconds": 29.90336
+              },
+              "render:WOWorld_world_world": {
+                "count": 70,
+                "milliseconds": 28.464000000000006
+              },
+              "compute:eevee_hiz_update": {
+                "count": 64,
+                "milliseconds": 26.098719999999997
+              },
+              "compute:eevee_light_culling_zbin": {
+                "count": 64,
+                "milliseconds": 14.262560000000008
+              },
+              "compute:eevee_shadow_view_visibility": {
+                "count": 64,
+                "milliseconds": 7.66288
+              },
+              "render:MADefault_Surface_depth_velocity_mesh": {
+                "count": 64,
+                "milliseconds": 6.39472
+              },
+              "compute:gpu_shader_2D_update_mipmaps_sfloat_16_16_16_16": {
+                "count": 10,
+                "milliseconds": 5.960960000000002
+              },
+              "compute:eevee_lookdev_copy_world": {
+                "count": 1,
+                "milliseconds": 5.39856
+              },
+              "render:OCIO_Display": {
+                "count": 2,
+                "milliseconds": 4.86448
+              },
+              "compute:eevee_light_shadow_setup": {
+                "count": 64,
+                "milliseconds": 3.9654400000000005
+              },
+              "compute:eevee_lightprobe_sphere_remap": {
+                "count": 1,
+                "milliseconds": 3.70288
+              },
+              "compute:eevee_shadow_tilemap_finalize": {
+                "count": 64,
+                "milliseconds": 2.949279999999999
+              },
+              "render:MADefault_Surface_shadow_mesh": {
+                "count": 64,
+                "milliseconds": 2.5251199999999994
+              },
+              "render:image_engine_image_shader": {
+                "count": 2,
+                "milliseconds": 2.50336
+              },
+              "render:present_flip_blit": {
+                "count": 2,
+                "milliseconds": 2.06432
+              },
+              "compute:eevee_shadow_page_mask": {
+                "count": 64,
+                "milliseconds": 1.6574400000000002
+              },
+              "compute:draw_command_generate": {
+                "count": 192,
+                "milliseconds": 1.5513600000000003
+              },
+              "compute:eevee_shadow_tilemap_amend": {
+                "count": 64,
+                "milliseconds": 1.40144
+              },
+              "render:overlay_background": {
+                "count": 2,
+                "milliseconds": 1.3913600000000002
+              },
+              "compute:eevee_light_culling_tile": {
+                "count": 64,
+                "milliseconds": 1.1076799999999996
+              },
+              "compute:eevee_shadow_tilemap_bounds": {
+                "count": 64,
+                "milliseconds": 0.9817600000000007
+              },
+              "compute:eevee_shadow_page_clear": {
+                "count": 64,
+                "milliseconds": 0.9323200000000007
+              },
+              "compute:eevee_light_culling_cull": {
+                "count": 64,
+                "milliseconds": 0.7830399999999998
+              },
+              "compute:eevee_shadow_page_allocate": {
+                "count": 64,
+                "milliseconds": 0.7470399999999999
+              },
+              "compute:draw_visibility_compute": {
+                "count": 66,
+                "milliseconds": 0.7145599999999995
+              },
+              "compute:eevee_light_culling_sort": {
+                "count": 64,
+                "milliseconds": 0.6736000000000001
+              },
+              "compute:eevee_shadow_page_defrag": {
+                "count": 64,
+                "milliseconds": 0.6232
+              },
+              "compute:eevee_lightprobe_sphere_select": {
+                "count": 64,
+                "milliseconds": 0.47007999999999983
+              },
+              "compute:eevee_shadow_tilemap_rendermap": {
+                "count": 64,
+                "milliseconds": 0.43744
+              },
+              "render:gpu_shader_2D_widget_base,gpu_shader_text,gpu_shader_2D_widget_base_inst": {
+                "count": 2,
+                "milliseconds": 0.42976000000000003
+              },
+              "render:eevee_light_shape_display": {
+                "count": 64,
+                "milliseconds": 0.41920000000000035
+              },
+              "compute:eevee_shadow_tilemap_bounds_init": {
+                "count": 64,
+                "milliseconds": 0.39504000000000017
+              },
+              "compute:eevee_shadow_tag_update_propagate": {
+                "count": 64,
+                "milliseconds": 0.3542399999999999
+              },
+              "compute:draw_view_finalize": {
+                "count": 64,
+                "milliseconds": 0.3463999999999999
+              },
+              "render:overlay_grid_background,overlay_grid_next,overlay_grid_image": {
+                "count": 2,
+                "milliseconds": 0.3392
+              },
+              "render:overlay_edit_mesh_depth": {
+                "count": 2,
+                "milliseconds": 0.3224
+              },
+              "render:gpu_shader_text,gpu_shader_3D_uniform_color,gpu_shader_2D_widget_base": {
+                "count": 2,
+                "milliseconds": 0.27488
+              },
+              "render:gpu_shader_2D_widget_base,gpu_shader_text": {
+                "count": 2,
+                "milliseconds": 0.26304
+              },
+              "render:gpu_shader_text,gpu_shader_2D_widget_base,gpu_shader_2D_widget_base_inst": {
+                "count": 1,
+                "milliseconds": 0.15616
+              },
+              "compute:draw_resource_finalize": {
+                "count": 3,
+                "milliseconds": 0.11072
+              },
+              "render:gpu_shader_3D_uniform_color,gpu_shader_text,gpu_shader_2D_widget_base": {
+                "count": 1,
+                "milliseconds": 0.10256
+              },
+              "render:gpu_shader_text": {
+                "count": 1,
+                "milliseconds": 0.09936
+              },
+              "render:gpu_shader_2D_widget_base,gpu_shader_3D_uniform_color": {
+                "count": 1,
+                "milliseconds": 0.05824
+              },
+              "compute:eevee_vertex_copy": {
+                "count": 1,
+                "milliseconds": 0.02912
+              },
+              "compute:eevee_lightprobe_sphere_irradiance": {
+                "count": 1,
+                "milliseconds": 0.0224
+              },
+              "compute:eevee_lightprobe_sphere_sunlight": {
+                "count": 1,
+                "milliseconds": 0.01536
+              },
+              "render:eevee_shadow_tag_update": {
+                "count": 1,
+                "milliseconds": 0.01104
+              },
+              "compute:eevee_lightprobe_volume_world": {
+                "count": 1,
+                "milliseconds": 0.00704
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "method": "Three unprofiled engine-handler renders per timing experiment, same factory settings and hardware. Only own compile processes were paused. GPU timestamps and CPU traces were captured separately; two unsubmitted UI passes per profile have zero timestamps and are excluded.",
+  "seedPreloadExperiment": {
+    "bundleVersion": "7e35e48849404ebeac92",
+    "shaderOverrideEntries": 124,
+    "handlerSeconds": [
+      4.430984735488892,
+      3.180990219116211,
+      2.930420398712158
+    ],
+    "referencePixelsEqual": true,
+    "browserErrors": 0,
+    "method": "Preload the 124 captured native shader translations into the GPU owner after startup, before the first render. This tests cache benefit on the control bundle; it is not evidence for the final packaged preload-data integration."
+  }
+}

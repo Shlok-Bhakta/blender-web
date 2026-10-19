@@ -24,7 +24,8 @@ def check_dependencies(source, base, prefix, jobs):
                     f"-DBLENDER_SOURCE={source}",
                     f"-DCMAKE_TOOLCHAIN_FILE={ROOT / 'web/native/toolchain.cmake'}",
                     f"-DCMAKE_PREFIX_PATH={prefix}", f"-DCMAKE_FIND_ROOT_PATH={prefix}",
-                    "-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY", "-DCMAKE_BUILD_TYPE=Release"], check=True)
+                    "-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY", "-DCMAKE_BUILD_TYPE=Release",
+                    "-DWITH_OPENVDB=ON", "-DWITH_NANOVDB=ON"], check=True)
     subprocess.run(["cmake", "--build", str(checks), "--parallel", str(jobs)], check=True)
     result = subprocess.run(["node", str(checks / "dependencies.js")], check=True,
                             text=True, stdout=subprocess.PIPE, timeout=120)
@@ -34,6 +35,12 @@ def check_dependencies(source, base, prefix, jobs):
         output = subprocess.check_output(["node", str(checks / f"{name}-check.js")], text=True, timeout=60)
         (base / f"{name}-check.json").write_text(json.dumps(json.loads(output), indent=2) + "\n")
         print(output, end="", flush=True)
+    fixtures = base / 'volume-fixtures'
+    fixtures.mkdir(exist_ok=True)
+    output = subprocess.check_output(['node', str(checks / 'openvdb-check.js'), str(fixtures)],
+                                     text=True, timeout=120)
+    (base / 'openvdb-check.json').write_text(json.dumps(json.loads(output), indent=2) + '\n')
+    print(output, end='', flush=True)
 
 
 def check_image_cache(base, prefix):
@@ -253,6 +260,7 @@ def main():
     parser.add_argument("--jobs", type=int, default=min(os.cpu_count() or 2, 8))
     parser.add_argument("--app", action="store_true", help="Build the complete original Blender browser application")
     parser.add_argument("--skip-deps", action="store_true", help="Use already compiled dependencies")
+    parser.add_argument("--skip-shader-seed", action="store_true", help="Bootstrap a fresh shader capture after translator changes")
     parser.add_argument("--configure-only", action="store_true")
     parser.add_argument("--check-deps", action="store_true", help="Run Wasm dependency checks under Node")
     parser.add_argument("--targets", nargs="+", help="Override the editor archive compilation checkpoint with upstream targets")
@@ -273,7 +281,7 @@ def main():
     os.environ["PKG_CONFIG_LIBDIR"] = str(prefix / "lib/pkgconfig")
     os.environ["PKG_CONFIG_PATH"] = ""
     if args.app:
-        stage(base, source, prefix)
+        stage(base, source, prefix, shader_seed=not args.skip_shader_seed)
         if args.check_deps:
             check_python(base, prefix)
             check_shader_translation(base, prefix)

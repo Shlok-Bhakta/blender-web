@@ -76,6 +76,14 @@
     }, {once:true});
   };
   watchScale();
+  // Chromium can omit a resolution-query change during consecutive display
+  // scale transitions. Keep GHOST informed even when CSS dimensions stay fixed.
+  let observedScale = devicePixelRatio;
+  setInterval(() => {
+    if (observedScale === devicePixelRatio) return;
+    observedScale = devicePixelRatio;
+    notifyResize();
+  }, 500);
   canvas.addEventListener('contextmenu', event => event.preventDefault());
   window.Module = {
     canvas,

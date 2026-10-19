@@ -28,3 +28,16 @@ with pthread support, under GPL-2.0-or-later. Alembic uses its original Ogawa
 reader/writer and existing Imath dependency, under BSD-3-Clause. HDF5 and
 external DCC plug-ins are disabled. Their original license files are published
 under `licenses/dependencies/fftw/` and `licenses/dependencies/alembic/`.
+
+OpenVDB and NanoVDB 13.0.0 and Blosc 1.21.1 use the pinned Blender release's
+archives and checksums. OpenVDB/NanoVDB retain their Apache-2.0 source notices;
+Blosc retains its BSD notices and the notices for its bundled codecs. These
+static Wasm builds use the existing pthread TBB, zlib and Zstandard libraries.
+Delayed loading and the separate Python OpenVDB module are disabled. Their
+installed notices are published under `licenses/dependencies/`.
+Blender's bundled Mantaflow solver retains its original license and source
+notices; the site publishes its `LICENSE` as `licenses/mantaflow-LICENSE.txt`.
+
+The bundled WGSL seed contains original Blender shaders translated by the
+pinned compiler pipeline. It uses GPL-2.0-or-later, with compiler recipe hashes
+and capture provenance recorded in `shader-seed.json`.

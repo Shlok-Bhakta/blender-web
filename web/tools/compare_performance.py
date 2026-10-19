@@ -35,6 +35,7 @@ def main():
     assert native['numpyVersion'] == browser['numpyVersion']
     assert not cycles_browser['videoCaptured'], 'Disable recording for comparison timings'
     assert not eevee_browser['videoCaptured']
+    assert not eevee_browser.get('shaderOverrideEntries'), 'Benchmark must use the packaged runtime shaders'
     assert native['rounds'] == browser['rounds'] == 3
     assert native['cpuCount'] == browser['cpuCount'] == 8
     comparisons = []

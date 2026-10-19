@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "7e35e48849404ebeac92",
+  "bundleVersion": "f8c446962f5ecb0b1ae2",
   "blenderVersion": "5.2.2",
   "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
   "emscriptenVersion": "4.0.23",
@@ -313,16 +313,16 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99854,
+        "bytes": 99938,
         "saves": 2,
-        "backupBytes": 99942,
+        "backupBytes": 99950,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "764b598e427a4a9a0518194b234f4b02292f50e2cfa08db3100f2a619ae8471e",
+        "sha256": "f67c7cb44e2165f3a9ee27a7bc37ba0c318ac17902a574f77d64f8ec3476a149",
         "reopenedAfterBrowserReload": true
       },
       "dependencyNotices": {
@@ -346,6 +346,14 @@
         },
         "alembic": {
           "LICENSE.txt": "00a7b288ee40635e15adf85703b0fb3be3ef2f3000beb74d21c1f19b19147906"
+        },
+        "openvdb": {
+          "LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9"
+        },
+        "blosc": {
+          "LICENSES/BLOSC.txt": "05cc09a42b9ec8ba3e8b33b605f940a302d171df103753d5809791ce3cef3271",
+          "LICENSES/LZ4.txt": "0dcd2b0db9e9e8371436f3cf9147c767e83777d0290958286902b31549ef0946",
+          "LICENSES/SNAPPY.txt": "5221a36a801b981fbdfda7b87db64cff231a3b88223a066c325411b539df796f"
         }
       },
       "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
@@ -353,9 +361,9 @@
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "7e35e48849404ebeac92",
+      "bundleVersion": "f8c446962f5ecb0b1ae2",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-19T03:49:13.696Z",
+      "measuredAt": "2026-10-19T07:22:04.475Z",
       "variant": "render",
       "hardware": false,
       "adapter": {
@@ -365,7 +373,7 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 127501277,
+      "wasmBytes": 150538907,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
       "subdivisionViewport": true,
@@ -948,16 +956,16 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99855,
+        "bytes": 99948,
         "saves": 2,
-        "backupBytes": 99919,
+        "backupBytes": 99949,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "2f1219fbfd123bdcfc6f4c35274d427c096a926c553de9dbcb5ee3d6e3f162b7",
+        "sha256": "6ef4bb31657d61dfb12a4f4d1f10c90c512e2714eecbe2962cfe9e5fb2e0ea28",
         "reopenedAfterBrowserReload": true
       },
       "dependencyNotices": {
@@ -981,6 +989,14 @@
         },
         "alembic": {
           "LICENSE.txt": "00a7b288ee40635e15adf85703b0fb3be3ef2f3000beb74d21c1f19b19147906"
+        },
+        "openvdb": {
+          "LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9"
+        },
+        "blosc": {
+          "LICENSES/BLOSC.txt": "05cc09a42b9ec8ba3e8b33b605f940a302d171df103753d5809791ce3cef3271",
+          "LICENSES/LZ4.txt": "0dcd2b0db9e9e8371436f3cf9147c767e83777d0290958286902b31549ef0946",
+          "LICENSES/SNAPPY.txt": "5221a36a801b981fbdfda7b87db64cff231a3b88223a066c325411b539df796f"
         }
       },
       "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
@@ -988,9 +1004,9 @@
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "7e35e48849404ebeac92",
+      "bundleVersion": "f8c446962f5ecb0b1ae2",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-19T03:50:57.899Z",
+      "measuredAt": "2026-10-19T07:23:05.043Z",
       "variant": "ui",
       "hardware": false,
       "adapter": {
@@ -1000,7 +1016,7 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 127501277,
+      "wasmBytes": 150538907,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
       "subdivisionViewport": true,
@@ -1583,16 +1599,16 @@
       },
       "blendFile": {
         "path": "/user/blender-web/home/web-feature-scene.blend",
-        "bytes": 99852,
+        "bytes": 99947,
         "saves": 2,
-        "backupBytes": 99852,
+        "backupBytes": 99947,
         "previewPreferencePreserved": true,
         "expectedObjects": [
           "WebFallingCube",
           "WebFloor"
         ],
         "compression": "zstd",
-        "sha256": "790df8a722faf2bd81cd50e32155391863bfb78cdbbae2e45c7b31be903f32db",
+        "sha256": "006356c1d9e0c4e0b57cdf95ee1a4e6678798364d9b5ec5ec198d3fa1c0a7d7a",
         "reopenedAfterBrowserReload": true
       },
       "dependencyNotices": {
@@ -1616,6 +1632,14 @@
         },
         "alembic": {
           "LICENSE.txt": "00a7b288ee40635e15adf85703b0fb3be3ef2f3000beb74d21c1f19b19147906"
+        },
+        "openvdb": {
+          "LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9"
+        },
+        "blosc": {
+          "LICENSES/BLOSC.txt": "05cc09a42b9ec8ba3e8b33b605f940a302d171df103753d5809791ce3cef3271",
+          "LICENSES/LZ4.txt": "0dcd2b0db9e9e8371436f3cf9147c767e83777d0290958286902b31549ef0946",
+          "LICENSES/SNAPPY.txt": "5221a36a801b981fbdfda7b87db64cff231a3b88223a066c325411b539df796f"
         }
       },
       "cyclesLicense": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
@@ -1623,9 +1647,9 @@
         "LICENSE.txt": "9211071ceaea05cec948f44a025ede3030f41506960d68b50e7ddb6edc2abe5b",
         "NOTICE.txt": "c9a283f0d3752b74d348a57e1d45e71cf69651ce6cbdce866983e459f6422c7c"
       },
-      "bundleVersion": "7e35e48849404ebeac92",
+      "bundleVersion": "f8c446962f5ecb0b1ae2",
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-19T03:52:11.963Z",
+      "measuredAt": "2026-10-19T07:23:49.124Z",
       "variant": "render",
       "hardware": true,
       "adapter": {
@@ -1635,7 +1659,7 @@
         "description": "",
         "maxStorageBuffersPerShaderStage": 10
       },
-      "wasmBytes": 127501277,
+      "wasmBytes": 150538907,
       "browserErrors": 0,
       "subdivisionEvaluator": "CPU",
       "subdivisionViewport": true,
@@ -1922,8 +1946,8 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "7e35e48849404ebeac92",
-      "measuredAt": "2026-10-19T03:53:41.943Z",
+      "bundleVersion": "f8c446962f5ecb0b1ae2",
+      "measuredAt": "2026-10-19T07:18:56.600Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
@@ -1939,148 +1963,7 @@
           ],
           "scale": 1,
           "pixels": "1040x720",
-          "colors": 437,
-          "cubePixels": 479,
-          "window": [
-            1040,
-            720
-          ],
-          "editors": [
-            1038,
-            694
-          ],
-          "uiScale": 1
-        },
-        {
-          "css": [
-            960,
-            640
-          ],
-          "scale": 1,
-          "pixels": "960x640",
-          "colors": 408,
-          "cubePixels": 450,
-          "window": [
-            960,
-            640
-          ],
-          "editors": [
-            958,
-            614
-          ],
-          "uiScale": 1
-        },
-        {
-          "css": [
-            1040,
-            720
-          ],
-          "scale": 1,
-          "pixels": "1040x720",
-          "colors": 437,
-          "cubePixels": 479,
-          "window": [
-            1040,
-            720
-          ],
-          "editors": [
-            1038,
-            694
-          ],
-          "uiScale": 1
-        },
-        {
-          "css": [
-            1040,
-            720
-          ],
-          "scale": 2,
-          "pixels": "2080x1440",
-          "colors": 527,
-          "cubePixels": 2486,
-          "window": [
-            1040,
-            720
-          ],
-          "editors": [
-            2076,
-            1387
-          ],
-          "uiScale": 2
-        },
-        {
-          "css": [
-            1040,
-            720
-          ],
-          "scale": 1.25,
-          "pixels": "1300x900",
-          "colors": 549,
-          "cubePixels": 602,
-          "window": [
-            1040,
-            720
-          ],
-          "editors": [
-            1298,
-            867
-          ],
-          "uiScale": 1.25
-        },
-        {
-          "css": [
-            1040,
-            720
-          ],
-          "scale": 1,
-          "pixels": "1040x720",
-          "colors": 437,
-          "cubePixels": 479,
-          "window": [
-            1040,
-            720
-          ],
-          "editors": [
-            1038,
-            694
-          ],
-          "uiScale": 1
-        }
-      ],
-      "canvasOnly": true,
-      "browserErrors": 0,
-      "nativePythonConsole": true,
-      "persistentStorage": true,
-      "offlineReload": true
-    },
-    {
-      "variant": "ui",
-      "hardware": false,
-      "adapter": {
-        "vendor": "google",
-        "architecture": "swiftshader",
-        "device": "",
-        "description": ""
-      },
-      "browserVersion": "145.0.7632.6",
-      "bundleVersion": "7e35e48849404ebeac92",
-      "measuredAt": "2026-10-19T03:56:29.108Z",
-      "originalUI": true,
-      "startupCube": true,
-      "webgpu": true,
-      "isolated": true,
-      "workers": 18,
-      "colors": 838,
-      "resize": true,
-      "resizeChecks": [
-        {
-          "css": [
-            1040,
-            720
-          ],
-          "scale": 1,
-          "pixels": "1040x720",
-          "colors": 385,
+          "colors": 384,
           "cubePixels": 480,
           "window": [
             1040,
@@ -2099,7 +1982,7 @@
           ],
           "scale": 1,
           "pixels": "960x640",
-          "colors": 435,
+          "colors": 434,
           "cubePixels": 443,
           "window": [
             960,
@@ -2137,8 +2020,8 @@
           ],
           "scale": 2,
           "pixels": "2080x1440",
-          "colors": 530,
-          "cubePixels": 2492,
+          "colors": 1231,
+          "cubePixels": 1629,
           "window": [
             1040,
             720
@@ -2157,6 +2040,147 @@
           "scale": 1.25,
           "pixels": "1300x900",
           "colors": 540,
+          "cubePixels": 609,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1298,
+            867
+          ],
+          "uiScale": 1.25
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 383,
+          "cubePixels": 480,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        }
+      ],
+      "canvasOnly": true,
+      "browserErrors": 0,
+      "nativePythonConsole": true,
+      "persistentStorage": true,
+      "offlineReload": true
+    },
+    {
+      "variant": "ui",
+      "hardware": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "bundleVersion": "f8c446962f5ecb0b1ae2",
+      "measuredAt": "2026-10-19T07:20:36.300Z",
+      "originalUI": true,
+      "startupCube": true,
+      "webgpu": true,
+      "isolated": true,
+      "workers": 18,
+      "colors": 838,
+      "resize": true,
+      "resizeChecks": [
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 384,
+          "cubePixels": 480,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            960,
+            640
+          ],
+          "scale": 1,
+          "pixels": "960x640",
+          "colors": 438,
+          "cubePixels": 443,
+          "window": [
+            960,
+            640
+          ],
+          "editors": [
+            958,
+            614
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1,
+          "pixels": "1040x720",
+          "colors": 384,
+          "cubePixels": 480,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            1038,
+            694
+          ],
+          "uiScale": 1
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 2,
+          "pixels": "2080x1440",
+          "colors": 1231,
+          "cubePixels": 1629,
+          "window": [
+            1040,
+            720
+          ],
+          "editors": [
+            2076,
+            1387
+          ],
+          "uiScale": 2
+        },
+        {
+          "css": [
+            1040,
+            720
+          ],
+          "scale": 1.25,
+          "pixels": "1300x900",
+          "colors": 547,
           "cubePixels": 609,
           "window": [
             1040,
@@ -2204,14 +2228,14 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "bundleVersion": "7e35e48849404ebeac92",
-      "measuredAt": "2026-10-19T03:49:30.996Z",
+      "bundleVersion": "f8c446962f5ecb0b1ae2",
+      "measuredAt": "2026-10-19T07:21:24.746Z",
       "originalUI": true,
       "startupCube": true,
       "webgpu": true,
       "isolated": true,
       "workers": 18,
-      "colors": 1468,
+      "colors": 1473,
       "resize": true,
       "resizeChecks": [
         {
@@ -2278,8 +2302,8 @@
           ],
           "scale": 2,
           "pixels": "2080x1440",
-          "colors": 913,
-          "cubePixels": 2404,
+          "colors": 2297,
+          "cubePixels": 1512,
           "window": [
             1040,
             720
@@ -2338,7 +2362,9 @@
   ],
   "eevee": {
     "browserVersion": "145.0.7632.6",
-    "bundleVersion": "7e35e48849404ebeac92",
+    "bundleVersion": "f8c446962f5ecb0b1ae2",
+    "shaderSeedEntries": 124,
+    "shaderOverrideEntries": 0,
     "deviceScaleFactor": 2,
     "renderResizeChecks": [
       {
@@ -2372,9 +2398,9 @@
     "width": 1920,
     "height": 1080,
     "samples": 64,
-    "renderSeconds": 13.283,
+    "renderSeconds": 5.589,
     "renderRuns": [
-      13.283
+      5.589
     ],
     "handlerSeconds": [],
     "videoCaptured": true,
@@ -2386,8 +2412,8 @@
       "features": [
         "depth32float-stencil8",
         "rg11b10ufloat-renderable",
-        "texture-formats-tier1",
         "bgra8unorm-storage",
+        "texture-formats-tier1",
         "chromium-experimental-multi-draw-indirect",
         "texture-compression-bc",
         "dual-source-blending",
@@ -2400,9 +2426,9 @@
         "depth-clip-control",
         "texture-compression-bc-sliced-3d",
         "texture-formats-tier2",
+        "clip-distances",
         "timestamp-query",
         "shader-f16",
-        "clip-distances",
         "primitive-index",
         "texture-component-swizzle",
         "subgroups"
@@ -2414,8 +2440,8 @@
     "foregroundPixels": 244885,
     "opaquePixels": 2073600,
     "browserErrors": 0,
-    "clipStart": 41.521,
-    "clipEnd": 67.095,
+    "clipStart": 19.36,
+    "clipEnd": 36.961,
     "defaults": {
       "engine": "BLENDER_EEVEE",
       "width": 1920,
@@ -2547,7 +2573,7 @@
     }
   },
   "cycles": {
-    "bundleVersion": "7e35e48849404ebeac92",
+    "bundleVersion": "f8c446962f5ecb0b1ae2",
     "browserVersion": "145.0.7632.6",
     "engine": "CYCLES",
     "device": "CPU",
@@ -2560,18 +2586,18 @@
     "adaptiveSampling": false,
     "seed": 0,
     "softwareDisplay": false,
-    "clipStart": 12.936,
-    "clipEnd": 25.878,
-    "renderSeconds": 1.216,
+    "clipStart": 10.836,
+    "clipEnd": 21.335,
+    "renderSeconds": 0.91,
     "renderRuns": [
-      1.216,
-      0.204,
-      0.205
+      0.91,
+      0.104,
+      0.203
     ],
     "handlerSeconds": [
-      0.32405972480773926,
-      0.07227492332458496,
-      0.08294987678527832
+      0.31660985946655273,
+      0.07818007469177246,
+      0.08473014831542969
     ],
     "threads": 8,
     "videoCaptured": false,
@@ -2625,6 +2651,13 @@
       "cachedPrefixWithoutSources": true,
       "licensePreserved": true
     },
+    "openvdb-check": {
+      "activeVoxels": 4982,
+      "nanoMaximumError": 0,
+      "zipRoundtrip": true,
+      "bloscRoundtrip": true,
+      "pointerBytes": 4
+    },
     "python-check": {
       "pythonVersion": "3.13.13",
       "embeddedModules": true,
@@ -2653,39 +2686,40 @@
     },
     "shader-translation-check": {
       "shaderRecoveryUnwinds": true,
-      "translationAfterRecovery": true
+      "translationAfterRecovery": true,
+      "resourceMacroSampler1D": true
     }
   },
   "recording": {
-    "bundleVersion": "7e35e48849404ebeac92",
+    "bundleVersion": "f8c446962f5ecb0b1ae2",
     "chapters": [
       {
-        "seconds": 0.001,
-        "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
+        "seconds": 0,
+        "title": "Start Blender with OpenVDB and NanoVDB"
       },
       {
-        "seconds": 16.552,
-        "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
+        "seconds": 11.667,
+        "title": "Compare VDB import and volume modifiers with desktop Blender"
       },
       {
-        "seconds": 21.506,
-        "title": "Alembic ocean cache in the original Blender viewport"
+        "seconds": 15.4,
+        "title": "Mesh to Volume and Volume to Mesh in the original viewport"
       },
       {
-        "seconds": 31.271,
-        "title": "Scrub the cached animation from frame 1 through frame 12"
+        "seconds": 21.424,
+        "title": "Replay the four-frame Mantaflow gas simulation in Blender"
       },
       {
-        "seconds": 39.188,
-        "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
+        "seconds": 31.153,
+        "title": "Reload offline and reopen the VDB files from browser storage"
       }
     ],
-    "durationSeconds": 61.08,
-    "bytes": 2078289,
+    "durationSeconds": 40.44,
+    "bytes": 1387067,
     "source": "Hardware Chromium browser recording",
     "captions": true,
-    "path": "web/docs/ocean-alembic-walkthrough.mp4",
-    "sha256": "4fc9dfa8b852bb1c4d670a5af4b7ae1ce86308752c97f92562f6e035ac85334e"
+    "path": "web/docs/volume-walkthrough.mp4",
+    "sha256": "6633edc7156bf173be56091f4c5765b334a052814a478a1a28090c1c306062a6"
   },
   "oceanAlembic": {
     "browserVariants": [
@@ -2709,9 +2743,9 @@
           "roundtripMaxError": 0,
           "desktopImportMaxError": 0,
           "animatedHierarchyMaxError": 0,
-          "sha256": "a4ecc018033a9d9f91a94ed86ca78b4b6c58e29bfe67804a5bdd14c6164ed14a"
+          "sha256": "53bceb2758dbd87d044b43fc25b9dde3bfd90ada080078a6b142684a6ac7f169"
         },
-        "bundleVersion": "7e35e48849404ebeac92",
+        "bundleVersion": "f8c446962f5ecb0b1ae2",
         "variant": "render",
         "hardware": false,
         "browserVersion": "145.0.7632.6",
@@ -2725,27 +2759,27 @@
         "errors": [],
         "chapters": [
           {
-            "seconds": 0.001,
+            "seconds": 0,
             "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
           },
           {
-            "seconds": 30.041,
+            "seconds": 15.699,
             "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
           },
           {
-            "seconds": 40.614,
+            "seconds": 22.502,
             "title": "Alembic ocean cache in the original Blender viewport"
           },
           {
-            "seconds": 58.163,
+            "seconds": 36.316,
             "title": "Scrub the cached animation from frame 1 through frame 12"
           },
           {
-            "seconds": 75.135,
+            "seconds": 50.422,
             "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
           }
         ],
-        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence/415b50a0f717dcd909bcc6f2a48420f7.webm"
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence/6d60a3b4096d56119cc34922ef7d7d81.webm"
       },
       {
         "ocean": {
@@ -2767,9 +2801,9 @@
           "roundtripMaxError": 0,
           "desktopImportMaxError": 0,
           "animatedHierarchyMaxError": 0,
-          "sha256": "7fe58080823e429bb5bd2191bf019357c7a505f29d3eb42997b5022726cadc39"
+          "sha256": "84baec16da78cc9e1a84416f434985eb4240397f2d56c302dc151764df0f470a"
         },
-        "bundleVersion": "7e35e48849404ebeac92",
+        "bundleVersion": "f8c446962f5ecb0b1ae2",
         "variant": "ui",
         "hardware": false,
         "browserVersion": "145.0.7632.6",
@@ -2783,27 +2817,27 @@
         "errors": [],
         "chapters": [
           {
-            "seconds": 0.001,
+            "seconds": 0,
             "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
           },
           {
-            "seconds": 28.929,
+            "seconds": 15.929,
             "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
           },
           {
-            "seconds": 42.118,
+            "seconds": 23.011,
             "title": "Alembic ocean cache in the original Blender viewport"
           },
           {
-            "seconds": 63.175,
+            "seconds": 36.695,
             "title": "Scrub the cached animation from frame 1 through frame 12"
           },
           {
-            "seconds": 83.127,
+            "seconds": 50.061,
             "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
           }
         ],
-        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence-ui/00d098dbf926f4d817859b22106118b9.webm"
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence-ui/ebdd6385c0739b68326497a987f0c74a.webm"
       },
       {
         "ocean": {
@@ -2820,14 +2854,14 @@
         },
         "alembic": {
           "format": "Ogawa",
-          "bytes": 619580,
+          "bytes": 619605,
           "path": "/user/blender-web/home/browser-ocean.abc",
           "roundtripMaxError": 0,
           "desktopImportMaxError": 0,
           "animatedHierarchyMaxError": 0,
-          "sha256": "b6eaa7c118422732e64aab3dae11d174e307b5eae78058a8cf33688a3b66819f"
+          "sha256": "d2c3765ecf2416b5402dd78de707e85c56e48caa8ee9a0ba02831c0020f80439"
         },
-        "bundleVersion": "7e35e48849404ebeac92",
+        "bundleVersion": "f8c446962f5ecb0b1ae2",
         "variant": "render",
         "hardware": true,
         "browserVersion": "145.0.7632.6",
@@ -2841,27 +2875,27 @@
         "errors": [],
         "chapters": [
           {
-            "seconds": 0.001,
+            "seconds": 0,
             "title": "Blender starts with FFTW ocean simulation and Alembic enabled"
           },
           {
-            "seconds": 16.552,
+            "seconds": 13.96,
             "title": "Check ocean waves and exchange animated Alembic files with desktop Blender"
           },
           {
-            "seconds": 21.506,
+            "seconds": 19.195,
             "title": "Alembic ocean cache in the original Blender viewport"
           },
           {
-            "seconds": 31.271,
+            "seconds": 29.074,
             "title": "Scrub the cached animation from frame 1 through frame 12"
           },
           {
-            "seconds": 39.188,
+            "seconds": 37.311,
             "title": "Reload offline and reopen the Alembic cache from persistent browser storage"
           }
         ],
-        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence-hardware/29e27c4b5f9f508081f24b12c2fa5828.webm"
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/ocean-evidence-hardware/fdd3acbc5820da8ed4ee79012ba4850d.webm"
       }
     ],
     "browserExportInDesktop": {
@@ -2873,14 +2907,492 @@
         6,
         12
       ],
-      "browserArchiveSHA256": "b6eaa7c118422732e64aab3dae11d174e307b5eae78058a8cf33688a3b66819f"
+      "browserArchiveSHA256": "d2c3765ecf2416b5402dd78de707e85c56e48caa8ee9a0ba02831c0020f80439"
     }
   },
+  "openvdbNanoVDB": {
+    "browserVariants": [
+      {
+        "maximumCoordinateError": 0,
+        "cases": {
+          "zip": {
+            "vertices": 824,
+            "faces": 822,
+            "bounds": [
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ]
+            ],
+            "grids": [
+              {
+                "name": "density",
+                "dataType": "FLOAT"
+              },
+              {
+                "name": "surface",
+                "dataType": "FLOAT"
+              }
+            ]
+          },
+          "blosc": {
+            "vertices": 824,
+            "faces": 822,
+            "bounds": [
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ]
+            ],
+            "grids": [
+              {
+                "name": "density",
+                "dataType": "FLOAT"
+              },
+              {
+                "name": "surface",
+                "dataType": "FLOAT"
+              }
+            ]
+          },
+          "meshToVolumeToMesh": {
+            "vertices": 968,
+            "faces": 966,
+            "bounds": [
+              [
+                -0.883906900882721,
+                0.8839070200920105
+              ],
+              [
+                -0.8839069604873657,
+                0.883906900882721
+              ],
+              [
+                -0.8897900581359863,
+                0.8897900581359863
+              ]
+            ]
+          }
+        },
+        "fluid": {
+          "frames": [
+            {
+              "frame": 1,
+              "cells": 4096,
+              "totalDensity": 60.65051480010152,
+              "maximumDensity": 0.8949967622756958
+            },
+            {
+              "frame": 2,
+              "cells": 4096,
+              "totalDensity": 60.602764813184365,
+              "maximumDensity": 0.8922632932662964
+            },
+            {
+              "frame": 3,
+              "cells": 4096,
+              "totalDensity": 60.786752007431524,
+              "maximumDensity": 0.8895648121833801
+            },
+            {
+              "frame": 4,
+              "cells": 4096,
+              "totalDensity": 61.44984827951214,
+              "maximumDensity": 0.8868632316589355
+            }
+          ],
+          "cacheFiles": [
+            "data/fluid_data_0001.vdb",
+            "data/fluid_data_0002.vdb",
+            "data/fluid_data_0003.vdb",
+            "data/fluid_data_0004.vdb"
+          ],
+          "maximumDesktopDensityError": 0
+        },
+        "gasReplayFrame": 4,
+        "offlineMaximumCoordinateError": 0,
+        "offlineMaximumDensityError": 0,
+        "offlineReopen": true,
+        "bundleVersion": "f8c446962f5ecb0b1ae2",
+        "browserVersion": "145.0.7632.6",
+        "fallback": false,
+        "hardware": false,
+        "adapter": {
+          "vendor": "google",
+          "architecture": "swiftshader",
+          "device": "",
+          "description": ""
+        },
+        "fixtureHashes": {
+          "reference.json": "b89335eee6411232fc631ca47293e2d06598e25ceac1e011881bfb92934d699a",
+          "sphere-zip.vdb": "d498cd8d6bb56d77d485a3b8be871fba440da37414cecc7a6cc30d2cc4a62026",
+          "sphere-blosc.vdb": "7201d0fe537943b668306e3be58c73e9369e287177ba3fb5be3ac46acb961fb1"
+        },
+        "browserErrors": [],
+        "chapters": [
+          {
+            "seconds": 0,
+            "title": "Start Blender with OpenVDB and NanoVDB"
+          },
+          {
+            "seconds": 18.123,
+            "title": "Compare VDB import and volume modifiers with desktop Blender"
+          },
+          {
+            "seconds": 22.214,
+            "title": "Mesh to Volume and Volume to Mesh in the original viewport"
+          },
+          {
+            "seconds": 32.694,
+            "title": "Replay the four-frame Mantaflow gas simulation in Blender"
+          },
+          {
+            "seconds": 50.501,
+            "title": "Reload offline and reopen the VDB files from browser storage"
+          }
+        ],
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/volume-evidence/volume.webm",
+        "sourceSha256": "dea42c81b94c6265fef55ea5cd1d67c7ab7a44b7d832e09508e5ce35c0487444"
+      },
+      {
+        "maximumCoordinateError": 0,
+        "cases": {
+          "zip": {
+            "vertices": 824,
+            "faces": 822,
+            "bounds": [
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ]
+            ],
+            "grids": [
+              {
+                "name": "density",
+                "dataType": "FLOAT"
+              },
+              {
+                "name": "surface",
+                "dataType": "FLOAT"
+              }
+            ]
+          },
+          "blosc": {
+            "vertices": 824,
+            "faces": 822,
+            "bounds": [
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ]
+            ],
+            "grids": [
+              {
+                "name": "density",
+                "dataType": "FLOAT"
+              },
+              {
+                "name": "surface",
+                "dataType": "FLOAT"
+              }
+            ]
+          },
+          "meshToVolumeToMesh": {
+            "vertices": 968,
+            "faces": 966,
+            "bounds": [
+              [
+                -0.883906900882721,
+                0.8839070200920105
+              ],
+              [
+                -0.8839069604873657,
+                0.883906900882721
+              ],
+              [
+                -0.8897900581359863,
+                0.8897900581359863
+              ]
+            ]
+          }
+        },
+        "fluid": {
+          "frames": [
+            {
+              "frame": 1,
+              "cells": 4096,
+              "totalDensity": 60.65051480010152,
+              "maximumDensity": 0.8949967622756958
+            },
+            {
+              "frame": 2,
+              "cells": 4096,
+              "totalDensity": 60.602764813184365,
+              "maximumDensity": 0.8922632932662964
+            },
+            {
+              "frame": 3,
+              "cells": 4096,
+              "totalDensity": 60.786752007431524,
+              "maximumDensity": 0.8895648121833801
+            },
+            {
+              "frame": 4,
+              "cells": 4096,
+              "totalDensity": 61.44984827951214,
+              "maximumDensity": 0.8868632316589355
+            }
+          ],
+          "cacheFiles": [
+            "data/fluid_data_0001.vdb",
+            "data/fluid_data_0002.vdb",
+            "data/fluid_data_0003.vdb",
+            "data/fluid_data_0004.vdb"
+          ],
+          "maximumDesktopDensityError": 0
+        },
+        "gasReplayFrame": 4,
+        "offlineMaximumCoordinateError": 0,
+        "offlineMaximumDensityError": 0,
+        "offlineReopen": true,
+        "bundleVersion": "f8c446962f5ecb0b1ae2",
+        "browserVersion": "145.0.7632.6",
+        "fallback": true,
+        "hardware": false,
+        "adapter": {
+          "vendor": "google",
+          "architecture": "swiftshader",
+          "device": "",
+          "description": ""
+        },
+        "fixtureHashes": {
+          "reference.json": "b89335eee6411232fc631ca47293e2d06598e25ceac1e011881bfb92934d699a",
+          "sphere-zip.vdb": "d498cd8d6bb56d77d485a3b8be871fba440da37414cecc7a6cc30d2cc4a62026",
+          "sphere-blosc.vdb": "7201d0fe537943b668306e3be58c73e9369e287177ba3fb5be3ac46acb961fb1"
+        },
+        "browserErrors": [],
+        "chapters": [
+          {
+            "seconds": 0.001,
+            "title": "Start Blender with OpenVDB and NanoVDB"
+          },
+          {
+            "seconds": 17.827,
+            "title": "Compare VDB import and volume modifiers with desktop Blender"
+          },
+          {
+            "seconds": 21.737,
+            "title": "Mesh to Volume and Volume to Mesh in the original viewport"
+          },
+          {
+            "seconds": 32.045,
+            "title": "Replay the four-frame Mantaflow gas simulation in Blender"
+          },
+          {
+            "seconds": 52.137,
+            "title": "Reload offline and reopen the VDB files from browser storage"
+          }
+        ],
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/volume-evidence-ui/volume.webm",
+        "sourceSha256": "dea42c81b94c6265fef55ea5cd1d67c7ab7a44b7d832e09508e5ce35c0487444"
+      },
+      {
+        "maximumCoordinateError": 0,
+        "cases": {
+          "zip": {
+            "vertices": 824,
+            "faces": 822,
+            "bounds": [
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ]
+            ],
+            "grids": [
+              {
+                "name": "density",
+                "dataType": "FLOAT"
+              },
+              {
+                "name": "surface",
+                "dataType": "FLOAT"
+              }
+            ]
+          },
+          "blosc": {
+            "vertices": 824,
+            "faces": 822,
+            "bounds": [
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ],
+              [
+                -0.8027446866035461,
+                0.8027446866035461
+              ]
+            ],
+            "grids": [
+              {
+                "name": "density",
+                "dataType": "FLOAT"
+              },
+              {
+                "name": "surface",
+                "dataType": "FLOAT"
+              }
+            ]
+          },
+          "meshToVolumeToMesh": {
+            "vertices": 968,
+            "faces": 966,
+            "bounds": [
+              [
+                -0.883906900882721,
+                0.8839070200920105
+              ],
+              [
+                -0.8839069604873657,
+                0.883906900882721
+              ],
+              [
+                -0.8897900581359863,
+                0.8897900581359863
+              ]
+            ]
+          }
+        },
+        "fluid": {
+          "frames": [
+            {
+              "frame": 1,
+              "cells": 4096,
+              "totalDensity": 60.65051480010152,
+              "maximumDensity": 0.8949967622756958
+            },
+            {
+              "frame": 2,
+              "cells": 4096,
+              "totalDensity": 60.602764813184365,
+              "maximumDensity": 0.8922632932662964
+            },
+            {
+              "frame": 3,
+              "cells": 4096,
+              "totalDensity": 60.786752007431524,
+              "maximumDensity": 0.8895648121833801
+            },
+            {
+              "frame": 4,
+              "cells": 4096,
+              "totalDensity": 61.44984827951214,
+              "maximumDensity": 0.8868632316589355
+            }
+          ],
+          "cacheFiles": [
+            "data/fluid_data_0001.vdb",
+            "data/fluid_data_0002.vdb",
+            "data/fluid_data_0003.vdb",
+            "data/fluid_data_0004.vdb"
+          ],
+          "maximumDesktopDensityError": 0
+        },
+        "gasReplayFrame": 4,
+        "offlineMaximumCoordinateError": 0,
+        "offlineMaximumDensityError": 0,
+        "offlineReopen": true,
+        "bundleVersion": "f8c446962f5ecb0b1ae2",
+        "browserVersion": "145.0.7632.6",
+        "fallback": false,
+        "hardware": true,
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "gcn-5",
+          "device": "",
+          "description": ""
+        },
+        "fixtureHashes": {
+          "reference.json": "b89335eee6411232fc631ca47293e2d06598e25ceac1e011881bfb92934d699a",
+          "sphere-zip.vdb": "d498cd8d6bb56d77d485a3b8be871fba440da37414cecc7a6cc30d2cc4a62026",
+          "sphere-blosc.vdb": "7201d0fe537943b668306e3be58c73e9369e287177ba3fb5be3ac46acb961fb1"
+        },
+        "browserErrors": [],
+        "chapters": [
+          {
+            "seconds": 0,
+            "title": "Start Blender with OpenVDB and NanoVDB"
+          },
+          {
+            "seconds": 11.667,
+            "title": "Compare VDB import and volume modifiers with desktop Blender"
+          },
+          {
+            "seconds": 15.4,
+            "title": "Mesh to Volume and Volume to Mesh in the original viewport"
+          },
+          {
+            "seconds": 21.424,
+            "title": "Replay the four-frame Mantaflow gas simulation in Blender"
+          },
+          {
+            "seconds": 31.153,
+            "title": "Reload offline and reopen the VDB files from browser storage"
+          }
+        ],
+        "videoPath": "/home/crabcake/Projects/blender-web/build/native/volume-evidence-hardware/volume.webm",
+        "sourceSha256": "dea42c81b94c6265fef55ea5cd1d67c7ab7a44b7d832e09508e5ce35c0487444"
+      }
+    ]
+  },
   "performance": {
-    "bundleVersion": "7e35e48849404ebeac92",
+    "bundleVersion": "f8c446962f5ecb0b1ae2",
     "blenderVersion": "5.2.2 LTS",
-    "measuredAt": "2026-10-19T03:44:08.600423+00:00",
-    "generatedAt": "2026-10-19T03:48:42.139260+00:00",
+    "measuredAt": "2026-10-19T07:37:34.398547+00:00",
+    "generatedAt": "2026-10-19T07:38:42.967188+00:00",
     "host": {
       "cpu": "AMD Ryzen 5 PRO 3400GE w/ Radeon Vega Graphics",
       "logicalCPUs": 8,
@@ -2901,29 +3413,29 @@
         "vertices": 259081,
         "native": {
           "seconds": [
-            0.025682724080979824,
-            0.017324683722108603,
-            0.016503204125910997
+            0.02977738669142127,
+            0.016694806050509214,
+            0.016625244170427322
           ],
-          "medianSeconds": 0.017324683722108603,
-          "firstSeconds": 0.025682724080979824,
-          "warmMedianSeconds": 0.0169139439240098,
-          "minSeconds": 0.016503204125910997,
-          "maxSeconds": 0.025682724080979824
+          "medianSeconds": 0.016694806050509214,
+          "firstSeconds": 0.02977738669142127,
+          "warmMedianSeconds": 0.01666002511046827,
+          "minSeconds": 0.016625244170427322,
+          "maxSeconds": 0.02977738669142127
         },
         "browser": {
           "seconds": [
-            0.06474018096923828,
-            0.03775978088378906,
-            0.032135009765625
+            0.08614492416381836,
+            0.037615060806274414,
+            0.03494000434875488
           ],
-          "medianSeconds": 0.03775978088378906,
-          "firstSeconds": 0.06474018096923828,
-          "warmMedianSeconds": 0.03494739532470703,
-          "minSeconds": 0.032135009765625,
-          "maxSeconds": 0.06474018096923828
+          "medianSeconds": 0.037615060806274414,
+          "firstSeconds": 0.08614492416381836,
+          "warmMedianSeconds": 0.03627753257751465,
+          "minSeconds": 0.03494000434875488,
+          "maxSeconds": 0.08614492416381836
         },
-        "browserOverNative": 2.1795365208083166
+        "browserOverNative": 2.253099598310524
       },
       {
         "task": "CPU subdivision",
@@ -2932,29 +3444,29 @@
         "vertices": 259081,
         "native": {
           "seconds": [
-            0.06405955133959651,
-            0.0538740293122828,
-            0.04856074182316661
+            0.06355245690792799,
+            0.05282683065161109,
+            0.04299979191273451
           ],
-          "medianSeconds": 0.0538740293122828,
-          "firstSeconds": 0.06405955133959651,
-          "warmMedianSeconds": 0.051217385567724705,
-          "minSeconds": 0.04856074182316661,
-          "maxSeconds": 0.06405955133959651
+          "medianSeconds": 0.05282683065161109,
+          "firstSeconds": 0.06355245690792799,
+          "warmMedianSeconds": 0.0479133112821728,
+          "minSeconds": 0.04299979191273451,
+          "maxSeconds": 0.06355245690792799
         },
         "browser": {
           "seconds": [
-            0.16730499267578125,
-            0.08611512184143066,
-            0.08815503120422363
+            0.22821545600891113,
+            0.0817101001739502,
+            0.07315492630004883
           ],
-          "medianSeconds": 0.08815503120422363,
-          "firstSeconds": 0.16730499267578125,
-          "warmMedianSeconds": 0.08713507652282715,
-          "minSeconds": 0.08611512184143066,
-          "maxSeconds": 0.16730499267578125
+          "medianSeconds": 0.0817101001739502,
+          "firstSeconds": 0.22821545600891113,
+          "warmMedianSeconds": 0.07743251323699951,
+          "minSeconds": 0.07315492630004883,
+          "maxSeconds": 0.22821545600891113
         },
-        "browserOverNative": 1.636317764413531
+        "browserOverNative": 1.546753783372356
       },
       {
         "task": "Mesh construction",
@@ -2963,29 +3475,29 @@
         "vertices": 1042441,
         "native": {
           "seconds": [
-            0.07731524994596839,
-            0.05857375496998429,
-            0.0630065449513495
+            0.07779127126559615,
+            0.06510064331814647,
+            0.06427867291495204
           ],
-          "medianSeconds": 0.0630065449513495,
-          "firstSeconds": 0.07731524994596839,
-          "warmMedianSeconds": 0.060790149960666895,
-          "minSeconds": 0.05857375496998429,
-          "maxSeconds": 0.07731524994596839
+          "medianSeconds": 0.06510064331814647,
+          "firstSeconds": 0.07779127126559615,
+          "warmMedianSeconds": 0.06468965811654925,
+          "minSeconds": 0.06427867291495204,
+          "maxSeconds": 0.07779127126559615
         },
         "browser": {
           "seconds": [
-            0.13154983520507812,
-            0.13452482223510742,
-            0.12670016288757324
+            0.13163518905639648,
+            0.13929510116577148,
+            0.13764500617980957
           ],
-          "medianSeconds": 0.13154983520507812,
-          "firstSeconds": 0.13154983520507812,
-          "warmMedianSeconds": 0.13061249256134033,
-          "minSeconds": 0.12670016288757324,
-          "maxSeconds": 0.13452482223510742
+          "medianSeconds": 0.13764500617980957,
+          "firstSeconds": 0.13163518905639648,
+          "warmMedianSeconds": 0.13847005367279053,
+          "minSeconds": 0.13163518905639648,
+          "maxSeconds": 0.13929510116577148
         },
-        "browserOverNative": 2.087875716826789
+        "browserOverNative": 2.114341720206039
       },
       {
         "task": "CPU subdivision",
@@ -2994,29 +3506,29 @@
         "vertices": 1042441,
         "native": {
           "seconds": [
-            0.20501641696318984,
-            0.18053532112389803,
-            0.1721350960433483
+            0.19158948073163629,
+            0.1986732678487897,
+            0.17112320894375443
           ],
-          "medianSeconds": 0.18053532112389803,
-          "firstSeconds": 0.20501641696318984,
-          "warmMedianSeconds": 0.17633520858362317,
-          "minSeconds": 0.1721350960433483,
-          "maxSeconds": 0.20501641696318984
+          "medianSeconds": 0.19158948073163629,
+          "firstSeconds": 0.19158948073163629,
+          "warmMedianSeconds": 0.18489823839627206,
+          "minSeconds": 0.17112320894375443,
+          "maxSeconds": 0.1986732678487897
         },
         "browser": {
           "seconds": [
-            0.29161500930786133,
-            0.2701702117919922,
-            0.24331998825073242
+            0.25769519805908203,
+            0.28088998794555664,
+            0.26563024520874023
           ],
-          "medianSeconds": 0.2701702117919922,
-          "firstSeconds": 0.29161500930786133,
-          "warmMedianSeconds": 0.2567451000213623,
-          "minSeconds": 0.24331998825073242,
-          "maxSeconds": 0.29161500930786133
+          "medianSeconds": 0.26563024520874023,
+          "firstSeconds": 0.25769519805908203,
+          "warmMedianSeconds": 0.27326011657714844,
+          "minSeconds": 0.25769519805908203,
+          "maxSeconds": 0.28088998794555664
         },
-        "browserOverNative": 1.4964950354871522
+        "browserOverNative": 1.3864552698528085
       },
       {
         "task": "Mesh construction",
@@ -3025,29 +3537,29 @@
         "vertices": 2350089,
         "native": {
           "seconds": [
-            0.14918681792914867,
-            0.1503201420418918,
-            0.12586348876357079
+            0.1636258172802627,
+            0.15588383888825774,
+            0.14159250305965543
           ],
-          "medianSeconds": 0.14918681792914867,
-          "firstSeconds": 0.14918681792914867,
-          "warmMedianSeconds": 0.1380918154027313,
-          "minSeconds": 0.12586348876357079,
-          "maxSeconds": 0.1503201420418918
+          "medianSeconds": 0.15588383888825774,
+          "firstSeconds": 0.1636258172802627,
+          "warmMedianSeconds": 0.14873817097395658,
+          "minSeconds": 0.14159250305965543,
+          "maxSeconds": 0.1636258172802627
         },
         "browser": {
           "seconds": [
-            0.29336023330688477,
-            0.24571990966796875,
-            0.28676509857177734
+            0.305495023727417,
+            0.3025801181793213,
+            0.3056302070617676
           ],
-          "medianSeconds": 0.28676509857177734,
-          "firstSeconds": 0.29336023330688477,
-          "warmMedianSeconds": 0.26624250411987305,
-          "minSeconds": 0.24571990966796875,
-          "maxSeconds": 0.29336023330688477
+          "medianSeconds": 0.305495023727417,
+          "firstSeconds": 0.305495023727417,
+          "warmMedianSeconds": 0.30410516262054443,
+          "minSeconds": 0.3025801181793213,
+          "maxSeconds": 0.3056302070617676
         },
-        "browserOverNative": 1.922187915476332
+        "browserOverNative": 1.9597607160958173
       },
       {
         "task": "CPU subdivision",
@@ -3056,163 +3568,163 @@
         "vertices": 2350089,
         "native": {
           "seconds": [
-            0.45803749607875943,
-            0.479555272962898,
-            0.35640339320525527
+            0.4699696418829262,
+            0.4546407340094447,
+            0.3649745876900852
           ],
-          "medianSeconds": 0.45803749607875943,
-          "firstSeconds": 0.45803749607875943,
-          "warmMedianSeconds": 0.41797933308407664,
-          "minSeconds": 0.35640339320525527,
-          "maxSeconds": 0.479555272962898
+          "medianSeconds": 0.4546407340094447,
+          "firstSeconds": 0.4699696418829262,
+          "warmMedianSeconds": 0.40980766084976494,
+          "minSeconds": 0.3649745876900852,
+          "maxSeconds": 0.4699696418829262
         },
         "browser": {
           "seconds": [
-            0.5924699306488037,
-            0.5157601833343506,
-            0.5666697025299072
+            0.5774648189544678,
+            0.5109946727752686,
+            0.573584794998169
           ],
-          "medianSeconds": 0.5666697025299072,
-          "firstSeconds": 0.5924699306488037,
-          "warmMedianSeconds": 0.5412149429321289,
-          "minSeconds": 0.5157601833343506,
-          "maxSeconds": 0.5924699306488037
+          "medianSeconds": 0.573584794998169,
+          "firstSeconds": 0.5774648189544678,
+          "warmMedianSeconds": 0.5422897338867188,
+          "minSeconds": 0.5109946727752686,
+          "maxSeconds": 0.5774648189544678
         },
-        "browserOverNative": 1.2371688068796631
+        "browserOverNative": 1.2616220943067835
       },
       {
         "task": "Ocean 12-frame evaluation",
         "native": {
           "seconds": [
-            0.9863348207436502,
-            0.8051515771076083,
-            0.8191023422405124
+            0.9194081937894225,
+            0.7166173262521625,
+            0.7638125200755894
           ],
-          "medianSeconds": 0.8191023422405124,
-          "firstSeconds": 0.9863348207436502,
-          "warmMedianSeconds": 0.8121269596740603,
-          "minSeconds": 0.8051515771076083,
-          "maxSeconds": 0.9863348207436502
+          "medianSeconds": 0.7638125200755894,
+          "firstSeconds": 0.9194081937894225,
+          "warmMedianSeconds": 0.7402149231638759,
+          "minSeconds": 0.7166173262521625,
+          "maxSeconds": 0.9194081937894225
         },
         "browser": {
           "seconds": [
-            0.8877499103546143,
-            0.83024001121521,
-            0.8830249309539795
+            0.9277548789978027,
+            0.77947998046875,
+            0.8169751167297363
           ],
-          "medianSeconds": 0.8830249309539795,
-          "firstSeconds": 0.8877499103546143,
-          "warmMedianSeconds": 0.8566324710845947,
-          "minSeconds": 0.83024001121521,
-          "maxSeconds": 0.8877499103546143
+          "medianSeconds": 0.8169751167297363,
+          "firstSeconds": 0.9277548789978027,
+          "warmMedianSeconds": 0.7982275485992432,
+          "minSeconds": 0.77947998046875,
+          "maxSeconds": 0.9277548789978027
         },
-        "browserOverNative": 1.0780398070143689
+        "browserOverNative": 1.0696016303174576
       },
       {
         "task": "Cycles CPU render",
         "native": {
           "seconds": [
-            0.04408192401751876,
-            0.023343232925981283,
-            0.023361810017377138
+            0.04442358808591962,
+            0.022571375127881765,
+            0.023012218065559864
           ],
-          "medianSeconds": 0.023361810017377138,
-          "firstSeconds": 0.04408192401751876,
-          "warmMedianSeconds": 0.02335252147167921,
-          "minSeconds": 0.023343232925981283,
-          "maxSeconds": 0.04408192401751876
+          "medianSeconds": 0.023012218065559864,
+          "firstSeconds": 0.04442358808591962,
+          "warmMedianSeconds": 0.022791796596720815,
+          "minSeconds": 0.022571375127881765,
+          "maxSeconds": 0.04442358808591962
         },
         "browser": {
           "seconds": [
-            0.32405972480773926,
-            0.07227492332458496,
-            0.08294987678527832
+            0.31660985946655273,
+            0.07818007469177246,
+            0.08473014831542969
           ],
-          "medianSeconds": 0.08294987678527832,
-          "firstSeconds": 0.32405972480773926,
-          "warmMedianSeconds": 0.07761240005493164,
-          "minSeconds": 0.07227492332458496,
-          "maxSeconds": 0.32405972480773926
+          "medianSeconds": 0.08473014831542969,
+          "firstSeconds": 0.31660985946655273,
+          "warmMedianSeconds": 0.08145511150360107,
+          "minSeconds": 0.07818007469177246,
+          "maxSeconds": 0.31660985946655273
         },
-        "browserOverNative": 3.550661388119242
+        "browserOverNative": 3.681963558403656
       },
       {
         "task": "Eevee GPU render",
         "native": {
           "seconds": [
-            1.4297205000184476,
-            1.0515168327838182,
-            1.0704038073308766
+            1.424679066054523,
+            1.0414726650342345,
+            1.0289106126874685
           ],
-          "medianSeconds": 1.0704038073308766,
-          "firstSeconds": 1.4297205000184476,
-          "warmMedianSeconds": 1.0609603200573474,
-          "minSeconds": 1.0515168327838182,
-          "maxSeconds": 1.4297205000184476
+          "medianSeconds": 1.0414726650342345,
+          "firstSeconds": 1.424679066054523,
+          "warmMedianSeconds": 1.0351916388608515,
+          "minSeconds": 1.0289106126874685,
+          "maxSeconds": 1.424679066054523
         },
         "browser": {
           "seconds": [
-            7.147209882736206,
-            3.1732544898986816,
-            2.9086596965789795
+            4.561274766921997,
+            3.0420150756835938,
+            2.9285504817962646
           ],
-          "medianSeconds": 3.1732544898986816,
-          "firstSeconds": 7.147209882736206,
-          "warmMedianSeconds": 3.0409570932388306,
-          "minSeconds": 2.9086596965789795,
-          "maxSeconds": 7.147209882736206
+          "medianSeconds": 3.0420150756835938,
+          "firstSeconds": 4.561274766921997,
+          "warmMedianSeconds": 2.985282778739929,
+          "minSeconds": 2.9285504817962646,
+          "maxSeconds": 4.561274766921997
         },
-        "browserOverNative": 2.964539614083963
+        "browserOverNative": 2.920878461638356
       }
     ],
     "memory": {
       "native": {
-        "peakPssMiB": 653.0732421875,
-        "lifecyclePeakPssMiB": 653.0732421875,
-        "baselinePssMiB": 268.4990234375,
-        "peakAboveBaselineMiB": 384.57421875,
-        "afterCleanupPssMiB": 355.2490234375,
+        "peakPssMiB": 654.7060546875,
+        "lifecyclePeakPssMiB": 654.7060546875,
+        "baselinePssMiB": 268.7607421875,
+        "peakAboveBaselineMiB": 385.9453125,
+        "afterCleanupPssMiB": 348.9248046875,
         "stagesPssMiB": {
-          "baseline": 268.4990234375,
-          "grid-128-repeat-0": 305.7138671875,
-          "grid-128-repeat-1": 307.1904296875,
-          "grid-128-repeat-2": 307.2177734375,
-          "grid-256-repeat-0": 437.5654296875,
-          "grid-256-repeat-1": 428.9287109375,
-          "grid-256-repeat-2": 429.8349609375,
-          "grid-384-repeat-0": 653.0732421875,
-          "grid-384-repeat-1": 644.7138671875,
-          "grid-384-repeat-2": 648.4091796875,
-          "ocean-repeat-0": 354.7646484375,
-          "ocean-repeat-1": 355.060546875,
-          "ocean-repeat-2": 355.2490234375,
-          "after-cleanup": 355.2490234375
+          "baseline": 268.7607421875,
+          "grid-128-repeat-0": 304.9833984375,
+          "grid-128-repeat-1": 308.7646484375,
+          "grid-128-repeat-2": 308.7802734375,
+          "grid-256-repeat-0": 438.0029296875,
+          "grid-256-repeat-1": 429.0263671875,
+          "grid-256-repeat-2": 429.2607421875,
+          "grid-384-repeat-0": 654.7060546875,
+          "grid-384-repeat-1": 644.1865234375,
+          "grid-384-repeat-2": 647.2607421875,
+          "ocean-repeat-0": 351.6787109375,
+          "ocean-repeat-1": 348.7373046875,
+          "ocean-repeat-2": 348.9248046875,
+          "after-cleanup": 348.9248046875
         }
       },
       "browser": {
-        "peakPssMiB": 1594.494140625,
-        "lifecyclePeakPssMiB": 2123.9296875,
-        "baselinePssMiB": 1255.97265625,
-        "peakAboveBaselineMiB": 338.521484375,
-        "afterCleanupPssMiB": 1594.4658203125,
+        "peakPssMiB": 2083.9970703125,
+        "lifecyclePeakPssMiB": 2229.23046875,
+        "baselinePssMiB": 2083.9970703125,
+        "peakAboveBaselineMiB": 0.0,
+        "afterCleanupPssMiB": 1775.8125,
         "stagesPssMiB": {
-          "baseline": 1255.97265625,
-          "grid-128-repeat-0": 1288.083984375,
-          "grid-128-repeat-1": 1315.2646484375,
-          "grid-128-repeat-2": 1291.7255859375,
-          "grid-256-repeat-0": 1390.7490234375,
-          "grid-256-repeat-1": 1400.5830078125,
-          "grid-256-repeat-2": 1402.265625,
-          "grid-384-repeat-0": 1567.591796875,
-          "grid-384-repeat-1": 1584.904296875,
-          "grid-384-repeat-2": 1585.73046875,
-          "ocean-repeat-0": 1593.1552734375,
-          "ocean-repeat-1": 1594.1572265625,
-          "ocean-repeat-2": 1594.4609375,
-          "after-cleanup": 1594.4658203125
+          "baseline": 2083.9970703125,
+          "grid-128-repeat-0": 1465.0107421875,
+          "grid-128-repeat-1": 1468.0380859375,
+          "grid-128-repeat-2": 1468.6083984375,
+          "grid-256-repeat-0": 1568.70703125,
+          "grid-256-repeat-1": 1578.0322265625,
+          "grid-256-repeat-2": 1579.0751953125,
+          "grid-384-repeat-0": 1745.1640625,
+          "grid-384-repeat-1": 1763.1572265625,
+          "grid-384-repeat-2": 1766.18359375,
+          "ocean-repeat-0": 1774.2001953125,
+          "ocean-repeat-1": 1775.587890625,
+          "ocean-repeat-2": 1775.80859375,
+          "after-cleanup": 1775.8125
         }
       },
-      "wasmHeapCapacityBytes": 644284416,
+      "wasmHeapCapacityBytes": 642711552,
       "wasmMaximumBytes": 4294967296
     },
     "eevee": {
@@ -3229,8 +3741,8 @@
         "features": [
           "depth32float-stencil8",
           "rg11b10ufloat-renderable",
-          "texture-formats-tier1",
           "bgra8unorm-storage",
+          "texture-formats-tier1",
           "chromium-experimental-multi-draw-indirect",
           "texture-compression-bc",
           "dual-source-blending",
@@ -3242,9 +3754,9 @@
           "texture-compression-etc2",
           "depth-clip-control",
           "texture-compression-bc-sliced-3d",
-          "clip-distances",
           "texture-formats-tier2",
           "timestamp-query",
+          "clip-distances",
           "shader-f16",
           "primitive-index",
           "texture-component-swizzle",
@@ -3267,33 +3779,33 @@
       "runs": [
         {
           "hotspotsCpuMs": {
-            "shaderTranslation": 5985.83,
-            "shaderAdapter": 625.63,
-            "shadercCompilation": 3773.8,
-            "builtinSymbolSetup": 0.41
-          },
-          "sampledRenderCpuMs": 6228.26,
-          "gpuBusyPercent": {
-            "mean": 27.55,
-            "max": 100,
-            "samples": 114
-          },
-          "queueSubmits": 362
-        },
-        {
-          "hotspotsCpuMs": {
-            "shaderTranslation": 0.0,
+            "shaderTranslation": 40.79,
             "shaderAdapter": 0.0,
             "shadercCompilation": 0.0,
             "builtinSymbolSetup": 0.0
           },
-          "sampledRenderCpuMs": 130.83,
+          "sampledRenderCpuMs": 311.85,
           "gpuBusyPercent": {
-            "mean": 82.26,
+            "mean": 43.76,
+            "max": 100,
+            "samples": 66
+          },
+          "queueSubmits": 363
+        },
+        {
+          "hotspotsCpuMs": {
+            "shaderTranslation": 0.23,
+            "shaderAdapter": 0.0,
+            "shadercCompilation": 0.0,
+            "builtinSymbolSetup": 0.0
+          },
+          "sampledRenderCpuMs": 155.7,
+          "gpuBusyPercent": {
+            "mean": 86.74,
             "max": 100,
             "samples": 34
           },
-          "queueSubmits": 349
+          "queueSubmits": 350
         }
       ]
     },
@@ -3334,6 +3846,1265 @@
       "eevee_timing.py": "544a2d37e7ea7bed41e47b51e2d92e4e108953e1589d4f6706c4ee6a79836116"
     }
   },
+  "renderOptimization": {
+    "bundleVersion": "f8c446962f5ecb0b1ae2",
+    "sessions": {
+      "control": [
+        {
+          "browserVersion": "145.0.7632.6",
+          "bundleVersion": "7e35e48849404ebeac92",
+          "shaderSeedEntries": 0,
+          "shaderOverrideEntries": 0,
+          "deviceScaleFactor": 1,
+          "renderResizeChecks": [],
+          "engine": "BLENDER_EEVEE",
+          "settingsUnchanged": true,
+          "referencePixelsEqual": true,
+          "width": 1920,
+          "height": 1080,
+          "samples": 64,
+          "renderSeconds": 8.072,
+          "renderRuns": [
+            8.072,
+            3.131,
+            3.033
+          ],
+          "handlerSeconds": [
+            7.296420335769653,
+            3.035830020904541,
+            2.919219732284546
+          ],
+          "videoCaptured": false,
+          "adapter": {
+            "vendor": "amd",
+            "architecture": "gcn-5",
+            "device": "",
+            "description": "",
+            "features": [
+              "depth32float-stencil8",
+              "rg11b10ufloat-renderable",
+              "texture-formats-tier1",
+              "bgra8unorm-storage",
+              "chromium-experimental-multi-draw-indirect",
+              "texture-compression-bc",
+              "dual-source-blending",
+              "core-features-and-limits",
+              "chromium-experimental-timestamp-query-inside-passes",
+              "float32-filterable",
+              "indirect-first-instance",
+              "float32-blendable",
+              "texture-compression-etc2",
+              "depth-clip-control",
+              "texture-compression-bc-sliced-3d",
+              "clip-distances",
+              "timestamp-query",
+              "shader-f16",
+              "texture-formats-tier2",
+              "primitive-index",
+              "texture-component-swizzle",
+              "subgroups"
+            ],
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxStorageTexturesPerShaderStage": 8,
+            "maxStorageBufferBindingSize": 2147483648
+          },
+          "foregroundPixels": 244885,
+          "opaquePixels": 2073600,
+          "browserErrors": 0,
+          "clipStart": 21.653,
+          "clipEnd": 52.99,
+          "defaults": {
+            "engine": "BLENDER_EEVEE",
+            "width": 1920,
+            "height": 1080,
+            "percent": 100,
+            "samples": 64,
+            "frame": 1,
+            "camera": "Camera",
+            "display": "WINDOW",
+            "view_transform": "AgX",
+            "look": "None",
+            "exposure": 0,
+            "gamma": 1,
+            "objects": [
+              {
+                "name": "Camera",
+                "type": "CAMERA",
+                "location": [
+                  7.358891487121582,
+                  -6.925790786743164,
+                  4.958309173583984
+                ],
+                "rotation": [
+                  1.1093189716339111,
+                  0,
+                  0.8149281740188599
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Cube",
+                "type": "MESH",
+                "location": [
+                  0,
+                  0,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Light",
+                "type": "LIGHT",
+                "location": [
+                  4.076245307922363,
+                  1.0054539442062378,
+                  5.903861999511719
+                ],
+                "rotation": [
+                  0.6503279805183411,
+                  0.055217113345861435,
+                  1.8663908243179321
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "light_energy": 1000,
+            "camera_lens": 50,
+            "eevee": {
+              "gi_diffuse_bounces": 3,
+              "gi_cubemap_resolution": "512",
+              "gi_visibility_resolution": "32",
+              "gi_glossy_clamp": 0,
+              "gi_irradiance_pool_size": "16",
+              "taa_samples": 16,
+              "taa_render_samples": 64,
+              "use_taa_reprojection": true,
+              "ray_tracing_method": "SCREEN",
+              "use_shadow_jitter_viewport": false,
+              "clamp_surface_direct": 0,
+              "clamp_surface_indirect": 10,
+              "clamp_volume_direct": 0,
+              "clamp_volume_indirect": 0,
+              "direct_light_intensity": 1,
+              "indirect_light_intensity": 1,
+              "volumetric_start": 0.10000000149011612,
+              "volumetric_end": 100,
+              "volumetric_tile_size": "8",
+              "volumetric_samples": 64,
+              "volumetric_sample_distribution": 0.800000011920929,
+              "volumetric_ray_depth": 16,
+              "volumetric_light_clamp": 0,
+              "use_volumetric_shadows": false,
+              "volumetric_shadow_samples": 16,
+              "use_volume_custom_range": false,
+              "use_fast_gi": true,
+              "fast_gi_thickness_near": 0.10000000149011612,
+              "fast_gi_quality": 0.25,
+              "fast_gi_step_count": 8,
+              "fast_gi_ray_count": 2,
+              "fast_gi_method": "GLOBAL_ILLUMINATION",
+              "fast_gi_distance": 0,
+              "fast_gi_bias": 0.05000000074505806,
+              "fast_gi_resolution": "2",
+              "bokeh_max_size": 100,
+              "bokeh_threshold": 1,
+              "bokeh_neighbor_max": 10,
+              "use_bokeh_jittered": false,
+              "bokeh_overblur": 5,
+              "motion_blur_depth_scale": 100,
+              "motion_blur_max": 32,
+              "motion_blur_steps": 1,
+              "use_shadows": true,
+              "shadow_pool_size": "512",
+              "shadow_ray_count": 1,
+              "shadow_step_count": 6,
+              "light_threshold": 0.009999999776482582,
+              "use_overscan": false,
+              "overscan_size": 3,
+              "use_raytracing": false,
+              "shadow_resolution_scale": 1
+            }
+          }
+        },
+        {
+          "browserVersion": "145.0.7632.6",
+          "bundleVersion": "7e35e48849404ebeac92",
+          "shaderSeedEntries": 0,
+          "shaderOverrideEntries": 0,
+          "deviceScaleFactor": 1,
+          "renderResizeChecks": [],
+          "engine": "BLENDER_EEVEE",
+          "settingsUnchanged": true,
+          "referencePixelsEqual": true,
+          "width": 1920,
+          "height": 1080,
+          "samples": 64,
+          "renderSeconds": 8.577,
+          "renderRuns": [
+            8.577,
+            3.142,
+            3.136
+          ],
+          "handlerSeconds": [
+            7.672314882278442,
+            3.0313148498535156,
+            3.0203499794006348
+          ],
+          "videoCaptured": false,
+          "adapter": {
+            "vendor": "amd",
+            "architecture": "gcn-5",
+            "device": "",
+            "description": "",
+            "features": [
+              "depth32float-stencil8",
+              "rg11b10ufloat-renderable",
+              "texture-formats-tier1",
+              "bgra8unorm-storage",
+              "chromium-experimental-multi-draw-indirect",
+              "texture-compression-bc",
+              "dual-source-blending",
+              "core-features-and-limits",
+              "chromium-experimental-timestamp-query-inside-passes",
+              "float32-filterable",
+              "indirect-first-instance",
+              "float32-blendable",
+              "texture-compression-etc2",
+              "depth-clip-control",
+              "texture-compression-bc-sliced-3d",
+              "timestamp-query",
+              "clip-distances",
+              "shader-f16",
+              "texture-formats-tier2",
+              "primitive-index",
+              "texture-component-swizzle",
+              "subgroups"
+            ],
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxStorageTexturesPerShaderStage": 8,
+            "maxStorageBufferBindingSize": 2147483648
+          },
+          "foregroundPixels": 244885,
+          "opaquePixels": 2073600,
+          "browserErrors": 0,
+          "clipStart": 21.678,
+          "clipEnd": 53.632,
+          "defaults": {
+            "engine": "BLENDER_EEVEE",
+            "width": 1920,
+            "height": 1080,
+            "percent": 100,
+            "samples": 64,
+            "frame": 1,
+            "camera": "Camera",
+            "display": "WINDOW",
+            "view_transform": "AgX",
+            "look": "None",
+            "exposure": 0,
+            "gamma": 1,
+            "objects": [
+              {
+                "name": "Camera",
+                "type": "CAMERA",
+                "location": [
+                  7.358891487121582,
+                  -6.925790786743164,
+                  4.958309173583984
+                ],
+                "rotation": [
+                  1.1093189716339111,
+                  0,
+                  0.8149281740188599
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Cube",
+                "type": "MESH",
+                "location": [
+                  0,
+                  0,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Light",
+                "type": "LIGHT",
+                "location": [
+                  4.076245307922363,
+                  1.0054539442062378,
+                  5.903861999511719
+                ],
+                "rotation": [
+                  0.6503279805183411,
+                  0.055217113345861435,
+                  1.8663908243179321
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "light_energy": 1000,
+            "camera_lens": 50,
+            "eevee": {
+              "gi_diffuse_bounces": 3,
+              "gi_cubemap_resolution": "512",
+              "gi_visibility_resolution": "32",
+              "gi_glossy_clamp": 0,
+              "gi_irradiance_pool_size": "16",
+              "taa_samples": 16,
+              "taa_render_samples": 64,
+              "use_taa_reprojection": true,
+              "ray_tracing_method": "SCREEN",
+              "use_shadow_jitter_viewport": false,
+              "clamp_surface_direct": 0,
+              "clamp_surface_indirect": 10,
+              "clamp_volume_direct": 0,
+              "clamp_volume_indirect": 0,
+              "direct_light_intensity": 1,
+              "indirect_light_intensity": 1,
+              "volumetric_start": 0.10000000149011612,
+              "volumetric_end": 100,
+              "volumetric_tile_size": "8",
+              "volumetric_samples": 64,
+              "volumetric_sample_distribution": 0.800000011920929,
+              "volumetric_ray_depth": 16,
+              "volumetric_light_clamp": 0,
+              "use_volumetric_shadows": false,
+              "volumetric_shadow_samples": 16,
+              "use_volume_custom_range": false,
+              "use_fast_gi": true,
+              "fast_gi_thickness_near": 0.10000000149011612,
+              "fast_gi_quality": 0.25,
+              "fast_gi_step_count": 8,
+              "fast_gi_ray_count": 2,
+              "fast_gi_method": "GLOBAL_ILLUMINATION",
+              "fast_gi_distance": 0,
+              "fast_gi_bias": 0.05000000074505806,
+              "fast_gi_resolution": "2",
+              "bokeh_max_size": 100,
+              "bokeh_threshold": 1,
+              "bokeh_neighbor_max": 10,
+              "use_bokeh_jittered": false,
+              "bokeh_overblur": 5,
+              "motion_blur_depth_scale": 100,
+              "motion_blur_max": 32,
+              "motion_blur_steps": 1,
+              "use_shadows": true,
+              "shadow_pool_size": "512",
+              "shadow_ray_count": 1,
+              "shadow_step_count": 6,
+              "light_threshold": 0.009999999776482582,
+              "use_overscan": false,
+              "overscan_size": 3,
+              "use_raytracing": false,
+              "shadow_resolution_scale": 1
+            }
+          }
+        },
+        {
+          "browserVersion": "145.0.7632.6",
+          "bundleVersion": "7e35e48849404ebeac92",
+          "shaderSeedEntries": 0,
+          "shaderOverrideEntries": 0,
+          "deviceScaleFactor": 1,
+          "renderResizeChecks": [],
+          "engine": "BLENDER_EEVEE",
+          "settingsUnchanged": true,
+          "referencePixelsEqual": true,
+          "width": 1920,
+          "height": 1080,
+          "samples": 64,
+          "renderSeconds": 8.685,
+          "renderRuns": [
+            8.685,
+            3.233,
+            3.036
+          ],
+          "handlerSeconds": [
+            7.778334856033325,
+            3.0830748081207275,
+            2.8745052814483643
+          ],
+          "videoCaptured": false,
+          "adapter": {
+            "vendor": "amd",
+            "architecture": "gcn-5",
+            "device": "",
+            "description": "",
+            "features": [
+              "depth32float-stencil8",
+              "rg11b10ufloat-renderable",
+              "texture-formats-tier1",
+              "bgra8unorm-storage",
+              "chromium-experimental-multi-draw-indirect",
+              "texture-compression-bc",
+              "dual-source-blending",
+              "core-features-and-limits",
+              "chromium-experimental-timestamp-query-inside-passes",
+              "float32-filterable",
+              "indirect-first-instance",
+              "float32-blendable",
+              "texture-compression-etc2",
+              "depth-clip-control",
+              "texture-compression-bc-sliced-3d",
+              "timestamp-query",
+              "shader-f16",
+              "texture-formats-tier2",
+              "clip-distances",
+              "primitive-index",
+              "texture-component-swizzle",
+              "subgroups"
+            ],
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxStorageTexturesPerShaderStage": 8,
+            "maxStorageBufferBindingSize": 2147483648
+          },
+          "foregroundPixels": 244885,
+          "opaquePixels": 2073600,
+          "browserErrors": 0,
+          "clipStart": 21.53,
+          "clipEnd": 53.54,
+          "defaults": {
+            "engine": "BLENDER_EEVEE",
+            "width": 1920,
+            "height": 1080,
+            "percent": 100,
+            "samples": 64,
+            "frame": 1,
+            "camera": "Camera",
+            "display": "WINDOW",
+            "view_transform": "AgX",
+            "look": "None",
+            "exposure": 0,
+            "gamma": 1,
+            "objects": [
+              {
+                "name": "Camera",
+                "type": "CAMERA",
+                "location": [
+                  7.358891487121582,
+                  -6.925790786743164,
+                  4.958309173583984
+                ],
+                "rotation": [
+                  1.1093189716339111,
+                  0,
+                  0.8149281740188599
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Cube",
+                "type": "MESH",
+                "location": [
+                  0,
+                  0,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Light",
+                "type": "LIGHT",
+                "location": [
+                  4.076245307922363,
+                  1.0054539442062378,
+                  5.903861999511719
+                ],
+                "rotation": [
+                  0.6503279805183411,
+                  0.055217113345861435,
+                  1.8663908243179321
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "light_energy": 1000,
+            "camera_lens": 50,
+            "eevee": {
+              "gi_diffuse_bounces": 3,
+              "gi_cubemap_resolution": "512",
+              "gi_visibility_resolution": "32",
+              "gi_glossy_clamp": 0,
+              "gi_irradiance_pool_size": "16",
+              "taa_samples": 16,
+              "taa_render_samples": 64,
+              "use_taa_reprojection": true,
+              "ray_tracing_method": "SCREEN",
+              "use_shadow_jitter_viewport": false,
+              "clamp_surface_direct": 0,
+              "clamp_surface_indirect": 10,
+              "clamp_volume_direct": 0,
+              "clamp_volume_indirect": 0,
+              "direct_light_intensity": 1,
+              "indirect_light_intensity": 1,
+              "volumetric_start": 0.10000000149011612,
+              "volumetric_end": 100,
+              "volumetric_tile_size": "8",
+              "volumetric_samples": 64,
+              "volumetric_sample_distribution": 0.800000011920929,
+              "volumetric_ray_depth": 16,
+              "volumetric_light_clamp": 0,
+              "use_volumetric_shadows": false,
+              "volumetric_shadow_samples": 16,
+              "use_volume_custom_range": false,
+              "use_fast_gi": true,
+              "fast_gi_thickness_near": 0.10000000149011612,
+              "fast_gi_quality": 0.25,
+              "fast_gi_step_count": 8,
+              "fast_gi_ray_count": 2,
+              "fast_gi_method": "GLOBAL_ILLUMINATION",
+              "fast_gi_distance": 0,
+              "fast_gi_bias": 0.05000000074505806,
+              "fast_gi_resolution": "2",
+              "bokeh_max_size": 100,
+              "bokeh_threshold": 1,
+              "bokeh_neighbor_max": 10,
+              "use_bokeh_jittered": false,
+              "bokeh_overblur": 5,
+              "motion_blur_depth_scale": 100,
+              "motion_blur_max": 32,
+              "motion_blur_steps": 1,
+              "use_shadows": true,
+              "shadow_pool_size": "512",
+              "shadow_ray_count": 1,
+              "shadow_step_count": 6,
+              "light_threshold": 0.009999999776482582,
+              "use_overscan": false,
+              "overscan_size": 3,
+              "use_raytracing": false,
+              "shadow_resolution_scale": 1
+            }
+          }
+        }
+      ],
+      "candidate": [
+        {
+          "browserVersion": "145.0.7632.6",
+          "bundleVersion": "f8c446962f5ecb0b1ae2",
+          "shaderSeedEntries": 124,
+          "shaderOverrideEntries": 0,
+          "deviceScaleFactor": 1,
+          "renderResizeChecks": [],
+          "engine": "BLENDER_EEVEE",
+          "settingsUnchanged": true,
+          "referencePixelsEqual": true,
+          "width": 1920,
+          "height": 1080,
+          "samples": 64,
+          "renderSeconds": 5.053,
+          "renderRuns": [
+            5.053,
+            3.13,
+            3.033
+          ],
+          "handlerSeconds": [
+            4.561274766921997,
+            3.0420150756835938,
+            2.9285504817962646
+          ],
+          "videoCaptured": false,
+          "adapter": {
+            "vendor": "amd",
+            "architecture": "gcn-5",
+            "device": "",
+            "description": "",
+            "features": [
+              "depth32float-stencil8",
+              "rg11b10ufloat-renderable",
+              "bgra8unorm-storage",
+              "texture-formats-tier1",
+              "chromium-experimental-multi-draw-indirect",
+              "texture-compression-bc",
+              "dual-source-blending",
+              "core-features-and-limits",
+              "chromium-experimental-timestamp-query-inside-passes",
+              "float32-filterable",
+              "indirect-first-instance",
+              "float32-blendable",
+              "texture-compression-etc2",
+              "depth-clip-control",
+              "texture-compression-bc-sliced-3d",
+              "texture-formats-tier2",
+              "timestamp-query",
+              "clip-distances",
+              "shader-f16",
+              "primitive-index",
+              "texture-component-swizzle",
+              "subgroups"
+            ],
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxStorageTexturesPerShaderStage": 8,
+            "maxStorageBufferBindingSize": 2147483648
+          },
+          "foregroundPixels": 244885,
+          "opaquePixels": 2073600,
+          "browserErrors": 0,
+          "clipStart": 19.386,
+          "clipEnd": 47.721,
+          "defaults": {
+            "engine": "BLENDER_EEVEE",
+            "width": 1920,
+            "height": 1080,
+            "percent": 100,
+            "samples": 64,
+            "frame": 1,
+            "camera": "Camera",
+            "display": "WINDOW",
+            "view_transform": "AgX",
+            "look": "None",
+            "exposure": 0,
+            "gamma": 1,
+            "objects": [
+              {
+                "name": "Camera",
+                "type": "CAMERA",
+                "location": [
+                  7.358891487121582,
+                  -6.925790786743164,
+                  4.958309173583984
+                ],
+                "rotation": [
+                  1.1093189716339111,
+                  0,
+                  0.8149281740188599
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Cube",
+                "type": "MESH",
+                "location": [
+                  0,
+                  0,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Light",
+                "type": "LIGHT",
+                "location": [
+                  4.076245307922363,
+                  1.0054539442062378,
+                  5.903861999511719
+                ],
+                "rotation": [
+                  0.6503279805183411,
+                  0.055217113345861435,
+                  1.8663908243179321
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "light_energy": 1000,
+            "camera_lens": 50,
+            "eevee": {
+              "gi_diffuse_bounces": 3,
+              "gi_cubemap_resolution": "512",
+              "gi_visibility_resolution": "32",
+              "gi_glossy_clamp": 0,
+              "gi_irradiance_pool_size": "16",
+              "taa_samples": 16,
+              "taa_render_samples": 64,
+              "use_taa_reprojection": true,
+              "ray_tracing_method": "SCREEN",
+              "use_shadow_jitter_viewport": false,
+              "clamp_surface_direct": 0,
+              "clamp_surface_indirect": 10,
+              "clamp_volume_direct": 0,
+              "clamp_volume_indirect": 0,
+              "direct_light_intensity": 1,
+              "indirect_light_intensity": 1,
+              "volumetric_start": 0.10000000149011612,
+              "volumetric_end": 100,
+              "volumetric_tile_size": "8",
+              "volumetric_samples": 64,
+              "volumetric_sample_distribution": 0.800000011920929,
+              "volumetric_ray_depth": 16,
+              "volumetric_light_clamp": 0,
+              "use_volumetric_shadows": false,
+              "volumetric_shadow_samples": 16,
+              "use_volume_custom_range": false,
+              "use_fast_gi": true,
+              "fast_gi_thickness_near": 0.10000000149011612,
+              "fast_gi_quality": 0.25,
+              "fast_gi_step_count": 8,
+              "fast_gi_ray_count": 2,
+              "fast_gi_method": "GLOBAL_ILLUMINATION",
+              "fast_gi_distance": 0,
+              "fast_gi_bias": 0.05000000074505806,
+              "fast_gi_resolution": "2",
+              "bokeh_max_size": 100,
+              "bokeh_threshold": 1,
+              "bokeh_neighbor_max": 10,
+              "use_bokeh_jittered": false,
+              "bokeh_overblur": 5,
+              "motion_blur_depth_scale": 100,
+              "motion_blur_max": 32,
+              "motion_blur_steps": 1,
+              "use_shadows": true,
+              "shadow_pool_size": "512",
+              "shadow_ray_count": 1,
+              "shadow_step_count": 6,
+              "light_threshold": 0.009999999776482582,
+              "use_overscan": false,
+              "overscan_size": 3,
+              "use_raytracing": false,
+              "shadow_resolution_scale": 1
+            }
+          }
+        },
+        {
+          "browserVersion": "145.0.7632.6",
+          "bundleVersion": "f8c446962f5ecb0b1ae2",
+          "shaderSeedEntries": 124,
+          "shaderOverrideEntries": 0,
+          "deviceScaleFactor": 1,
+          "renderResizeChecks": [],
+          "engine": "BLENDER_EEVEE",
+          "settingsUnchanged": true,
+          "referencePixelsEqual": true,
+          "width": 1920,
+          "height": 1080,
+          "samples": 64,
+          "renderSeconds": 5.05,
+          "renderRuns": [
+            5.05,
+            3.239,
+            3.64
+          ],
+          "handlerSeconds": [
+            4.491185188293457,
+            3.1360950469970703,
+            3.5752596855163574
+          ],
+          "videoCaptured": false,
+          "adapter": {
+            "vendor": "amd",
+            "architecture": "gcn-5",
+            "device": "",
+            "description": "",
+            "features": [
+              "depth32float-stencil8",
+              "rg11b10ufloat-renderable",
+              "texture-formats-tier1",
+              "bgra8unorm-storage",
+              "chromium-experimental-multi-draw-indirect",
+              "texture-compression-bc",
+              "dual-source-blending",
+              "core-features-and-limits",
+              "chromium-experimental-timestamp-query-inside-passes",
+              "float32-filterable",
+              "indirect-first-instance",
+              "float32-blendable",
+              "texture-compression-etc2",
+              "depth-clip-control",
+              "texture-compression-bc-sliced-3d",
+              "texture-formats-tier2",
+              "clip-distances",
+              "shader-f16",
+              "timestamp-query",
+              "primitive-index",
+              "texture-component-swizzle",
+              "subgroups"
+            ],
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxStorageTexturesPerShaderStage": 8,
+            "maxStorageBufferBindingSize": 2147483648
+          },
+          "foregroundPixels": 244885,
+          "opaquePixels": 2073600,
+          "browserErrors": 0,
+          "clipStart": 18.788,
+          "clipEnd": 47.793,
+          "defaults": {
+            "engine": "BLENDER_EEVEE",
+            "width": 1920,
+            "height": 1080,
+            "percent": 100,
+            "samples": 64,
+            "frame": 1,
+            "camera": "Camera",
+            "display": "WINDOW",
+            "view_transform": "AgX",
+            "look": "None",
+            "exposure": 0,
+            "gamma": 1,
+            "objects": [
+              {
+                "name": "Camera",
+                "type": "CAMERA",
+                "location": [
+                  7.358891487121582,
+                  -6.925790786743164,
+                  4.958309173583984
+                ],
+                "rotation": [
+                  1.1093189716339111,
+                  0,
+                  0.8149281740188599
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Cube",
+                "type": "MESH",
+                "location": [
+                  0,
+                  0,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Light",
+                "type": "LIGHT",
+                "location": [
+                  4.076245307922363,
+                  1.0054539442062378,
+                  5.903861999511719
+                ],
+                "rotation": [
+                  0.6503279805183411,
+                  0.055217113345861435,
+                  1.8663908243179321
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "light_energy": 1000,
+            "camera_lens": 50,
+            "eevee": {
+              "gi_diffuse_bounces": 3,
+              "gi_cubemap_resolution": "512",
+              "gi_visibility_resolution": "32",
+              "gi_glossy_clamp": 0,
+              "gi_irradiance_pool_size": "16",
+              "taa_samples": 16,
+              "taa_render_samples": 64,
+              "use_taa_reprojection": true,
+              "ray_tracing_method": "SCREEN",
+              "use_shadow_jitter_viewport": false,
+              "clamp_surface_direct": 0,
+              "clamp_surface_indirect": 10,
+              "clamp_volume_direct": 0,
+              "clamp_volume_indirect": 0,
+              "direct_light_intensity": 1,
+              "indirect_light_intensity": 1,
+              "volumetric_start": 0.10000000149011612,
+              "volumetric_end": 100,
+              "volumetric_tile_size": "8",
+              "volumetric_samples": 64,
+              "volumetric_sample_distribution": 0.800000011920929,
+              "volumetric_ray_depth": 16,
+              "volumetric_light_clamp": 0,
+              "use_volumetric_shadows": false,
+              "volumetric_shadow_samples": 16,
+              "use_volume_custom_range": false,
+              "use_fast_gi": true,
+              "fast_gi_thickness_near": 0.10000000149011612,
+              "fast_gi_quality": 0.25,
+              "fast_gi_step_count": 8,
+              "fast_gi_ray_count": 2,
+              "fast_gi_method": "GLOBAL_ILLUMINATION",
+              "fast_gi_distance": 0,
+              "fast_gi_bias": 0.05000000074505806,
+              "fast_gi_resolution": "2",
+              "bokeh_max_size": 100,
+              "bokeh_threshold": 1,
+              "bokeh_neighbor_max": 10,
+              "use_bokeh_jittered": false,
+              "bokeh_overblur": 5,
+              "motion_blur_depth_scale": 100,
+              "motion_blur_max": 32,
+              "motion_blur_steps": 1,
+              "use_shadows": true,
+              "shadow_pool_size": "512",
+              "shadow_ray_count": 1,
+              "shadow_step_count": 6,
+              "light_threshold": 0.009999999776482582,
+              "use_overscan": false,
+              "overscan_size": 3,
+              "use_raytracing": false,
+              "shadow_resolution_scale": 1
+            }
+          }
+        },
+        {
+          "browserVersion": "145.0.7632.6",
+          "bundleVersion": "f8c446962f5ecb0b1ae2",
+          "shaderSeedEntries": 124,
+          "shaderOverrideEntries": 0,
+          "deviceScaleFactor": 1,
+          "renderResizeChecks": [],
+          "engine": "BLENDER_EEVEE",
+          "settingsUnchanged": true,
+          "referencePixelsEqual": true,
+          "width": 1920,
+          "height": 1080,
+          "samples": 64,
+          "renderSeconds": 5.251,
+          "renderRuns": [
+            5.251,
+            3.236,
+            3.035
+          ],
+          "handlerSeconds": [
+            4.591454982757568,
+            3.1419899463653564,
+            2.876420021057129
+          ],
+          "videoCaptured": false,
+          "adapter": {
+            "vendor": "amd",
+            "architecture": "gcn-5",
+            "device": "",
+            "description": "",
+            "features": [
+              "depth32float-stencil8",
+              "rg11b10ufloat-renderable",
+              "bgra8unorm-storage",
+              "texture-formats-tier1",
+              "chromium-experimental-multi-draw-indirect",
+              "texture-compression-bc",
+              "dual-source-blending",
+              "core-features-and-limits",
+              "chromium-experimental-timestamp-query-inside-passes",
+              "float32-filterable",
+              "indirect-first-instance",
+              "float32-blendable",
+              "texture-compression-etc2",
+              "depth-clip-control",
+              "texture-compression-bc-sliced-3d",
+              "shader-f16",
+              "clip-distances",
+              "timestamp-query",
+              "texture-formats-tier2",
+              "primitive-index",
+              "texture-component-swizzle",
+              "subgroups"
+            ],
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxStorageTexturesPerShaderStage": 8,
+            "maxStorageBufferBindingSize": 2147483648
+          },
+          "foregroundPixels": 244885,
+          "opaquePixels": 2073600,
+          "browserErrors": 0,
+          "clipStart": 19.488,
+          "clipEnd": 48.127,
+          "defaults": {
+            "engine": "BLENDER_EEVEE",
+            "width": 1920,
+            "height": 1080,
+            "percent": 100,
+            "samples": 64,
+            "frame": 1,
+            "camera": "Camera",
+            "display": "WINDOW",
+            "view_transform": "AgX",
+            "look": "None",
+            "exposure": 0,
+            "gamma": 1,
+            "objects": [
+              {
+                "name": "Camera",
+                "type": "CAMERA",
+                "location": [
+                  7.358891487121582,
+                  -6.925790786743164,
+                  4.958309173583984
+                ],
+                "rotation": [
+                  1.1093189716339111,
+                  0,
+                  0.8149281740188599
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Cube",
+                "type": "MESH",
+                "location": [
+                  0,
+                  0,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "name": "Light",
+                "type": "LIGHT",
+                "location": [
+                  4.076245307922363,
+                  1.0054539442062378,
+                  5.903861999511719
+                ],
+                "rotation": [
+                  0.6503279805183411,
+                  0.055217113345861435,
+                  1.8663908243179321
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "light_energy": 1000,
+            "camera_lens": 50,
+            "eevee": {
+              "gi_diffuse_bounces": 3,
+              "gi_cubemap_resolution": "512",
+              "gi_visibility_resolution": "32",
+              "gi_glossy_clamp": 0,
+              "gi_irradiance_pool_size": "16",
+              "taa_samples": 16,
+              "taa_render_samples": 64,
+              "use_taa_reprojection": true,
+              "ray_tracing_method": "SCREEN",
+              "use_shadow_jitter_viewport": false,
+              "clamp_surface_direct": 0,
+              "clamp_surface_indirect": 10,
+              "clamp_volume_direct": 0,
+              "clamp_volume_indirect": 0,
+              "direct_light_intensity": 1,
+              "indirect_light_intensity": 1,
+              "volumetric_start": 0.10000000149011612,
+              "volumetric_end": 100,
+              "volumetric_tile_size": "8",
+              "volumetric_samples": 64,
+              "volumetric_sample_distribution": 0.800000011920929,
+              "volumetric_ray_depth": 16,
+              "volumetric_light_clamp": 0,
+              "use_volumetric_shadows": false,
+              "volumetric_shadow_samples": 16,
+              "use_volume_custom_range": false,
+              "use_fast_gi": true,
+              "fast_gi_thickness_near": 0.10000000149011612,
+              "fast_gi_quality": 0.25,
+              "fast_gi_step_count": 8,
+              "fast_gi_ray_count": 2,
+              "fast_gi_method": "GLOBAL_ILLUMINATION",
+              "fast_gi_distance": 0,
+              "fast_gi_bias": 0.05000000074505806,
+              "fast_gi_resolution": "2",
+              "bokeh_max_size": 100,
+              "bokeh_threshold": 1,
+              "bokeh_neighbor_max": 10,
+              "use_bokeh_jittered": false,
+              "bokeh_overblur": 5,
+              "motion_blur_depth_scale": 100,
+              "motion_blur_max": 32,
+              "motion_blur_steps": 1,
+              "use_shadows": true,
+              "shadow_pool_size": "512",
+              "shadow_ray_count": 1,
+              "shadow_step_count": 6,
+              "light_threshold": 0.009999999776482582,
+              "use_overscan": false,
+              "overscan_size": 3,
+              "use_raytracing": false,
+              "shadow_resolution_scale": 1
+            }
+          }
+        }
+      ]
+    },
+    "summary": {
+      "control": {
+        "bundleVersion": "7e35e48849404ebeac92",
+        "coldSeconds": [
+          7.296420335769653,
+          7.672314882278442,
+          7.778334856033325
+        ],
+        "warmSeconds": [
+          3.035830020904541,
+          2.919219732284546,
+          3.0313148498535156,
+          3.0203499794006348,
+          3.0830748081207275,
+          2.8745052814483643
+        ],
+        "coldMedian": 7.672314882278442,
+        "warmMedian": 3.025832414627075,
+        "shaderSeed": null
+      },
+      "candidate": {
+        "bundleVersion": "f8c446962f5ecb0b1ae2",
+        "coldSeconds": [
+          4.561274766921997,
+          4.491185188293457,
+          4.591454982757568
+        ],
+        "warmSeconds": [
+          3.0420150756835938,
+          2.9285504817962646,
+          3.1360950469970703,
+          3.5752596855163574,
+          3.1419899463653564,
+          2.876420021057129
+        ],
+        "coldMedian": 4.561274766921997,
+        "warmMedian": 3.089055061340332,
+        "shaderSeed": {
+          "entries": 124,
+          "sha256": "467e691a81bac4e0cd3c3f922105fa95d7c29dcdd1b96bc5fae0f173850b00ea"
+        }
+      }
+    },
+    "reductionPercent": {
+      "cold": 40.54891076671454,
+      "warm": -2.0894298840753445
+    },
+    "workloadSHA256": "544a2d37e7ea7bed41e47b51e2d92e4e108953e1589d4f6706c4ee6a79836116",
+    "method": "Three fresh Chromium sessions per build, alternated control/candidate. Three renders per session, no video/tracing, original factory settings. First-in-process engine handler time; global GPU driver caches are not cleared."
+  },
+  "memory64Probe": {
+    "productionEnabled": false,
+    "standalone": {
+      "emscriptenVersion": "4.0.23",
+      "flags": [
+        "-O2",
+        "-sMEMORY64=1",
+        "-pthread",
+        "-sPROXY_TO_PTHREAD=1",
+        "-sPTHREAD_POOL_SIZE=2",
+        "-sALLOW_MEMORY_GROWTH=1",
+        "-sINITIAL_MEMORY=67108864",
+        "-sMAXIMUM_MEMORY=8589934592",
+        "-sEXIT_RUNTIME=1",
+        "-sENVIRONMENT=web,worker,node"
+      ],
+      "sourceSha256": "496b13da5e80bcf79e5b573985b3df009a54199ac9456db02ad36a524c496f7a",
+      "wasmSha256": "d1ae575e2b844f82b51f05267b329d05abfe3c2bafec92ba21a4072b326e2294",
+      "nodeVersion": "v24.19.0",
+      "node": {
+        "pointerBytes": 8,
+        "allocationBytes": 4295032832,
+        "heapBytes": 4395958272,
+        "highAddress": 4295113240,
+        "crossThreadReadWrite": true,
+        "sparseTouchOnly": true
+      },
+      "browserVersion": "145.0.7632.6",
+      "browserFlags": [],
+      "browser": {
+        "isolated": true,
+        "result": {
+          "pointerBytes": 8,
+          "allocationBytes": 4295032832,
+          "heapBytes": 4395958272,
+          "highAddress": 4295113240,
+          "crossThreadReadWrite": true,
+          "sparseTouchOnly": true
+        }
+      },
+      "browserErrors": []
+    }
+  },
   "cyclesReference": {
     "engine": "CYCLES",
     "device": "CPU",
@@ -3353,33 +5124,33 @@
     "imageSHA256": "1bde65f7c86e7132f2c91738cb19db192c15c9af843243dcb45b5de27c0dc31b"
   },
   "downloadSize": {
-    "renderBytes": 202661923,
-    "uiFallbackBytes": 202657685,
+    "renderBytes": 227597663,
+    "uiFallbackBytes": 227593425,
     "files": [
       {
-        "name": "assets/7e35e48849404ebeac92/blender.js",
-        "bytes": 723280,
-        "sha256": "213a202618e0e7a375935cbf41fb01aee0e276ccd2d2fb5049f48cc58227b768"
+        "name": "assets/f8c446962f5ecb0b1ae2/blender.js",
+        "bytes": 724029,
+        "sha256": "4d81992cc1d4435f7f38ed51918a1084fc70dafcbaf83d512bfa80e5186b54e2"
       },
       {
-        "name": "assets/7e35e48849404ebeac92/blender.wasm",
-        "bytes": 127501277,
-        "sha256": "b820f56cd1ded376aacdc3478572d1b70c7e4c1eda38bbfb04688f35edfde852"
+        "name": "assets/f8c446962f5ecb0b1ae2/blender.wasm",
+        "bytes": 150538907,
+        "sha256": "68b87b0e21f3833fe6967d57cbd2f3ae4a3c6185c474b3b6d43dea1e1fbc6817"
       },
       {
-        "name": "assets/7e35e48849404ebeac92/blender.data",
-        "bytes": 74437366,
-        "sha256": "6d7eb5804873e2291ee568fe07ab9e1b6e594d8e5cfde5743833bac3b731af06"
+        "name": "assets/f8c446962f5ecb0b1ae2/blender.data",
+        "bytes": 76334727,
+        "sha256": "d0534e3b2fc6d44d43db1c80eb71a9df9d9a33edf8b2fbc5d702cbf98240a350"
       },
       {
-        "name": "assets/7e35e48849404ebeac92/blender-ui.js",
-        "bytes": 719042,
-        "sha256": "560323a55b54cb862811017ae8fe23923f0afa333bdaa79bb067f130844a8564"
+        "name": "assets/f8c446962f5ecb0b1ae2/blender-ui.js",
+        "bytes": 719791,
+        "sha256": "01502080933710ec22dfff52d63f5d8bb139a22cd05dc0dea539e463b91c65dc"
       },
       {
-        "name": "assets/7e35e48849404ebeac92/blender-ui.wasm",
-        "bytes": 127501277,
-        "sha256": "b820f56cd1ded376aacdc3478572d1b70c7e4c1eda38bbfb04688f35edfde852"
+        "name": "assets/f8c446962f5ecb0b1ae2/blender-ui.wasm",
+        "bytes": 150538907,
+        "sha256": "68b87b0e21f3833fe6967d57cbd2f3ae4a3c6185c474b3b6d43dea1e1fbc6817"
       }
     ]
   },
@@ -3398,15 +5169,17 @@
     "Cycles CPU acceptance uses the factory cube at 128x128 and 16 samples, with denoising and adaptive sampling disabled.",
     "Cycles GPU, denoising, progressive display and rendered viewport are not supported.",
     "Final rendering requires the JSPI bundle in current desktop Chromium.",
+    "Production Blender uses wasm32 with a 4 GiB linear-memory ceiling. The memory64 result is a separate sparse-addressing probe, not Blender scene-capacity evidence.",
     "NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.",
     "Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.",
-    "Ocean acceptance uses resolution 5 and 12 animation frames. OpenVDB, fluids and ocean disk-cache baking are not covered.",
+    "Ocean acceptance uses resolution 5 and 12 animation frames. Ocean disk-cache baking is not covered.",
+    "OpenVDB acceptance covers float sphere grids, ZIP/Blosc IO, NanoVDB conversion and mesh/volume modifiers. Mantaflow acceptance covers four resolution-16 gas frames; liquid simulation, long bakes and the Python OpenVDB module are not covered.",
     "Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.",
     "Functional checks ran with other host activity and are not an isolated performance benchmark."
   ],
   "deploymentArchive": {
     "name": "blender-web-pages.tar.gz",
-    "bytes": 103949200,
-    "sha256": "2c6cfed702dfacae4c49fd4666fe820259eda292f2916dbc7cb5de7f018be269"
+    "bytes": 110714052,
+    "sha256": "2a0d946c84c921ca6a1a8303d9f562c97dfd9feb738ce959525c315e41a61180"
   }
 }

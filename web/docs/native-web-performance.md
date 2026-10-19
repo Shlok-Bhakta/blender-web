@@ -25,11 +25,11 @@ libraries differ from the current Wasm build.
 
 The separate [browser profile](native-web-profile.json) retains WebGPU call
 counts and sampled CPU hotspots. It is excluded from the baseline timings.
-First-render shader translation consumed about 5.99 seconds of sampled CPU time.
-The warm render recorded no shader translation and averaged 82.26% GPU busy,
-with a 100% peak. These samples support focusing first-render work on translation
-and warm-render work on the GPU backend. They do not establish the cause of
-every difference from the native OpenGL backend.
+GPU timestamp queries measure individual passes separately from JavaScript API
+call costs. Resource samples include GPU utilization and available clock readings.
+The [optimization experiments](render-optimization-experiments.json) retain the
+earlier profile and rejected shader/queue changes. These local measurements do
+not establish the cause of every difference from native rendering.
 
 Memory is Linux proportional set size, sampled every 200 milliseconds. The
 native measurement covers Blender and its children. The browser measurement
@@ -48,29 +48,36 @@ This build starts with a 512 MiB Wasm memory and can grow to 4 GiB. The browser
 also allocates JavaScript, compiled code, GPU resources and process overhead
 outside that heap. Freed Blender allocations can be reused, but the Wasm memory
 buffer cannot shrink. This port has not established desktop-scale RAM parity.
+The separate [memory64 probe](memory64.md) verifies addressing above 4 GiB;
+production Blender still uses wasm32.
+
+The [render optimization comparison](render-optimization.md) measures first and
+warm renders across three fresh browser sessions per build. Bundling common
+shader translations reduces startup work. The profiling evidence keeps GPU
+pass times separate from CPU API-call times and from uninstrumented benchmarks.
 
 <!-- PERFORMANCE_RESULTS -->
 | Workload | Native median | Browser median | Browser/native |
 | --- | ---: | ---: | ---: |
-| Mesh construction, 128 by 128 grid | 0.017 s | 0.038 s | 2.18x |
-| CPU subdivision, 128 by 128 grid | 0.054 s | 0.088 s | 1.64x |
-| Mesh construction, 256 by 256 grid | 0.063 s | 0.132 s | 2.09x |
-| CPU subdivision, 256 by 256 grid | 0.181 s | 0.270 s | 1.50x |
-| Mesh construction, 384 by 384 grid | 0.149 s | 0.287 s | 1.92x |
-| CPU subdivision, 384 by 384 grid | 0.458 s | 0.567 s | 1.24x |
-| Ocean 12-frame evaluation | 0.819 s | 0.883 s | 1.08x |
-| Cycles CPU render | 0.023 s | 0.083 s | 3.55x |
-| Eevee GPU render | 1.070 s | 3.173 s | 2.96x |
+| Mesh construction, 128 by 128 grid | 0.017 s | 0.038 s | 2.25x |
+| CPU subdivision, 128 by 128 grid | 0.053 s | 0.082 s | 1.55x |
+| Mesh construction, 256 by 256 grid | 0.065 s | 0.138 s | 2.11x |
+| CPU subdivision, 256 by 256 grid | 0.192 s | 0.266 s | 1.39x |
+| Mesh construction, 384 by 384 grid | 0.156 s | 0.305 s | 1.96x |
+| CPU subdivision, 384 by 384 grid | 0.455 s | 0.574 s | 1.26x |
+| Ocean 12-frame evaluation | 0.764 s | 0.817 s | 1.07x |
+| Cycles CPU render | 0.023 s | 0.085 s | 3.68x |
+| Eevee GPU render | 1.041 s | 3.042 s | 2.92x |
 
 | Process-tree memory | Native | Browser |
 | --- | ---: | ---: |
-| Baseline | 268.5 MiB | 1256.0 MiB |
-| Workload peak | 653.1 MiB | 1594.5 MiB |
-| Workload peak above baseline | 384.6 MiB | 338.5 MiB |
-| After cleanup | 355.2 MiB | 1594.5 MiB |
-| Whole-process peak, including startup | 653.1 MiB | 2123.9 MiB |
+| Baseline | 268.8 MiB | 2084.0 MiB |
+| Workload peak | 654.7 MiB | 2084.0 MiB |
+| Workload peak above baseline | 385.9 MiB | 0.0 MiB |
+| After cleanup | 348.9 MiB | 1775.8 MiB |
+| Whole-process peak, including startup | 654.7 MiB | 2229.2 MiB |
 
-Tested bundle `7e35e48849404ebeac92`, measured 2026-10-19T03:44:08.600423+00:00.
+Tested bundle `f8c446962f5ecb0b1ae2`, measured 2026-10-19T07:37:34.398547+00:00.
 <!-- /PERFORMANCE_RESULTS -->
 
 Reproduce after the application build finishes, with other substantial work idle:

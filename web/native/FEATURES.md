@@ -23,7 +23,8 @@ batches. The static site's
 | Octree remeshing, QuadriFlow and UV SLIM | Enabled | Smooth/sharp remesh, closed quad topology and minimum-stretch UV unwrap |
 | FFTW and Ocean modifier | Enabled | Float/double pthread FFT checks; native ocean animation, foam and UVs compared with desktop at three frames |
 | Alembic scene exchange | Enabled | Ogawa animation in both directions with desktop Blender, mesh deformation, UVs, parent transforms and persistent offline reopen |
-| OpenVDB, NanoVDB and fluids | Deferred | Port volume dependencies and measure memory use on real scenes |
+| OpenVDB and NanoVDB | Enabled | Float sphere grids, ZIP/Blosc file exchange, NanoVDB values and original mesh/volume modifiers |
+| Mantaflow gas simulation | Enabled | Four frames at resolution 16, density grids compared with desktop and OpenVDB cache output |
 | USD, Hydra and MaterialX | Deferred | Port dependencies, file IO and applicable rendering integration |
 | Audio, FFmpeg, video and time stretching | Deferred | Codec libraries plus browser audio/device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
@@ -50,10 +51,38 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-The next dependency groups are OpenVDB/NanoVDB for volumes and simulation,
-followed by USD for scene exchange. Audio and FFmpeg also
+The next dependency groups include USD for scene exchange. Audio and FFmpeg also
 need browser playback integration. Device file selection and download/export
 integration remain separate from the persistent browser filesystem.
+
+OpenVDB and NanoVDB 13.0.0 use Blender's pinned source archive, with the existing
+TBB and compression libraries plus Blosc 1.21.1. Delayed loading is disabled,
+as in Blender's desktop dependency recipe. The separate OpenVDB Python module
+is not built. Blender's volume objects, modifiers and bundled Mantaflow solver
+use the original C++ libraries. Acceptance does not establish liquid simulation,
+noise/upres, long bakes or large production volume capacity.
+
+The volume check reads Wasm-created ZIP and Blosc VDB files in desktop Blender,
+then compares the browser's geometry against that reference. It also evaluates
+Mesh to Volume followed by Volume to Mesh. The gas check compares every density
+cell over four frames, with a fresh cache directory on every run. Both runtime
+variants reopen VDB fixtures from OPFS after an offline reload.
+
+[Watch the volume browser recording](../docs/volume-walkthrough.mp4).
+
+<!-- VOLUME_RECORDING_CHAPTERS -->
+| Time | What to inspect |
+| --- | --- |
+| 0:00 | Start Blender with OpenVDB and NanoVDB |
+| 0:11 | Compare VDB import and volume modifiers with desktop Blender |
+| 0:15 | Mesh to Volume and Volume to Mesh in the original viewport |
+| 0:21 | Replay the four-frame Mantaflow gas simulation in Blender |
+| 0:31 | Reload offline and reopen the VDB files from browser storage |
+<!-- /VOLUME_RECORDING_CHAPTERS -->
+
+The [memory64 investigation](../docs/memory64.md) records a standalone shared
+heap probe above 4 GiB and the requirements for migrating the production ABI.
+The published Blender application still uses wasm32.
 
 FFTW 3.3.10 builds its original float and double libraries with pthread support.
 The Ocean modifier uses Blender's original simulation and evaluation code.

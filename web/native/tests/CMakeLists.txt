@@ -36,3 +36,14 @@ target_link_options(alembic-check PRIVATE -pthread -msimd128 -fwasm-exceptions
   -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=4 -sEXIT_RUNTIME=1
   -sSTACK_SIZE=8388608 -sALLOW_MEMORY_GROWTH=1 -sWASMFS=1 -sFORCE_FILESYSTEM=1
   "SHELL:--embed-file ${CMAKE_CURRENT_LIST_DIR}/../../tests/fixtures/ocean-alembic/desktop-ocean.abc@/desktop-ocean.abc")
+
+if(WITH_OPENVDB)
+  add_executable(openvdb-check openvdb.cc)
+  target_include_directories(openvdb-check PRIVATE ${OPENVDB_INCLUDE_DIRS} ${NANOVDB_INCLUDE_DIRS})
+  target_compile_definitions(openvdb-check PRIVATE OPENVDB_STATICLIB NANOVDB_USE_TBB NANOVDB_USE_OPENVDB)
+  target_compile_options(openvdb-check PRIVATE -pthread -msimd128 -fwasm-exceptions)
+  target_link_libraries(openvdb-check PRIVATE ${OPENVDB_LIBRARIES})
+  target_link_options(openvdb-check PRIVATE -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=4 -sEXIT_RUNTIME=1
+    -sSTACK_SIZE=8388608 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)
+endif()

@@ -42,6 +42,8 @@ RECIPES = {
     "MANIFOLD": ("", ["-DMANIFOLD_JSBIND=OFF", "-DMANIFOLD_CBIND=OFF", "-DMANIFOLD_PYBIND=OFF", "-DMANIFOLD_PAR=ON", "-DMANIFOLD_CROSS_SECTION=OFF", "-DMANIFOLD_EXPORT=OFF", "-DMANIFOLD_DEBUG=OFF", "-DMANIFOLD_TEST=OFF", "-DMANIFOLD_DOWNLOADS=OFF"]),
     "FFTW": ("", ["-DENABLE_THREADS=ON", "-DWITH_COMBINED_THREADS=OFF", "-DBUILD_TESTS=OFF"]),
     "ALEMBIC": ("", ["-DUSE_PYALEMBIC=OFF", "-DUSE_ARNOLD=OFF", "-DUSE_MAYA=OFF", "-DUSE_PRMAN=OFF", "-DUSE_HDF5=OFF", "-DUSE_TESTS=OFF", "-DUSE_BINARIES=OFF", "-DALEMBIC_SHARED_LIBS=OFF"]),
+    "BLOSC": ("", ["-DBUILD_SHARED=OFF", "-DBUILD_TESTS=OFF", "-DBUILD_BENCHMARKS=OFF", "-DDEACTIVATE_SSE2=ON", "-DDEACTIVATE_AVX2=ON", "-DPREFER_EXTERNAL_ZLIB=ON", "-DPREFER_EXTERNAL_ZSTD=ON"]),
+    "OPENVDB": ("", ["-DOPENVDB_CORE_SHARED=OFF", "-DOPENVDB_CORE_STATIC=ON", "-DOPENVDB_BUILD_BINARIES=OFF", "-DOPENVDB_BUILD_UNITTESTS=OFF", "-DOPENVDB_BUILD_PYTHON_MODULE=OFF", "-DOPENVDB_BUILD_NANOVDB=ON", "-DNANOVDB_BUILD_TOOLS=OFF", "-DNANOVDB_BUILD_UNITTESTS=OFF", "-DNANOVDB_USE_CUDA=OFF", "-DOPENVDB_USE_DELAYED_LOADING=OFF", "-DUSE_STATIC_DEPENDENCIES=ON", "-DUSE_BLOSC=ON", "-DUSE_ZLIB=ON", "-DUSE_LOG4CPLUS=OFF"]),
     "TIFF": ("", ["-Dtiff-tools=OFF", "-Dtiff-tests=OFF", "-Dtiff-contrib=OFF", "-Dtiff-docs=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djbig=OFF"]),
     "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0"]),
 }
@@ -49,7 +51,7 @@ RECIPES = {
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
 CXX_PACKAGES = {"FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
-                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENIMAGEIO", "TIFF"}
+                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "OPENIMAGEIO", "TIFF"}
 
 
 def run(command, log, cwd=None, env=None):
@@ -101,8 +103,11 @@ def install_notices(source, prefix, name):
     destination = prefix / 'share/blender-web/licenses' / name.lower()
     destination.mkdir(parents=True, exist_ok=True)
     for notice in source.iterdir():
-        if notice.is_file() and notice.name.upper().startswith(('LICENSE', 'COPYING', 'COPYRIGHT', 'NOTICE')):
-            shutil.copy2(notice, destination / notice.name)
+        if notice.name.upper().startswith(('LICENSE', 'COPYING', 'COPYRIGHT', 'NOTICE')):
+            if notice.is_file():
+                shutil.copy2(notice, destination / notice.name)
+            elif notice.is_dir():
+                shutil.copytree(notice, destination / notice.name, dirs_exist_ok=True)
 
 
 def build(args):
@@ -142,6 +147,8 @@ def build(args):
             signature["patch"] = hashlib.sha256(patch.read_bytes()).hexdigest()
         cached = stamp.exists() and json.loads(stamp.read_text()) == json.loads(json.dumps(signature))
         if cached and (prefix / 'share/blender-web/licenses' / name.lower()).is_dir():
+            if (directory / 'source').is_dir():
+                install_notices(directory / 'source', prefix, name)
             print(f"{name}: cached", flush=True)
             continue
         source = directory / "source"

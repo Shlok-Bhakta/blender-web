@@ -1,0 +1,40 @@
+{
+  "emscriptenVersion": "4.0.23",
+  "flags": [
+    "-O2",
+    "-sMEMORY64=1",
+    "-pthread",
+    "-sPROXY_TO_PTHREAD=1",
+    "-sPTHREAD_POOL_SIZE=2",
+    "-sALLOW_MEMORY_GROWTH=1",
+    "-sINITIAL_MEMORY=67108864",
+    "-sMAXIMUM_MEMORY=8589934592",
+    "-sEXIT_RUNTIME=1",
+    "-sENVIRONMENT=web,worker,node"
+  ],
+  "sourceSha256": "496b13da5e80bcf79e5b573985b3df009a54199ac9456db02ad36a524c496f7a",
+  "wasmSha256": "d1ae575e2b844f82b51f05267b329d05abfe3c2bafec92ba21a4072b326e2294",
+  "nodeVersion": "v24.19.0",
+  "node": {
+    "pointerBytes": 8,
+    "allocationBytes": 4295032832,
+    "heapBytes": 4395958272,
+    "highAddress": 4295113240,
+    "crossThreadReadWrite": true,
+    "sparseTouchOnly": true
+  },
+  "browserVersion": "145.0.7632.6",
+  "browserFlags": [],
+  "browser": {
+    "isolated": true,
+    "result": {
+      "pointerBytes": 8,
+      "allocationBytes": 4295032832,
+      "heapBytes": 4395958272,
+      "highAddress": 4295113240,
+      "crossThreadReadWrite": true,
+      "sparseTouchOnly": true
+    }
+  },
+  "browserErrors": []
+}

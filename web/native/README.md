@@ -126,6 +126,8 @@ node web/tests/features.cjs
 WEB_TEST_UI_FALLBACK=1 node web/tests/features.cjs
 node web/tests/ocean-alembic.cjs
 WEB_TEST_UI_FALLBACK=1 node web/tests/ocean-alembic.cjs
+node web/tests/volume.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/volume.cjs
 node web/tests/render.cjs
 ```
 
@@ -147,6 +149,27 @@ The same setting runs `features.cjs` on hardware and writes
 Set `WEB_RENDER_DEVICE_SCALE=2` to check startup, native Render menu input and
 Eevee rendering on a high-DPI display. `WEB_RENDER_REFERENCE` accepts a saved
 PNG and requires an exact match of decoded pixels.
+
+`volume.cjs` checks OpenVDB/NanoVDB and a four-frame Mantaflow gas simulation
+against the pinned desktop Blender release. Generate its small VDB fixtures with
+the dependency checks, then run `python3 web/tools/verify_volume_desktop.py` with
+`--blender` pointing to that desktop binary. The browser check also reloads
+offline and reads VDB files from OPFS. Use `WEB_TEST_HARDWARE=1` for its hardware
+recording, then `python3 web/tools/native_ocean_recording.py --kind volume` to
+caption it.
+
+Common original Blender shader translations are bundled in the preload data.
+`native_shader_seed.py` verifies their compiler/source fingerprints; staging
+rejects stale seeds. Unseen shaders still compile at runtime and are stored in
+IndexedDB. After changing the translator, first build with
+`--skip-shader-seed` to bootstrap a fresh capture. Run the render check with
+`WEB_RENDER_EXPORT_SHADER_CACHE=1` and
+`WEB_RENDER_REFERENCE=web/docs/eevee-default-scene-render.png`. Then pass its
+`shader-cache.json` to `native_shader_seed.py --source-ref COMMIT`, using the
+commit containing the matching translator sources, and rebuild normally to
+package the verified seed. The opt-in render profiler accepts
+`WEB_RENDER_GPU_TIMESTAMPS=1` with `WEB_RENDER_PROFILE=1` to report actual GPU
+pass durations. Keep these instrumented runs separate from benchmark results.
 `WEB_RENDER_RESIZE_DURING_RENDER=1` also changes the window size three times
 while the native GPU job is running and checks that the render completes.
 

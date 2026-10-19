@@ -4,6 +4,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 async function profileRender(browser, page, output) {
   const installs = [];
+  const timestampMode=process.env.WEB_RENDER_GPU_TIMESTAMPS==='1';
+  if(timestampMode) {
+    const {installGpuTimestamps}=require('./gpu-timestamps.cjs');
+    await page.addInitScript(installGpuTimestamps);
+    page.on('worker',worker=>installs.push(responsive(worker.evaluate(installGpuTimestamps).catch(error=>({error:String(error)})))));
+  }
   let sampler;
   const resources = [];
   const read = file => { try { return fs.readFileSync(file,'utf8').trim(); } catch { return null; } };
@@ -44,12 +50,20 @@ async function profileRender(browser, page, output) {
       if (installed.some(x=>x?.error)) throw new Error(JSON.stringify(installed));
       await Promise.all(page.workers().map(w => responsive(w.evaluate(() => {
         globalThis.renderProfile = {calls:{}, waits:{}};
+        globalThis.gpuTimestamps?.start();
       }))));
-      sampler = setInterval(() => resources.push({time:Date.now(), gpuBusyPercent:readNumber('/sys/class/drm/card0/device/gpu_busy_percent'), gpuMemoryBytes:readNumber('/sys/class/drm/card0/device/mem_info_gtt_used'), cpu:read('/proc/stat')?.split('\n')[0]}), 100);
+      sampler = setInterval(() => resources.push({time:Date.now(), gpuBusyPercent:readNumber('/sys/class/drm/card0/device/gpu_busy_percent'), gpuMemoryBytes:readNumber('/sys/class/drm/card0/device/mem_info_gtt_used'), gpuClock:read('/sys/class/drm/card0/device/pp_dpm_sclk'), cpu0FrequencyKHz:readNumber('/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq'), cpu:read('/proc/stat')?.split('\n')[0]}), 100);
       await cdp.send('Tracing.start', {categories:'devtools.timeline,v8,disabled-by-default-v8.cpu_profiler,disabled-by-default-devtools.timeline', transferMode:'ReturnAsStream'});
     },
     async stop(run = 0) {
       clearInterval(sampler);
+      if(timestampMode) {
+        const timings=await Promise.all(page.workers().map(w=>responsive(w.evaluate(async()=>
+          globalThis.gpuTimestamps?.stop?.() || null))));
+        const measured=timings.filter(Boolean);
+        if(!measured.length) throw new Error('No GPU timestamp profile returned');
+        fs.writeFileSync(path.join(output,`gpu-timestamps-${run}.json`),JSON.stringify(measured,null,2)+'\n');
+      }
       fs.writeFileSync(path.join(output,`resources-${run}.json`),JSON.stringify(resources,null,2)+'\n');
       const complete = new Promise(resolve => cdp.once('Tracing.tracingComplete', resolve));
       await cdp.send('Tracing.end');

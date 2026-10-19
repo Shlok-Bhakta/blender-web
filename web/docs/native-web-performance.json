@@ -1,8 +1,8 @@
 {
-  "bundleVersion": "7e35e48849404ebeac92",
+  "bundleVersion": "f8c446962f5ecb0b1ae2",
   "blenderVersion": "5.2.2 LTS",
-  "measuredAt": "2026-10-19T03:44:08.600423+00:00",
-  "generatedAt": "2026-10-19T03:48:42.139260+00:00",
+  "measuredAt": "2026-10-19T07:37:34.398547+00:00",
+  "generatedAt": "2026-10-19T07:38:42.967188+00:00",
   "host": {
     "cpu": "AMD Ryzen 5 PRO 3400GE w/ Radeon Vega Graphics",
     "logicalCPUs": 8,
@@ -23,29 +23,29 @@
       "vertices": 259081,
       "native": {
         "seconds": [
-          0.025682724080979824,
-          0.017324683722108603,
-          0.016503204125910997
+          0.02977738669142127,
+          0.016694806050509214,
+          0.016625244170427322
         ],
-        "medianSeconds": 0.017324683722108603,
-        "firstSeconds": 0.025682724080979824,
-        "warmMedianSeconds": 0.0169139439240098,
-        "minSeconds": 0.016503204125910997,
-        "maxSeconds": 0.025682724080979824
+        "medianSeconds": 0.016694806050509214,
+        "firstSeconds": 0.02977738669142127,
+        "warmMedianSeconds": 0.01666002511046827,
+        "minSeconds": 0.016625244170427322,
+        "maxSeconds": 0.02977738669142127
       },
       "browser": {
         "seconds": [
-          0.06474018096923828,
-          0.03775978088378906,
-          0.032135009765625
+          0.08614492416381836,
+          0.037615060806274414,
+          0.03494000434875488
         ],
-        "medianSeconds": 0.03775978088378906,
-        "firstSeconds": 0.06474018096923828,
-        "warmMedianSeconds": 0.03494739532470703,
-        "minSeconds": 0.032135009765625,
-        "maxSeconds": 0.06474018096923828
+        "medianSeconds": 0.037615060806274414,
+        "firstSeconds": 0.08614492416381836,
+        "warmMedianSeconds": 0.03627753257751465,
+        "minSeconds": 0.03494000434875488,
+        "maxSeconds": 0.08614492416381836
       },
-      "browserOverNative": 2.1795365208083166
+      "browserOverNative": 2.253099598310524
     },
     {
       "task": "CPU subdivision",
@@ -54,29 +54,29 @@
       "vertices": 259081,
       "native": {
         "seconds": [
-          0.06405955133959651,
-          0.0538740293122828,
-          0.04856074182316661
+          0.06355245690792799,
+          0.05282683065161109,
+          0.04299979191273451
         ],
-        "medianSeconds": 0.0538740293122828,
-        "firstSeconds": 0.06405955133959651,
-        "warmMedianSeconds": 0.051217385567724705,
-        "minSeconds": 0.04856074182316661,
-        "maxSeconds": 0.06405955133959651
+        "medianSeconds": 0.05282683065161109,
+        "firstSeconds": 0.06355245690792799,
+        "warmMedianSeconds": 0.0479133112821728,
+        "minSeconds": 0.04299979191273451,
+        "maxSeconds": 0.06355245690792799
       },
       "browser": {
         "seconds": [
-          0.16730499267578125,
-          0.08611512184143066,
-          0.08815503120422363
+          0.22821545600891113,
+          0.0817101001739502,
+          0.07315492630004883
         ],
-        "medianSeconds": 0.08815503120422363,
-        "firstSeconds": 0.16730499267578125,
-        "warmMedianSeconds": 0.08713507652282715,
-        "minSeconds": 0.08611512184143066,
-        "maxSeconds": 0.16730499267578125
+        "medianSeconds": 0.0817101001739502,
+        "firstSeconds": 0.22821545600891113,
+        "warmMedianSeconds": 0.07743251323699951,
+        "minSeconds": 0.07315492630004883,
+        "maxSeconds": 0.22821545600891113
       },
-      "browserOverNative": 1.636317764413531
+      "browserOverNative": 1.546753783372356
     },
     {
       "task": "Mesh construction",
@@ -85,29 +85,29 @@
       "vertices": 1042441,
       "native": {
         "seconds": [
-          0.07731524994596839,
-          0.05857375496998429,
-          0.0630065449513495
+          0.07779127126559615,
+          0.06510064331814647,
+          0.06427867291495204
         ],
-        "medianSeconds": 0.0630065449513495,
-        "firstSeconds": 0.07731524994596839,
-        "warmMedianSeconds": 0.060790149960666895,
-        "minSeconds": 0.05857375496998429,
-        "maxSeconds": 0.07731524994596839
+        "medianSeconds": 0.06510064331814647,
+        "firstSeconds": 0.07779127126559615,
+        "warmMedianSeconds": 0.06468965811654925,
+        "minSeconds": 0.06427867291495204,
+        "maxSeconds": 0.07779127126559615
       },
       "browser": {
         "seconds": [
-          0.13154983520507812,
-          0.13452482223510742,
-          0.12670016288757324
+          0.13163518905639648,
+          0.13929510116577148,
+          0.13764500617980957
         ],
-        "medianSeconds": 0.13154983520507812,
-        "firstSeconds": 0.13154983520507812,
-        "warmMedianSeconds": 0.13061249256134033,
-        "minSeconds": 0.12670016288757324,
-        "maxSeconds": 0.13452482223510742
+        "medianSeconds": 0.13764500617980957,
+        "firstSeconds": 0.13163518905639648,
+        "warmMedianSeconds": 0.13847005367279053,
+        "minSeconds": 0.13163518905639648,
+        "maxSeconds": 0.13929510116577148
       },
-      "browserOverNative": 2.087875716826789
+      "browserOverNative": 2.114341720206039
     },
     {
       "task": "CPU subdivision",
@@ -116,29 +116,29 @@
       "vertices": 1042441,
       "native": {
         "seconds": [
-          0.20501641696318984,
-          0.18053532112389803,
-          0.1721350960433483
+          0.19158948073163629,
+          0.1986732678487897,
+          0.17112320894375443
         ],
-        "medianSeconds": 0.18053532112389803,
-        "firstSeconds": 0.20501641696318984,
-        "warmMedianSeconds": 0.17633520858362317,
-        "minSeconds": 0.1721350960433483,
-        "maxSeconds": 0.20501641696318984
+        "medianSeconds": 0.19158948073163629,
+        "firstSeconds": 0.19158948073163629,
+        "warmMedianSeconds": 0.18489823839627206,
+        "minSeconds": 0.17112320894375443,
+        "maxSeconds": 0.1986732678487897
       },
       "browser": {
         "seconds": [
-          0.29161500930786133,
-          0.2701702117919922,
-          0.24331998825073242
+          0.25769519805908203,
+          0.28088998794555664,
+          0.26563024520874023
         ],
-        "medianSeconds": 0.2701702117919922,
-        "firstSeconds": 0.29161500930786133,
-        "warmMedianSeconds": 0.2567451000213623,
-        "minSeconds": 0.24331998825073242,
-        "maxSeconds": 0.29161500930786133
+        "medianSeconds": 0.26563024520874023,
+        "firstSeconds": 0.25769519805908203,
+        "warmMedianSeconds": 0.27326011657714844,
+        "minSeconds": 0.25769519805908203,
+        "maxSeconds": 0.28088998794555664
       },
-      "browserOverNative": 1.4964950354871522
+      "browserOverNative": 1.3864552698528085
     },
     {
       "task": "Mesh construction",
@@ -147,29 +147,29 @@
       "vertices": 2350089,
       "native": {
         "seconds": [
-          0.14918681792914867,
-          0.1503201420418918,
-          0.12586348876357079
+          0.1636258172802627,
+          0.15588383888825774,
+          0.14159250305965543
         ],
-        "medianSeconds": 0.14918681792914867,
-        "firstSeconds": 0.14918681792914867,
-        "warmMedianSeconds": 0.1380918154027313,
-        "minSeconds": 0.12586348876357079,
-        "maxSeconds": 0.1503201420418918
+        "medianSeconds": 0.15588383888825774,
+        "firstSeconds": 0.1636258172802627,
+        "warmMedianSeconds": 0.14873817097395658,
+        "minSeconds": 0.14159250305965543,
+        "maxSeconds": 0.1636258172802627
       },
       "browser": {
         "seconds": [
-          0.29336023330688477,
-          0.24571990966796875,
-          0.28676509857177734
+          0.305495023727417,
+          0.3025801181793213,
+          0.3056302070617676
         ],
-        "medianSeconds": 0.28676509857177734,
-        "firstSeconds": 0.29336023330688477,
-        "warmMedianSeconds": 0.26624250411987305,
-        "minSeconds": 0.24571990966796875,
-        "maxSeconds": 0.29336023330688477
+        "medianSeconds": 0.305495023727417,
+        "firstSeconds": 0.305495023727417,
+        "warmMedianSeconds": 0.30410516262054443,
+        "minSeconds": 0.3025801181793213,
+        "maxSeconds": 0.3056302070617676
       },
-      "browserOverNative": 1.922187915476332
+      "browserOverNative": 1.9597607160958173
     },
     {
       "task": "CPU subdivision",
@@ -178,163 +178,163 @@
       "vertices": 2350089,
       "native": {
         "seconds": [
-          0.45803749607875943,
-          0.479555272962898,
-          0.35640339320525527
+          0.4699696418829262,
+          0.4546407340094447,
+          0.3649745876900852
         ],
-        "medianSeconds": 0.45803749607875943,
-        "firstSeconds": 0.45803749607875943,
-        "warmMedianSeconds": 0.41797933308407664,
-        "minSeconds": 0.35640339320525527,
-        "maxSeconds": 0.479555272962898
+        "medianSeconds": 0.4546407340094447,
+        "firstSeconds": 0.4699696418829262,
+        "warmMedianSeconds": 0.40980766084976494,
+        "minSeconds": 0.3649745876900852,
+        "maxSeconds": 0.4699696418829262
       },
       "browser": {
         "seconds": [
-          0.5924699306488037,
-          0.5157601833343506,
-          0.5666697025299072
+          0.5774648189544678,
+          0.5109946727752686,
+          0.573584794998169
         ],
-        "medianSeconds": 0.5666697025299072,
-        "firstSeconds": 0.5924699306488037,
-        "warmMedianSeconds": 0.5412149429321289,
-        "minSeconds": 0.5157601833343506,
-        "maxSeconds": 0.5924699306488037
+        "medianSeconds": 0.573584794998169,
+        "firstSeconds": 0.5774648189544678,
+        "warmMedianSeconds": 0.5422897338867188,
+        "minSeconds": 0.5109946727752686,
+        "maxSeconds": 0.5774648189544678
       },
-      "browserOverNative": 1.2371688068796631
+      "browserOverNative": 1.2616220943067835
     },
     {
       "task": "Ocean 12-frame evaluation",
       "native": {
         "seconds": [
-          0.9863348207436502,
-          0.8051515771076083,
-          0.8191023422405124
+          0.9194081937894225,
+          0.7166173262521625,
+          0.7638125200755894
         ],
-        "medianSeconds": 0.8191023422405124,
-        "firstSeconds": 0.9863348207436502,
-        "warmMedianSeconds": 0.8121269596740603,
-        "minSeconds": 0.8051515771076083,
-        "maxSeconds": 0.9863348207436502
+        "medianSeconds": 0.7638125200755894,
+        "firstSeconds": 0.9194081937894225,
+        "warmMedianSeconds": 0.7402149231638759,
+        "minSeconds": 0.7166173262521625,
+        "maxSeconds": 0.9194081937894225
       },
       "browser": {
         "seconds": [
-          0.8877499103546143,
-          0.83024001121521,
-          0.8830249309539795
+          0.9277548789978027,
+          0.77947998046875,
+          0.8169751167297363
         ],
-        "medianSeconds": 0.8830249309539795,
-        "firstSeconds": 0.8877499103546143,
-        "warmMedianSeconds": 0.8566324710845947,
-        "minSeconds": 0.83024001121521,
-        "maxSeconds": 0.8877499103546143
+        "medianSeconds": 0.8169751167297363,
+        "firstSeconds": 0.9277548789978027,
+        "warmMedianSeconds": 0.7982275485992432,
+        "minSeconds": 0.77947998046875,
+        "maxSeconds": 0.9277548789978027
       },
-      "browserOverNative": 1.0780398070143689
+      "browserOverNative": 1.0696016303174576
     },
     {
       "task": "Cycles CPU render",
       "native": {
         "seconds": [
-          0.04408192401751876,
-          0.023343232925981283,
-          0.023361810017377138
+          0.04442358808591962,
+          0.022571375127881765,
+          0.023012218065559864
         ],
-        "medianSeconds": 0.023361810017377138,
-        "firstSeconds": 0.04408192401751876,
-        "warmMedianSeconds": 0.02335252147167921,
-        "minSeconds": 0.023343232925981283,
-        "maxSeconds": 0.04408192401751876
+        "medianSeconds": 0.023012218065559864,
+        "firstSeconds": 0.04442358808591962,
+        "warmMedianSeconds": 0.022791796596720815,
+        "minSeconds": 0.022571375127881765,
+        "maxSeconds": 0.04442358808591962
       },
       "browser": {
         "seconds": [
-          0.32405972480773926,
-          0.07227492332458496,
-          0.08294987678527832
+          0.31660985946655273,
+          0.07818007469177246,
+          0.08473014831542969
         ],
-        "medianSeconds": 0.08294987678527832,
-        "firstSeconds": 0.32405972480773926,
-        "warmMedianSeconds": 0.07761240005493164,
-        "minSeconds": 0.07227492332458496,
-        "maxSeconds": 0.32405972480773926
+        "medianSeconds": 0.08473014831542969,
+        "firstSeconds": 0.31660985946655273,
+        "warmMedianSeconds": 0.08145511150360107,
+        "minSeconds": 0.07818007469177246,
+        "maxSeconds": 0.31660985946655273
       },
-      "browserOverNative": 3.550661388119242
+      "browserOverNative": 3.681963558403656
     },
     {
       "task": "Eevee GPU render",
       "native": {
         "seconds": [
-          1.4297205000184476,
-          1.0515168327838182,
-          1.0704038073308766
+          1.424679066054523,
+          1.0414726650342345,
+          1.0289106126874685
         ],
-        "medianSeconds": 1.0704038073308766,
-        "firstSeconds": 1.4297205000184476,
-        "warmMedianSeconds": 1.0609603200573474,
-        "minSeconds": 1.0515168327838182,
-        "maxSeconds": 1.4297205000184476
+        "medianSeconds": 1.0414726650342345,
+        "firstSeconds": 1.424679066054523,
+        "warmMedianSeconds": 1.0351916388608515,
+        "minSeconds": 1.0289106126874685,
+        "maxSeconds": 1.424679066054523
       },
       "browser": {
         "seconds": [
-          7.147209882736206,
-          3.1732544898986816,
-          2.9086596965789795
+          4.561274766921997,
+          3.0420150756835938,
+          2.9285504817962646
         ],
-        "medianSeconds": 3.1732544898986816,
-        "firstSeconds": 7.147209882736206,
-        "warmMedianSeconds": 3.0409570932388306,
-        "minSeconds": 2.9086596965789795,
-        "maxSeconds": 7.147209882736206
+        "medianSeconds": 3.0420150756835938,
+        "firstSeconds": 4.561274766921997,
+        "warmMedianSeconds": 2.985282778739929,
+        "minSeconds": 2.9285504817962646,
+        "maxSeconds": 4.561274766921997
       },
-      "browserOverNative": 2.964539614083963
+      "browserOverNative": 2.920878461638356
     }
   ],
   "memory": {
     "native": {
-      "peakPssMiB": 653.0732421875,
-      "lifecyclePeakPssMiB": 653.0732421875,
-      "baselinePssMiB": 268.4990234375,
-      "peakAboveBaselineMiB": 384.57421875,
-      "afterCleanupPssMiB": 355.2490234375,
+      "peakPssMiB": 654.7060546875,
+      "lifecyclePeakPssMiB": 654.7060546875,
+      "baselinePssMiB": 268.7607421875,
+      "peakAboveBaselineMiB": 385.9453125,
+      "afterCleanupPssMiB": 348.9248046875,
       "stagesPssMiB": {
-        "baseline": 268.4990234375,
-        "grid-128-repeat-0": 305.7138671875,
-        "grid-128-repeat-1": 307.1904296875,
-        "grid-128-repeat-2": 307.2177734375,
-        "grid-256-repeat-0": 437.5654296875,
-        "grid-256-repeat-1": 428.9287109375,
-        "grid-256-repeat-2": 429.8349609375,
-        "grid-384-repeat-0": 653.0732421875,
-        "grid-384-repeat-1": 644.7138671875,
-        "grid-384-repeat-2": 648.4091796875,
-        "ocean-repeat-0": 354.7646484375,
-        "ocean-repeat-1": 355.060546875,
-        "ocean-repeat-2": 355.2490234375,
-        "after-cleanup": 355.2490234375
+        "baseline": 268.7607421875,
+        "grid-128-repeat-0": 304.9833984375,
+        "grid-128-repeat-1": 308.7646484375,
+        "grid-128-repeat-2": 308.7802734375,
+        "grid-256-repeat-0": 438.0029296875,
+        "grid-256-repeat-1": 429.0263671875,
+        "grid-256-repeat-2": 429.2607421875,
+        "grid-384-repeat-0": 654.7060546875,
+        "grid-384-repeat-1": 644.1865234375,
+        "grid-384-repeat-2": 647.2607421875,
+        "ocean-repeat-0": 351.6787109375,
+        "ocean-repeat-1": 348.7373046875,
+        "ocean-repeat-2": 348.9248046875,
+        "after-cleanup": 348.9248046875
       }
     },
     "browser": {
-      "peakPssMiB": 1594.494140625,
-      "lifecyclePeakPssMiB": 2123.9296875,
-      "baselinePssMiB": 1255.97265625,
-      "peakAboveBaselineMiB": 338.521484375,
-      "afterCleanupPssMiB": 1594.4658203125,
+      "peakPssMiB": 2083.9970703125,
+      "lifecyclePeakPssMiB": 2229.23046875,
+      "baselinePssMiB": 2083.9970703125,
+      "peakAboveBaselineMiB": 0.0,
+      "afterCleanupPssMiB": 1775.8125,
       "stagesPssMiB": {
-        "baseline": 1255.97265625,
-        "grid-128-repeat-0": 1288.083984375,
-        "grid-128-repeat-1": 1315.2646484375,
-        "grid-128-repeat-2": 1291.7255859375,
-        "grid-256-repeat-0": 1390.7490234375,
-        "grid-256-repeat-1": 1400.5830078125,
-        "grid-256-repeat-2": 1402.265625,
-        "grid-384-repeat-0": 1567.591796875,
-        "grid-384-repeat-1": 1584.904296875,
-        "grid-384-repeat-2": 1585.73046875,
-        "ocean-repeat-0": 1593.1552734375,
-        "ocean-repeat-1": 1594.1572265625,
-        "ocean-repeat-2": 1594.4609375,
-        "after-cleanup": 1594.4658203125
+        "baseline": 2083.9970703125,
+        "grid-128-repeat-0": 1465.0107421875,
+        "grid-128-repeat-1": 1468.0380859375,
+        "grid-128-repeat-2": 1468.6083984375,
+        "grid-256-repeat-0": 1568.70703125,
+        "grid-256-repeat-1": 1578.0322265625,
+        "grid-256-repeat-2": 1579.0751953125,
+        "grid-384-repeat-0": 1745.1640625,
+        "grid-384-repeat-1": 1763.1572265625,
+        "grid-384-repeat-2": 1766.18359375,
+        "ocean-repeat-0": 1774.2001953125,
+        "ocean-repeat-1": 1775.587890625,
+        "ocean-repeat-2": 1775.80859375,
+        "after-cleanup": 1775.8125
       }
     },
-    "wasmHeapCapacityBytes": 644284416,
+    "wasmHeapCapacityBytes": 642711552,
     "wasmMaximumBytes": 4294967296
   },
   "eevee": {
@@ -351,8 +351,8 @@
       "features": [
         "depth32float-stencil8",
         "rg11b10ufloat-renderable",
-        "texture-formats-tier1",
         "bgra8unorm-storage",
+        "texture-formats-tier1",
         "chromium-experimental-multi-draw-indirect",
         "texture-compression-bc",
         "dual-source-blending",
@@ -364,9 +364,9 @@
         "texture-compression-etc2",
         "depth-clip-control",
         "texture-compression-bc-sliced-3d",
-        "clip-distances",
         "texture-formats-tier2",
         "timestamp-query",
+        "clip-distances",
         "shader-f16",
         "primitive-index",
         "texture-component-swizzle",
@@ -389,33 +389,33 @@
     "runs": [
       {
         "hotspotsCpuMs": {
-          "shaderTranslation": 5985.83,
-          "shaderAdapter": 625.63,
-          "shadercCompilation": 3773.8,
-          "builtinSymbolSetup": 0.41
-        },
-        "sampledRenderCpuMs": 6228.26,
-        "gpuBusyPercent": {
-          "mean": 27.55,
-          "max": 100,
-          "samples": 114
-        },
-        "queueSubmits": 362
-      },
-      {
-        "hotspotsCpuMs": {
-          "shaderTranslation": 0.0,
+          "shaderTranslation": 40.79,
           "shaderAdapter": 0.0,
           "shadercCompilation": 0.0,
           "builtinSymbolSetup": 0.0
         },
-        "sampledRenderCpuMs": 130.83,
+        "sampledRenderCpuMs": 311.85,
         "gpuBusyPercent": {
-          "mean": 82.26,
+          "mean": 43.76,
+          "max": 100,
+          "samples": 66
+        },
+        "queueSubmits": 363
+      },
+      {
+        "hotspotsCpuMs": {
+          "shaderTranslation": 0.23,
+          "shaderAdapter": 0.0,
+          "shadercCompilation": 0.0,
+          "builtinSymbolSetup": 0.0
+        },
+        "sampledRenderCpuMs": 155.7,
+        "gpuBusyPercent": {
+          "mean": 86.74,
           "max": 100,
           "samples": 34
         },
-        "queueSubmits": 349
+        "queueSubmits": 350
       }
     ]
   },

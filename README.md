@@ -21,6 +21,8 @@ The `blender/` submodule pins the official stable release. Platform code lives i
 
 [Watch native ocean animation and Alembic exchange](web/docs/ocean-alembic-walkthrough.mp4)
 
+[Watch volumes and Mantaflow gas in the browser](web/docs/volume-walkthrough.mp4) · [Memory64 investigation](web/docs/memory64.md)
+
 [Native versus browser performance and RAM measurements](web/docs/native-web-performance.md)
 
 [Watch the first Eevee render](web/docs/eevee-default-scene.mp4) · [Render details and validation](web/docs/eevee-default-scene.md)

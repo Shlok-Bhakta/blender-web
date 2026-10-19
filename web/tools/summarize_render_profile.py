@@ -60,6 +60,14 @@ def summarize(directory):
             entry["ms"] = round(entry["ms"], 3)
         stats = {"apiCpuCalls": calls, "asyncWaits": waits,
                  **cpu_summary(directory / f"browser-trace-{run}.json")}
+        timestamps = directory / f'gpu-timestamps-{run}.json'
+        if timestamps.exists():
+            measurements = json.loads(timestamps.read_text())
+            assert all(item['overflow'] == 0 for item in measurements), 'GPU timestamp capacity exceeded'
+            stats['gpuTimestamps'] = measurements
+            stats['gpuTimestampsNote'] = ('Pass times in milliseconds, with timestamp instrumentation overhead. '
+                                          'Unsubmitted UI passes have zero timestamps and are excluded as invalid. '
+                                          'These runs are not unprofiled performance baselines.')
         resources = directory / f"resources-{run}.json"
         if resources.exists():
             samples = json.loads(resources.read_text())
