@@ -34,19 +34,27 @@ async function main() {
     // The native job executor owns the render wait, as for Eevee. Schedule it
     // with Blender's operator after restoring the viewport from the console.
     await page.evaluate(source=>Module.FS.writeFile('/tmp/cycles-timing.py',source),fs.readFileSync(path.join(__dirname,'cycles_timing.py'),'utf8'));
-    const setup="exec(compile(open('/tmp/cycles-timing.py').read(),'/tmp/cycles-timing.py','exec')); configure_cycles_timing(); __import__('os').write(1,b'CYCLES_CONFIGURED\\n')";
+    // Fixed eight-thread settings belong to the paired benchmark on its
+    // eight-core host. Normal acceptance follows the browser's CPU count.
+    const setup="exec(compile(open('/tmp/cycles-timing.py').read(),'/tmp/cycles-timing.py','exec')); configure_cycles_timing(); "+
+      (benchmark?"":"bpy.context.scene.render.threads_mode='AUTO'; ")+
+      "__import__('os').write(1,('CYCLES_THREADS:'+str(bpy.context.scene.render.threads)+'\\nCYCLES_CONFIGURED\\n').encode())";
     await consoleCommand(page,setup,'CYCLES_CONFIGURED');
     const clipStart=(Date.now()-created)/1000;
     const repeats=Number(process.env.WEB_CYCLES_REPEATS||1),renderRuns=[];
     assert(Number.isInteger(repeats)&&repeats>=1&&repeats<=10);
     for(let run=0;run<repeats;run++) {
-      await page.mouse.click(118,13);
-      await page.waitForTimeout(700);
+      // Use the original render shortcut. A fixed-delay popup click can miss
+      // its menu while a slow software adapter finishes the viewport redraw.
+      await page.mouse.move(600,400);
+      await page.locator('canvas').focus();
       const previous=messages.length,started=Date.now();
-      await page.mouse.click(160,41);
+      await page.keyboard.press('F12');
+      const startDeadline=Date.now()+30000;
       const deadline=Date.now()+300000;
       while (!messages.slice(previous).some(text=>text.includes('WEB_GPU_JOB complete'))) {
         if (errors.length) throw Error(errors.join('\n'));
+        if(Date.now()>startDeadline && !messages.slice(previous).some(text=>text.includes('WEB_GPU_JOB begin'))) throw Error('Native render shortcut did not start a job');
         if (Date.now()>deadline) throw Error('CPU render did not finish');
         await page.waitForTimeout(100);
       }
@@ -88,7 +96,9 @@ async function main() {
     const video=page.video();
     const manifest=await page.evaluate(async()=>(await(await fetch('manifest.json')).json()));
     const report={bundleVersion:manifest.version,browserVersion:browser.version(),engine:'CYCLES',device:'CPU',samples:16,size:[128,128],denoising:false,adaptiveSampling:false,seed:0,softwareDisplay:software,
-      clipStart,clipEnd,renderSeconds,renderRuns,handlerSeconds,threads:8,videoCaptured:!benchmark,meanAbsoluteError,outlierFraction,errors};
+      clipStart,clipEnd,renderSeconds,renderRuns,handlerSeconds,
+      threads:Number(messages.findLast(text=>text.startsWith('CYCLES_THREADS:')).slice('CYCLES_THREADS:'.length)),
+      videoCaptured:!benchmark,meanAbsoluteError,outlierFraction,errors};
     report.adapter=await page.evaluate(async()=>{
       const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
       return {vendor:adapter.info.vendor,architecture:adapter.info.architecture,
@@ -98,6 +108,8 @@ async function main() {
     await context.close();if(video) report.videoPath=await video.path();
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
+  } catch(error) {
+    await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});throw error;
   } finally {await browser.close();}
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
