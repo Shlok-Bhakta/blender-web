@@ -71,5 +71,32 @@ void main() { color = VOLUME_COLOR(smoke,0.5); }
   assert(volume_ir == tint::Success);
   auto volume_wgsl = tint::wgsl::writer::WgslFromIR(volume_ir.Get(), {});
   assert(volume_wgsl == tint::Success && volume_wgsl.Get().wgsl.find("texture_2d<f32>") != std::string::npos);
-  puts("{\"shaderRecoveryUnwinds\":true,\"translationAfterRecovery\":true,\"resourceMacroSampler1D\":true}");
+  for (const char *type : {"vec4", "ivec4", "uvec4"}) {
+    const std::string buffer_source = std::string("#version 450\n") +
+        webgpu_buffer_texture_declaration("values", type, 0) + R"(
+#define RESOURCE(table) values
+#define FETCH(table, index) texelFetch (RESOURCE(table) , index)
+void main() { gl_Position = vec4(FETCH(0, 1)) / float(max(textureSize(RESOURCE(0)), 1)); }
+)";
+    auto buffer_pp = compiler.PreprocessGlsl(buffer_source, shaderc_vertex_shader,
+                                           "buffer-texture", compile_options);
+    assert(buffer_pp.GetCompilationStatus() == shaderc_compilation_status_success);
+    std::string buffer_adapted;
+    assert(webgpu_adapt_draw_command(std::string(buffer_pp.cbegin(), buffer_pp.cend()),
+                                    "buffer-texture", buffer_adapted, true));
+    auto buffer_spv = compiler.CompileGlslToSpv(buffer_adapted, shaderc_vertex_shader,
+                                              "buffer-texture");
+    if (buffer_spv.GetCompilationStatus() != shaderc_compilation_status_success) {
+      std::fprintf(stderr, "%s", buffer_spv.GetErrorMessage().c_str());
+      return 1;
+    }
+    words.assign(buffer_spv.cbegin(), buffer_spv.cend());
+    auto buffer_ir = tint::spirv::reader::ReadIR(words, {});
+    assert(buffer_ir == tint::Success);
+    auto buffer_wgsl = tint::wgsl::writer::WgslFromIR(buffer_ir.Get(), {});
+    assert(buffer_wgsl == tint::Success);
+    assert(buffer_wgsl.Get().wgsl.find("storage, read") != std::string::npos);
+    assert(buffer_wgsl.Get().wgsl.find("arrayLength") != std::string::npos);
+  }
+  puts("{\"shaderRecoveryUnwinds\":true,\"translationAfterRecovery\":true,\"resourceMacroSampler1D\":true,\"bufferTexturesRGBA32\":true}");
 }

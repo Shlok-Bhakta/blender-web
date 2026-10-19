@@ -551,7 +551,7 @@ static std::string wgsl_cache_key(const char *stage, const std::string &glsl)
     h = (h ^ uint8_t(c)) * 1099511628211ull;
   }
   char key[64];
-  snprintf(key, sizeof(key), "v6:%s:%016llx:%zu", stage, (unsigned long long)h, glsl.size());
+  snprintf(key, sizeof(key), "v7:%s:%016llx:%zu", stage, (unsigned long long)h, glsl.size());
   return key;
 }
 
@@ -1640,6 +1640,15 @@ std::string WebGPUShader::resources_declare(const shader::ShaderCreateInfo &info
   /* Emit one resource as a single line (no trailing newline — the macro adds the
    * line-continuation). */
   auto print_one = [&](const ShaderCreateInfo::Resource &res) {
+    if (res.bind_type == ShaderCreateInfo::Resource::BindType::SAMPLER &&
+        (res.sampler.type == ImageType::FloatBuffer ||
+         res.sampler.type == ImageType::IntBuffer || res.sampler.type == ImageType::UintBuffer))
+    {
+      const char *type = res.sampler.type == ImageType::FloatBuffer ? "vec4" :
+                         res.sampler.type == ImageType::IntBuffer ? "ivec4" : "uvec4";
+      ss << webgpu_buffer_texture_declaration(std::string(res.sampler.name), type, binding++);
+      return;
+    }
     if (res.bind_type == ShaderCreateInfo::Resource::BindType::SAMPLER &&
         res.sampler.type == ImageType::AtomicUint2DArray) {
       const std::string name(res.sampler.name);

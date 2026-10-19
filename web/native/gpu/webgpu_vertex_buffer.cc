@@ -7,11 +7,29 @@
  */
 
 #include <cstring>
+#include <cstdio>
 
 #include "webgpu_context.hh"
 #include "webgpu_vertex_buffer.hh"
 
 namespace blender::gpu {
+
+void WebGPUVertexBuffer::bind_as_texture(uint binding)
+{
+  /* Texture-buffer reads currently cover RGBA32 records. A vertex may contain
+   * several records, including integer fields reinterpreted through float bits. */
+  if (format.attr_len == 0 || format.stride % 16 != 0 ||
+      (format.attrs[0].type.format != VertAttrType::SFLOAT_32_32_32_32 &&
+       format.attrs[0].type.format != VertAttrType::SINT_32_32_32_32 &&
+       format.attrs[0].type.format != VertAttrType::UINT_32_32_32_32))
+  {
+    std::fprintf(stderr, "Blender WebGPU error: buffer textures require RGBA32 records\n");
+    return;
+  }
+  if (WebGPUContext *ctx = WebGPUContext::get()) {
+    ctx->bind_texture_buffer(int(binding), wgpu_buffer());
+  }
+}
 
 WebGPUVertexBuffer::~WebGPUVertexBuffer()
 {

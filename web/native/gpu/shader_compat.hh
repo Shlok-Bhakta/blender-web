@@ -8,6 +8,19 @@
 #include <utility>
 #include "shader_switch.hh"
 
+/* WebGPU has no samplerBuffer. Preserve RGBA32 texels as read-only storage,
+ * retaining the original float/int/uint bit interpretation without a copy. */
+inline std::string webgpu_buffer_texture_declaration(const std::string &name,
+                                                     const char *type,
+                                                     int binding)
+{
+  return "layout(binding = " + std::to_string(binding) +
+         ", std430) readonly buffer _web_buffer_texture_" + name + " { " + type +
+         " web_buffer_texels_" + name + "[]; }; " + type + " web_buffer_fetch_" + name +
+         "(int index) { return web_buffer_texels_" + name + "[index]; } int web_buffer_size_" +
+         name + "() { return web_buffer_texels_" + name + ".length(); } ";
+}
+
 /* libc++'s unanchored regex search tries the expression at every source byte.
  * Generated shaders can be hundreds of KiB. Find the literal prefix first and
  * only run the expression at candidates, preserving replacement formatting. */
@@ -75,6 +88,21 @@ inline bool webgpu_adapt_draw_command(const std::string &source,
     }
   }
   if (raw) return true;
+  const std::regex buffer_texture(R"(buffer\s+_web_buffer_texture_(\w+)\s*\{)");
+  std::vector<std::string> buffer_names;
+  for (size_t cursor = 0; (cursor = adapted.find("buffer", cursor)) != std::string::npos; cursor += 6) {
+    std::match_results<std::string::const_iterator> match;
+    if (std::regex_search(adapted.cbegin() + cursor, adapted.cend(), match, buffer_texture,
+                          std::regex_constants::match_continuous)) buffer_names.push_back(match[1]);
+  }
+  for (const std::string &resource : buffer_names) {
+    const std::string fetch = "web_buffer_fetch_" + resource + "(";
+    adapted = webgpu_replace_prefixed(adapted, "texelFetch",
+        std::regex("texelFetch\\s*\\(\\s*" + resource + "\\s*,"), fetch.c_str());
+    const std::string size = "web_buffer_size_" + resource + "()";
+    adapted = webgpu_replace_prefixed(adapted, "textureSize",
+        std::regex("textureSize\\s*\\(\\s*" + resource + "\\s*\\)"), size.c_str());
+  }
   for (const char *texture : {"object_id_tx", "object_id_buffer", "outline_id_tx"}) {
     replace(std::string("texture(") + texture + ",", std::string("wgpu_uint_texture(") + texture + ",");
     replace(std::string("textureLod(") + texture + ",", std::string("wgpu_uint_texture_lod(") + texture + ",");

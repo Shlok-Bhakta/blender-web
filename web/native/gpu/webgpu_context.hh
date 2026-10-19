@@ -54,6 +54,7 @@ class WebGPUContext : public Context {
    * consumed when a bind group is assembled at draw/dispatch time. */
   WGPUBuffer bound_ubo_[WEBGPU_MAX_UBO] = {};
   WGPUBuffer bound_ssbo_[WEBGPU_MAX_SSBO] = {};
+  WGPUBuffer bound_tex_buffer_[WEBGPU_MAX_TEX] = {};
   WebGPUTexture *bound_tex_[WEBGPU_MAX_TEX] = {};
   /* Sampler state captured at bind time (filtering/extend per unit). */
   GPUSamplerState bound_tex_state_[WEBGPU_MAX_TEX] = {};
@@ -230,6 +231,11 @@ class WebGPUContext : public Context {
     for (int i = 0; i < WEBGPU_MAX_SSBO; i++) {
       if (bound_ssbo_[i] == old_buf) {
         table_set(bound_ssbo_[i], new_buf);
+      }
+    }
+    for (int i = 0; i < WEBGPU_MAX_TEX; i++) {
+      if (bound_tex_buffer_[i] == old_buf) {
+        table_set(bound_tex_buffer_[i], new_buf);
       }
     }
   }
@@ -481,6 +487,12 @@ class WebGPUContext : public Context {
       bound_tex_state_[unit] = state;
     }
   }
+  void bind_texture_buffer(int unit, WGPUBuffer buffer)
+  {
+    if (unit >= 0 && unit < WEBGPU_MAX_TEX) {
+      table_set(bound_tex_buffer_[unit], buffer);
+    }
+  }
   GPUSamplerState bound_tex_state_get(int slot) const
   {
     return (slot >= 0 && slot < WEBGPU_MAX_TEX) ? bound_tex_state_[slot] : GPUSamplerState();
@@ -522,6 +534,11 @@ class WebGPUContext : public Context {
     for (int i = 0; i < WEBGPU_MAX_SSBO; i++) {
       if (bound_ssbo_[i] == buf) {
         table_set(bound_ssbo_[i], nullptr);
+      }
+    }
+    for (int i = 0; i < WEBGPU_MAX_TEX; i++) {
+      if (bound_tex_buffer_[i] == buf) {
+        table_set(bound_tex_buffer_[i], nullptr);
       }
     }
   }

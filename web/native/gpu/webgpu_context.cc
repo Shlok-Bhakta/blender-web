@@ -166,6 +166,9 @@ WebGPUContext::~WebGPUContext()
 {
   clear_bind_group_cache();
   clear_snapshot_cache();
+  for (WGPUBuffer &buffer : bound_tex_buffer_) {
+    table_set(buffer, nullptr);
+  }
   if (readback_buffer_) wgpuBufferRelease(readback_buffer_);
   g_all_contexts.erase(std::remove(g_all_contexts.begin(), g_all_contexts.end(), this),
                        g_all_contexts.end());
@@ -1575,7 +1578,14 @@ WGPUBindGroup WebGPUContext::build_bind_group(WebGPUShader *shader,
         const ShaderInput *in = iface->ssbo_get(StringRefNull(b.res_name.c_str()));
         int slot = in ? in->binding : -1;
         e.buffer = (slot >= 0 && slot < WEBGPU_MAX_SSBO) ? bound_ssbo_[slot] : nullptr;
-        if (b.res_name.rfind("web_atomic_sample_", 0) == 0) {
+        const std::string buffer_texture_prefix = "web_buffer_texture_";
+        if (b.res_name.rfind(buffer_texture_prefix, 0) == 0) {
+          const std::string name = b.res_name.substr(buffer_texture_prefix.size());
+          const ShaderInput *sampler = iface->uniform_get(StringRefNull(name.c_str()));
+          const int unit = sampler ? sampler->binding : -1;
+          e.buffer = unit >= 0 && unit < WEBGPU_MAX_TEX ? bound_tex_buffer_[unit] : nullptr;
+        }
+        else if (b.res_name.rfind("web_atomic_sample_", 0) == 0) {
           const std::string name = b.res_name.substr(18);
           const ShaderInput *sampler = iface->uniform_get(StringRefNull(name.c_str()));
           WebGPUTexture *texture = sampler && sampler->binding >= 0 && sampler->binding < WEBGPU_MAX_TEX ? bound_tex_[sampler->binding] : nullptr;
