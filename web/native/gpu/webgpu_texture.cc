@@ -403,6 +403,9 @@ void WebGPUTexture::mip_range_set(int min, int max)
 
 WGPUTextureView WebGPUTexture::wgpu_sample_view()
 {
+  if (use_stencil_) {
+    return view_;
+  }
   if (!webgpu_format_has_stencil(wgpu_format_)) {
     /* Honor the sampling mip window: Blender clamps to the mips it actually
        uploaded/generated; the default view spans the full chain and samples
@@ -502,7 +505,7 @@ bool WebGPUTexture::init_internal(VertBuf * /*vbo*/)
 bool WebGPUTexture::init_internal(gpu::Texture *src,
                                   int mip_offset,
                                   int layer_offset,
-                                  bool /*use_stencil*/)
+                                  bool use_stencil)
 {
   /* Texture view: share the source's WGPUTexture, expose a WGPUTextureView
    * covering this view's layer/mip window. Film::read_pass reads per-layer
@@ -517,11 +520,17 @@ bool WebGPUTexture::init_internal(gpu::Texture *src,
   texture_ = s->texture_;
   wgpuTextureAddRef(texture_);
   is_view_ = true;
+  use_stencil_ = use_stencil;
   view_layer_ = std::max(layer_offset, 0);
   view_mip_ = std::max(mip_offset, 0);
 
   WGPUTextureViewDescriptor vd = {};
   vd.format = wgpu_format_;
+  if (use_stencil_) {
+    /* Stencil texture reads are unsigned integers, separate from depth. */
+    vd.format = WGPUTextureFormat_Stencil8;
+    vd.aspect = WGPUTextureAspect_StencilOnly;
+  }
   vd.dimension = (type_ & GPU_TEXTURE_3D)    ? WGPUTextureViewDimension_3D :
                  (type_ & GPU_TEXTURE_CUBE)  ? WGPUTextureViewDimension_Cube :
                  (type_ & GPU_TEXTURE_ARRAY) ? WGPUTextureViewDimension_2DArray :
