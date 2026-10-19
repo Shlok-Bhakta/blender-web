@@ -3,6 +3,7 @@
 #include <cstring>
 #include <string>
 #include <regex>
+#include <set>
 #include <vector>
 #include <utility>
 #include "shader_switch.hh"
@@ -137,4 +138,113 @@ inline bool webgpu_adapt_draw_command(const std::string &source,
     replace("= " + expression + ";", "= atomicAdd(" + expression + ", 0u);");
   }
   return true;
+}
+
+/* Rewrite 1D sampler usage for the 1D->2D texture promotion (see the texture
+ * descriptor in webgpu_texture.cc). Collects every identifier declared with a
+ * sampler1D/sampler1DArray type (uniforms AND function parameters), rewrites
+ * texture/textureLod/texelFetch/textureSize calls whose first argument is such
+ * a name to the wgpu_*1d helper overloads (defined in webgpu_glsl_patch), then
+ * retypes the declarations to sampler2D/sampler2DArray. */
+inline void webgpu_promote_1d_samplers(std::string &src)
+{
+  if (src.find("sampler1D") == std::string::npos) {
+    return;
+  }
+  auto is_ident = [](char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
+  };
+  /* Pass 1: collect names typed sampler1D / sampler1DArray. */
+  std::set<std::string> plain, arr;
+  for (size_t pos = src.find("sampler1D"); pos != std::string::npos;
+       pos = src.find("sampler1D", pos + 1))
+  {
+    if (pos > 0 && is_ident(src[pos - 1])) {
+      continue; /* e.g. usampler1D (unhandled; none in practice) or mid-word. */
+    }
+    size_t p = pos + strlen("sampler1D");
+    const bool is_array = (src.compare(p, 5, "Array") == 0);
+    if (is_array) {
+      p += 5;
+    }
+    if (is_ident(src[p])) {
+      continue; /* Longer identifier, not this type. */
+    }
+    while (p < src.size() && (src[p] == ' ' || src[p] == '\t' || src[p] == '\n')) {
+      p++;
+    }
+    size_t e = p;
+    while (e < src.size() && is_ident(src[e])) {
+      e++;
+    }
+    if (e > p) {
+      (is_array ? arr : plain).insert(src.substr(p, e - p));
+    }
+  }
+  /* Pass 2: rewrite call sites (before retyping, order irrelevant). */
+  static const struct {
+    const char *fn;
+    const char *plain_repl;
+    const char *arr_repl;
+  } kFns[] = {
+      {"texture", "wgpu_tex1d", "wgpu_tex1darr"},
+      {"textureLod", "wgpu_texlod1d", "wgpu_texlod1darr"},
+      {"texelFetch", "wgpu_fetch1d", "wgpu_fetch1darr"},
+      {"textureSize", "wgpu_size1d", "wgpu_size1darr"},
+  };
+  for (const auto &f : kFns) {
+    const size_t fn_len = strlen(f.fn);
+    std::string out;
+    out.reserve(src.size());
+    size_t last = 0;
+    for (size_t pos = src.find(f.fn); pos != std::string::npos; pos = src.find(f.fn, pos + 1)) {
+      if ((pos > 0 && is_ident(src[pos - 1])) || is_ident(src[pos + fn_len])) {
+        continue; /* textureLod while scanning texture, textureSize, ... */
+      }
+      size_t p = pos + fn_len;
+      while (p < src.size() && (src[p] == ' ' || src[p] == '\t')) {
+        p++;
+      }
+      if (p >= src.size() || src[p] != '(') {
+        continue;
+      }
+      p++;
+      while (p < src.size() && (src[p] == ' ' || src[p] == '\t')) {
+        p++;
+      }
+      size_t e = p;
+      while (e < src.size() && is_ident(src[e])) {
+        e++;
+      }
+      size_t c = e;
+      while (c < src.size() && (src[c] == ' ' || src[c] == '\t')) {
+        c++;
+      }
+      if (c >= src.size() || src[c] != ',' || e == p) {
+        continue;
+      }
+      const std::string name = src.substr(p, e - p);
+      const bool in_plain = plain.count(name) != 0;
+      const bool in_arr = !in_plain && arr.count(name) != 0;
+      if (!in_plain && !in_arr) {
+        continue;
+      }
+      out.append(src, last, pos - last);
+      out.append(in_plain ? f.plain_repl : f.arr_repl);
+      last = pos + fn_len;
+    }
+    if (last != 0) {
+      out.append(src, last, std::string::npos);
+      src = std::move(out);
+    }
+  }
+  /* Pass 3: retype the declarations. */
+  auto replace_all_str = [](std::string &s, const char *from, const char *to) {
+    const size_t n = strlen(from);
+    for (size_t pos = s.find(from); pos != std::string::npos; pos = s.find(from, pos + 1)) {
+      s.replace(pos, n, to);
+    }
+  };
+  replace_all_str(src, "sampler1DArray", "sampler2DArray");
+  replace_all_str(src, "sampler1D", "sampler2D");
 }
