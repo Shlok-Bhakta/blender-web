@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "d274910ed5f9aab67b3f",
+  "bundleVersion": "fd823614d79c02baa17f",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -90,7 +90,7 @@
     "pugixml": true,
     "pulseaudio": false,
     "sdl": false,
-    "usd": false,
+    "usd": true,
     "wasapi": false,
     "xr_openxr": false
   },
@@ -121,7 +121,8 @@
     "opensubdiv",
     "openvdb",
     "potrace",
-    "pugixml"
+    "pugixml",
+    "usd"
   ],
   "missingEnabledFlags": [
     "audaspace",
@@ -134,7 +135,6 @@
     "libmv",
     "openal",
     "pulseaudio",
-    "usd",
     "xr_openxr"
   ],
   "remainingGroups": {
@@ -143,8 +143,7 @@
       "codec_ffmpeg",
       "codec_sndfile",
       "international",
-      "libmv",
-      "usd"
+      "libmv"
     ],
     "rendererIntegration": [
       "cycles_osl"
@@ -374,6 +373,20 @@
       "archiveHash": "5f0bd87ddd9a620b0c4e65652ef93d69",
       "hashType": "MD5",
       "source": "http://potrace.sourceforge.net/download/1.16/potrace-1.16.tar.gz"
+    },
+    {
+      "name": "MATERIALX",
+      "version": "1.39.4",
+      "archiveHash": "4704716b93e4c2d6b3693aa56a13b71b",
+      "hashType": "MD5",
+      "source": "https://github.com/AcademySoftwareFoundation/MaterialX/archive/refs/tags/v1.39.4.tar.gz"
+    },
+    {
+      "name": "USD",
+      "version": "26.03",
+      "archiveHash": "cc6d6bffdcdd038f60e2fe4726b08673",
+      "hashType": "MD5",
+      "source": "https://github.com/PixarAnimationStudios/OpenUSD/archive/v26.03.tar.gz"
     },
     {
       "name": "TIFF",

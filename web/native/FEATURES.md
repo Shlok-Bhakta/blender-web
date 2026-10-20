@@ -29,7 +29,8 @@ batches. The static site's
 | Grease Pencil SVG/PDF | Enabled | Authored SVG import, SVG export/reimport, desktop exchange and independent PDF rasterization |
 | Potrace image tracing | Enabled | Original image-to-Grease-Pencil operator, stroke geometry compared with desktop |
 | Freestyle contour rendering | Enabled in JSPI bundle | Cycles CPU cube with red contour strokes, saved pixels compared with desktop |
-| USD, Hydra and MaterialX | Deferred | Port dependencies, file IO and applicable rendering integration |
+| USD scene exchange and MaterialX graph export | Enabled | USDA/USDC/USDZ exchange with desktop, animation, UVs, cameras/lights, world textures, Python hooks and eight implicit shape fixtures |
+| Hydra rendering and MaterialX Python bindings | Deferred | CPU imaging adapters supply shape geometry; native Hydra graphics devices are disabled |
 | Audio, FFmpeg, video and time stretching | Deferred | Codec libraries plus browser audio/device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
@@ -56,17 +57,50 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-The next dependency groups include USD for scene exchange. Audio and FFmpeg also
-need browser playback integration. Device file selection and download/export
-integration remain separate from the persistent browser filesystem.
+The remaining portable dependency groups include audio/video codecs, tracking
+and translation. Audio and FFmpeg also need browser playback integration. Device
+file selection and download/export integration remain separate from the persistent
+browser filesystem.
 
 The [dependency status report](../docs/dependency-status.json) compares the actual
 desktop and browser `bpy.app.build_options` values and lists the base library
-recipes. These coarse flags are not a feature-parity percentage. USD/MaterialX,
-audio/video, tracking and translation remain portable dependency work. OSL,
+recipes. These coarse flags are not a feature-parity percentage. Audio/video,
+tracking and translation remain portable dependency work. OSL,
 denoising and GPU evaluators also need renderer integration. Desktop JACK,
 PulseAudio and OpenAL drivers are not browser audio backends; browser audio,
 NDOF and XR require platform integrations.
+
+OpenUSD 26.03 and MaterialX 1.39.4 use the pinned release archives. The browser
+loads 32 original static `pxr` extension modules. Eight shape fixtures produce
+383 vertices with the same coordinates as desktop Blender. Scene exchange checks
+cover mesh animation, topology, UVs, camera/light settings, decoded environment
+textures and the original Python USD hooks, in both directions for USDA, USDC
+and USDZ. Each browser variant repeats the exchange offline from OPFS.
+MaterialX verification covers an exported OpenPBR graph and its base-color,
+metalness and roughness inputs. The importer reads USD Preview Surface materials;
+Hydra rendering and MaterialX's separate Python bindings remain disabled.
+
+[Watch the USD and MaterialX browser recording](../docs/usd-materialx-walkthrough.mp4).
+It shows the original UI, scene exchange, Blender's export menu and an offline
+reload using the cached application and persistent USD files.
+
+<!-- USD_RECORDING_CHAPTERS -->
+| Time | What to inspect |
+| --- | --- |
+| 0:00 | Open original Blender with USD and MaterialX |
+| 0:08 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
+| 0:23 | USD is available in Blender's original export menu |
+| 0:32 | Reload offline and repeat interchange from persistent browser storage |
+<!-- /USD_RECORDING_CHAPTERS -->
+
+![USD in Blender's original export menu](../docs/usd-export-menu.png)
+
+Release Wasm omits C++ function-name metadata. JavaScript API profiling, GPU
+timestamps and external render timing remain available. A named C++ profiling
+build can enable `BLENDER_WEB_DEBUG_NAMES`. The extra Binaryen inliner is disabled
+after exceeding the build host's memory limit; Clang release optimization and the
+remaining Binaryen `-O3` passes stay enabled. The native/browser measurements
+cover this final configuration.
 
 WebP 1.6.0, OpenJPEG 2.5.3, PugiXML 1.10, libharu 2.4.5 and Potrace 1.16
 follow Blender's pinned archives and checksums. OpenImageIO is rebuilt with its
@@ -106,10 +140,10 @@ variants reopen VDB fixtures from OPFS after an offline reload.
 | Time | What to inspect |
 | --- | --- |
 | 0:00 | Start Blender with OpenVDB and NanoVDB |
-| 0:11 | Compare VDB import and volume modifiers with desktop Blender |
-| 0:14 | Mesh to Volume and Volume to Mesh in the original viewport |
-| 0:20 | Replay the four-frame Mantaflow gas simulation in Blender |
-| 0:30 | Reload offline and reopen the VDB files from browser storage |
+| 0:12 | Compare VDB import and volume modifiers with desktop Blender |
+| 0:15 | Mesh to Volume and Volume to Mesh in the original viewport |
+| 0:21 | Replay the four-frame Mantaflow gas simulation in Blender |
+| 0:31 | Reload offline and reopen the VDB files from browser storage |
 <!-- /VOLUME_RECORDING_CHAPTERS -->
 
 The [memory64 investigation](../docs/memory64.md) records a standalone shared
@@ -200,9 +234,9 @@ comparisons and recording checksum. Its build uses the original pinned Blender
 FBX round trips, IK, Bullet, subdivision, Booleans, remeshing, UV SLIM, NumPy and
 save/reopen. The render bundle also runs those operations on the AMD adapter.
 Its `oceanAlembic` section contains the three browser variants and the independent
-desktop check of the browser's exported animation. Its current recording entry
-refers to the ocean/Alembic walkthrough. The earlier modeling/Cycles recording
-above documents the preceding feature batch.
+desktop check of the browser's exported animation. The `usdMaterialX` section records the USD variants, independent desktop
+readback and its browser walkthrough. Each dependency batch retains its own
+recording; the modeling/Cycles walkthrough above documents an earlier batch.
 
 Resize checks cover rapid changes, zero-height recovery and display densities
 of 1, 1.25 and 2. They compare GHOST's logical window size, Blender's editor
@@ -217,7 +251,7 @@ saved PNG is compared with the same settings in desktop Blender 5.2.2. These are
 functional checks; host activity makes their timings unsuitable as an isolated
 performance benchmark.
 
-The selected runtime is about 193.3 MiB before HTTP compression, including
+The selected runtime is about 227.5 MiB before HTTP compression, including
 Python, NumPy and Blender's data. Only one browser variant downloads. The two
 variants currently have identical Wasm bytes, so their content-hash cache entry
 can also be shared. The [cache report](../docs/loading-cache.acceptance.json)

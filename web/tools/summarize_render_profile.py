@@ -32,14 +32,23 @@ def cpu_summary(path):
                 continue
             own[stack[0]] += duration
             inclusive.update({name: duration for name in set(stack)})
+    if not own:
+        return {"nativeSymbolAttributionAvailable": False,
+                "nativeSymbolAttributionNote": "No CPU samples had a named native GPU-job frame. C++ hotspot attribution is unavailable for this trace; enable BLENDER_WEB_DEBUG_NAMES for a named profiling build.",
+                "hotspotsCpuMs": None, "sampledRenderCpuMs": None, "inclusiveCpuMs": {}}
     terms = {"shaderTranslation": "WebGPUShader::ensure_translated()",
              "shaderAdapter": "webgpu_adapt_draw_command(",
              "shadercCompilation": "CompileToSpecifiedOutputType(",
              "builtinSymbolSetup": "SetupBuiltinSymbolTable("}
-    hotspots = {label: round(sum(value for name, value in inclusive.items() if term in name)/1000, 2)
-                for label, term in terms.items()}
-    return {"hotspotsCpuMs": hotspots, "sampledRenderCpuMs": round(sum(own.values())/1000, 2),
-            "inclusiveCpuMs": {name: round(value/1000, 2) for name, value in inclusive.most_common(35)}}
+    named_cpp = any("::" in name or name.startswith(("_ZN", "_ZL")) for name in inclusive)
+    hotspots = ({label: round(sum(value for name, value in inclusive.items() if term in name)/1000, 2)
+                 for label, term in terms.items()} if named_cpp else None)
+    result = {"nativeSymbolAttributionAvailable": named_cpp, "hotspotsCpuMs": hotspots,
+              "sampledRenderCpuMs": round(sum(own.values())/1000, 2),
+              "inclusiveCpuMs": {name: round(value/1000, 2) for name, value in inclusive.most_common(35)}}
+    if not named_cpp:
+        result["nativeSymbolAttributionNote"] = "GPU-job CPU time is measurable, but C++ symbol names are absent. Named C++ hotspots require BLENDER_WEB_DEBUG_NAMES."
+    return result
 
 
 def summarize(directory):

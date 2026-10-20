@@ -193,25 +193,6 @@ def Xform "root" (
         }
     }
 
-    def Xform "ExchangeCamera"
-    {
-        custom string userProperties:blender:object_name = "ExchangeCamera"
-        float3 xformOp:rotateXYZ = (63.025368, -0.000004383801, 45.83663)
-        float3 xformOp:scale = (1, 1, 1)
-        double3 xformOp:translate = (7, -7, 5)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
-
-        def Camera "ExchangeCamera"
-        {
-            float2 clippingRange = (0.1, 1000)
-            float focalLength = 0.42
-            float horizontalAperture = 0.36
-            token projection = "perspective"
-            custom string userProperties:blender:data_name = "ExchangeCamera"
-            float verticalAperture = 0.2025
-        }
-    }
-
     def Xform "ExchangeLight"
     {
         custom string userProperties:blender:object_name = "ExchangeLight"
@@ -231,6 +212,25 @@ def Xform "root" (
             float inputs:radius = 0
             bool treatAsPoint = 1
             custom string userProperties:blender:data_name = "ExchangeLight"
+        }
+    }
+
+    def Xform "ExchangeCamera"
+    {
+        custom string userProperties:blender:object_name = "ExchangeCamera"
+        float3 xformOp:rotateXYZ = (63.025368, -0.000004383801, 45.83663)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (7, -7, 5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Camera "ExchangeCamera"
+        {
+            float2 clippingRange = (0.1, 1000)
+            float focalLength = 0.42
+            float horizontalAperture = 0.36
+            token projection = "perspective"
+            custom string userProperties:blender:data_name = "ExchangeCamera"
+            float verticalAperture = 0.2025
         }
     }
 

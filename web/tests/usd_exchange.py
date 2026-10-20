@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 import os
+import sys
 from pathlib import Path
 import traceback
 
@@ -320,7 +321,6 @@ def native_crosscheck(directory):
     return result
 
 
-if __name__ == '__main__':
-    import sys
+if __name__ == '__main__' and '--' in sys.argv:
     action, directory = sys.argv[sys.argv.index('--') + 1:]
     print(json.dumps({'fixtures': fixtures, 'native-crosscheck': native_crosscheck}[action](directory)))

@@ -4742,7 +4742,7 @@
     }
   },
   "blenderVersion": "5.2.2 LTS",
-  "sourceSha256": "55635fd6798d86cc0f5cf97c888605ac66a5772cf11adc55edf54bcda022d6f7",
+  "sourceSha256": "09c3716447ebdb83a4342e7e7cdf01c69a81cc56a0caa13f1c24a330b5866f37",
   "hookEvents": [
     "export",
     "export",

@@ -71,7 +71,7 @@ def main():
     report = dict(bundleVersion=manifests['candidate']['version'], sessions=results,
                   summary=summary, reductionPercent=improvement,
                   workloadSHA256=hashlib.sha256((ROOT / 'web/tests/eevee_timing.py').read_bytes()).hexdigest(),
-                  method='Three fresh Chromium sessions per build, alternated control/candidate. Three renders per session, no video/tracing, original factory settings. First-in-process engine handler time; global GPU driver caches are not cleared.')
+                  method='Three fresh Chromium sessions per build, alternated control/candidate. Three renders per session, no video/tracing, original factory settings. First-in-process engine handler time; global GPU driver caches are not cleared. This compares complete packaged builds: enabled dependencies, debug-name metadata and compiler configuration may differ, so it does not isolate a single cache or optimizer change.')
     (ROOT / 'web/docs/render-optimization.json').write_text(json.dumps(report, indent=2) + '\n')
     lines = ['# Render optimization measurements', '', report['method'], '',
              '| Build | First render, median | Warm render, median |',
@@ -81,7 +81,8 @@ def main():
     lines += ['', f'First-render time reduction: {improvement["cold"]:.1f}%. '
               f'Warm-render median change: {-improvement["warm"]:+.1f}%, where positive means slower.', '',
               'Every run retained the original scene settings and matched the prior browser reference pixels exactly.', '',
-              'The candidate bundles common original shader translations in its preload data. '
+              'This is a comparison of complete packaged builds, including their dependency and compiler configuration differences. '
+              'It does not isolate a single optimization. The candidate bundles common original shader translations in its preload data. '
               'Compiler/source fingerprints guard the seed; unseen variants still compile and cache at runtime.', '',
               'Queue batching and shaderc performance optimization experiments were rejected. '
               'See [experiment evidence](render-optimization-experiments.json) and '

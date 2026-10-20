@@ -24,7 +24,10 @@ not a substitute for production-scene testing. Native CPU ISA and acceleration
 libraries differ from the current Wasm build.
 
 The separate [browser profile](native-web-profile.json) retains WebGPU call
-counts and sampled CPU hotspots. It is excluded from the baseline timings.
+counts, GPU timestamps and resource samples. This release omits C++ function
+names, so unavailable native CPU attribution is reported explicitly. Named C++
+profiling builds can enable `BLENDER_WEB_DEBUG_NAMES`. Profile timings are
+excluded from the baseline.
 GPU timestamp queries measure individual passes separately from JavaScript API
 call costs. Resource samples include GPU utilization and available clock readings.
 The [optimization experiments](render-optimization-experiments.json) retain the
@@ -59,25 +62,25 @@ pass times separate from CPU API-call times and from uninstrumented benchmarks.
 <!-- PERFORMANCE_RESULTS -->
 | Workload | Native median | Browser median | Browser/native |
 | --- | ---: | ---: | ---: |
-| Mesh construction, 128 by 128 grid | 0.017 s | 0.036 s | 2.20x |
-| CPU subdivision, 128 by 128 grid | 0.049 s | 0.080 s | 1.64x |
-| Mesh construction, 256 by 256 grid | 0.063 s | 0.133 s | 2.10x |
-| CPU subdivision, 256 by 256 grid | 0.172 s | 0.277 s | 1.61x |
-| Mesh construction, 384 by 384 grid | 0.153 s | 0.300 s | 1.96x |
-| CPU subdivision, 384 by 384 grid | 0.413 s | 0.579 s | 1.40x |
-| Ocean 12-frame evaluation | 0.840 s | 0.769 s | 0.92x |
-| Cycles CPU render | 0.024 s | 0.079 s | 3.25x |
-| Eevee GPU render | 1.075 s | 3.137 s | 2.92x |
+| Mesh construction, 128 by 128 grid | 0.017 s | 0.037 s | 2.18x |
+| CPU subdivision, 128 by 128 grid | 0.049 s | 0.083 s | 1.71x |
+| Mesh construction, 256 by 256 grid | 0.065 s | 0.143 s | 2.20x |
+| CPU subdivision, 256 by 256 grid | 0.198 s | 0.284 s | 1.44x |
+| Mesh construction, 384 by 384 grid | 0.149 s | 0.309 s | 2.08x |
+| CPU subdivision, 384 by 384 grid | 0.458 s | 0.592 s | 1.29x |
+| Ocean 12-frame evaluation | 0.833 s | 0.901 s | 1.08x |
+| Cycles CPU render | 0.025 s | 0.074 s | 3.01x |
+| Eevee GPU render | 1.091 s | 3.099 s | 2.84x |
 
 | Process-tree memory | Native | Browser |
 | --- | ---: | ---: |
-| Baseline | 272.4 MiB | 1355.2 MiB |
-| Workload peak | 658.8 MiB | 1689.2 MiB |
-| Workload peak above baseline | 386.4 MiB | 334.0 MiB |
-| After cleanup | 358.8 MiB | 1689.2 MiB |
-| Whole-process peak, including startup | 658.8 MiB | 2140.4 MiB |
+| Baseline | 273.8 MiB | 1728.0 MiB |
+| Workload peak | 659.4 MiB | 2080.3 MiB |
+| Workload peak above baseline | 385.6 MiB | 352.3 MiB |
+| After cleanup | 352.9 MiB | 2073.5 MiB |
+| Whole-process peak, including startup | 659.4 MiB | 2080.3 MiB |
 
-Tested bundle `d274910ed5f9aab67b3f`, measured 2026-10-20T01:30:28.235290+00:00.
+Tested bundle `fd823614d79c02baa17f`, measured 2026-10-20T09:50:21.695135+00:00.
 <!-- /PERFORMANCE_RESULTS -->
 
 Reproduce after the application build finishes, with other substantial work idle:

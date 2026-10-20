@@ -4,6 +4,7 @@
 import gzip
 import hashlib
 import json
+import re
 import tarfile
 from pathlib import Path
 from prepare import ROOT
@@ -22,6 +23,13 @@ def main():
     docs = ROOT / 'web/docs'
     manifest = read(base / 'dist/manifest.json')
     version = manifest['version']
+    cmake = dict(re.findall(r'^(\w+):(?:BOOL|STRING)=(.*)$',
+                           (base / 'editor/CMakeCache.txt').read_text(), re.MULTILINE))
+    wasm_build = {'cxxReleaseFlags': cmake['CMAKE_CXX_FLAGS_RELEASE'],
+                  'linkOptimization': cmake['BLENDER_WEB_LINK_OPTIMIZATION'],
+                  'debugFunctionNames': cmake['BLENDER_WEB_DEBUG_NAMES'] == 'ON',
+                  'extraBinaryenInlining': cmake['BLENDER_WEB_BINARYEN_INLINING'] == 'ON'}
+    assert wasm_build['linkOptimization'] == '3'
     features = [read(base / name / 'acceptance.json') for name in
                 ['feature-evidence', 'feature-evidence-ui', 'feature-evidence-hardware']]
     ui = [read(base / name / 'acceptance.json') for name in
@@ -65,6 +73,7 @@ def main():
             assert usd_native[extension]['maximumBrowserMaterialXInputError'] < 2e-4
     assert usd_recording['bundleVersion'] == version
     assert hashlib.sha256((ROOT / usd_recording['path']).read_bytes()).hexdigest() == usd_recording['sha256']
+    assert hashlib.sha256((ROOT / usd_recording['screenshot']['path']).read_bytes()).hexdigest() == usd_recording['screenshot']['sha256']
     desktop_images = read(base / 'image-vector-evidence-hardware/desktop-verification.json')
     desktop_freestyle = read(base / 'freestyle-evidence/desktop-verification.json')
     assert desktop_freestyle['blendSha256'] == freestyles[0]['blendSha256']
@@ -146,7 +155,7 @@ def main():
     native = {path.stem:read(path) for path in sorted(base.glob('*-check.json'))}
     report = {'bundleVersion':version, **read(ROOT / 'web/upstream.json'),
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,
-              'nativeChecks':native, 'recording':recording,
+              'nativeChecks':native, 'recording':recording, 'wasmBuild':wasm_build,
               'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
               'openvdbNanoVDB':{'browserVariants':volumes},
               'imageVector':{'browserVariants':image_vectors,'browserExportsInDesktop':desktop_images},

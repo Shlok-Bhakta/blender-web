@@ -3,6 +3,7 @@
 """Caption the actual USD browser exchange and offline recording."""
 import hashlib
 import json
+import shutil
 import subprocess
 from prepare import ROOT
 from native_recording import timestamp
@@ -36,6 +37,18 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         durationSeconds=duration, bytes=destination.stat().st_size,
         source='Hardware Chromium browser recording', captions=True,
         path=str(destination.relative_to(ROOT)), sha256=hashlib.sha256(destination.read_bytes()).hexdigest())
+    screenshot = ROOT / 'web/docs/usd-export-menu.png'
+    shutil.copy2(ROOT / 'build/native/usd-evidence-hardware/usd-export-menu.png', screenshot)
+    result['screenshot'] = {'path': str(screenshot.relative_to(ROOT)),
+                            'sha256': hashlib.sha256(screenshot.read_bytes()).hexdigest()}
+    coverage = ROOT / 'web/native/FEATURES.md'
+    start, end = '<!-- USD_RECORDING_CHAPTERS -->', '<!-- /USD_RECORDING_CHAPTERS -->'
+    before, tail = coverage.read_text().split(start, 1)
+    _, after = tail.split(end, 1)
+    table = '\n| Time | What to inspect |\n| --- | --- |\n'
+    table += '\n'.join(f'| {int(c["seconds"])//60}:{int(c["seconds"])%60:02} | {c["title"]} |'
+                       for c in chapters) + '\n'
+    coverage.write_text(before + start + table + end + after)
     (ROOT / 'web/docs/usd-recording.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result))
 

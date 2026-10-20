@@ -16,7 +16,13 @@ python3 web/tools/serve.py --directory build/native/dist --pages-mode --port 809
 The build defaults to one Binaryen optimization worker to avoid swapping while
 linking the USD-enabled module. C++ compilation still uses `--jobs`; release
 optimization and Blender's runtime workers are unaffected. Hosts with more RAM
-can override this with `BINARYEN_CORES`.
+can override this with `BINARYEN_CORES`. Release Wasm omits C++ function names
+while preserving readable JavaScript. Set `BLENDER_WEB_DEBUG_NAMES=ON` in CMake
+for named Wasm profiling on a host with enough memory. Binaryen 125's additional
+whole-module inlining pass exceeds the available memory with the static USD
+bindings, so it is disabled by default. Clang's release optimization and the
+remaining Binaryen `-O3` passes stay enabled. Higher-memory hosts can opt into
+that extra pass with `BLENDER_WEB_BINARYEN_INLINING=ON`.
 
 Open `http://127.0.0.1:8093/`. The service worker supplies the isolation headers
 needed by shared Wasm memory on a static host such as GitHub Pages. A first visit
@@ -187,6 +193,23 @@ IO checks with the imported object hidden. Combine `WEB_TEST_HARDWARE=1` and
 on software WebGPU. `native_dependency_recording.py` captions the hardware
 image/vector and Freestyle recordings. `native_dependency_status.py --blender
 /path/to/blender` compares the desktop and browser's actual build flags.
+
+`native_validate.py` runs the full 43-stage local acceptance sequence, including
+desktop readback, recordings and native/browser benchmarks. Serve the candidate
+site on port 8093 and an unseeded control build of the same Blender release on
+port 8098, or pass `--candidate-url` and `--control-url`. The build helper's
+`--skip-shader-seed` option produces an unseeded control; retain its site directory
+before rebuilding the seeded candidate. Hardware checks require a working WebGPU
+adapter. Run benchmarks while other substantial work is idle.
+
+```sh
+python3 web/tools/native_validate.py --blender /path/to/native/blender
+python3 web/tools/native_validate.py --list
+```
+
+The runner inherits `PLAYWRIGHT_BROWSERS_PATH`. Each completed check updates
+`build/native/validation-status.json`; stage logs are saved beside it. The last
+check verifies the evidence and creates `blender-web-pages.tar.gz` for publishing.
 
 OpenUSD is built as a static C++ monolith, its shader-discovery plugins and
 original Python extension modules. `native_usd.py` generates the CPython inittab

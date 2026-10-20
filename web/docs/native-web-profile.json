@@ -1,123 +1,84 @@
 {
   "browserVersion": "145.0.7632.6",
-  "bundleVersion": "d274910ed5f9aab67b3f",
-  "renderSeconds": 6.205,
+  "bundleVersion": "fd823614d79c02baa17f",
+  "renderSeconds": 6.545,
   "settingsUnchanged": true,
   "browserErrors": 0,
   "renderRuns": [
-    6.205,
-    3.561
+    6.545,
+    3.392
   ],
   "runs": [
     {
       "apiCpuCalls": {
         "createTexture": {
           "count": 99,
-          "ms": 1.62
+          "ms": 1.675
         },
         "createCommandEncoder": {
           "count": 363,
-          "ms": 3.2
+          "ms": 3.135
         },
         "beginRenderPass": {
           "count": 924,
-          "ms": 20.49
+          "ms": 20.455
         },
         "createBuffer": {
           "count": 2444,
-          "ms": 18.46
+          "ms": 19.69
         },
         "writeBuffer": {
           "count": 3118,
-          "ms": 57.66
+          "ms": 54.085
         },
         "createBindGroup": {
           "count": 1876,
-          "ms": 39.185
+          "ms": 36.345
         },
         "createRenderPipeline": {
           "count": 45,
-          "ms": 1.715
+          "ms": 1.905
         },
         "finish": {
           "count": 363,
-          "ms": 2.115
+          "ms": 2.28
         },
         "submit": {
           "count": 363,
-          "ms": 15.355
+          "ms": 16.445
         },
         "writeTexture": {
           "count": 35,
-          "ms": 23.47
+          "ms": 21.405
         },
         "beginComputePass": {
           "count": 1876,
-          "ms": 16.235
+          "ms": 16.76
         },
         "createShaderModule": {
           "count": 65,
-          "ms": 7.59
+          "ms": 7.71
         },
         "createComputePipeline": {
           "count": 31,
-          "ms": 0.455
+          "ms": 0.475
         },
         "mapAsync": {
           "count": 66,
-          "ms": 2.46
+          "ms": 2.855
         }
       },
       "asyncWaits": {
         "mapAsync": {
           "count": 66,
-          "ms": 4333.26
+          "ms": 4440.805
         }
       },
-      "hotspotsCpuMs": {
-        "shaderTranslation": 45.01,
-        "shaderAdapter": 0.0,
-        "shadercCompilation": 0.0,
-        "builtinSymbolSetup": 0.0
-      },
-      "sampledRenderCpuMs": 297.5,
-      "inclusiveCpuMs": {
-        "blender::render_startjob(void*, blender::wmJobWorkerStatus*)": 297.5,
-        "(root)": 297.5,
-        "blender::do_job_thread(void*)": 297.5,
-        "blender_web_run_gpu_jobs": 297.5,
-        "blender::RE_RenderFrame(blender::Render*, blender::Main*, blender::Scene*, blender::ViewLayer*, blender::Object*, int, float, bool)": 297.5,
-        "blender::do_render_full_pipeline(blender::Render*)": 296.52,
-        "blender::engine_render_view_layer(blender::Render*, blender::RenderEngine*, blender::ViewLayer*, bool, bool)": 296.06,
-        "blender::RE_engine_render(blender::Render*, bool)": 296.06,
-        "blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)": 294.97,
-        "blender::DRW_render_to_image(blender::RenderEngine*, blender::Depsgraph*, std::__2::function<void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>, std::__2::function<void (blender::RenderResult*)>)": 294.8,
-        "std::__2::__function::__func<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0, std::__2::allocator<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0>, void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>::operator()(blender::RenderEngine*&&, blender::RenderLayer*&&, blender::rcti&&)": 269.11,
-        "blender::eevee::Instance::render_sample()": 162.13,
-        "blender::eevee::ShadingView::render()": 111.36,
-        "blender::eevee::DeferredLayer::render(blender::draw::View&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::VecBase<int, 2>, blender::eevee::RayTraceBuffer&, blender::gpu::Texture*)": 85.92,
-        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, bool)": 69.74,
-        "blender::draw::detail::PassBase<blender::draw::command::DrawCommandBuf>::submit(blender::draw::command::RecordingState&) const": 67.78,
-        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, blender::draw::View&)": 53.7,
-        "blender::gpu::WebGPUTexture::read(int, blender::eGPUDataFormat, void*)": 50.59,
-        "blender::GPU_texture_read(blender::gpu::Texture*, blender::eGPUDataFormat, int)": 50.59,
-        "blender::gpu::WebGPUContext::read_color_sync(WGPUTextureImpl*, WGPUTextureFormat, int, int, int, int, blender::eGPUDataFormat, int, void*, int, int)": 50.59,
-        "blender::eevee::Instance::init(blender::VecBase<int, 2> const&, blender::rcti const*, blender::rcti const*, blender::RenderEngine*, blender::Depsgraph*, blender::Object*, blender::RenderLayer const*, blender::draw::View*, blender::View3D const*, blender::RegionView3D const*)": 50.55,
-        "blender::gpu::WebGPUBatch::record_draw(int, int, int, int, blender::gpu::StorageBuf*, int, long, long)": 47.72,
-        "blender::gpu::WebGPUShader::ensure_translated()": 45.01,
-        "emscripten_builtin_calloc": 39.61,
-        "__memset": 38.73,
-        "blender::gpu::ShaderCompiler::compile(blender::gpu::shader::ShaderCreateInfo const&, bool)": 38.71,
-        "blender::eevee::Instance::render_sync()": 36.37,
-        "blender::GPU_compute_dispatch(blender::gpu::Shader*, unsigned int, unsigned int, unsigned int, blender::gpu::shader::SpecializationConstants const*)": 36.24,
-        "blender::gpu::WebGPUBackend::compute_dispatch(int, int, int)": 35.89,
-        "blender::eevee::ShadowModule::render(blender::draw::View&, blender::VecBase<int, 2>)": 34.82,
-        "blender::GPU_shader_async_compilation(GPUShaderCreateInfo const*, blender::CompilationPriority)": 32.99,
-        "blender::draw::command::Draw::execute(blender::draw::command::RecordingState&) const": 32.26,
-        "blender::gpu::WebGPUBatch::draw(int, int, int, int)": 31.74,
-        "blender::GPU_batch_draw_advanced(blender::gpu::Batch*, int, int, int, int)": 31.74,
-        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawMultiBuf>&, blender::draw::View&)": 31.59
-      },
+      "nativeSymbolAttributionAvailable": false,
+      "nativeSymbolAttributionNote": "No CPU samples had a named native GPU-job frame. C++ hotspot attribution is unavailable for this trace; enable BLENDER_WEB_DEBUG_NAMES for a named profiling build.",
+      "hotspotsCpuMs": null,
+      "sampledRenderCpuMs": null,
+      "inclusiveCpuMs": {},
       "gpuTimestamps": [
         {
           "passes": 2800,
@@ -126,359 +87,320 @@
           "groups": {
             "render:eevee_deferred_light_double,eevee_deferred_light_single": {
               "count": 64,
-              "milliseconds": 1546.1452799999997
+              "milliseconds": 1557.02976
             },
             "compute:eevee_shadow_tilemap_init": {
               "count": 128,
-              "milliseconds": 263.34703999999994
+              "milliseconds": 266.5863999999998
             },
             "compute:eevee_film_comp": {
               "count": 64,
-              "milliseconds": 202.38816000000003
+              "milliseconds": 204.95663999999996
             },
             "compute:eevee_shadow_page_free": {
               "count": 128,
-              "milliseconds": 113.90048000000004
+              "milliseconds": 114.70832000000003
             },
             "render:clear": {
               "count": 306,
-              "milliseconds": 92.01663999999998
+              "milliseconds": 95.46799999999993
             },
             "render:MADefault_Surface_deferred_mesh": {
               "count": 64,
-              "milliseconds": 54.36800000000002
+              "milliseconds": 51.37887999999999
             },
             "render:eevee_deferred_combine": {
               "count": 64,
-              "milliseconds": 47.72816000000002
+              "milliseconds": 48.047200000000004
             },
             "compute:eevee_lightprobe_sphere_convolve": {
               "count": 4,
-              "milliseconds": 39.09472
-            },
-            "compute:eevee_shadow_tag_usage_opaque": {
-              "count": 64,
-              "milliseconds": 37.91712
+              "milliseconds": 38.59488
             },
             "render:eevee_deferred_tile_classify": {
               "count": 64,
-              "milliseconds": 36.830560000000006
+              "milliseconds": 38.56144
+            },
+            "compute:eevee_shadow_tag_usage_opaque": {
+              "count": 64,
+              "milliseconds": 38.41008
             },
             "render:eevee_renderpass_clear": {
               "count": 64,
-              "milliseconds": 32.67728000000001
+              "milliseconds": 33.25312
             },
             "compute:eevee_hiz_update": {
               "count": 64,
-              "milliseconds": 32.563680000000005
+              "milliseconds": 32.95872000000001
             },
             "render:WOWorld_world_world": {
               "count": 70,
-              "milliseconds": 30.868000000000006
+              "milliseconds": 31.060480000000002
             },
             "compute:eevee_light_culling_zbin": {
               "count": 64,
-              "milliseconds": 18.278080000000003
+              "milliseconds": 18.564000000000004
             },
             "compute:eevee_lookdev_copy_world": {
               "count": 1,
-              "milliseconds": 15.88976
+              "milliseconds": 15.9216
             },
             "compute:eevee_shadow_view_visibility": {
               "count": 64,
-              "milliseconds": 9.1536
+              "milliseconds": 9.267999999999999
             },
             "render:MADefault_Surface_depth_velocity_mesh": {
               "count": 64,
-              "milliseconds": 7.008639999999999
+              "milliseconds": 7.084959999999999
             },
             "compute:eevee_shadow_tilemap_finalize": {
               "count": 64,
-              "milliseconds": 5.673120000000001
+              "milliseconds": 5.686719999999999
             },
             "compute:eevee_lightprobe_sphere_remap": {
               "count": 1,
-              "milliseconds": 5.41264
+              "milliseconds": 5.45904
             },
             "compute:eevee_light_shadow_setup": {
               "count": 64,
-              "milliseconds": 4.960480000000002
+              "milliseconds": 5.0486400000000025
             },
             "render:OCIO_Display": {
               "count": 2,
-              "milliseconds": 4.82944
+              "milliseconds": 4.818239999999999
             },
             "render:MADefault_Surface_shadow_mesh": {
               "count": 64,
-              "milliseconds": 3.515999999999999
+              "milliseconds": 3.6431999999999984
             },
             "compute:gpu_shader_2D_update_mipmaps_sfloat_16_16_16_16": {
               "count": 5,
-              "milliseconds": 2.6380799999999995
-            },
-            "compute:draw_command_generate": {
-              "count": 192,
-              "milliseconds": 2.475840000000002
+              "milliseconds": 2.6408
             },
             "compute:eevee_shadow_page_clear": {
               "count": 64,
-              "milliseconds": 2.1367999999999987
+              "milliseconds": 2.159519999999999
             },
             "render:present_flip_blit": {
               "count": 2,
-              "milliseconds": 2.08704
+              "milliseconds": 2.09936
+            },
+            "compute:draw_command_generate": {
+              "count": 192,
+              "milliseconds": 2.0945599999999995
             },
             "compute:eevee_shadow_page_mask": {
               "count": 64,
-              "milliseconds": 2.0340800000000008
+              "milliseconds": 2.0571200000000007
             },
             "compute:eevee_shadow_tilemap_amend": {
               "count": 64,
-              "milliseconds": 1.6561600000000005
+              "milliseconds": 1.6767999999999996
             },
             "compute:eevee_light_culling_tile": {
               "count": 64,
-              "milliseconds": 1.4182399999999997
+              "milliseconds": 1.44592
             },
             "render:overlay_background": {
               "count": 2,
-              "milliseconds": 1.3993600000000002
-            },
-            "render:image_engine_image_shader": {
-              "count": 1,
-              "milliseconds": 1.24304
+              "milliseconds": 1.4086400000000001
             },
             "compute:eevee_shadow_tilemap_bounds": {
               "count": 64,
-              "milliseconds": 1.23968
+              "milliseconds": 1.26944
+            },
+            "render:image_engine_image_shader": {
+              "count": 1,
+              "milliseconds": 1.24576
             },
             "compute:eevee_light_culling_cull": {
               "count": 64,
-              "milliseconds": 1.0113599999999996
+              "milliseconds": 1.0558400000000006
             },
             "compute:draw_visibility_compute": {
               "count": 66,
-              "milliseconds": 0.89456
+              "milliseconds": 0.90688
             },
             "compute:eevee_shadow_page_allocate": {
               "count": 64,
-              "milliseconds": 0.8628799999999998
+              "milliseconds": 0.8792000000000001
             },
             "compute:eevee_light_culling_sort": {
               "count": 64,
-              "milliseconds": 0.8342400000000001
+              "milliseconds": 0.8561599999999997
             },
             "compute:eevee_shadow_page_defrag": {
               "count": 64,
-              "milliseconds": 0.74912
+              "milliseconds": 0.77344
             },
             "render:gpu_shader_text": {
               "count": 8,
-              "milliseconds": 0.6049599999999999
+              "milliseconds": 0.6118399999999999
             },
             "compute:eevee_lightprobe_sphere_select": {
               "count": 64,
-              "milliseconds": 0.5939199999999998
+              "milliseconds": 0.6075199999999998
             },
             "compute:eevee_shadow_tilemap_rendermap": {
               "count": 64,
-              "milliseconds": 0.5432000000000003
+              "milliseconds": 0.5512000000000004
             },
             "render:eevee_light_shape_display": {
               "count": 64,
-              "milliseconds": 0.4897600000000002
+              "milliseconds": 0.5000000000000003
             },
             "compute:eevee_shadow_tilemap_bounds_init": {
               "count": 64,
-              "milliseconds": 0.4891199999999997
-            },
-            "compute:eevee_shadow_tag_update_propagate": {
-              "count": 64,
-              "milliseconds": 0.45760000000000023
+              "milliseconds": 0.4963199999999997
             },
             "compute:draw_view_finalize": {
               "count": 64,
-              "milliseconds": 0.4539199999999999
+              "milliseconds": 0.45215999999999956
+            },
+            "compute:eevee_shadow_tag_update_propagate": {
+              "count": 64,
+              "milliseconds": 0.4470400000000003
             },
             "render:overlay_grid_background,overlay_grid_next,overlay_grid_image": {
               "count": 2,
-              "milliseconds": 0.33168
+              "milliseconds": 0.32767999999999997
             },
             "render:overlay_edit_mesh_depth": {
               "count": 2,
-              "milliseconds": 0.3096
+              "milliseconds": 0.31264000000000003
             },
             "render:gpu_shader_2D_widget_base,gpu_shader_text": {
               "count": 2,
-              "milliseconds": 0.26080000000000003
+              "milliseconds": 0.25839999999999996
             },
             "render:gpu_shader_text,gpu_shader_3D_uniform_color,gpu_shader_2D_widget_base": {
               "count": 2,
-              "milliseconds": 0.252
+              "milliseconds": 0.2552
             },
             "render:gpu_shader_2D_widget_base,gpu_shader_text,gpu_shader_2D_widget_base_inst": {
               "count": 1,
-              "milliseconds": 0.21776
+              "milliseconds": 0.21952
             },
             "render:gpu_shader_text,gpu_shader_2D_widget_base": {
               "count": 2,
-              "milliseconds": 0.21056000000000002
+              "milliseconds": 0.21072
             },
             "render:gpu_shader_text,gpu_shader_2D_widget_base,gpu_shader_2D_widget_base_inst": {
               "count": 2,
-              "milliseconds": 0.2096
+              "milliseconds": 0.20848
             },
             "render:image_engine_color_shader": {
               "count": 1,
-              "milliseconds": 0.1984
+              "milliseconds": 0.19952
             },
             "compute:draw_resource_finalize": {
               "count": 3,
-              "milliseconds": 0.10752
+              "milliseconds": 0.11168000000000002
             },
             "compute:eevee_lightprobe_sphere_irradiance": {
               "count": 1,
-              "milliseconds": 0.10688
+              "milliseconds": 0.10608
             },
             "render:gpu_shader_2D_widget_base,gpu_shader_3D_uniform_color,gpu_shader_text": {
               "count": 1,
-              "milliseconds": 0.0928
+              "milliseconds": 0.09328
             },
             "render:gpu_shader_3D_uniform_color": {
               "count": 1,
-              "milliseconds": 0.0776
+              "milliseconds": 0.0744
             },
             "compute:eevee_lightprobe_sphere_sunlight": {
               "count": 1,
-              "milliseconds": 0.07248
+              "milliseconds": 0.07312
             },
             "render:eevee_shadow_tag_update": {
               "count": 1,
-              "milliseconds": 0.06848
+              "milliseconds": 0.06976
             },
             "render:gpu_shader_2D_widget_base,gpu_shader_3D_uniform_color": {
               "count": 1,
-              "milliseconds": 0.06512
+              "milliseconds": 0.06448
             },
             "render:gpu_shader_2D_widget_base": {
               "count": 1,
-              "milliseconds": 0.0496
+              "milliseconds": 0.0504
             },
             "compute:eevee_lightprobe_volume_world": {
               "count": 1,
-              "milliseconds": 0.03648
+              "milliseconds": 0.0368
             },
             "compute:eevee_vertex_copy": {
               "count": 1,
-              "milliseconds": 0.0288
+              "milliseconds": 0.03152
             }
           }
         }
       ],
       "gpuTimestampsNote": "Pass times in milliseconds, with timestamp instrumentation overhead. Unsubmitted UI passes have zero timestamps and are excluded as invalid. These runs are not unprofiled performance baselines.",
       "gpuBusyPercent": {
-        "mean": 54.97,
+        "mean": 45.92,
         "max": 100,
-        "samples": 62
+        "samples": 65
       }
     },
     {
       "apiCpuCalls": {
         "createTexture": {
           "count": 93,
-          "ms": 1.265
+          "ms": 1.315
         },
         "createCommandEncoder": {
           "count": 350,
-          "ms": 3.03
+          "ms": 3.24
         },
         "beginRenderPass": {
           "count": 911,
-          "ms": 19.165
+          "ms": 20.89
         },
         "createBuffer": {
           "count": 2452,
-          "ms": 20.325
+          "ms": 20.75
         },
         "writeBuffer": {
           "count": 3098,
-          "ms": 55.585
+          "ms": 48.625
         },
         "createBindGroup": {
           "count": 1868,
-          "ms": 40.51
+          "ms": 41.045
         },
         "finish": {
           "count": 350,
-          "ms": 2.03
+          "ms": 2.325
         },
         "submit": {
           "count": 350,
-          "ms": 15.395
+          "ms": 17.285
         },
         "writeTexture": {
           "count": 20,
-          "ms": 16.09
+          "ms": 12.58
         },
         "beginComputePass": {
           "count": 1881,
-          "ms": 17.85
+          "ms": 16.7
         },
         "mapAsync": {
           "count": 66,
-          "ms": 2.625
+          "ms": 2.77
         }
       },
       "asyncWaits": {
         "mapAsync": {
           "count": 66,
-          "ms": 2826.445
+          "ms": 2513.295
         }
       },
-      "hotspotsCpuMs": {
-        "shaderTranslation": 0.91,
-        "shaderAdapter": 0.0,
-        "shadercCompilation": 0.0,
-        "builtinSymbolSetup": 0.0
-      },
-      "sampledRenderCpuMs": 153.33,
-      "inclusiveCpuMs": {
-        "blender::render_startjob(void*, blender::wmJobWorkerStatus*)": 153.33,
-        "(root)": 153.33,
-        "blender::do_job_thread(void*)": 153.33,
-        "blender_web_run_gpu_jobs": 153.33,
-        "blender::RE_RenderFrame(blender::Render*, blender::Main*, blender::Scene*, blender::ViewLayer*, blender::Object*, int, float, bool)": 153.33,
-        "blender::do_render_full_pipeline(blender::Render*)": 152.7,
-        "blender::engine_render_view_layer(blender::Render*, blender::RenderEngine*, blender::ViewLayer*, bool, bool)": 152.56,
-        "blender::RE_engine_render(blender::Render*, bool)": 152.56,
-        "blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)": 152.56,
-        "blender::DRW_render_to_image(blender::RenderEngine*, blender::Depsgraph*, std::__2::function<void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>, std::__2::function<void (blender::RenderResult*)>)": 151.2,
-        "std::__2::__function::__func<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0, std::__2::allocator<blender::eevee_render(blender::RenderEngine*, blender::Depsgraph*)::$_0>, void (blender::RenderEngine*, blender::RenderLayer*, blender::rcti)>::operator()(blender::RenderEngine*&&, blender::RenderLayer*&&, blender::rcti&&)": 123.38,
-        "blender::eevee::Instance::render_sample()": 96.63,
-        "blender::eevee::ShadingView::render()": 79.77,
-        "blender::eevee::DeferredLayer::render(blender::draw::View&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::draw::Framebuffer&, blender::VecBase<int, 2>, blender::eevee::RayTraceBuffer&, blender::gpu::Texture*)": 59.52,
-        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, bool)": 35.55,
-        "blender::draw::detail::PassBase<blender::draw::command::DrawCommandBuf>::submit(blender::draw::command::RecordingState&) const": 34.04,
-        "__memset": 29.18,
-        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawMultiBuf>&, blender::draw::View&)": 27.89,
-        "blender::draw::Manager::submit(blender::draw::detail::Pass<blender::draw::command::DrawCommandBuf>&, blender::draw::View&)": 24.5,
-        "blender::gpu::WebGPUContext::build_bind_group(blender::gpu::WebGPUShader*, std::__2::vector<blender::gpu::WgslResourceBinding, std::__2::allocator<blender::gpu::WgslResourceBinding>> const&, WGPUBindGroupLayoutImpl*)": 23.48,
-        "blender::eevee::ShadowModule::render(blender::draw::View&, blender::VecBase<int, 2>)": 23.42,
-        "emscripten_builtin_calloc": 22.72,
-        "MEM_lockfree_calloc_arrayN_aligned(unsigned long, unsigned long, unsigned long, char const*)": 22.38,
-        "blender::render_result_passes_allocated_ensure(blender::RenderResult*)": 22.38,
-        "blender::gpu::WebGPUBatch::record_draw(int, int, int, int, blender::gpu::StorageBuf*, int, long, long)": 20.68,
-        "blender::draw::Manager::submit_only(blender::draw::detail::Pass<blender::draw::command::DrawMultiBuf>&, blender::draw::View&)": 18.73,
-        "blender::GPU_compute_dispatch(blender::gpu::Shader*, unsigned int, unsigned int, unsigned int, blender::gpu::shader::SpecializationConstants const*)": 17.96,
-        "blender::draw::detail::PassBase<blender::draw::command::DrawMultiBuf>::submit(blender::draw::command::RecordingState&) const": 17.79,
-        "blender::gpu::WebGPUBackend::compute_dispatch(int, int, int)": 17.28,
-        "blender::RE_engine_begin_result(blender::RenderEngine*, int, int, int, int, char const*, char const*)": 17.23,
-        "blender::gpu::WebGPUTexture::read(int, blender::eGPUDataFormat, void*)": 16.15,
-        "blender::GPU_texture_read(blender::gpu::Texture*, blender::eGPUDataFormat, int)": 16.15,
-        "blender::gpu::WebGPUContext::read_color_sync(WGPUTextureImpl*, WGPUTextureFormat, int, int, int, int, blender::eGPUDataFormat, int, void*, int, int)": 16.15,
-        "blender::draw::command::Dispatch::execute(blender::draw::command::RecordingState&) const": 15.1,
-        "blender::eevee::Instance::render_sync()": 14.0
-      },
+      "nativeSymbolAttributionAvailable": false,
+      "nativeSymbolAttributionNote": "No CPU samples had a named native GPU-job frame. C++ hotspot attribution is unavailable for this trace; enable BLENDER_WEB_DEBUG_NAMES for a named profiling build.",
+      "hotspotsCpuMs": null,
+      "sampledRenderCpuMs": null,
+      "inclusiveCpuMs": {},
       "gpuTimestamps": [
         {
           "passes": 2792,
@@ -487,244 +409,244 @@
           "groups": {
             "render:eevee_deferred_light_double,eevee_deferred_light_single": {
               "count": 64,
-              "milliseconds": 1672.32864
+              "milliseconds": 1363.24928
             },
             "compute:eevee_shadow_tilemap_init": {
               "count": 128,
-              "milliseconds": 222.64896000000007
+              "milliseconds": 213.98672000000016
             },
             "compute:eevee_film_comp": {
               "count": 64,
-              "milliseconds": 176.68975999999995
-            },
-            "compute:eevee_shadow_page_free": {
-              "count": 128,
-              "milliseconds": 99.21135999999998
+              "milliseconds": 192.19712000000004
             },
             "render:clear": {
               "count": 304,
-              "milliseconds": 97.07472000000001
+              "milliseconds": 139.65423999999993
             },
-            "render:MADefault_Surface_deferred_mesh": {
-              "count": 64,
-              "milliseconds": 47.744000000000014
+            "compute:eevee_shadow_page_free": {
+              "count": 128,
+              "milliseconds": 95.87407999999994
             },
             "render:eevee_deferred_combine": {
               "count": 64,
-              "milliseconds": 45.98815999999999
+              "milliseconds": 43.81088000000001
+            },
+            "render:MADefault_Surface_deferred_mesh": {
+              "count": 64,
+              "milliseconds": 43.31776
             },
             "render:eevee_deferred_tile_classify": {
               "count": 64,
-              "milliseconds": 34.691679999999984
+              "milliseconds": 32.896800000000006
             },
             "compute:eevee_shadow_tag_usage_opaque": {
               "count": 64,
-              "milliseconds": 33.03231999999999
+              "milliseconds": 31.92
             },
             "render:eevee_renderpass_clear": {
               "count": 64,
-              "milliseconds": 31.577280000000002
-            },
-            "render:WOWorld_world_world": {
-              "count": 70,
-              "milliseconds": 29.870239999999995
+              "milliseconds": 31.583040000000004
             },
             "compute:eevee_lightprobe_sphere_convolve": {
               "count": 4,
-              "milliseconds": 28.827199999999998
+              "milliseconds": 31.05248
+            },
+            "render:WOWorld_world_world": {
+              "count": 70,
+              "milliseconds": 28.07552
             },
             "compute:eevee_hiz_update": {
               "count": 64,
-              "milliseconds": 27.058400000000002
-            },
-            "compute:eevee_lookdev_copy_world": {
-              "count": 1,
-              "milliseconds": 20.31232
+              "milliseconds": 26.406400000000005
             },
             "compute:eevee_light_culling_zbin": {
               "count": 64,
-              "milliseconds": 15.024799999999994
+              "milliseconds": 14.252479999999997
             },
             "compute:eevee_shadow_view_visibility": {
               "count": 64,
-              "milliseconds": 8.01424
+              "milliseconds": 7.672639999999999
             },
             "render:MADefault_Surface_depth_velocity_mesh": {
               "count": 64,
-              "milliseconds": 5.93488
+              "milliseconds": 7.43168
+            },
+            "compute:eevee_lookdev_copy_world": {
+              "count": 1,
+              "milliseconds": 7.27808
             },
             "compute:gpu_shader_2D_update_mipmaps_sfloat_16_16_16_16": {
               "count": 10,
-              "milliseconds": 5.8484799999999995
+              "milliseconds": 5.95104
             },
             "render:OCIO_Display": {
               "count": 2,
-              "milliseconds": 5.009919999999999
+              "milliseconds": 4.86128
             },
             "compute:eevee_light_shadow_setup": {
               "count": 64,
-              "milliseconds": 4.15136
+              "milliseconds": 3.95328
             },
             "compute:eevee_lightprobe_sphere_remap": {
               "count": 1,
-              "milliseconds": 3.2888
+              "milliseconds": 3.77952
             },
             "compute:eevee_shadow_tilemap_finalize": {
               "count": 64,
-              "milliseconds": 3.11184
+              "milliseconds": 3.0911999999999993
             },
             "render:image_engine_image_shader": {
               "count": 2,
-              "milliseconds": 2.52752
-            },
-            "compute:draw_command_generate": {
-              "count": 192,
-              "milliseconds": 2.174240000000001
-            },
-            "render:present_flip_blit": {
-              "count": 2,
-              "milliseconds": 2.05024
+              "milliseconds": 2.52928
             },
             "render:MADefault_Surface_shadow_mesh": {
               "count": 64,
-              "milliseconds": 1.9779199999999997
+              "milliseconds": 2.1489600000000015
+            },
+            "render:present_flip_blit": {
+              "count": 2,
+              "milliseconds": 2.06048
             },
             "compute:eevee_shadow_page_mask": {
               "count": 64,
-              "milliseconds": 1.72432
+              "milliseconds": 1.6961600000000006
+            },
+            "compute:draw_command_generate": {
+              "count": 192,
+              "milliseconds": 1.5444800000000005
             },
             "compute:eevee_shadow_tilemap_amend": {
               "count": 64,
-              "milliseconds": 1.4534399999999998
+              "milliseconds": 1.3892799999999998
             },
             "render:overlay_background": {
               "count": 2,
-              "milliseconds": 1.4096000000000002
+              "milliseconds": 1.3857599999999999
             },
             "compute:eevee_light_culling_tile": {
               "count": 64,
-              "milliseconds": 1.1872
+              "milliseconds": 1.1460800000000004
             },
             "compute:eevee_shadow_page_clear": {
               "count": 64,
-              "milliseconds": 1.0836800000000002
+              "milliseconds": 0.9969600000000002
             },
             "compute:eevee_shadow_tilemap_bounds": {
               "count": 64,
-              "milliseconds": 1.0406400000000007
+              "milliseconds": 0.9896000000000009
             },
             "compute:eevee_light_culling_cull": {
               "count": 64,
-              "milliseconds": 0.8443200000000004
+              "milliseconds": 0.80784
             },
             "compute:eevee_shadow_page_allocate": {
               "count": 64,
-              "milliseconds": 0.7688
+              "milliseconds": 0.7375999999999999
             },
             "compute:draw_visibility_compute": {
               "count": 66,
-              "milliseconds": 0.7520000000000002
+              "milliseconds": 0.7177600000000003
             },
             "compute:eevee_light_culling_sort": {
               "count": 64,
-              "milliseconds": 0.7056000000000001
+              "milliseconds": 0.6740799999999999
             },
             "compute:eevee_shadow_page_defrag": {
               "count": 64,
-              "milliseconds": 0.67392
+              "milliseconds": 0.6499200000000002
             },
             "compute:eevee_lightprobe_sphere_select": {
               "count": 64,
-              "milliseconds": 0.4963199999999998
+              "milliseconds": 0.4772799999999999
             },
             "compute:eevee_shadow_tilemap_rendermap": {
               "count": 64,
-              "milliseconds": 0.46352000000000004
+              "milliseconds": 0.4476800000000001
             },
             "render:gpu_shader_2D_widget_base,gpu_shader_text,gpu_shader_2D_widget_base_inst": {
               "count": 2,
-              "milliseconds": 0.44032
+              "milliseconds": 0.44128
             },
             "render:eevee_light_shape_display": {
               "count": 64,
-              "milliseconds": 0.43520000000000025
+              "milliseconds": 0.4158400000000002
             },
             "compute:eevee_shadow_tilemap_bounds_init": {
               "count": 64,
-              "milliseconds": 0.40959999999999996
+              "milliseconds": 0.3936000000000002
             },
             "compute:eevee_shadow_tag_update_propagate": {
               "count": 64,
-              "milliseconds": 0.3947199999999997
+              "milliseconds": 0.37327999999999967
             },
             "compute:draw_view_finalize": {
               "count": 64,
-              "milliseconds": 0.3552
-            },
-            "render:overlay_edit_mesh_depth": {
-              "count": 2,
-              "milliseconds": 0.34031999999999996
+              "milliseconds": 0.34287999999999996
             },
             "render:overlay_grid_background,overlay_grid_next,overlay_grid_image": {
               "count": 2,
-              "milliseconds": 0.33808000000000005
+              "milliseconds": 0.33552000000000004
+            },
+            "render:overlay_edit_mesh_depth": {
+              "count": 2,
+              "milliseconds": 0.31568
             },
             "render:gpu_shader_text,gpu_shader_3D_uniform_color,gpu_shader_2D_widget_base": {
               "count": 2,
-              "milliseconds": 0.27392000000000005
+              "milliseconds": 0.27744
             },
             "render:gpu_shader_2D_widget_base,gpu_shader_text": {
               "count": 2,
-              "milliseconds": 0.26544
+              "milliseconds": 0.26368
             },
             "render:gpu_shader_text,gpu_shader_2D_widget_base,gpu_shader_2D_widget_base_inst": {
               "count": 1,
-              "milliseconds": 0.1544
+              "milliseconds": 0.1536
             },
             "compute:draw_resource_finalize": {
               "count": 3,
-              "milliseconds": 0.10832000000000001
+              "milliseconds": 0.11199999999999999
             },
             "render:gpu_shader_text": {
               "count": 1,
-              "milliseconds": 0.10208
+              "milliseconds": 0.10256
             },
             "render:gpu_shader_3D_uniform_color,gpu_shader_text,gpu_shader_2D_widget_base": {
               "count": 1,
-              "milliseconds": 0.09504
+              "milliseconds": 0.09232
             },
             "render:gpu_shader_2D_widget_base,gpu_shader_3D_uniform_color": {
               "count": 1,
-              "milliseconds": 0.0576
+              "milliseconds": 0.05984
             },
             "compute:eevee_vertex_copy": {
               "count": 1,
-              "milliseconds": 0.02976
+              "milliseconds": 0.03152
             },
             "compute:eevee_lightprobe_sphere_irradiance": {
               "count": 1,
-              "milliseconds": 0.02144
+              "milliseconds": 0.02224
             },
             "compute:eevee_lightprobe_sphere_sunlight": {
               "count": 1,
-              "milliseconds": 0.01456
+              "milliseconds": 0.01568
             },
             "render:eevee_shadow_tag_update": {
               "count": 1,
-              "milliseconds": 0.01008
+              "milliseconds": 0.01152
             },
             "compute:eevee_lightprobe_volume_world": {
               "count": 1,
-              "milliseconds": 0.00704
+              "milliseconds": 0.00768
             }
           }
         }
       ],
       "gpuTimestampsNote": "Pass times in milliseconds, with timestamp instrumentation overhead. Unsubmitted UI passes have zero timestamps and are excluded as invalid. These runs are not unprofiled performance baselines.",
       "gpuBusyPercent": {
-        "mean": 77.49,
+        "mean": 73.06,
         "max": 100,
-        "samples": 35
+        "samples": 33
       }
     }
   ]

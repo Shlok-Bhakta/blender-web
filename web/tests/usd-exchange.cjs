@@ -19,7 +19,7 @@ async function main(){
  const command=(code,marker)=>Promise.race([failure,consoleCommand(page,code,marker,()=>page.screenshot(),180000)]);
  try{
   chapter('Open original Blender with USD and MaterialX');
-  await page.goto(process.env.WEB_TEST_URL||'http://127.0.0.1:8093/');await ready(page,failure);
+  await page.goto(process.env.WEB_TEST_URL||'http://127.0.0.1:8093/');await ready(page,failure);console.log('USD browser ready');
   const manifest=await page.evaluate(()=>fetch('manifest.json').then(r=>r.json()));
   for(const flag of ['WITH_USD','WITH_MATERIALX'])assert.equal(manifest.buildOptions[flag],true,flag);
   const adapter=await page.evaluate(async()=>{const a=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});return {vendor:a.info.vendor,architecture:a.info.architecture,device:a.info.device,description:a.info.description,features:[...a.features]};});
@@ -34,9 +34,10 @@ async function main(){
    await page.evaluate(({name,base64})=>{const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));for(const dir of ['/tmp/usd-exchange','/user/blender-web/home/usd-exchange']){Module.FS.mkdirTree((dir+'/'+name).slice(0,(dir+'/'+name).lastIndexOf('/')));Module.FS.writeFile(dir+'/'+name,bytes);}},{name,base64:bytes.toString('base64')});
   }
   await page.evaluate(source=>{Module.FS.writeFile('/tmp/usd_exchange.py',source);Module.FS.writeFile('/user/blender-web/home/usd-exchange/check.py',source);},source);
+  console.log('USD fixtures staged');
   chapter('Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks');
   await page.mouse.move(300,250);
-  await command("exec(compile(open('/tmp/usd_exchange.py').read(),'usd_exchange.py','exec')); browser_check('/tmp/usd-exchange')",'USD_EXCHANGE_FINISHED:');
+  await command("exec(compile(__import__('pathlib').Path('/tmp/usd_exchange.py').read_text(),'usd_exchange.py','exec')); browser_check('/tmp/usd-exchange')",'USD_EXCHANGE_FINISHED:');
   assert(!messages.includes('USD_EXCHANGE_FAILED'),'See browser.log');
   const report=JSON.parse(messages.find(t=>t.startsWith('USD_EXCHANGE_DONE:')).slice('USD_EXCHANGE_DONE:'.length));
   assert(report.staticPythonModules.length>=32,'Import every original static pxr extension');
@@ -53,11 +54,12 @@ async function main(){
   await command("bpy.context.scene.frame_set(10); bpy.ops.object.select_all(action='DESELECT'); cube=next(o for o in bpy.context.scene.objects if o.type=='MESH'); cube.select_set(True); bpy.context.view_layer.objects.active=cube; [o.hide_set(True) for o in bpy.context.scene.objects if o.type in {'CAMERA','LIGHT'}]; [(setattr(s.shading,'color_type','MATERIAL'),setattr(s.region_3d,'view_distance',6),setattr(s.region_3d,'view_location',(2,-1,.5))) for a in bpy.context.screen.areas for s in a.spaces if s.type=='VIEW_3D']; __import__('os').write(1,b'USD_VIEW_READY\\n')",'USD_VIEW_READY');
   await page.screenshot({path:path.join(output,'usd-viewport.png')});await page.waitForTimeout(2500);
   chapter('USD is available in Blender\'s original export menu');
-  await command("bpy.app.timers.register(lambda: (bpy.ops.wm.call_menu(name='TOPBAR_MT_file_export'), None)[1],first_interval=2); __import__('os').write(1,b'USD_MENU_SCHEDULED\\n')",'USD_MENU_SCHEDULED');
-  await page.waitForTimeout(2000);await page.screenshot({path:path.join(output,'usd-export-menu.png')});await page.keyboard.press('Escape');
+  const menuCode = "def usd_export_menu():\n    window=bpy.context.window_manager.windows[0]\n    area=next(a for a in window.screen.areas if a.type=='VIEW_3D')\n    with bpy.context.temp_override(window=window,area=area):\n        bpy.ops.wm.call_menu(name='TOPBAR_MT_file_export')\n    return None\nbpy.app.timers.register(usd_export_menu,first_interval=2)";
+  await command("exec("+JSON.stringify(menuCode)+"); __import__('os').write(1,b'USD_MENU_SCHEDULED\\n')",'USD_MENU_SCHEDULED');
+  await page.waitForTimeout(2000);await page.mouse.move(220,270);await page.waitForTimeout(2000);await page.screenshot({path:path.join(output,'usd-export-menu.png')});await page.keyboard.press('Escape');
   chapter('Reload offline and repeat interchange from persistent browser storage');
   await context.setOffline(true);await page.reload();await ready(page,failure);await page.mouse.move(300,250);
-  await command("exec(compile(open('/user/blender-web/home/usd-exchange/check.py').read(),'usd_exchange.py','exec')); browser_check('/user/blender-web/home/usd-exchange','USD_OFFLINE')",'USD_OFFLINE_FINISHED:');
+  await command("exec(compile(__import__('pathlib').Path('/user/blender-web/home/usd-exchange/check.py').read_text(),'usd_exchange.py','exec')); browser_check('/user/blender-web/home/usd-exchange','USD_OFFLINE')",'USD_OFFLINE_FINISHED:');
   assert(!messages.includes('USD_OFFLINE_FAILED'));
   const offline=JSON.parse(messages.find(t=>t.startsWith('USD_OFFLINE_DONE:')).slice('USD_OFFLINE_DONE:'.length));
   for(const ext of ['usda','usdc','usdz'])assert(offline.formats[ext].bytes>0);

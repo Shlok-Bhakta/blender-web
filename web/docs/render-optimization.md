@@ -1,16 +1,16 @@
 # Render optimization measurements
 
-Three fresh Chromium sessions per build, alternated control/candidate. Three renders per session, no video/tracing, original factory settings. First-in-process engine handler time; global GPU driver caches are not cleared.
+Three fresh Chromium sessions per build, alternated control/candidate. Three renders per session, no video/tracing, original factory settings. First-in-process engine handler time; global GPU driver caches are not cleared. This compares complete packaged builds: enabled dependencies, debug-name metadata and compiler configuration may differ, so it does not isolate a single cache or optimizer change.
 
 | Build | First render, median | Warm render, median |
 | --- | ---: | ---: |
-| control | 7.801 s | 2.999 s |
-| candidate | 4.486 s | 3.037 s |
+| control | 7.766 s | 2.993 s |
+| candidate | 4.666 s | 2.998 s |
 
-First-render time reduction: 42.5%. Warm-render median change: +1.3%, where positive means slower.
+First-render time reduction: 39.9%. Warm-render median change: +0.2%, where positive means slower.
 
 Every run retained the original scene settings and matched the prior browser reference pixels exactly.
 
-The candidate bundles common original shader translations in its preload data. Compiler/source fingerprints guard the seed; unseen variants still compile and cache at runtime.
+This is a comparison of complete packaged builds, including their dependency and compiler configuration differences. It does not isolate a single optimization. The candidate bundles common original shader translations in its preload data. Compiler/source fingerprints guard the seed; unseen variants still compile and cache at runtime.
 
 Queue batching and shaderc performance optimization experiments were rejected. See [experiment evidence](render-optimization-experiments.json) and [full measurements](render-optimization.json).
