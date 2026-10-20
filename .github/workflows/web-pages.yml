@@ -143,6 +143,9 @@ jobs:
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/ocean-alembic.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/volume.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/volume.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/image-vector.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/image-vector.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_RENDER_SOFTWARE=1 node web/tests/freestyle.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_RENDER_SOFTWARE=1 node web/tests/cycles.cjs
       - uses: actions/upload-artifact@v4
         if: always()
@@ -159,6 +162,8 @@ jobs:
             build/native/cycles-evidence
             build/native/ocean-evidence*
             build/native/volume-evidence*
+            build/native/image-vector-evidence*
+            build/native/freestyle-evidence*
             build/native/build.log
             build/native/*-check.json
             build/native/*-build.log

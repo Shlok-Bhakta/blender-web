@@ -1,0 +1,401 @@
+{
+  "bundleVersion": "d274910ed5f9aab67b3f",
+  "blenderVersion": "5.2.2 LTS",
+  "desktopRevision": "d13f752e3b9c",
+  "desktopBuildOptions": {
+    "alembic": true,
+    "audaspace": true,
+    "bullet": true,
+    "codec_avi": false,
+    "codec_ffmpeg": true,
+    "codec_sndfile": true,
+    "compositor_cpu": true,
+    "coreaudio": false,
+    "cycles": true,
+    "cycles_osl": true,
+    "experimental_features": false,
+    "fluid": true,
+    "freestyle": true,
+    "haru": true,
+    "image_cineon": true,
+    "image_dds": true,
+    "image_hdr": true,
+    "image_openexr": true,
+    "image_openjpeg": true,
+    "image_tiff": true,
+    "image_webp": true,
+    "input_ndof": true,
+    "international": true,
+    "io_fbx": true,
+    "io_gpencil": true,
+    "io_ply": true,
+    "io_stl": true,
+    "io_wavefront_obj": true,
+    "jack": true,
+    "libmv": true,
+    "mod_oceansim": true,
+    "mod_remesh": true,
+    "openal": true,
+    "opencolorio": true,
+    "openmp": false,
+    "opensubdiv": true,
+    "openvdb": true,
+    "potrace": true,
+    "pugixml": true,
+    "pulseaudio": true,
+    "sdl": false,
+    "usd": true,
+    "wasapi": false,
+    "xr_openxr": true
+  },
+  "browserBuildOptions": {
+    "alembic": true,
+    "audaspace": false,
+    "bullet": true,
+    "codec_avi": false,
+    "codec_ffmpeg": false,
+    "codec_sndfile": false,
+    "compositor_cpu": true,
+    "coreaudio": false,
+    "cycles": true,
+    "cycles_osl": false,
+    "experimental_features": false,
+    "fluid": true,
+    "freestyle": true,
+    "haru": true,
+    "image_cineon": true,
+    "image_dds": true,
+    "image_hdr": true,
+    "image_openexr": true,
+    "image_openjpeg": true,
+    "image_tiff": true,
+    "image_webp": true,
+    "input_ndof": false,
+    "international": false,
+    "io_fbx": true,
+    "io_gpencil": true,
+    "io_ply": true,
+    "io_stl": true,
+    "io_wavefront_obj": true,
+    "jack": false,
+    "libmv": false,
+    "mod_oceansim": true,
+    "mod_remesh": true,
+    "openal": false,
+    "opencolorio": true,
+    "openmp": false,
+    "opensubdiv": true,
+    "openvdb": true,
+    "potrace": true,
+    "pugixml": true,
+    "pulseaudio": false,
+    "sdl": false,
+    "usd": false,
+    "wasapi": false,
+    "xr_openxr": false
+  },
+  "desktopEnabledCount": 38,
+  "matchedEnabledFlags": [
+    "alembic",
+    "bullet",
+    "compositor_cpu",
+    "cycles",
+    "fluid",
+    "freestyle",
+    "haru",
+    "image_cineon",
+    "image_dds",
+    "image_hdr",
+    "image_openexr",
+    "image_openjpeg",
+    "image_tiff",
+    "image_webp",
+    "io_fbx",
+    "io_gpencil",
+    "io_ply",
+    "io_stl",
+    "io_wavefront_obj",
+    "mod_oceansim",
+    "mod_remesh",
+    "opencolorio",
+    "opensubdiv",
+    "openvdb",
+    "potrace",
+    "pugixml"
+  ],
+  "missingEnabledFlags": [
+    "audaspace",
+    "codec_ffmpeg",
+    "codec_sndfile",
+    "cycles_osl",
+    "input_ndof",
+    "international",
+    "jack",
+    "libmv",
+    "openal",
+    "pulseaudio",
+    "usd",
+    "xr_openxr"
+  ],
+  "remainingGroups": {
+    "portableLibraries": [
+      "audaspace",
+      "codec_ffmpeg",
+      "codec_sndfile",
+      "international",
+      "libmv",
+      "usd"
+    ],
+    "rendererIntegration": [
+      "cycles_osl"
+    ],
+    "browserPlatform": [
+      "input_ndof",
+      "jack",
+      "openal",
+      "pulseaudio",
+      "xr_openxr"
+    ]
+  },
+  "baseLibraryRecipes": [
+    {
+      "name": "ZLIB",
+      "version": "1.3.1",
+      "archiveHash": "9855b6d802d7fe5b7bd5b196a2271655",
+      "hashType": "MD5",
+      "source": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+    },
+    {
+      "name": "JPEG",
+      "version": "2.1.3",
+      "archiveHash": "627b980fad0573e08e4c3b80b290fc91",
+      "hashType": "MD5",
+      "source": "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/2.1.3.tar.gz"
+    },
+    {
+      "name": "PNG",
+      "version": "1.6.58",
+      "archiveHash": "28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775",
+      "hashType": "SHA256",
+      "source": "http://prdownloads.sourceforge.net/libpng/libpng-1.6.58.tar.xz"
+    },
+    {
+      "name": "ZSTD",
+      "version": "1.5.7",
+      "archiveHash": "eb33e51f49a15e023950cd7825ca74a4a2b43db8354825ac24fc1b7ee09e6fa3",
+      "hashType": "SHA256",
+      "source": "https://github.com/facebook/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz"
+    },
+    {
+      "name": "BROTLI",
+      "version": "1.0.9",
+      "archiveHash": "f9e8d81d0405ba66d181529af42a3354f838c939095ff99930da6aa9cdf6fe46",
+      "hashType": "SHA256",
+      "source": "https://github.com/google/brotli/archive/refs/tags/v1.0.9.tar.gz"
+    },
+    {
+      "name": "FREETYPE",
+      "version": "2.13.3",
+      "archiveHash": "ac1f0b517f62bd40d50bc995faa5741d",
+      "hashType": "MD5",
+      "source": "http://prdownloads.sourceforge.net/freetype/freetype-2.13.3.tar.gz"
+    },
+    {
+      "name": "FMT",
+      "version": "12.1.0",
+      "archiveHash": "ea7de4299689e12b6dddd392f9896f08fb0777ac7168897a244a6d6085043fea",
+      "hashType": "SHA256",
+      "source": "https://github.com/fmtlib/fmt/archive/refs/tags/12.1.0.tar.gz"
+    },
+    {
+      "name": "EIGEN",
+      "version": "8a1083e9bf41b91fdea6546681f806154efdc25a",
+      "archiveHash": "cc28a84fdec496c6777596350ea805519bf10f717d21044ae6ba3dd562183a26",
+      "hashType": "SHA256",
+      "source": "https://gitlab.com/libeigen/eigen/-/archive/8a1083e9bf41b91fdea6546681f806154efdc25a/eigen-8a1083e9bf41b91fdea6546681f806154efdc25a.tar.gz"
+    },
+    {
+      "name": "IMATH",
+      "version": "3.2.2",
+      "archiveHash": "e29f25ce926ac53d8e0a52197299f61b",
+      "hashType": "MD5",
+      "source": "https://github.com/AcademySoftwareFoundation/Imath/archive/v3.2.2.tar.gz"
+    },
+    {
+      "name": "DEFLATE",
+      "version": "1.18",
+      "archiveHash": "a29d9dd653cbe03f2d5cd83972063f9e",
+      "hashType": "MD5",
+      "source": "https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.18.tar.gz"
+    },
+    {
+      "name": "OPENJPH",
+      "version": "0.25.2",
+      "archiveHash": "ae5f09562cb811cb2fb881c5eb74583e18db941848cfa3c35787e2580f3defc6",
+      "hashType": "SHA256",
+      "source": "https://github.com/aous72/OpenJPH/archive/refs/tags/0.25.2.tar.gz"
+    },
+    {
+      "name": "OPENEXR",
+      "version": "3.4.10",
+      "archiveHash": "8926ba09c4e4cd21c7a0fa2d2b39fa82",
+      "hashType": "MD5",
+      "source": "https://github.com/AcademySoftwareFoundation/openexr/archive/v3.4.10.tar.gz"
+    },
+    {
+      "name": "EXPAT",
+      "version": "2_7_5",
+      "archiveHash": "aecc4366ab1a5189d8f027c369305c9a",
+      "hashType": "MD5",
+      "source": "https://github.com/libexpat/libexpat/archive/R_2_7_5.tar.gz"
+    },
+    {
+      "name": "YAMLCPP",
+      "version": "0.8.0",
+      "archiveHash": "1d2c7975edba60e995abe3c4af6480e5",
+      "hashType": "MD5",
+      "source": "https://github.com/jbeder/yaml-cpp/archive/refs/tags/0.8.0.tar.gz"
+    },
+    {
+      "name": "PYSTRING",
+      "version": "v1.1.3",
+      "archiveHash": "f2c68786b359f5e4e62bed53bc4fb86d",
+      "hashType": "MD5",
+      "source": "https://codeload.github.com/imageworks/pystring/tar.gz/refs/tags/v1.1.3"
+    },
+    {
+      "name": "MINIZIPNG",
+      "version": "4.0.10",
+      "archiveHash": "9b4de14db78016419598d0f292fde244",
+      "hashType": "MD5",
+      "source": "https://github.com/zlib-ng/minizip-ng/archive/4.0.10.tar.gz"
+    },
+    {
+      "name": "OPENCOLORIO",
+      "version": "2.5.0",
+      "archiveHash": "41d6b62ac672ed333ebfdcc1108407e0",
+      "hashType": "MD5",
+      "source": "https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/v2.5.0.tar.gz"
+    },
+    {
+      "name": "ROBINMAP",
+      "version": "v1.3.0",
+      "archiveHash": "a8424ad3b0affd4c57ed26f0f3d8a29604f0e1f2ef2089f497f614b1c94c7236",
+      "hashType": "SHA256",
+      "source": "https://github.com/Tessil/robin-map/archive/refs/tags/v1.3.0.tar.gz"
+    },
+    {
+      "name": "TBB",
+      "version": "v2022.3.0",
+      "archiveHash": "2b242c465b194ac8e1451ea1354873ae",
+      "hashType": "MD5",
+      "source": "https://github.com/uxlfoundation/oneTBB/archive/refs/tags/v2022.3.0.tar.gz"
+    },
+    {
+      "name": "OPENSUBDIV",
+      "version": "v3_7_0",
+      "archiveHash": "470d53c4d4335a601c33a052ce7c33b4",
+      "hashType": "MD5",
+      "source": "https://github.com/PixarAnimationStudios/OpenSubdiv/archive/v3_7_0.tar.gz"
+    },
+    {
+      "name": "GMP",
+      "version": "6.3.0",
+      "archiveHash": "956dc04e864001a9c22429f761f2c283",
+      "hashType": "MD5",
+      "source": "https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz"
+    },
+    {
+      "name": "MANIFOLD",
+      "version": "v3.5.2",
+      "archiveHash": "4fc28c8318bd052f54e66b86b5947601",
+      "hashType": "MD5",
+      "source": "https://github.com/elalish/manifold/archive/refs/tags/v3.5.2.tar.gz"
+    },
+    {
+      "name": "FFTW",
+      "version": "3.3.10",
+      "archiveHash": "8ccbf6a5ea78a16dbc3e1306e234cc5c",
+      "hashType": "MD5",
+      "source": "http://www.fftw.org/fftw-3.3.10.tar.gz"
+    },
+    {
+      "name": "ALEMBIC",
+      "version": "1.8.3",
+      "archiveHash": "2cd8d6e5a3ac4a014e24a4b04f4fadf9",
+      "hashType": "MD5",
+      "source": "https://github.com/alembic/alembic/archive/1.8.3.tar.gz"
+    },
+    {
+      "name": "BLOSC",
+      "version": "1.21.1",
+      "archiveHash": "134b55813b1dca57019d2a2dc1f7a923",
+      "hashType": "MD5",
+      "source": "https://github.com/Blosc/c-blosc/archive/v1.21.1.tar.gz"
+    },
+    {
+      "name": "OPENVDB",
+      "version": "13.0.0",
+      "archiveHash": "7a10f529ed12d9e3ed6d3fd50f157378",
+      "hashType": "MD5",
+      "source": "https://github.com/AcademySoftwareFoundation/openvdb/archive/v13.0.0.tar.gz"
+    },
+    {
+      "name": "WEBP",
+      "version": "1.6.0",
+      "archiveHash": "cceb6447180f961473b181c9ef38b630",
+      "hashType": "MD5",
+      "source": "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0.tar.gz"
+    },
+    {
+      "name": "OPENJPEG",
+      "version": "2.5.3",
+      "archiveHash": "368fe0468228e767433c9ebdea82ad9d801a3ad1e4234421f352c8b06e7aa707",
+      "hashType": "SHA256",
+      "source": "https://github.com/uclouvain/openjpeg/archive/v2.5.3.tar.gz"
+    },
+    {
+      "name": "PUGIXML",
+      "version": "1.10",
+      "archiveHash": "0c208b0664c7fb822bf1b49ad035e8fd",
+      "hashType": "MD5",
+      "source": "https://github.com/zeux/pugixml/archive/v1.10.tar.gz"
+    },
+    {
+      "name": "HARU",
+      "version": "2.4.5",
+      "archiveHash": "d5633fb741079a7675bb3e9e8e8a58ce",
+      "hashType": "MD5",
+      "source": "https://github.com/libharu/libharu/archive/refs/tags/v2.4.5.tar.gz"
+    },
+    {
+      "name": "POTRACE",
+      "version": "1.16",
+      "archiveHash": "5f0bd87ddd9a620b0c4e65652ef93d69",
+      "hashType": "MD5",
+      "source": "http://potrace.sourceforge.net/download/1.16/potrace-1.16.tar.gz"
+    },
+    {
+      "name": "TIFF",
+      "version": "4.7.1",
+      "archiveHash": "f1044dd3b4466cc53464210148e08146",
+      "hashType": "MD5",
+      "source": "http://download.osgeo.org/libtiff/tiff-4.7.1.tar.gz"
+    },
+    {
+      "name": "OPENIMAGEIO",
+      "version": "v3.1.13.1",
+      "archiveHash": "9f6f083900680b79ca4a136270103844",
+      "hashType": "MD5",
+      "source": "https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v3.1.13.1.tar.gz"
+    }
+  ],
+  "baseLibraryRecipeScope": "The base static-library builder only; excludes CPython/NumPy, shader compilers, bundled Blender code and platform SDKs.",
+  "browserReportSourceSha256": "6d5fc2887f63a58dc544912f6170448316d5a8e8571c97efda0381e2552b6219",
+  "limitations": [
+    "Build flags are configuration evidence, not proof of every operation or performance parity.",
+    "Desktop audio drivers require browser audio integration instead of loading JACK or PulseAudio into Wasm.",
+    "Cycles GPU, denoising, OpenSubdiv GPU and other subfeatures are not represented by these coarse Python API flags.",
+    "Some enabled dependencies have disabled subcomponents; see FEATURES.md for actual operation coverage."
+  ]
+}

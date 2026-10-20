@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "engine": "CYCLES",
+    "samples": 16,
+    "size": [
+      256,
+      256
+    ],
+    "denoising": false,
+    "adaptiveSampling": false,
+    "freestyle": true,
+    "strokeColor": [
+      1,
+      0,
+      0
+    ],
+    "thickness": 3
+  },
+  "blenderVersion": "5.2.2 LTS",
+  "sourceSha256": "f2147bc55630a342e19f53c81e2efc16e8bbda084c6ba996887d0f65332f0453"
+}

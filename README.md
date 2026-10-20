@@ -23,6 +23,8 @@ The `blender/` submodule pins the official stable release. Platform code lives i
 
 [Watch volumes and Mantaflow gas in the browser](web/docs/volume-walkthrough.mp4) · [Memory64 investigation](web/docs/memory64.md)
 
+[Watch image codecs, SVG/PDF and Freestyle](web/docs/image-vector-freestyle-walkthrough.mp4) · [Dependency status](web/docs/dependency-status.json)
+
 [Native versus browser performance and RAM measurements](web/docs/native-web-performance.md)
 
 [Watch the first Eevee render](web/docs/eevee-default-scene.mp4) · [Render details and validation](web/docs/eevee-default-scene.md)

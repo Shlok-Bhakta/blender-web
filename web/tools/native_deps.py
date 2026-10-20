@@ -44,14 +44,19 @@ RECIPES = {
     "ALEMBIC": ("", ["-DUSE_PYALEMBIC=OFF", "-DUSE_ARNOLD=OFF", "-DUSE_MAYA=OFF", "-DUSE_PRMAN=OFF", "-DUSE_HDF5=OFF", "-DUSE_TESTS=OFF", "-DUSE_BINARIES=OFF", "-DALEMBIC_SHARED_LIBS=OFF"]),
     "BLOSC": ("", ["-DBUILD_SHARED=OFF", "-DBUILD_TESTS=OFF", "-DBUILD_BENCHMARKS=OFF", "-DDEACTIVATE_SSE2=ON", "-DDEACTIVATE_AVX2=ON", "-DPREFER_EXTERNAL_ZLIB=ON", "-DPREFER_EXTERNAL_ZSTD=ON"]),
     "OPENVDB": ("", ["-DOPENVDB_CORE_SHARED=OFF", "-DOPENVDB_CORE_STATIC=ON", "-DOPENVDB_BUILD_BINARIES=OFF", "-DOPENVDB_BUILD_UNITTESTS=OFF", "-DOPENVDB_BUILD_PYTHON_MODULE=OFF", "-DOPENVDB_BUILD_NANOVDB=ON", "-DNANOVDB_BUILD_TOOLS=OFF", "-DNANOVDB_BUILD_UNITTESTS=OFF", "-DNANOVDB_USE_CUDA=OFF", "-DOPENVDB_USE_DELAYED_LOADING=OFF", "-DUSE_STATIC_DEPENDENCIES=ON", "-DUSE_BLOSC=ON", "-DUSE_ZLIB=ON", "-DUSE_LOG4CPLUS=OFF"]),
+    "WEBP": ("", ["-DWEBP_BUILD_ANIM_UTILS=OFF", "-DWEBP_BUILD_CWEBP=OFF", "-DWEBP_BUILD_DWEBP=OFF", "-DWEBP_BUILD_GIF2WEBP=OFF", "-DWEBP_BUILD_IMG2WEBP=OFF", "-DWEBP_BUILD_VWEBP=OFF", "-DWEBP_BUILD_WEBPINFO=OFF", "-DWEBP_BUILD_WEBPMUX=OFF", "-DWEBP_BUILD_EXTRAS=OFF", "-DWEBP_ENABLE_SIMD=OFF"]),
+    "OPENJPEG": ("", ["-DBUILD_CODEC=OFF", "-DBUILD_DOC=OFF", "-DBUILD_JPIP=OFF"]),
+    "PUGIXML": ("", ["-DPUGIXML_BUILD_TESTS=OFF"]),
+    "HARU": ("", ["-DLIBHPDF_EXAMPLES=OFF", "-DMATH_LIB=m", "-DM_LIB=m"]),
+    "POTRACE": ("", []),
     "TIFF": ("", ["-Dtiff-tools=OFF", "-Dtiff-tests=OFF", "-Dtiff-contrib=OFF", "-Dtiff-docs=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djbig=OFF"]),
-    "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0"]),
+    "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0", "-DUSE_WEBP=ON", "-DUSE_OPENJPEG=ON"]),
 }
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
 CXX_PACKAGES = {"FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
-                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "OPENIMAGEIO", "TIFF"}
+                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "OPENIMAGEIO", "TIFF"}
 
 
 def run(command, log, cwd=None, env=None):
@@ -103,7 +108,7 @@ def install_notices(source, prefix, name):
     destination = prefix / 'share/blender-web/licenses' / name.lower()
     destination.mkdir(parents=True, exist_ok=True)
     for notice in source.iterdir():
-        if notice.name.upper().startswith(('LICENSE', 'COPYING', 'COPYRIGHT', 'NOTICE')):
+        if notice.name.upper().startswith(('LICENSE', 'COPYING', 'COPYRIGHT', 'NOTICE', 'PATENTS')):
             if notice.is_file():
                 shutil.copy2(notice, destination / notice.name)
             elif notice.is_dir():
@@ -182,6 +187,8 @@ def build(args):
                 raise RuntimeError(f"Dependency patch does not apply: {patch}\n{check.stdout.decode()}")
         if name == "PYSTRING":
             shutil.copy2(ROOT / "blender/build_files/build_environment/patches/cmakelists_pystring.txt", source / "CMakeLists.txt")
+        if name == "POTRACE":
+            shutil.copy2(ROOT / "blender/build_files/build_environment/patches/cmakelists_potrace.txt", source / "CMakeLists.txt")
         log = directory / "build.log"
         subdir, options = RECIPES[name]
         options = list(options)

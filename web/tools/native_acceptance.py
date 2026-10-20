@@ -31,6 +31,18 @@ def main():
     recording = read(docs / 'volume-recording.json')
     volumes = [read(base / name / 'acceptance.json') for name in
                ['volume-evidence', 'volume-evidence-ui', 'volume-evidence-hardware']]
+    image_vectors = [read(base / name / 'acceptance.json') for name in
+                    ['image-vector-evidence', 'image-vector-evidence-ui', 'image-vector-evidence-hardware', 'image-vector-evidence-hardware-ui']]
+    freestyles = [read(base / name / 'acceptance.json') for name in
+                  ['freestyle-evidence', 'freestyle-evidence-software']]
+    dependency_recording = read(docs / 'image-vector-recording.json')
+    dependency_status = read(docs / 'dependency-status.json')
+    desktop_images = read(base / 'image-vector-evidence-hardware/desktop-verification.json')
+    desktop_freestyle = read(base / 'freestyle-evidence/desktop-verification.json')
+    assert desktop_freestyle['blendSha256'] == freestyles[0]['blendSha256']
+    assert desktop_freestyle['freestyle'] and desktop_freestyle['strokeColor'] == [1, 0, 0]
+    assert dependency_status['bundleVersion'] == version
+    assert dependency_status['browserBuildOptions'] == image_vectors[2]['buildOptions']
     oceans = [read(base / name / 'acceptance.json') for name in
               ['ocean-evidence', 'ocean-evidence-ui', 'ocean-evidence-hardware']]
     desktop_ocean = read(base / 'ocean-evidence-hardware/desktop-verification.json')
@@ -49,8 +61,37 @@ def main():
     assert performance['bundleVersion'] == version
     loading = [read(base / name / 'acceptance.json') for name in
                ['loading-evidence', 'loading-evidence-ui']]
-    for report in [*features, *ui, *oceans, *volumes, eevee, cycles, recording]:
+    for report in [*features, *ui, *oceans, *volumes, *image_vectors, *freestyles,
+                   eevee, cycles, recording, dependency_recording]:
         assert report['bundleVersion'] == version, 'Mixed browser build evidence'
+    for report in image_vectors:
+        assert not report['browserErrors'] and report['offlineReopen']
+        if report['viewportDrawing']:
+            assert report['bluePixels'] > 500
+        else:
+            assert not report['hardware'] and 'dual-source-blending' not in report['adapter']['features']
+            assert report['viewportRequirement'] and report['bluePixels'] == 0
+        for case in [*report['images'].values(), *report['offlineImages'].values()]:
+            assert case['maximumDesktopPixelError'] < 1e-4 and case['desktopInputPixelError'] < 1e-4
+        assert report['svg']['maximumDesktopCoordinateError'] < 2e-5
+        assert report['trace']['maximumDesktopCoordinateError'] < 2e-5
+        assert report['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/image_vector.py').read_bytes()).hexdigest()
+        for name, expected in report['fixtureHashes'].items():
+            assert hashlib.sha256((ROOT / 'web/tests/fixtures/image-vector' / name).read_bytes()).hexdigest() == expected
+    assert all(report['hardware'] and report['viewportDrawing'] for report in image_vectors[2:])
+    assert image_vectors[3]['fallback']
+    assert desktop_images['svgMaximumCoordinateError'] < 2e-5
+    assert desktop_images['pdfPages'] == 1 and desktop_images['pdfRasterBluePixels'] > 100
+    assert all(error < 1e-4 for error in desktop_images['imagePixelErrors'].values())
+    assert desktop_images['svgSha256'] == image_vectors[2]['exportSVG']['sha256']
+    assert desktop_images['pdfSha256'] == image_vectors[2]['exportPDF']['sha256']
+    for report in freestyles:
+        assert not report['browserErrors'] and report['redPixels'] > 500
+        assert report['meanAbsoluteChannelError'] < 3 and report['outlierFraction'] < .01
+        assert report['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/freestyle.py').read_bytes()).hexdigest()
+        assert report['referenceImageSha256'] == hashlib.sha256((ROOT / 'web/tests/fixtures/freestyle/freestyle.png').read_bytes()).hexdigest()
+    dependency_video = ROOT / dependency_recording['path']
+    assert hashlib.sha256(dependency_video.read_bytes()).hexdigest() == dependency_recording['sha256']
     for report in loading:
         assert {run['mode'] for run in report['runs']} == {'cold','warm','offline','restarted-offline'}
         assert all(run['bundleVersion'] == version for run in report['runs'])
@@ -80,6 +121,10 @@ def main():
               'nativeChecks':native, 'recording':recording,
               'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
               'openvdbNanoVDB':{'browserVariants':volumes},
+              'imageVector':{'browserVariants':image_vectors,'browserExportsInDesktop':desktop_images},
+              'freestyle':{'browserVariants':freestyles,'browserSceneInDesktop':desktop_freestyle},
+              'dependencyRecording':dependency_recording,
+              'dependencyStatus':dependency_status,
               'performance':performance,
               'renderOptimization':optimization,
               'memory64Probe':{'productionEnabled':False,'standalone':memory64},
@@ -99,6 +144,10 @@ def main():
                   'Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.',
                   'Ocean acceptance uses resolution 5 and 12 animation frames. Ocean disk-cache baking is not covered.',
                   'OpenVDB acceptance covers float sphere grids, ZIP/Blosc IO, NanoVDB conversion and mesh/volume modifiers. Mantaflow acceptance covers four resolution-16 gas frames; liquid simulation, long bakes and the Python OpenVDB module are not covered.',
+                  'Image acceptance covers small WebP lossless, JP2 16-bit, Cineon 10-bit and DPX 16-bit files. Other format variants, large images and animation are not covered.',
+                  'Grease Pencil viewport drawing requires the WebGPU dual-source-blending feature; SwiftShader validates image/vector IO with the authored object hidden. Hardware checks cover drawing in both runtime variants.',
+                  'Vector acceptance covers authored paths, fills and a circle, SVG/PDF export and one-image Potrace tracing. This does not establish every SVG feature or multi-frame vector export.',
+                  'Freestyle acceptance covers a 256x256, 16-sample Cycles CPU cube with red contour strokes. Other style modules and large scenes are not covered.',
                   'Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.',
                   'Functional checks ran with other host activity and are not an isolated performance benchmark.']}
     archive = base / 'blender-web-pages.tar.gz'

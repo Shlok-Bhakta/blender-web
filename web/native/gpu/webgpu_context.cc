@@ -1578,9 +1578,8 @@ WGPUBindGroup WebGPUContext::build_bind_group(WebGPUShader *shader,
         const ShaderInput *in = iface->ssbo_get(StringRefNull(b.res_name.c_str()));
         int slot = in ? in->binding : -1;
         e.buffer = (slot >= 0 && slot < WEBGPU_MAX_SSBO) ? bound_ssbo_[slot] : nullptr;
-        const std::string buffer_texture_prefix = "web_buffer_texture_";
-        if (b.res_name.rfind(buffer_texture_prefix, 0) == 0) {
-          const std::string name = b.res_name.substr(buffer_texture_prefix.size());
+        if (b.res_name.rfind("web_buffer_texture_", 0) == 0) {
+          const std::string name = b.res_name.substr(sizeof("web_buffer_texture_") - 1);
           const ShaderInput *sampler = iface->uniform_get(StringRefNull(name.c_str()));
           const int unit = sampler ? sampler->binding : -1;
           e.buffer = unit >= 0 && unit < WEBGPU_MAX_TEX ? bound_tex_buffer_[unit] : nullptr;

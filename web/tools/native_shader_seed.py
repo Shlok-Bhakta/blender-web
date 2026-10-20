@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 from pathlib import Path
 from prepare import ROOT
@@ -36,6 +37,10 @@ def main():
     entries = json.loads(args.capture.read_text())
     assert len(entries) > 50 and len(dict(entries)) == len(entries)
     assert all(isinstance(key, str) and isinstance(value, str) and value for key, value in entries)
+    cache_version = re.search(r'"(v\d+):%s:', (ROOT / 'web/native/gpu/webgpu_shader.cc').read_text())
+    assert cache_version, 'Cannot determine the current shader cache format'
+    assert all(key.startswith(cache_version[1] + ':') for key, _ in entries), \
+        'Capture contains another cache format; use a fresh browser context'
     seed = {'license':'GPL-2.0-or-later', 'translatorInputs': inputs, 'captureBundle': acceptance['bundleVersion'],
             'captureSourceRef': subprocess.check_output(['git', 'rev-parse', args.source_ref],
                                                        cwd=ROOT, text=True).strip(),

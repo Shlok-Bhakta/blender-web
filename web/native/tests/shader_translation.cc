@@ -73,10 +73,12 @@ void main() { color = VOLUME_COLOR(smoke,0.5); }
   assert(volume_wgsl == tint::Success && volume_wgsl.Get().wgsl.find("texture_2d<f32>") != std::string::npos);
   for (const char *type : {"vec4", "ivec4", "uvec4"}) {
     const std::string buffer_source = std::string("#version 450\n") +
-        webgpu_buffer_texture_declaration("values", type, 0) + R"(
+        webgpu_buffer_texture_declaration("values", type, 0) +
+        webgpu_buffer_texture_declaration("other_values", type, 1) + R"(
 #define RESOURCE(table) values
 #define FETCH(table, index) texelFetch (RESOURCE(table) , index)
-void main() { gl_Position = vec4(FETCH(0, 1)) / float(max(textureSize(RESOURCE(0)), 1)); }
+void main() { gl_Position = (vec4(FETCH(0, 1)) + vec4(texelFetch(other_values, 0))) /
+    float(max(textureSize(RESOURCE(0)), 1)); }
 )";
     auto buffer_pp = compiler.PreprocessGlsl(buffer_source, shaderc_vertex_shader,
                                            "buffer-texture", compile_options);
@@ -97,6 +99,8 @@ void main() { gl_Position = vec4(FETCH(0, 1)) / float(max(textureSize(RESOURCE(0
     assert(buffer_wgsl == tint::Success);
     assert(buffer_wgsl.Get().wgsl.find("storage, read") != std::string::npos);
     assert(buffer_wgsl.Get().wgsl.find("arrayLength") != std::string::npos);
+    assert(buffer_wgsl.Get().wgsl.find("web_buffer_texture_values") != std::string::npos);
+    assert(buffer_wgsl.Get().wgsl.find("web_buffer_texture_other_values") != std::string::npos);
   }
   puts("{\"shaderRecoveryUnwinds\":true,\"translationAfterRecovery\":true,\"resourceMacroSampler1D\":true,\"bufferTexturesRGBA32\":true}");
 }

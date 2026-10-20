@@ -158,6 +158,31 @@ offline and reads VDB files from OPFS. Use `WEB_TEST_HARDWARE=1` for its hardwar
 recording, then `python3 web/tools/native_ocean_recording.py --kind volume` to
 caption it.
 
+`image-vector.cjs` checks image codecs, SVG import, Potrace, SVG/PDF export and
+offline reopening. Generate its paired fixtures with desktop Blender:
+
+```sh
+blender -b --factory-startup --python-exit-code 1 --python-expr "import runpy; runpy.run_path('web/tests/image_vector.py')['fixtures']('web/tests/fixtures/image-vector')"
+node web/tests/image-vector.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/image-vector.cjs
+WEB_TEST_HARDWARE=1 node web/tests/image-vector.cjs
+blender -b --factory-startup --python-exit-code 1 --python web/tests/verify_image_vector_desktop.py -- build/native/image-vector-evidence-hardware
+```
+
+The desktop verifier needs Poppler's `pdfinfo` and `pdftoppm`. It reads the
+browser's encoded images and SVG, then rasterizes the PDF to check actual
+artwork. The browser check initializes a temporary 3D View while using the
+original Python console, so export projection has a real viewport. Its final
+viewport uses vertex colors, where Blender's SVG importer stores path colors.
+Drawing requires `dual-source-blending`; software adapters without it run the
+IO checks with the imported object hidden. Combine `WEB_TEST_HARDWARE=1` and
+`WEB_TEST_UI_FALLBACK=1` to validate fallback drawing on hardware.
+`freestyle.cjs` checks a small Cycles CPU contour render against
+`web/tests/fixtures/freestyle/`. Use `WEB_RENDER_SOFTWARE=1` to test its display
+on software WebGPU. `native_dependency_recording.py` captions the hardware
+image/vector and Freestyle recordings. `native_dependency_status.py --blender
+/path/to/blender` compares the desktop and browser's actual build flags.
+
 Common original Blender shader translations are bundled in the preload data.
 `native_shader_seed.py` verifies their compiler/source fingerprints; staging
 rejects stale seeds. Unseen shaders still compile at runtime and are stored in
@@ -167,7 +192,10 @@ IndexedDB. After changing the translator, first build with
 `WEB_RENDER_REFERENCE=web/docs/eevee-default-scene-render.png`. Then pass its
 `shader-cache.json` to `native_shader_seed.py --source-ref COMMIT`, using the
 commit containing the matching translator sources, and rebuild normally to
-package the verified seed. The opt-in render profiler accepts
+package the verified seed.
+`--render-only` skips the UI fallback link for private shader-bootstrap builds;
+it also excludes older fallback files from the collected site. Normal builds
+still produce both variants. The opt-in render profiler accepts
 `WEB_RENDER_GPU_TIMESTAMPS=1` with `WEB_RENDER_PROFILE=1` to report actual GPU
 pass durations. Keep these instrumented runs separate from benchmark results.
 `WEB_RENDER_RESIZE_DURING_RENDER=1` also changes the window size three times

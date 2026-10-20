@@ -53,6 +53,11 @@ inline bool GHOST_web_bootstrap(int argc, const char **argv,
   EM_ASM({
     (async () => {
       try {
+        // The pinned emdawnwebgpu port predates the hyphenated alpha spelling.
+        // Keep dual-source blend descriptors compatible with browser WebGPU.
+        WebGPU.BlendFactor = WebGPU.BlendFactor.map(value =>
+          value === 'src1alpha' ? 'src1-alpha' :
+          value === 'one-minus-src1alpha' ? 'one-minus-src1-alpha' : value);
         await globalThis['blenderLoadShaderCache']();
         try {
           const storage = await navigator.storage.estimate();

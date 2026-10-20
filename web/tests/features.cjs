@@ -50,7 +50,7 @@ async function main() {
       recordedNotices=evidence.featureVariants.find(result=>result.variant===(uiFallback?'ui':'render') && !result.hardware);
       assert(recordedNotices,'Missing recorded notice checks');
     }
-    for (const flag of ['WITH_OPENVDB','WITH_NANOVDB','WITH_MOD_FLUID','WITH_FFTW3','WITH_MOD_OCEANSIM','WITH_ALEMBIC','WITH_GMP','WITH_MANIFOLD','WITH_MOD_REMESH','WITH_UV_SLIM','WITH_QUADRIFLOW','WITH_PYTHON_NUMPY','WITH_CYCLES','WITH_OPENSUBDIV','WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
+    for (const flag of ['WITH_IMAGE_WEBP','WITH_IMAGE_OPENJPEG','WITH_IMAGE_CINEON','WITH_IO_GREASE_PENCIL','WITH_PUGIXML','WITH_HARU','WITH_POTRACE','WITH_FREESTYLE','WITH_OPENVDB','WITH_NANOVDB','WITH_MOD_FLUID','WITH_FFTW3','WITH_MOD_OCEANSIM','WITH_ALEMBIC','WITH_GMP','WITH_MANIFOLD','WITH_MOD_REMESH','WITH_UV_SLIM','WITH_QUADRIFLOW','WITH_PYTHON_NUMPY','WITH_CYCLES','WITH_OPENSUBDIV','WITH_BULLET','WITH_IK_SOLVER','WITH_IK_ITASC','WITH_IO_WAVEFRONT_OBJ','WITH_IO_STL','WITH_IO_PLY','WITH_IO_FBX']) {
       assert.equal(manifest.buildOptions[flag],true,flag);
     }
     await page.evaluate(source=>Module.FS.writeFile('/tmp/web-features.py',source),
@@ -72,6 +72,8 @@ async function main() {
       manifold:['LICENSE'], numpy:['LICENSE.txt','LICENSES_bundled.txt'],
       fftw:['COPYING'], alembic:['LICENSE.txt'],
       openvdb:['LICENSE'], blosc:['LICENSES/BLOSC.txt','LICENSES/LZ4.txt','LICENSES/SNAPPY.txt'],
+      webp:['COPYING','PATENTS'], openjpeg:['LICENSE'], pugixml:['LICENSE.md'],
+      haru:['LICENSE'], potrace:['COPYING'],
     })) {
       const notices=report.dependencyNotices[dependency]={};
       for (const name of names) {

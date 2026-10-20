@@ -25,12 +25,17 @@ batches. The static site's
 | Alembic scene exchange | Enabled | Ogawa animation in both directions with desktop Blender, mesh deformation, UVs, parent transforms and persistent offline reopen |
 | OpenVDB and NanoVDB | Enabled | Float sphere grids, ZIP/Blosc file exchange, NanoVDB values and original mesh/volume modifiers |
 | Mantaflow gas simulation | Enabled | Four frames at resolution 16, density grids compared with desktop and OpenVDB cache output |
+| WebP, JPEG 2000, Cineon and DPX | Enabled | Small-file read/write compared with desktop; WebP lossless, JP2 16-bit, Cineon 10-bit and DPX 16-bit |
+| Grease Pencil SVG/PDF | Enabled | Authored SVG import, SVG export/reimport, desktop exchange and independent PDF rasterization |
+| Potrace image tracing | Enabled | Original image-to-Grease-Pencil operator, stroke geometry compared with desktop |
+| Freestyle contour rendering | Enabled in JSPI bundle | Cycles CPU cube with red contour strokes, saved pixels compared with desktop |
 | USD, Hydra and MaterialX | Deferred | Port dependencies, file IO and applicable rendering integration |
 | Audio, FFmpeg, video and time stretching | Deferred | Codec libraries plus browser audio/device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
-| Tracking, Freestyle and remaining image/vector formats | Deferred | Build dependencies and exercise actual operations |
+| Tracking and camera solving | Deferred | libmv/Ceres dependency work and actual tracking/solve checks |
+| glTF Draco and meshoptimizer compression | Deferred | Library ports plus static Python bridges for add-ons that currently load native shared libraries |
 | Translation, text shaping and IME | Deferred | HarfBuzz/FriBidi and browser text input integration |
 | Additional windows, NDOF devices and XR | Deferred | Browser platform/device integration |
 
@@ -55,6 +60,33 @@ The next dependency groups include USD for scene exchange. Audio and FFmpeg also
 need browser playback integration. Device file selection and download/export
 integration remain separate from the persistent browser filesystem.
 
+The [dependency status report](../docs/dependency-status.json) compares the actual
+desktop and browser `bpy.app.build_options` values and lists the base library
+recipes. These coarse flags are not a feature-parity percentage. USD/MaterialX,
+audio/video, tracking and translation remain portable dependency work. OSL,
+denoising and GPU evaluators also need renderer integration. Desktop JACK,
+PulseAudio and OpenAL drivers are not browser audio backends; browser audio,
+NDOF and XR require platform integrations.
+
+WebP 1.6.0, OpenJPEG 2.5.3, PugiXML 1.10, libharu 2.4.5 and Potrace 1.16
+follow Blender's pinned archives and checksums. OpenImageIO is rebuilt with its
+WebP and JPEG 2000 plugins, including the writer Blender uses for WebP. The
+Blender Cineon/DPX wrappers and bundled Freestyle code remain unchanged.
+The OpenImageIO DPX patch converts negative buffer-size markers to signed
+64-bit values before multiplication, avoiding a nearly 4 GiB allocation on
+32-bit Wasm. Grease Pencil reads its existing RGBA32 GPU buffer records
+through read-only WebGPU storage bindings; other buffer-texture formats
+still need implementation and validation. Grease Pencil viewport composition
+requires the adapter's `dual-source-blending` feature. Hardware checks cover
+drawing in both runtime variants. SwiftShader lacks that feature, so its
+checks cover image/vector IO with the imported object hidden.
+Image acceptance covers small files, not every format variant or large-image
+capacity. Vector acceptance covers filled/stroked paths, a circle, single-image
+tracing and one-frame SVG/PDF exports. Freestyle acceptance uses a 256-pixel,
+16-sample Cycles CPU cube; other style modules and production scenes are untested.
+
+[Watch the image, vector and Freestyle recording](../docs/image-vector-freestyle-walkthrough.mp4).
+
 OpenVDB and NanoVDB 13.0.0 use Blender's pinned source archive, with the existing
 TBB and compression libraries plus Blosc 1.21.1. Delayed loading is disabled,
 as in Blender's desktop dependency recipe. The separate OpenVDB Python module
@@ -75,9 +107,9 @@ variants reopen VDB fixtures from OPFS after an offline reload.
 | --- | --- |
 | 0:00 | Start Blender with OpenVDB and NanoVDB |
 | 0:11 | Compare VDB import and volume modifiers with desktop Blender |
-| 0:15 | Mesh to Volume and Volume to Mesh in the original viewport |
-| 0:21 | Replay the four-frame Mantaflow gas simulation in Blender |
-| 0:31 | Reload offline and reopen the VDB files from browser storage |
+| 0:14 | Mesh to Volume and Volume to Mesh in the original viewport |
+| 0:20 | Replay the four-frame Mantaflow gas simulation in Blender |
+| 0:30 | Reload offline and reopen the VDB files from browser storage |
 <!-- /VOLUME_RECORDING_CHAPTERS -->
 
 The [memory64 investigation](../docs/memory64.md) records a standalone shared

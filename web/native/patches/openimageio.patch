@@ -107,3 +107,17 @@
      // FIXME -- we seem to do the wrong thing with libcpp on Mac M1. Disable
      // when on aarch64 for now. Come back and fix then when I have easier
      // access to an M1 Mac.
+--- a/src/dpx.imageio/libdpx/DPXColorConverter.cpp
++++ b/src/dpx.imageio/libdpx/DPXColorConverter.cpp
+@@ -301 +301 @@
+-				return pixels * -3 * bytes;
++				return -int64_t(pixels) * 3 * bytes;
+@@ -309 +309 @@
+-				return pixels * -4 * bytes;
++				return -int64_t(pixels) * 4 * bytes;
+@@ -610 +610 @@
+-				return pixels * -3 * bytes;
++				return -int64_t(pixels) * 3 * bytes;
+@@ -618 +618 @@
+-				return pixels * -4 * bytes;
++				return -int64_t(pixels) * 4 * bytes;

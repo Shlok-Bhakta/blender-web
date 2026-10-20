@@ -52,12 +52,13 @@ def stage(base, source, prefix, shader_seed=True):
         stamp.write_text(digest)
 
 
-def collect(base, root):
+def collect(base, root, ui_fallback=True):
     destination = base / 'dist'
     destination.mkdir(exist_ok=True)
     shell = root / 'web/native/site'
     artifacts = [base / 'editor/bin' / f'blender.{suffix}' for suffix in ['js', 'wasm', 'data', 'worker.js']]
-    artifacts += [base / 'editor/bin' / f'blender-ui.{suffix}' for suffix in ['js', 'wasm', 'worker.js']]
+    if ui_fallback:
+        artifacts += [base / 'editor/bin' / f'blender-ui.{suffix}' for suffix in ['js', 'wasm', 'worker.js']]
     artifacts = [path for path in artifacts if path.exists()]
     for required in ['blender.js', 'blender.wasm', 'blender.data']:
         if required not in [path.name for path in artifacts]:
