@@ -273,6 +273,9 @@ def main():
     parser.add_argument("--check-deps", action="store_true", help="Run Wasm dependency checks under Node")
     parser.add_argument("--targets", nargs="+", help="Override the editor archive compilation checkpoint with upstream targets")
     args = parser.parse_args()
+    # Large USD-enabled modules exhaust modest hosts when Binaryen runs a pass
+    # on many functions at once. This only controls build-time optimization.
+    os.environ.setdefault("BINARYEN_CORES", "1")
     if args.render_only and not args.app:
         parser.error("--render-only requires --app")
     if args.render_only and args.targets and "blender" not in args.targets:

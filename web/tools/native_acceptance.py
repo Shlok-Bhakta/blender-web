@@ -41,6 +41,12 @@ def main():
            ['usd-evidence', 'usd-evidence-ui', 'usd-evidence-hardware']]
     usd_native = read(base / 'usd-evidence-hardware/native-crosscheck.json')
     usd_recording = read(docs / 'usd-recording.json')
+    for name in ('usd', 'materialx'):
+        installed = read(base / 'deps' / name / 'installed.json')
+        patch = ROOT / 'web/native/patches' / (name + '.patch')
+        assert installed['patch'] == hashlib.sha256(patch.read_bytes()).hexdigest()
+    assert read(base / 'usd-python-check.json')['sphereAdapterPoints'] == 92
+    assert read(base / 'materialx-check.json')['openPBRGraphValid']
     for variant in usd:
         assert variant['bundleVersion'] == version and not variant['browserErrors']
         assert variant['offlineReopen'] and variant['buildOptions']['usd']
@@ -159,6 +165,8 @@ def main():
                               'files':manifest['files']},
               'patchHashes':{path.name:hashlib.sha256(path.read_bytes()).hexdigest()
                              for path in sorted((ROOT / 'web/patches').glob('*.patch'))},
+              'dependencyPatchHashes':{path.name:hashlib.sha256(path.read_bytes()).hexdigest()
+                                       for path in sorted((ROOT / 'web/native/patches').glob('*.patch'))},
               'limitations':[
                   'Cycles CPU acceptance uses the factory cube at 128x128 and 16 samples, with denoising and adaptive sampling disabled.',
                   'Cycles GPU, denoising, progressive display and rendered viewport are not supported.',

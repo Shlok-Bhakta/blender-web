@@ -13,6 +13,11 @@ python3 web/tools/native_build.py --app --jobs 8 --check-deps
 python3 web/tools/serve.py --directory build/native/dist --pages-mode --port 8093
 ```
 
+The build defaults to one Binaryen optimization worker to avoid swapping while
+linking the USD-enabled module. C++ compilation still uses `--jobs`; release
+optimization and Blender's runtime workers are unaffected. Hosts with more RAM
+can override this with `BINARYEN_CORES`.
+
 Open `http://127.0.0.1:8093/`. The service worker supplies the isolation headers
 needed by shared Wasm memory on a static host such as GitHub Pages. A first visit
 reloads once after worker activation. WebGPU and browser workers are required.
