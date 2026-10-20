@@ -183,6 +183,37 @@ on software WebGPU. `native_dependency_recording.py` captions the hardware
 image/vector and Freestyle recordings. `native_dependency_status.py --blender
 /path/to/blender` compares the desktop and browser's actual build flags.
 
+OpenUSD is built as a static C++ monolith, its shader-discovery plugins and
+original Python extension modules. `native_usd.py` generates the CPython inittab
+registration used by the GHOST bootstrap. The original `pxr` Python packages
+are copied into site-packages; schemas and MaterialX libraries join Blender's
+preloaded data package. MaterialX's bundled PugiXML uses private symbols so it
+can coexist with Blender's separate PugiXML build.
+
+`usd-exchange.cjs` compares native-authored USDA, USDC and USDZ scenes with the
+browser's original import/export operators, then repeats the checks offline.
+It checks animation, geometry, UVs, camera/light settings, decoded world
+textures, USD hooks and exported OpenPBR inputs. Eight implicit primitive
+fixtures also compare the original CPU imaging adapters with native Blender.
+Exports use a separate asset directory so they cannot reuse the native input
+textures. Generate references
+and run both variants and independent native readback with:
+
+```sh
+blender -b --factory-startup --python-exit-code 1 --python web/tests/usd_exchange.py -- fixtures web/tests/fixtures/usd-exchange
+node web/tests/usd-exchange.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/usd-exchange.cjs
+WEB_TEST_HARDWARE=1 node web/tests/usd-exchange.cjs
+blender -b --factory-startup --python-exit-code 1 --python web/tests/usd_exchange.py -- native-crosscheck build/native/usd-evidence-hardware
+python3 web/tools/native_usd_recording.py
+```
+
+The USD importer reads USD Preview Surface materials. The MaterialX check
+covers graph export; USD's CPU imaging libraries provide primitive geometry.
+Hydra rendering and MaterialX's separate Python bindings remain disabled. The standalone dependency checks also import static `pxr`
+modules, exercise USDC and tetrahedral surface extraction, and validate an
+OpenPBR MaterialX document with both PugiXML versions linked.
+
 Common original Blender shader translations are bundled in the preload data.
 `native_shader_seed.py` verifies their compiler/source fingerprints; staging
 rejects stale seeds. Unseen shaders still compile at runtime and are stored in
@@ -267,5 +298,6 @@ with its matching source changes. The acceptance tool produces
 archive to a release targeting that commit, then supply the release tag and
 archive SHA-256 to the workflow. It verifies the
 committed bundle version and every runtime file, then repeats startup, cache,
-resize/storage, modeling and Cycles checks before GitHub Pages deployment. The automatic
+resize/storage, modeling, scene exchange, image/vector and render checks before
+GitHub Pages deployment. The automatic
 source-build workflow remains available and builds the application itself.

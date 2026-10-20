@@ -144,6 +144,44 @@ def import_file(path):
     assert result == {'FINISHED'}, result
 
 
+def write_primitives(path):
+    from pxr import Gf, Usd, UsdGeom
+    stage = Usd.Stage.CreateNew(str(path))
+    UsdGeom.SetStageUpAxis(stage, UsdGeom.Tokens.z)
+    shapes = [(UsdGeom.Sphere, 'Sphere', {'radius': 1.2}),
+              (UsdGeom.Cube, 'Cube', {'size': 1.5}),
+              (UsdGeom.Cone, 'Cone', {'radius': .7, 'height': 2., 'axis': 'Z'}),
+              (UsdGeom.Cylinder, 'Cylinder', {'radius': .8, 'height': 2.2, 'axis': 'Y'}),
+              (UsdGeom.Capsule, 'Capsule', {'radius': .5, 'height': 1.5, 'axis': 'X'}),
+              (UsdGeom.Plane, 'Plane', {'width': 2., 'length': 3., 'axis': 'Z'}),
+              (UsdGeom.Capsule_1, 'Capsule_1', {'radiusTop': .35, 'radiusBottom': .7,
+                                              'height': 1.2, 'axis': 'Z'}),
+              (UsdGeom.Cylinder_1, 'Cylinder_1', {'radiusTop': .3, 'radiusBottom': .8,
+                                                'height': 1.7, 'axis': 'X'})]
+    for index, (kind, name, attributes) in enumerate(shapes):
+        shape = kind.Define(stage, '/' + name)
+        for attribute, value in attributes.items():
+            assert shape.GetPrim().GetAttribute(attribute).Set(value)
+        shape.AddTranslateOp().Set(Gf.Vec3d(index * 4, 0, 0))
+    stage.GetRootLayer().Save()
+
+
+def primitive_snapshot(path):
+    import_file(path)
+    result = {}
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    for obj in sorted(bpy.context.scene.objects, key=lambda obj: obj.name):
+        assert obj.type == 'MESH', (obj.name, obj.type)
+        evaluated = obj.evaluated_get(depsgraph)
+        mesh = evaluated.to_mesh()
+        result[obj.name] = {'vertices': [v for vertex in mesh.vertices for v in vertex.co],
+                            'polygons': [list(face.vertices) for face in mesh.polygons],
+                            'matrix': [v for row in obj.matrix_world for v in row]}
+        evaluated.to_mesh_clear()
+    assert len(result) == 8, result.keys()
+    return result
+
+
 def inspect_stage(path):
     from pxr import Ar, Sdf, Usd, UsdGeom, UsdShade
     stage = Usd.Stage.Open(str(path))
@@ -181,12 +219,14 @@ def inspect_stage(path):
 def fixtures(directory):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
+    write_primitives(directory / 'primitives.usda')
+    primitives = primitive_snapshot(directory / 'primitives.usda')
     bpy.utils.register_class(ExchangeHook)
     try:
         author_scene()
         for ext in FORMATS:
             export(directory / ('desktop.' + ext))
-        report = {'formats': {}, 'blenderVersion': bpy.app.version_string,
+        report = {'formats': {}, 'primitives': primitives, 'blenderVersion': bpy.app.version_string,
                   'sourceSha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
         for ext in FORMATS:
             path = directory / ('desktop.' + ext)
@@ -211,13 +251,18 @@ def run(directory):
     import sys
     static_modules = sorted(name for name in sys.builtin_module_names if name.startswith('pxr.'))
     if sys.platform == 'emscripten':
-        assert len(static_modules) >= 29, static_modules
+        assert len(static_modules) >= 32, static_modules
         for module in static_modules:
             importlib.import_module(module.rsplit('.', 1)[0])
     report = {'usdVersion': Usd.GetVersion(), 'formats': {},
               'staticPythonModules': static_modules,
               'buildOptions': {n: getattr(bpy.app.build_options, n) for n in dir(bpy.app.build_options)
                                if not n.startswith('_') and isinstance(getattr(bpy.app.build_options, n), bool)}}
+    primitives = primitive_snapshot(directory / 'primitives.usda')
+    primitive_error = compare(primitives, reference['primitives'])
+    report['primitives'] = {'objects': sorted(primitives),
+        'vertices': sum(len(item['vertices']) // 3 for item in primitives.values()),
+        'maximumDesktopCoordinateError': primitive_error}
     bpy.utils.register_class(ExchangeHook)
     try:
         for ext in FORMATS:

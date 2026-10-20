@@ -44,7 +44,9 @@ def main():
     for variant in usd:
         assert variant['bundleVersion'] == version and not variant['browserErrors']
         assert variant['offlineReopen'] and variant['buildOptions']['usd']
-        assert len(variant['staticPythonModules']) >= 29
+        assert len(variant['staticPythonModules']) >= 32
+        assert len(variant['primitives']['objects']) == 8
+        assert variant['primitives']['maximumDesktopCoordinateError'] < 2e-4
         assert variant['hookEvents'].count('export') == 3 and variant['hookEvents'].count('import') == 6
         assert variant['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/usd_exchange.py').read_bytes()).hexdigest()
         for name, expected in variant['fixtureHashes'].items():
@@ -170,6 +172,7 @@ def main():
                   'Grease Pencil viewport drawing requires the WebGPU dual-source-blending feature; SwiftShader validates image/vector IO with the authored object hidden. Hardware checks cover drawing in both runtime variants.',
                   'Vector acceptance covers authored paths, fills and a circle, SVG/PDF export and one-image Potrace tracing. This does not establish every SVG feature or multi-frame vector export.',
                   'Freestyle acceptance covers a 256x256, 16-sample Cycles CPU cube with red contour strokes. Other style modules and large scenes are not covered.',
+                  'USD acceptance covers animated mesh, UV, camera/light and environment-texture exchange in USDA/USDC/USDZ, eight implicit shapes, static pxr Python modules and USD hooks. MaterialX checks cover OpenPBR graph export. Hydra rendering, MaterialX Python bindings and arbitrary USD production assets are not covered.',
                   'Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.',
                   'Functional checks ran with other host activity and are not an isolated performance benchmark.']}
     archive = base / 'blender-web-pages.tar.gz'

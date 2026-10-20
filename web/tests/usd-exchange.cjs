@@ -28,7 +28,7 @@ async function main(){
   const fixtures=path.join(__dirname,'fixtures/usd-exchange'),ref=JSON.parse(fs.readFileSync(path.join(fixtures,'reference.json')));
   assert.equal(ref.sourceSha256,sourceSha256,'Regenerate native USD references');
   const fixtureHashes={};
-  const fixtureNames=['reference.json','desktop.usda','desktop.usdc','desktop.usdz',...fs.readdirSync(path.join(fixtures,'textures')).map(name=>'textures/'+name)];
+  const fixtureNames=['reference.json','primitives.usda','desktop.usda','desktop.usdc','desktop.usdz',...fs.readdirSync(path.join(fixtures,'textures')).map(name=>'textures/'+name)];
   for(const name of fixtureNames){
    const bytes=fs.readFileSync(path.join(fixtures,name));fixtureHashes[name]=crypto.createHash('sha256').update(bytes).digest('hex');
    await page.evaluate(({name,base64})=>{const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));for(const dir of ['/tmp/usd-exchange','/user/blender-web/home/usd-exchange']){Module.FS.mkdirTree((dir+'/'+name).slice(0,(dir+'/'+name).lastIndexOf('/')));Module.FS.writeFile(dir+'/'+name,bytes);}},{name,base64:bytes.toString('base64')});
@@ -39,7 +39,7 @@ async function main(){
   await command("exec(compile(open('/tmp/usd_exchange.py').read(),'usd_exchange.py','exec')); browser_check('/tmp/usd-exchange')",'USD_EXCHANGE_FINISHED:');
   assert(!messages.includes('USD_EXCHANGE_FAILED'),'See browser.log');
   const report=JSON.parse(messages.find(t=>t.startsWith('USD_EXCHANGE_DONE:')).slice('USD_EXCHANGE_DONE:'.length));
-  assert(report.staticPythonModules.length>=29,'Import every original static pxr extension');
+  assert(report.staticPythonModules.length>=32,'Import every original static pxr extension');
   for(const name of ['results.json','browser.usda','browser.usdc','browser.usdz','usd-exchange.blend']){
    const sourcePath='/tmp/usd-exchange/'+(name.startsWith('browser.')?'export/':'')+name;
    const bytes=await page.evaluate(name=>Array.from(Module.FS.readFile(name)),sourcePath);fs.writeFileSync(path.join(output,name),Buffer.from(bytes));

@@ -59,8 +59,13 @@ Their original licenses are published under `licenses/dependencies/materialx/`
 and `licenses/dependencies/usd/`. MaterialX's bundled PugiXML 1.9 retains its
 MIT notice and uses private symbols in the static build, alongside Blender's
 PugiXML 1.10. OpenUSD's license file includes its bundled third-party notices.
-Its original C++ libraries and 29 Python extension modules are static Wasm
+Its original C++ libraries and Python extension modules are static Wasm
 builds. The build patches keep Wasm exception handling consistent, fix two
 32-bit assumptions, isolate module wrapper names and package schema resources
-with Blender's preloaded data. Hydra imaging and native graphics plugins are
+with Blender's preloaded data. CPU imaging adapters provide primitive-shape
+geometry through OpenSubdiv. A Wasm-only shader-registry declaration avoids
+Clang's incorrect destructor callback for static reference temporaries, tracked
+in [LLVM #226619](https://github.com/llvm/llvm-project/pull/226619). The standalone
+USD check runs Python finalization and process exit to cover this callback.
+Hydra rendering and native graphics backends are
 disabled in this scene-exchange build.

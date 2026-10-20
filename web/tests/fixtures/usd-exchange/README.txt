@@ -15,3 +15,8 @@ UVs, material inputs, transforms, camera/light settings and decoded world
 texture pixels. It also records shader identifiers, resolved assets and the
 test script's SHA-256. These small fixtures test scene exchange, not capacity
 or performance on production USD stages.
+
+primitives.usda adds sphere, cube, cone, cylinder, capsule and plane schemas,
+including the tapered cylinder/capsule variants and different axes. Native
+Blender imports all eight through USD's CPU imaging adapters; reference.json
+records every vertex, polygon and object transform.

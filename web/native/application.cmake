@@ -24,9 +24,6 @@ function(blender_web_configure_application)
     include("${CMAKE_PREFIX_PATH}/lib/blender-web-usd/libraries.cmake")
     target_link_libraries(blender PRIVATE
       -Wl,--start-group ${BLENDER_WEB_USD_PYTHON_LIBRARIES} -Wl,--end-group)
-    # Blender's USD PCH includes Hydra headers, although scene IO uses core USD.
-    # Hydra and its native graphics backends are a separate browser port.
-    set_target_properties(bf_io_usd PROPERTIES DISABLE_PRECOMPILE_HEADERS ON)
   endif()
   set_property(TARGET blender APPEND PROPERTY LINK_DEPENDS
     "${CMAKE_BINARY_DIR}/../assets.sha256"

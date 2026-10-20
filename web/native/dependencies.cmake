@@ -85,7 +85,8 @@ if(WITH_USD)
   # Keep registry constructors even when the linker sees no direct API call.
   find_package(pxr CONFIG REQUIRED)
   find_package(USD REQUIRED)
-  # usdShaders already links the monolith with WHOLE_ARCHIVE. Enter that
-  # chain once; listing both archives would load every core object twice.
-  set(USD_LIBRARIES "$<LINK_LIBRARY:WHOLE_ARCHIVE,usdShaders>")
+  # These static plugins reference the monolith with WHOLE_ARCHIVE. Keep the
+  # monolith transitive so CMake emits it once, after its plugin consumers.
+  set(USD_LIBRARIES "$<LINK_LIBRARY:WHOLE_ARCHIVE,usdShaders>"
+                    "$<LINK_LIBRARY:WHOLE_ARCHIVE,sdrGlslfx>")
 endif()

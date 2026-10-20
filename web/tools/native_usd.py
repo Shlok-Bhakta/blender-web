@@ -19,7 +19,8 @@ def install_bindings(prefix):
         initializer = initializers[0]
         modules.append(('pxr.' + library.parent.name + '.' + initializer.removeprefix('PyInit_'), initializer))
     required = {'pxr.Tf._tf', 'pxr.Sdf._sdf', 'pxr.Usd._usd', 'pxr.UsdGeom._usdGeom',
-                'pxr.UsdShade._usdShade', 'pxr.UsdMtlx._usdMtlx'}
+                'pxr.UsdShade._usdShade', 'pxr.UsdMtlx._usdMtlx',
+                'pxr.CameraUtil._cameraUtil', 'pxr.GeomUtil._geomUtil', 'pxr.PxOsd._pxOsd'}
     if not required.issubset({name for name, _ in modules}):
         raise RuntimeError(f'Missing USD static extensions: {modules}')
     header = prefix / 'include/blender-web-usd.hh'

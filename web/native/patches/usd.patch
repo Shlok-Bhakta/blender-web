@@ -137,3 +137,33 @@
      }
  };
  
+--- a/pxr/imaging/hgi/hgi.cpp
++++ b/pxr/imaging/hgi/hgi.cpp
+@@ -60,6 +60,11 @@
+             "HgiMetal";
+         #elif defined(ARCH_OS_WINDOWS)
+             "HgiGL";
++        #elif defined(ARCH_OS_WASM_VM)
++            "";
++            TF_CODING_ERROR("Native Hgi graphics devices are unavailable in "
++                            "the WebAssembly CPU imaging build");
++            return nullptr;
+         #else
+             ""; 
+             #error Unknown Platform
+--- a/pxr/usd/sdr/shaderProperty.cpp
++++ b/pxr/usd/sdr/shaderProperty.cpp
+@@ -77,7 +77,13 @@
+             }
+             return result;
+         };
++#if defined(__EMSCRIPTEN__)
++        // Avoid Clang's incorrect exit callback for reference temporaries.
++        // https://github.com/llvm/llvm-project/pull/226619
++        static const TokenToSdfTypeMap aliasesTokensToSdfValueTypeNames =
++#else
+         static const TokenToSdfTypeMap &aliasesTokensToSdfValueTypeNames =
++#endif
+             MapBuilder();
+         return aliasesTokensToSdfValueTypeNames;
+     }

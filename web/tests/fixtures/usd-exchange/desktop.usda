@@ -46,7 +46,7 @@ def Xform "root" (
         }
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
-        def Mesh "Cube_001" (
+        def Mesh "Cube_002" (
             active = true
             prepend apiSchemas = ["MaterialBindingAPI"]
         )
@@ -65,7 +65,7 @@ def Xform "root" (
             )
             int[] primvars:st:indices = [0, 3, 8, 6, 6, 8, 13, 12, 12, 13, 11, 10, 10, 11, 4, 1, 7, 12, 10, 2, 13, 9, 5, 11]
             uniform token subdivisionScheme = "none"
-            custom string userProperties:blender:data_name = "Cube.001"
+            custom string userProperties:blender:data_name = "Cube.002"
         }
     }
 
