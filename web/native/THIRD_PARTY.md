@@ -53,3 +53,14 @@ unchanged, pinned Blender source.
 The OpenImageIO patch also preserves the DPX reader's negative buffer-size
 markers on 32-bit targets by converting to a signed 64-bit value before
 multiplication. Without that conversion, RGBA DPX reads request nearly 4 GiB.
+
+MaterialX 1.39.4 and OpenUSD 26.03 use Blender's pinned archives and checksums.
+Their original licenses are published under `licenses/dependencies/materialx/`
+and `licenses/dependencies/usd/`. MaterialX's bundled PugiXML 1.9 retains its
+MIT notice and uses private symbols in the static build, alongside Blender's
+PugiXML 1.10. OpenUSD's license file includes its bundled third-party notices.
+Its original C++ libraries and 29 Python extension modules are static Wasm
+builds. The build patches keep Wasm exception handling consistent, fix two
+32-bit assumptions, isolate module wrapper names and package schema resources
+with Blender's preloaded data. Hydra imaging and native graphics plugins are
+disabled in this scene-exchange build.

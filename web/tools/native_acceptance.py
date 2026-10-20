@@ -37,6 +37,26 @@ def main():
                   ['freestyle-evidence', 'freestyle-evidence-software']]
     dependency_recording = read(docs / 'image-vector-recording.json')
     dependency_status = read(docs / 'dependency-status.json')
+    usd = [read(base / name / 'acceptance.json') for name in
+           ['usd-evidence', 'usd-evidence-ui', 'usd-evidence-hardware']]
+    usd_native = read(base / 'usd-evidence-hardware/native-crosscheck.json')
+    usd_recording = read(docs / 'usd-recording.json')
+    for variant in usd:
+        assert variant['bundleVersion'] == version and not variant['browserErrors']
+        assert variant['offlineReopen'] and variant['buildOptions']['usd']
+        assert len(variant['staticPythonModules']) >= 29
+        assert variant['hookEvents'].count('export') == 3 and variant['hookEvents'].count('import') == 6
+        assert variant['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/usd_exchange.py').read_bytes()).hexdigest()
+        for name, expected in variant['fixtureHashes'].items():
+            assert hashlib.sha256((ROOT / 'web/tests/fixtures/usd-exchange' / name).read_bytes()).hexdigest() == expected
+        for extension, case in variant['formats'].items():
+            assert case['desktopImportMaximumError'] < 2e-4 and case['roundtripMaximumError'] < 2e-4
+            assert case['maximumMaterialXInputError'] < 2e-4
+            assert case['stage']['assets'] and case['stage']['hookMetadata'] == 'original-python-hook'
+            assert usd_native[extension]['maximumBrowserSceneError'] < 2e-4
+            assert usd_native[extension]['maximumBrowserMaterialXInputError'] < 2e-4
+    assert usd_recording['bundleVersion'] == version
+    assert hashlib.sha256((ROOT / usd_recording['path']).read_bytes()).hexdigest() == usd_recording['sha256']
     desktop_images = read(base / 'image-vector-evidence-hardware/desktop-verification.json')
     desktop_freestyle = read(base / 'freestyle-evidence/desktop-verification.json')
     assert desktop_freestyle['blendSha256'] == freestyles[0]['blendSha256']
@@ -125,6 +145,8 @@ def main():
               'freestyle':{'browserVariants':freestyles,'browserSceneInDesktop':desktop_freestyle},
               'dependencyRecording':dependency_recording,
               'dependencyStatus':dependency_status,
+              'usdMaterialX':{'browserVariants':usd,'browserExportsInDesktop':usd_native,
+                              'recording':usd_recording},
               'performance':performance,
               'renderOptimization':optimization,
               'memory64Probe':{'productionEnabled':False,'standalone':memory64},

@@ -49,6 +49,8 @@ RECIPES = {
     "PUGIXML": ("", ["-DPUGIXML_BUILD_TESTS=OFF"]),
     "HARU": ("", ["-DLIBHPDF_EXAMPLES=OFF", "-DMATH_LIB=m", "-DM_LIB=m"]),
     "POTRACE": ("", []),
+    "MATERIALX": ("", ["-DMATERIALX_BUILD_SHARED_LIBS=OFF", "-DMATERIALX_BUILD_PYTHON=OFF", "-DMATERIALX_BUILD_RENDER=OFF", "-DMATERIALX_BUILD_TESTS=OFF", "-DMATERIALX_BUILD_VIEWER=OFF", "-DMATERIALX_BUILD_GRAPH_EDITOR=OFF", "-DMATERIALX_BUILD_GEN_OSL=OFF", "-DMATERIALX_BUILD_GEN_MDL=OFF"]),
+    "USD": ("", ["-DPXR_BUILD_MONOLITHIC=ON", "-DPXR_ENABLE_PYTHON_SUPPORT=ON", "-DPXR_BUILD_IMAGING=OFF", "-DPXR_BUILD_USD_IMAGING=OFF", "-DPXR_BUILD_USDVIEW=OFF", "-DPXR_BUILD_USD_TOOLS=OFF", "-DPXR_BUILD_TESTS=OFF", "-DPXR_BUILD_EXAMPLES=OFF", "-DPXR_BUILD_TUTORIALS=OFF", "-DPXR_ENABLE_MATERIALX_SUPPORT=ON", "-DPXR_ENABLE_OPENVDB_SUPPORT=OFF", "-DPXR_ENABLE_GL_SUPPORT=OFF", "-DPXR_ENABLE_VULKAN_SUPPORT=OFF", "-DPXR_ENABLE_OSL_SUPPORT=OFF", "-DPXR_ENABLE_PTEX_SUPPORT=OFF", "-DPXR_BUILD_OPENIMAGEIO_PLUGIN=OFF", "-DPXR_BUILD_OPENCOLORIO_PLUGIN=OFF", "-DPXR_SET_INTERNAL_NAMESPACE=pxrBlender_v26_03"]),
     "TIFF": ("", ["-Dtiff-tools=OFF", "-Dtiff-tests=OFF", "-Dtiff-contrib=OFF", "-Dtiff-docs=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djbig=OFF"]),
     "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0", "-DUSE_WEBP=ON", "-DUSE_OPENJPEG=ON"]),
 }
@@ -56,7 +58,7 @@ RECIPES = {
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
 CXX_PACKAGES = {"FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
-                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "OPENIMAGEIO", "TIFF"}
+                "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
 def run(command, log, cwd=None, env=None):
@@ -113,6 +115,9 @@ def install_notices(source, prefix, name):
                 shutil.copy2(notice, destination / notice.name)
             elif notice.is_dir():
                 shutil.copytree(notice, destination / notice.name, dirs_exist_ok=True)
+    if name == 'MATERIALX':
+        shutil.copy2(source / 'source/MaterialXFormat/External/PugiXML/readme.txt',
+                     destination / 'PugiXML-1.9-MIT.txt')
 
 
 def build(args):
@@ -150,8 +155,27 @@ def build(args):
         patch = ROOT / "web/native/patches" / f"{name.lower()}.patch"
         if patch.exists():
             signature["patch"] = hashlib.sha256(patch.read_bytes()).hexdigest()
+        if name == "USD":
+            signature["dependencyStamps"] = {}
+            for dependency in ("MATERIALX", "TBB"):
+                dependency_stamp = base / dependency.lower() / 'installed.json'
+                if not dependency_stamp.is_file():
+                    raise RuntimeError(f"Build {dependency} before USD")
+                signature["dependencyStamps"][dependency] = hashlib.sha256(
+                    dependency_stamp.read_bytes()).hexdigest()
+            # USD's original Blender hooks exchange Python pxr objects. Build
+            # the same embedded CPython before cross-compiling its bindings.
+            from native_app_deps import build as build_app_dependencies
+            python_report = build_app_dependencies(base.parent, args.jobs, only={"python"})
+            signature["python"] = python_report[0]["signature"]
+            signature["staticBindings"] = hashlib.sha256(
+                (ROOT / 'web/tools/native_usd.py').read_bytes()).hexdigest()
         cached = stamp.exists() and json.loads(stamp.read_text()) == json.loads(json.dumps(signature))
-        if cached and (prefix / 'share/blender-web/licenses' / name.lower()).is_dir():
+        notices = prefix / 'share/blender-web/licenses' / name.lower()
+        notices_ready = notices.is_dir()
+        if name == 'MATERIALX':
+            notices_ready = notices_ready and (notices / 'PugiXML-1.9-MIT.txt').is_file()
+        if cached and notices_ready:
             if (directory / 'source').is_dir():
                 install_notices(directory / 'source', prefix, name)
             print(f"{name}: cached", flush=True)
@@ -195,6 +219,11 @@ def build(args):
         if name == "FREETYPE":
             options += [f"-DBROTLIDEC_INCLUDE_DIRS={prefix / 'include'}",
                         f"-DBROTLIDEC_LIBRARIES={prefix / 'lib/libbrotlidec-static.a'};{prefix / 'lib/libbrotlicommon-static.a'}"]
+        if name == "USD":
+            options += [f"-DPython3_EXECUTABLE={base.parent / 'gpu-deps/build/python-native/python'}",
+                        f"-DPython3_INCLUDE_DIR={prefix / 'include/python3.13'}",
+                        f"-DPython3_LIBRARY={prefix / 'lib/libpython3.13.a'}",
+                        "-DPXR_PY_UNDEFINED_DYNAMIC_LOOKUP=ON"]
         configured = directory / "configured.json"
         configuration = json.loads(json.dumps({**signature, "options": options}))
         previous = json.loads(configured.read_text()) if configured.exists() else {}
@@ -237,6 +266,9 @@ def build(args):
              *options], log)
         run(["cmake", "--build", directory / "build", "--parallel", args.jobs], log)
         run(["cmake", "--install", directory / "build"], log)
+        if name == "USD":
+            from native_usd import install_bindings
+            print(json.dumps(install_bindings(prefix)), flush=True)
         if name == "TIFF":
             # libtiff's static config needs its codec find modules when consumed
             # by another project, including CMake's config-first FindTIFF path.

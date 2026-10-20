@@ -1,0 +1,246 @@
+#usda 1.0
+(
+    customLayerData = {
+        string blender_web_hook = "original-python-hook"
+    }
+    defaultPrim = "root"
+    doc = "Blender v5.2.2 LTS"
+    endTimeCode = 10
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Z"
+)
+
+def Xform "root" (
+    prepend apiSchemas = ["ColorSpaceAPI"]
+    customData = {
+        dictionary Blender = {
+            bool generated = 1
+        }
+    }
+)
+{
+    uniform token colorSpace:name = "lin_rec709_scene"
+
+    def Xform "PortCube"
+    {
+        custom string userProperties:blender:object_name = "PortCube"
+        float3 xformOp:rotateXYZ.timeSamples = {
+            1: (11.459156, -5.7295785, 20.053522),
+        }
+        float3 xformOp:scale.timeSamples = {
+            1: (1, 0.70000005, 1.3),
+        }
+        double3 xformOp:translate.timeSamples = {
+            1: (0, 0, 0),
+            2: (0.06858710944652557, -0.03429355472326279, 0.017146777361631393),
+            3: (0.25240054726600647, -0.12620027363300323, 0.06310013681650162),
+            4: (0.5185185670852661, -0.25925928354263306, 0.12962964177131653),
+            5: (0.8340191841125488, -0.4170095920562744, 0.2085047960281372),
+            6: (1.1659808158874512, -0.5829904079437256, 0.2914952039718628),
+            7: (1.481481671333313, -0.7407408356666565, 0.37037041783332825),
+            8: (1.7475993633270264, -0.8737996816635132, 0.4368998408317566),
+            9: (1.931412935256958, -0.965706467628479, 0.4828532338142395),
+            10: (2, -1, 0.5),
+        }
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Cube_001" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform bool doubleSided = 1
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 2, 3, 7, 6, 6, 7, 5, 4, 4, 5, 1, 0, 2, 6, 4, 0, 7, 3, 1, 5]
+            rel material:binding = </root/_materials/ExchangeBlue>
+            normal3f[] normals = [(-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-1, -1, -1), (-1, -1, 1), (-1, 1, -1), (-1, 1, 1), (1, -1, -1), (1, -1, 1), (1, 1, -1), (1, 1, 1)]
+            texCoord2f[] primvars:st = [(0.375, 0), (0.375, 1), (0.125, 0.75), (0.625, 0), (0.625, 1), (0.875, 0.75), (0.375, 0.25), (0.125, 0.5), (0.625, 0.25), (0.875, 0.5), (0.375, 0.75), (0.625, 0.75), (0.375, 0.5), (0.625, 0.5)] (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = [0, 3, 8, 6, 6, 8, 13, 12, 12, 13, 11, 10, 10, 11, 4, 1, 7, 12, 10, 2, 13, 9, 5, 11]
+            uniform token subdivisionScheme = "none"
+            custom string userProperties:blender:data_name = "Cube.001"
+        }
+    }
+
+    def Scope "_materials"
+    {
+        def Material "ExchangeBlue" (
+            prepend apiSchemas = ["MaterialXConfigAPI", "ColorSpaceAPI"]
+        )
+        {
+            uniform token colorSpace:name = "lin_rec709_scene"
+            string config:mtlx:version = "1.39"
+            token outputs:mtlx:surface.connect = </root/_materials/ExchangeBlue/bnode__Principled_BSDF.outputs:surface>
+            token outputs:surface.connect = </root/_materials/ExchangeBlue/Principled_BSDF.outputs:surface>
+            custom string userProperties:blender:data_name = "ExchangeBlue"
+
+            def Shader "Principled_BSDF"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                float inputs:clearcoat = 0
+                float inputs:clearcoatRoughness = 0.03
+                color3f inputs:diffuseColor = (0.04, 0.3, 0.8)
+                float inputs:ior = 1.5
+                float inputs:metallic = 0.15
+                float inputs:opacity = 1
+                float inputs:roughness = 0.32
+                float inputs:specular = 0.5
+                token outputs:surface
+            }
+
+            def Shader "bnode__Principled_BSDF"
+            {
+                uniform token info:id = "ND_open_pbr_surface_surfaceshader"
+                color3f inputs:base_color = (0.04, 0.3, 0.8)
+                float inputs:base_diffuse_roughness = 0
+                float inputs:base_metalness = 0.15
+                float inputs:base_weight = 1
+                color3f inputs:coat_color = (1, 1, 1)
+                float inputs:coat_darkening
+                float inputs:coat_ior = 1.5
+                float inputs:coat_roughness = 0.03
+                float inputs:coat_roughness_anisotropy
+                float inputs:coat_weight = 0
+                color3f inputs:emission_color = (1, 1, 1)
+                float inputs:emission_luminance = 0
+                color3f inputs:fuzz_color = (1, 1, 1)
+                float inputs:fuzz_roughness = 0.5
+                float inputs:fuzz_weight = 0
+                float3 inputs:geometry_coat_normal
+                float3 inputs:geometry_coat_tangent
+                float3 inputs:geometry_normal
+                float inputs:geometry_opacity = 1
+                float3 inputs:geometry_tangent.connect = </root/_materials/ExchangeBlue/NodeGraphs.outputs:node_003_out>
+                bool inputs:geometry_thin_walled = 0
+                color3f inputs:specular_color = (1, 1, 1)
+                float inputs:specular_ior = 1.5
+                float inputs:specular_roughness = 0.32
+                float inputs:specular_roughness_anisotropy = 0
+                float inputs:specular_weight = 1
+                color3f inputs:subsurface_color = (0.04, 0.3, 0.8)
+                float inputs:subsurface_radius = 0.005
+                color3f inputs:subsurface_radius_scale = (1, 0.2, 0.1)
+                float inputs:subsurface_scatter_anisotropy = 0
+                float inputs:subsurface_weight = 0
+                float inputs:thin_film_ior = 1.33
+                float inputs:thin_film_thickness = 0
+                float inputs:thin_film_weight = 0
+                color3f inputs:transmission_color = (0.04, 0.3, 0.8)
+                float inputs:transmission_depth
+                float inputs:transmission_dispersion_abbe_number
+                float inputs:transmission_dispersion_scale
+                color3f inputs:transmission_scatter
+                float inputs:transmission_scatter_anisotropy
+                float inputs:transmission_weight = 0
+                token outputs:surface
+            }
+
+            def NodeGraph "NodeGraphs"
+            {
+                float3 outputs:node_003_out.connect = </root/_materials/ExchangeBlue/NodeGraphs/node_003.outputs:out>
+
+                def Shader "node"
+                {
+                    uniform token info:id = "ND_normal_vector3"
+                    string inputs:space = "world"
+                    float3 outputs:out
+                }
+
+                def Shader "node_001"
+                {
+                    uniform token info:id = "ND_normalize_vector3"
+                    float3 inputs:in.connect = </root/_materials/ExchangeBlue/NodeGraphs/node.outputs:out>
+                    float3 outputs:out
+                }
+
+                def Shader "node_002"
+                {
+                    uniform token info:id = "ND_tangent_vector3"
+                    string inputs:space = "world"
+                    float3 outputs:out
+                }
+
+                def Shader "node_003"
+                {
+                    uniform token info:id = "ND_normalize_vector3"
+                    float3 inputs:in.connect = </root/_materials/ExchangeBlue/NodeGraphs/node_002.outputs:out>
+                    float3 outputs:out
+                }
+
+                def Shader "node_004"
+                {
+                    uniform token info:id = "ND_rotate3d_vector3"
+                    float inputs:amount = -90
+                    float3 inputs:axis.connect = </root/_materials/ExchangeBlue/NodeGraphs/node_001.outputs:out>
+                    float3 inputs:in.connect = </root/_materials/ExchangeBlue/NodeGraphs/node_003.outputs:out>
+                    float3 outputs:out
+                }
+
+                def Shader "node_005"
+                {
+                    uniform token info:id = "ND_normalize_vector3"
+                    float3 inputs:in.connect = </root/_materials/ExchangeBlue/NodeGraphs/node_004.outputs:out>
+                    float3 outputs:out
+                }
+            }
+        }
+    }
+
+    def Xform "ExchangeCamera"
+    {
+        custom string userProperties:blender:object_name = "ExchangeCamera"
+        float3 xformOp:rotateXYZ = (63.025368, -0.000004383801, 45.83663)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (7, -7, 5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Camera "ExchangeCamera"
+        {
+            float2 clippingRange = (0.1, 1000)
+            float focalLength = 0.42
+            float horizontalAperture = 0.36
+            token projection = "perspective"
+            custom string userProperties:blender:data_name = "ExchangeCamera"
+            float verticalAperture = 0.2025
+        }
+    }
+
+    def Xform "ExchangeLight"
+    {
+        custom string userProperties:blender:object_name = "ExchangeLight"
+        float3 xformOp:rotateXYZ = (0, -0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (2, -3, 5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def SphereLight "ExchangeLight" (
+            prepend apiSchemas = ["ColorSpaceAPI"]
+        )
+        {
+            uniform token colorSpace:name = "lin_rec709_scene"
+            float3[] extent = [(-0, -0, -0), (0, 0, 0)]
+            float inputs:intensity = 238.73242
+            bool inputs:normalize = 1
+            float inputs:radius = 0
+            bool treatAsPoint = 1
+            custom string userProperties:blender:data_name = "ExchangeLight"
+        }
+    }
+
+    def DomeLight "env_light" (
+        prepend apiSchemas = ["ColorSpaceAPI"]
+    )
+    {
+        uniform token colorSpace:name = "lin_rec709_scene"
+        float inputs:intensity = 1
+        asset inputs:texture:file = @./textures/color_0C0C0C.exr@
+    }
+}
+

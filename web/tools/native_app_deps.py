@@ -11,11 +11,12 @@ from prepare import ROOT
 from native_numpy import build as build_numpy
 
 
-def build(base, jobs):
+def build(base, jobs, only=None):
     recipes = ROOT / 'web/native/shader-deps'
     env = dict(os.environ, ROOT=str(ROOT), BLENDER_WEB_NATIVE_BASE=str(base), NPROC=str(jobs))
     outputs = {
-        'python': [base / 'deps/prefix/lib/libpython3.13.a'],
+        'python': [base / 'deps/prefix/lib/libpython3.13.a',
+                   base / 'gpu-deps/build/python-native/python'],
         'tint': [base / 'gpu-deps/build/tint/src/tint/libtint_api.a',
                  base / 'gpu-deps/build/tint/src/tint/libtint_lang_spirv_reader.a',
                  base / 'gpu-deps/build/tint/src/tint/libtint_lang_wgsl_writer.a'],
@@ -25,6 +26,8 @@ def build(base, jobs):
     }
     reports = []
     for name, artifacts in outputs.items():
+        if only is not None and name not in only:
+            continue
         inputs = [recipes / 'dep_common.sh', recipes / f'build_{name}.sh', ROOT / 'web/upstream.json']
         if name == 'tint':
             inputs.append(recipes / 'tint-ice-recovery.patch')
@@ -49,6 +52,8 @@ def build(base, jobs):
                     'sha256': hashlib.sha256(artifact.read_bytes()).hexdigest()})
             stamp.write_text(json.dumps(report, indent=2)+'\n')
         reports.append(json.loads(stamp.read_text()))
-        if name == 'python':
+        if name == 'python' and only is None:
             reports.append(build_numpy(base, jobs))
+    if only is not None:
+        return reports
     (base / 'application-dependencies.json').write_text(json.dumps(reports, indent=2)+'\n')

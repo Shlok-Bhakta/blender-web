@@ -1,0 +1,12 @@
+--- a/source/MaterialXFormat/CMakeLists.txt
++++ b/source/MaterialXFormat/CMakeLists.txt
+@@ -14,3 +14,9 @@
+         MaterialXCore
+     EXPORT_DEFINE
+         MATERIALX_FORMAT_EXPORTS)
++
++# Desktop shared libraries hide this vendored PugiXML. Static Wasm must keep
++# its symbols separate from Blender's independently pinned PugiXML library.
++if(EMSCRIPTEN)
++    target_compile_definitions(MaterialXFormat PRIVATE pugi=blender_web_materialx_pugi)
++endif()

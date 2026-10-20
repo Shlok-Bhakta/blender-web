@@ -25,7 +25,8 @@ def check_dependencies(source, base, prefix, jobs):
                     f"-DCMAKE_TOOLCHAIN_FILE={ROOT / 'web/native/toolchain.cmake'}",
                     f"-DCMAKE_PREFIX_PATH={prefix}", f"-DCMAKE_FIND_ROOT_PATH={prefix}",
                     "-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY", "-DCMAKE_BUILD_TYPE=Release",
-                    "-DWITH_OPENVDB=ON", "-DWITH_NANOVDB=ON"], check=True)
+                    "-DWITH_OPENVDB=ON", "-DWITH_NANOVDB=ON",
+                    "-DWITH_USD=ON", "-DWITH_MATERIALX=ON"], check=True)
     subprocess.run(["cmake", "--build", str(checks), "--parallel", str(jobs)], check=True)
     result = subprocess.run(["node", str(checks / "dependencies.js")], check=True,
                             text=True, stdout=subprocess.PIPE, timeout=120)
@@ -41,6 +42,12 @@ def check_dependencies(source, base, prefix, jobs):
                                      text=True, timeout=120)
     (base / 'openvdb-check.json').write_text(json.dumps(json.loads(output), indent=2) + '\n')
     print(output, end='', flush=True)
+    for name in ('usd-python', 'materialx'):
+        if (checks / f'{name}-check.js').exists():
+            output = subprocess.check_output(['node', str(checks / f'{name}-check.js')],
+                                             cwd=checks, text=True, timeout=120)
+            (base / f'{name}-check.json').write_text(json.dumps(json.loads(output), indent=2) + '\n')
+            print(output, end='', flush=True)
 
 
 def check_image_cache(base, prefix):

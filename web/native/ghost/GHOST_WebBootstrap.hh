@@ -2,6 +2,9 @@
 #pragma once
 #include <emscripten.h>
 #include <blender-web-numpy.hh>
+#ifdef WITH_USD
+#  include <blender-web-usd.hh>
+#endif
 #include <emscripten/wasmfs.h>
 #include <sys/stat.h>
 #include <cstdlib>
@@ -27,6 +30,9 @@ inline bool GHOST_web_bootstrap(int argc, const char **argv,
 {
   if (web_device_ready) {
     GHOST_web_register_numpy();
+#ifdef WITH_USD
+    GHOST_web_register_usd();
+#endif
     auto backend = wasmfs_create_opfs_backend();
     if (!backend || wasmfs_create_directory("/user", 0777, backend)) {
       fprintf(stderr, "Persistent browser storage unavailable; this session uses memory\n");

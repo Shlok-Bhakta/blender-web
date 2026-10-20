@@ -77,3 +77,15 @@ endif()
 if(WITH_POTRACE)
   find_package(Potrace REQUIRED)
 endif()
+if(WITH_MATERIALX)
+  find_package(MaterialX CONFIG REQUIRED)
+endif()
+if(WITH_USD)
+  # Use USD's exported transitive dependencies and packaged schema resources.
+  # Keep registry constructors even when the linker sees no direct API call.
+  find_package(pxr CONFIG REQUIRED)
+  find_package(USD REQUIRED)
+  # usdShaders already links the monolith with WHOLE_ARCHIVE. Enter that
+  # chain once; listing both archives would load every core object twice.
+  set(USD_LIBRARIES "$<LINK_LIBRARY:WHOLE_ARCHIVE,usdShaders>")
+endif()

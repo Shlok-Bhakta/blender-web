@@ -47,3 +47,33 @@ if(WITH_OPENVDB)
     -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=4 -sEXIT_RUNTIME=1
     -sSTACK_SIZE=8388608 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)
 endif()
+
+if(WITH_USD AND EXISTS "${CMAKE_CURRENT_BINARY_DIR}/../assets/python3.13")
+  include("${CMAKE_PREFIX_PATH}/lib/blender-web-usd/libraries.cmake")
+  add_executable(usd-python-check usd_python.cc)
+  target_include_directories(usd-python-check PRIVATE
+    "${CMAKE_PREFIX_PATH}/include" "${CMAKE_PREFIX_PATH}/include/python3.13")
+  target_compile_options(usd-python-check PRIVATE -pthread -msimd128 -fwasm-exceptions)
+  target_link_libraries(usd-python-check PRIVATE
+    -Wl,--start-group ${BLENDER_WEB_USD_PYTHON_LIBRARIES}
+    ${USD_LIBRARIES} "${CMAKE_PREFIX_PATH}/lib/libpython3.13.a"
+    "${CMAKE_PREFIX_PATH}/lib/libz.a" -Wl,--end-group)
+  target_link_options(usd-python-check PRIVATE -pthread -msimd128 -fwasm-exceptions
+    -sUSE_BZIP2=1 -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8
+    -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
+    -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1 -sWASMFS=1 -sFORCE_FILESYSTEM=1
+    "SHELL:--preload-file ${CMAKE_CURRENT_BINARY_DIR}/../assets/python3.13@/python/lib/python3.13")
+endif()
+
+if(WITH_MATERIALX)
+  find_package(PugiXML REQUIRED)
+  add_executable(materialx-check materialx.cc)
+  target_include_directories(materialx-check PRIVATE ${PUGIXML_INCLUDE_DIRS})
+  target_compile_options(materialx-check PRIVATE -pthread -msimd128 -fwasm-exceptions)
+  target_link_libraries(materialx-check PRIVATE
+    -Wl,--whole-archive MaterialXFormat ${PUGIXML_LIBRARIES} -Wl,--no-whole-archive MaterialXCore)
+  target_link_options(materialx-check PRIVATE -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sEXIT_RUNTIME=1 -sALLOW_MEMORY_GROWTH=1 -sSTACK_SIZE=8388608
+    -sWASMFS=1 -sFORCE_FILESYSTEM=1
+    "SHELL:--embed-file ${CMAKE_PREFIX_PATH}/libraries@/libraries")
+endif()

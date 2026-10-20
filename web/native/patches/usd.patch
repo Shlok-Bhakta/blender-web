@@ -1,0 +1,139 @@
+--- a/cmake/defaults/ProjectDefaults.cmake
++++ b/cmake/defaults/ProjectDefaults.cmake
+@@ -28,7 +28,7 @@
+ endif()
+ 
+ if(EMSCRIPTEN)
+-    set(EMSCRIPTEN_COMPILE_FLAGS "-fexceptions")
++    set(EMSCRIPTEN_COMPILE_FLAGS "-fwasm-exceptions")
+     add_compile_options("SHELL:${EMSCRIPTEN_COMPILE_FLAGS}")
+     add_link_options("SHELL:${EMSCRIPTEN_COMPILE_FLAGS} -sALLOW_MEMORY_GROWTH=1")
+ endif()
+--- a/cmake/macros/Public.cmake
++++ b/cmake/macros/Public.cmake
+@@ -1087,8 +1087,8 @@
+     if (EMSCRIPTEN)
+         foreach(lib ${PXR_CORE_LIBS})
+           target_link_options(${lib} PUBLIC
+-              "$<BUILD_INTERFACE:SHELL:--embed-file ${CMAKE_CURRENT_BINARY_DIR}/plugins_plugInfo.json@/usd/plugInfo.json>"
+-              "$<INSTALL_INTERFACE:SHELL:--embed-file $<INSTALL_PREFIX>/lib/usd/plugInfo.json@/usd/plugInfo.json>")
++              "$<BUILD_INTERFACE:SHELL:--preload-file ${CMAKE_CURRENT_BINARY_DIR}/plugins_plugInfo.json@/usd/plugInfo.json>"
++              "$<INSTALL_INTERFACE:SHELL:--preload-file $<INSTALL_PREFIX>/lib/usd/plugInfo.json@/usd/plugInfo.json>")
+         endforeach()
+     endif()
+ endfunction() # pxr_setup_plugins
+@@ -1222,7 +1222,7 @@
+ 
+     # Create a target for targets that require Python.  Each should add
+     # itself as a dependency to the "python_modules" target.
+-    if(TARGET shared_libs AND PXR_ENABLE_PYTHON_SUPPORT)
++    if((TARGET shared_libs OR EMSCRIPTEN) AND PXR_ENABLE_PYTHON_SUPPORT)
+         add_custom_target(python_modules ALL)
+     endif()
+ endfunction() # pxr_toplevel_prologue
+--- a/cmake/macros/Private.cmake
++++ b/cmake/macros/Private.cmake
+@@ -321,6 +321,8 @@
+             endif()
+             set(resourceFile "${plugInfoFile}")
+             set(emscriptenResourceFile ${resourceFile})
++        elseif(IS_ABSOLUTE "${resourceFile}")
++            set(emscriptenResourceFile "${resourceFile}")
+         else()
+             set(emscriptenResourceFile "${CMAKE_CURRENT_SOURCE_DIR}/${resourceFile}")
+         endif()
+@@ -344,8 +346,8 @@
+             # the build to be reloatable, we want to reference the installed
+             # files in the pxrTargets.cmake file.
+             target_link_options(${NAME} PUBLIC              
+-                "$<BUILD_INTERFACE:SHELL:--embed-file ${emscriptenResourceFile}@${resourceDestDir}/${destFileName}>"
+-                "$<INSTALL_INTERFACE:SHELL:--embed-file $<INSTALL_PREFIX>/${installDestination}/${destFileName}@${resourceDestDir}/${destFileName}>")
++                "$<BUILD_INTERFACE:SHELL:--preload-file ${emscriptenResourceFile}@${resourceDestDir}/${destFileName}>"
++                "$<INSTALL_INTERFACE:SHELL:--preload-file $<INSTALL_PREFIX>/${installDestination}/${destFileName}@${resourceDestDir}/${destFileName}>")
+         endif()
+         install(
+             FILES ${resourceFile}
+@@ -963,7 +965,7 @@
+     )
+ 
+     # If we can't build Python modules then do nothing.
+-    if(NOT TARGET shared_libs)
++    if(NOT TARGET shared_libs AND NOT EMSCRIPTEN)
+         message(STATUS "Skipping Python module ${NAME}, shared libraries required")
+         return()
+     endif()
+@@ -992,11 +994,30 @@
+         return()
+     endif()
+ 
++    # Emscripten embeds the original extension modules in CPython's inittab.
++    set(pythonLibraryType SHARED)
++    if(EMSCRIPTEN)
++        set(pythonLibraryType STATIC)
++    endif()
+     # Add the module target.
+     add_library(${LIBRARY_NAME}
+-        SHARED
++        ${pythonLibraryType}
+         ${args_CPPFILES}
+     )
++    if(EMSCRIPTEN)
++        # Shared modules normally isolate these global wrapper entry points.
++        # Give each static module its own names, including TF_WRAP expansions.
++        foreach(source IN LISTS args_CPPFILES)
++            file(READ "${CMAKE_CURRENT_SOURCE_DIR}/${source}" contents)
++            string(REGEX MATCHALL "wrap[A-Z][A-Za-z0-9_]+" wrappers "${contents}")
++            list(REMOVE_DUPLICATES wrappers)
++            foreach(wrapper IN LISTS wrappers)
++                target_compile_definitions(${LIBRARY_NAME} PRIVATE
++                    "${wrapper}=blender_web_${NAME}_${wrapper}")
++            endforeach()
++        endforeach()
++        target_compile_definitions(${LIBRARY_NAME} PRIVATE PY_CALL_TRAMPOLINE)
++    endif()
+     add_dependencies(python_modules ${LIBRARY_NAME})
+     if(args_PYTHON_FILES)
+         add_dependencies(${LIBRARY_NAME} ${LIBRARY_NAME}_pythonfiles)
+@@ -1113,6 +1134,7 @@
+     install(
+         TARGETS ${LIBRARY_NAME}
+         LIBRARY DESTINATION ${libInstallPrefix}
++        ARCHIVE DESTINATION ${libInstallPrefix}
+         RUNTIME DESTINATION ${libInstallPrefix}
+     )
+ 
+--- a/pxr/base/tf/pyObjWrapper.h
++++ b/pxr/base/tf/pyObjWrapper.h
+@@ -36,8 +36,14 @@
+ class TfPyObjWrapperStub
+ {
+ public:
++#if defined(__EMSCRIPTEN__)
++    // shared_ptr has two wasm32 pointers. Match the Python-enabled layout.
++    static constexpr std::size_t Size = 2 * sizeof(void *);
++    static constexpr std::size_t Align = alignof(void *);
++#else
+     static constexpr std::size_t Size = 16;
+     static constexpr std::size_t Align = 8;
++#endif
+ 
+ private:
+     ARCH_PRAGMA_PUSH
+--- a/pxr/usd/usdGeom/tetMesh.cpp
++++ b/pxr/usd/usdGeom/tetMesh.cpp
+@@ -184,10 +184,15 @@
+ {
+     size_t operator()(const GfVec3i& v) const
+     {
++#if defined(__EMSCRIPTEN__)
++        // A size_t shift by 42 is undefined on wasm32. Hash every index.
++        return TfHash::Combine(v[0], v[1], v[2]);
++#else
+         return
+             static_cast<size_t>(v[0]) << 42 ^
+             static_cast<size_t>(v[1]) << 21 ^
+             static_cast<size_t>(v[2]);
++#endif
+     }
+ };
+ 

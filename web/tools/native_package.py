@@ -25,6 +25,11 @@ def stage(base, source, prefix, shader_seed=True):
             'turtledemo', 'ensurepip', 'config-3.13-*', '*.a', '*.xcf'))
     shutil.copy2(source / 'intern/ghost/web/native/ghost/GHOST_WebClock.py',
                  blender / 'scripts/modules/_bpy_ghost_web_clock.py')
+    # The extension code is static; retain OpenUSD's original Python packages.
+    usd_python = prefix / 'lib/python/pxr'
+    if usd_python.is_dir():
+        shutil.copytree(usd_python, target / 'python3.13/site-packages/pxr',
+                        ignore=shutil.ignore_patterns('*.a', '*.pyc', '__pycache__', 'testenv'))
     seed = source / 'intern/ghost/web/native/shader-seed.json'
     if shader_seed and seed.is_file():
         from native_shader_seed import translator_inputs
@@ -46,6 +51,13 @@ def stage(base, source, prefix, shader_seed=True):
         if path.is_file():
             fingerprint.update(str(path.relative_to(target)).encode())
             fingerprint.update(hashlib.sha256(path.read_bytes()).digest())
+    # USD's imported CMake targets preload their resources outside assets/.
+    # Their content must invalidate Blender's link as well as its cache key.
+    for resources in (prefix / 'lib/usd', prefix / 'plugin/usd'):
+        for path in sorted(resources.rglob('*')):
+            if path.is_file():
+                fingerprint.update(str(path.relative_to(prefix)).encode())
+                fingerprint.update(hashlib.sha256(path.read_bytes()).digest())
     stamp = base / 'assets.sha256'
     digest = fingerprint.hexdigest() + '\n'
     if not stamp.exists() or stamp.read_text() != digest:
