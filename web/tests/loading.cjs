@@ -56,7 +56,7 @@ async function main() {
       const result = await page.evaluate(async () => {
         const manifest = await (await fetch('manifest.json')).json();
         const variant = document.documentElement.dataset.blenderVariant;
-        const wanted = manifest.files.filter(file => file.name.endsWith('/blender.data') ||
+        const wanted = manifest.files.filter(file => file.name.endsWith('/blender.data') || file.name.endsWith('/audio-worklet.js') ||
           file.name.endsWith(variant === 'ui' ? '/blender-ui.js' : '/blender.js') ||
           file.name.endsWith(variant === 'ui' ? '/blender-ui.wasm' : '/blender.wasm'));
         // Cache writes can finish after the last GPU startup message.
@@ -69,19 +69,19 @@ async function main() {
             await new Promise(resolve=>setTimeout(resolve,50));
           }
         }
-        return {version:manifest.version,downloads:window.downloads,
+        return {version:manifest.version,downloads:window.downloads,assetCount:wanted.length,
           totalBytes:wanted.reduce((sum,file)=>sum+file.bytes,0),
           children:[...document.body.children].filter(el=>el.tagName!=='SCRIPT').map(el=>el.tagName)};
       });
       assert.deepEqual(result.children,['CANVAS']);
       const completed = new Map(result.downloads.map(event=>[event.url,event]));
-      assert.equal(completed.size,3);
+      assert.equal(completed.size,result.assetCount);
       assert.equal([...completed.values()].reduce((sum,event)=>sum+event.loaded,0),result.totalBytes);
       if (mode !== 'cold') {
         assert.equal(networkAssets-before,0,'Warm/offline startup must issue no asset network requests');
         assert([...completed.values()].every(event=>event.cached),'Every runtime file must come from cache');
       } else {
-        assert.equal(networkAssets-before,3);
+        assert.equal(networkAssets-before,result.assetCount);
         assert(result.downloads.some(event=>event.loaded>0 && event.loaded<100000000 && !event.cached));
       }
       runs.push({mode,networkRequests:networkAssets-before,totalBytes:result.totalBytes,

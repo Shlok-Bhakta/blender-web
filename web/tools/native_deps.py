@@ -41,6 +41,16 @@ RECIPES = {
     "GMP": ("", ["--host=none", "--enable-cxx", "--disable-assembly", "--disable-shared", "--enable-static"]),
     "MANIFOLD": ("", ["-DMANIFOLD_JSBIND=OFF", "-DMANIFOLD_CBIND=OFF", "-DMANIFOLD_PYBIND=OFF", "-DMANIFOLD_PAR=ON", "-DMANIFOLD_CROSS_SECTION=OFF", "-DMANIFOLD_EXPORT=OFF", "-DMANIFOLD_DEBUG=OFF", "-DMANIFOLD_TEST=OFF", "-DMANIFOLD_DOWNLOADS=OFF"]),
     "FFTW": ("", ["-DENABLE_THREADS=ON", "-DWITH_COMBINED_THREADS=OFF", "-DBUILD_TESTS=OFF"]),
+    "OGG": ("", ["-DBUILD_TESTING=OFF"]),
+    "VORBIS": ("", []),
+    "FLAC": ("", ["-DBUILD_CXXLIBS=OFF", "-DBUILD_PROGRAMS=OFF", "-DBUILD_EXAMPLES=OFF", "-DBUILD_TESTING=OFF", "-DINSTALL_MANPAGES=OFF"]),
+    "OPUS": ("", ["--host=wasm32-unknown-none", "--disable-shared", "--enable-static", "--disable-extra-programs", "--disable-doc", "--disable-stack-protector"]),
+    "LAME": ("", ["--host=wasm32-unknown-none", "--disable-shared", "--enable-static", "--disable-frontend", "--disable-asm"]),
+    "THEORA": ("", ["--host=wasm32-unknown-none", "--disable-shared", "--enable-static", "--disable-examples", "--disable-oggtest", "--disable-vorbistest", "--disable-asm"]),
+    "VPX": ("", ["--target=generic-gnu", "--disable-examples", "--disable-tools", "--disable-docs", "--disable-unit-tests", "--disable-shared", "--enable-static", "--disable-runtime-cpu-detect"]),
+    "X264": ("", ["--host=wasm32-unknown-none", "--disable-cli", "--disable-asm", "--enable-static", "--disable-opencl"]),
+    "SNDFILE": ("", ["-DBUILD_PROGRAMS=OFF", "-DBUILD_EXAMPLES=OFF", "-DBUILD_TESTING=OFF", "-DENABLE_EXTERNAL_LIBS=ON", "-DENABLE_MPEG=ON"]),
+    "FFMPEG": ("", ["--target-os=none", "--arch=wasm32", "--enable-cross-compile", "--disable-inline-asm", "--disable-runtime-cpudetect", "--disable-autodetect", "--disable-programs", "--disable-doc", "--disable-debug", "--disable-network", "--disable-devices", "--disable-shared", "--enable-static", "--enable-pthreads", "--enable-gpl", "--enable-zlib", "--enable-libmp3lame", "--enable-libopus", "--enable-libvorbis", "--enable-libtheora", "--enable-libvpx", "--enable-libx264", "--pkg-config-flags=--static"]),
     "ALEMBIC": ("", ["-DUSE_PYALEMBIC=OFF", "-DUSE_ARNOLD=OFF", "-DUSE_MAYA=OFF", "-DUSE_PRMAN=OFF", "-DUSE_HDF5=OFF", "-DUSE_TESTS=OFF", "-DUSE_BINARIES=OFF", "-DALEMBIC_SHARED_LIBS=OFF"]),
     "BLOSC": ("", ["-DBUILD_SHARED=OFF", "-DBUILD_TESTS=OFF", "-DBUILD_BENCHMARKS=OFF", "-DDEACTIVATE_SSE2=ON", "-DDEACTIVATE_AVX2=ON", "-DPREFER_EXTERNAL_ZLIB=ON", "-DPREFER_EXTERNAL_ZSTD=ON"]),
     "OPENVDB": ("", ["-DOPENVDB_CORE_SHARED=OFF", "-DOPENVDB_CORE_STATIC=ON", "-DOPENVDB_BUILD_BINARIES=OFF", "-DOPENVDB_BUILD_UNITTESTS=OFF", "-DOPENVDB_BUILD_PYTHON_MODULE=OFF", "-DOPENVDB_BUILD_NANOVDB=ON", "-DNANOVDB_BUILD_TOOLS=OFF", "-DNANOVDB_BUILD_UNITTESTS=OFF", "-DNANOVDB_USE_CUDA=OFF", "-DOPENVDB_USE_DELAYED_LOADING=OFF", "-DUSE_STATIC_DEPENDENCIES=ON", "-DUSE_BLOSC=ON", "-DUSE_ZLIB=ON", "-DUSE_LOG4CPLUS=OFF"]),
@@ -80,6 +90,9 @@ def download(entry, downloads):
     # the identical tarball. The release's checksum still has to match.
     if "github.com/" in url and "/archive/" in url:
         repo, ref = url.split("github.com/", 1)[1].split("/archive/", 1)
+        # Some pinned recipes append a friendly archive filename after the ref.
+        if ref.endswith("/" + entry["FILE"]):
+            ref = ref.removesuffix("/" + entry["FILE"])
         url = f"https://codeload.github.com/{repo}/tar.gz/{ref.removesuffix('.tar.gz')}"
     urls = [url]
     if url.startswith("https://gmplib.org/download/gmp/"):
@@ -152,6 +165,9 @@ def build(args):
                      "sdk": json.loads((ROOT / "web/upstream.json").read_text())["emscriptenVersion"]}
         if name in CXX_PACKAGES:
             signature["cxxFlags"] = CXX_FLAGS
+        if name in {"OPUS", "LAME", "THEORA", "VPX", "X264", "FFMPEG"}:
+            signature["mediaBuilder"] = hashlib.sha256(
+                (ROOT / "web/tools/native_media.py").read_bytes()).hexdigest()
         patch = ROOT / "web/native/patches" / f"{name.lower()}.patch"
         if patch.exists():
             signature["patch"] = hashlib.sha256(patch.read_bytes()).hexdigest()
@@ -230,6 +246,12 @@ def build(args):
         if any(previous.get(key) != configuration.get(key) for key in ("toolchain", "sdk", "source")):
             shutil.rmtree(directory / "build", ignore_errors=True)
         configured.write_text(json.dumps(configuration, indent=2) + "\n")
+        if name in {"OPUS", "LAME", "THEORA", "VPX", "X264", "FFMPEG"}:
+            from native_media import build_autoconf
+            build_autoconf(name, source, directory / "build", prefix, options,
+                           args.jobs, log, run, C_FLAGS)
+            stamp.write_text(json.dumps(signature, indent=2) + "\n")
+            continue
         if name == "GMP":
             work = directory / 'build'
             work.mkdir(exist_ok=True)

@@ -2,13 +2,13 @@
 # Explicit browser feature configuration. Keep this independent of desktop presets.
 # Enabled features and remaining dependency/integration work: FEATURES.md.
 set(WITH_ALEMBIC             ON CACHE BOOL "" FORCE)
-set(WITH_AUDASPACE           OFF CACHE BOOL "" FORCE)
+set(WITH_AUDASPACE           ON CACHE BOOL "" FORCE)
 set(WITH_BLENDER_THUMBNAILER OFF CACHE BOOL "" FORCE)
 set(WITH_BOOST               OFF CACHE BOOL "" FORCE)
 set(WITH_BUILDINFO           OFF CACHE BOOL "" FORCE)
 set(WITH_BULLET              ON CACHE BOOL "" FORCE)
-set(WITH_CODEC_FFMPEG        OFF CACHE BOOL "" FORCE)
-set(WITH_CODEC_SNDFILE       OFF CACHE BOOL "" FORCE)
+set(WITH_CODEC_FFMPEG        ON CACHE BOOL "" FORCE)
+set(WITH_CODEC_SNDFILE       ON CACHE BOOL "" FORCE)
 set(WITH_CYCLES              OFF CACHE BOOL "" FORCE)
 set(WITH_DRACO               OFF CACHE BOOL "" FORCE)
 set(WITH_MESHOPTIMIZER       OFF CACHE BOOL "" FORCE)

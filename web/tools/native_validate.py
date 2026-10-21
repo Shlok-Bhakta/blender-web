@@ -42,6 +42,17 @@ def main():
         (base / 'validation-status.json').write_text(json.dumps(status, indent=2) + '\n')
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
+    run('audio-worklet', ['node', 'web/tests/audio-worklet.cjs'])
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'media-{suffix}', ['node', 'web/tests/media.cjs'], **flags)
+        directory = 'build/native/media-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
+        run(f'media-native-{suffix}', ['python3', 'web/tools/native_media_verify.py', directory])
+    run('media-video', ['python3', 'web/tools/native_media_recording.py'])
+    run('media-benchmark', ['node', 'web/tests/media.cjs'], WEB_TEST_HARDWARE='1',
+        WEB_MEDIA_BENCHMARK='1', WEB_MEDIA_OUTPUT='build/native/media-benchmark')
+    run('media-performance', ['python3', 'web/tools/native_media_performance.py'])
+    run('media-profile', ['node', 'web/tests/media.cjs'], WEB_TEST_HARDWARE='1',
+        WEB_MEDIA_PROFILE='1', WEB_MEDIA_OUTPUT='build/native/media-profile')
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'usd-{suffix}', ['node', 'web/tests/usd-exchange.cjs'], **flags)
     run('desktop-usd', [args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', 'web/tests/usd_exchange.py', '--', 'native-crosscheck', 'build/native/usd-evidence-hardware'])

@@ -1,0 +1,175 @@
+{
+  "bundleVersion": "7d79d17c2a47947bb3c6",
+  "sourceSha256": "a2fc93a4a9e5574b790efe468de0d2ce336720d5cd1be1f30a1cf97b8538c128",
+  "adapter": {
+    "vendor": "amd",
+    "architecture": "gcn-5",
+    "device": "",
+    "description": ""
+  },
+  "resources": {
+    "hardwareConcurrency": 8,
+    "wasmHeapCapacityBytes": 1001521152
+  },
+  "decode": {
+    "tone.wav": {
+      "nativeMedianSeconds": 0.010438906960189342,
+      "browserMedianSeconds": 0.02167963981628418,
+      "browserToNative": 2.076811288668766,
+      "nativeRuns": [
+        0.011308716144412756,
+        0.010438906960189342,
+        0.010232104919850826
+      ],
+      "browserRuns": [
+        0.046340227127075195,
+        0.02167963981628418,
+        0.02165985107421875
+      ]
+    },
+    "tone.flac": {
+      "nativeMedianSeconds": 0.0012720990926027298,
+      "browserMedianSeconds": 0.00249481201171875,
+      "browserToNative": 1.9611774163082965,
+      "nativeRuns": [
+        0.0015880637802183628,
+        0.0012720990926027298,
+        0.0012612040154635906
+      ],
+      "browserRuns": [
+        0.005499839782714844,
+        0.00249481201171875,
+        0.002455472946166992
+      ]
+    },
+    "tone.ogg": {
+      "nativeMedianSeconds": 0.00167173333466053,
+      "browserMedianSeconds": 0.0048351287841796875,
+      "browserToNative": 2.892284722647785,
+      "nativeRuns": [
+        0.0022519100457429886,
+        0.00167173333466053,
+        0.0016671931371092796
+      ],
+      "browserRuns": [
+        0.012170076370239258,
+        0.004065036773681641,
+        0.0048351287841796875
+      ]
+    },
+    "tone.mp3": {
+      "nativeMedianSeconds": 0.001609364990144968,
+      "browserMedianSeconds": 0.006154775619506836,
+      "browserToNative": 3.8243503849008342,
+      "nativeRuns": [
+        0.002202182076871395,
+        0.00137350894510746,
+        0.001609364990144968
+      ],
+      "browserRuns": [
+        0.009455442428588867,
+        0.006154775619506836,
+        0.005990028381347656
+      ]
+    },
+    "reference.mkv": {
+      "nativeMedianSeconds": 0.0004888917319476604,
+      "browserMedianSeconds": 0.0016252994537353516,
+      "browserToNative": 3.3244568224961353,
+      "nativeRuns": [
+        0.0007484247907996178,
+        0.0004888917319476604,
+        0.00045292405411601067
+      ],
+      "browserRuns": [
+        0.005090475082397461,
+        0.0016252994537353516,
+        0.0013797283172607422
+      ]
+    },
+    "reference.mp4": {
+      "nativeMedianSeconds": 0.0022998913191258907,
+      "browserMedianSeconds": 0.006539821624755859,
+      "browserToNative": 2.8435350707099585,
+      "nativeRuns": [
+        0.0037778830155730247,
+        0.0022998913191258907,
+        0.0021096421405673027
+      ],
+      "browserRuns": [
+        0.023965120315551758,
+        0.006539821624755859,
+        0.005540132522583008
+      ]
+    },
+    "reference.webm": {
+      "nativeMedianSeconds": 0.0032745329663157463,
+      "browserMedianSeconds": 0.010385274887084961,
+      "browserToNative": 3.1715285794693577,
+      "nativeRuns": [
+        0.003658873029053211,
+        0.0032745329663157463,
+        0.0032384246587753296
+      ],
+      "browserRuns": [
+        0.022085189819335938,
+        0.008860349655151367,
+        0.010385274887084961
+      ]
+    }
+  },
+  "export": {
+    "export.mp4": {
+      "nativeMedianSeconds": 0.11605684133246541,
+      "browserMedianSeconds": 0.22658967971801758,
+      "browserToNative": 1.952402608209121,
+      "nativeFps": 206.79521969108,
+      "browserFps": 105.91832792149717,
+      "nativeRuns": [
+        0.125341122969985,
+        0.11605684133246541,
+        0.10246653109788895
+      ],
+      "browserRuns": [
+        0.9897751808166504,
+        0.20835471153259277,
+        0.22658967971801758
+      ]
+    },
+    "export.webm": {
+      "nativeMedianSeconds": 0.09734454192221165,
+      "browserMedianSeconds": 0.2461702823638916,
+      "browserToNative": 2.52885552187001,
+      "nativeFps": 246.54695092384821,
+      "browserFps": 97.49349015460338,
+      "nativeRuns": [
+        0.10517709283158183,
+        0.09734454192221165,
+        0.09488450409844518
+      ],
+      "browserRuns": [
+        0.31922030448913574,
+        0.2461702823638916,
+        0.24136018753051758
+      ]
+    }
+  },
+  "playback": {
+    "state": "running",
+    "sampleRate": 48000,
+    "baseLatency": 0.010666666666666666,
+    "outputLatency": 0.04,
+    "devices": [
+      {
+        "queuedFrames": 0,
+        "ready": 1,
+        "underruns": 20,
+        "consumedFrames": 146432,
+        "peak": 0.366222,
+        "nonzeroFrames": 146309
+      }
+    ],
+    "timelineFps": 23.335198975417555
+  },
+  "methodology": "Three sequential measurements per operation on one-second stereo clips and 24-frame 128x96 video. Original Audaspace decoding includes cache creation and the NumPy transfer. Video timings include Blender sequencer evaluation, encoding and file output. Native Blender runs in background mode; browser Blender runs its original UI. The browser benchmark disables screen recording and profiling. Playback rate counts timeline advancement under audio sync, which can skip display frames. These are small-workload baselines, not isolated codec throughput or large-timeline results."
+}

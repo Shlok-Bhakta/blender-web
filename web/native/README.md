@@ -6,7 +6,7 @@ Python API, fonts, and startup scene. The separate `web/site` fixture remains
 available for platform tests. The original interface and startup cube render through WebGPU in Chromium.
 
 Activate the SDK pinned in `web/upstream.json`. Install CMake, a C/C++ host
-compiler, Make, Ninja, Git LFS, Python 3, and uv, then run:
+compiler, Make, Ninja, pkg-config, Git LFS, Python 3, and uv, then run:
 
 ```sh
 python3 web/tools/native_build.py --app --jobs 8 --check-deps
@@ -55,6 +55,38 @@ grow to 4 GiB, subject to browser and device limits. This first backend maps one
 native window to one canvas; additional browser windows remain follow-up work.
 Desktop Chromium is the initial validation target. iOS Safari needs device testing.
 
+FFmpeg, libsndfile and Blender's original Audaspace provide media decoding,
+encoding and mixing. The GHOST web audio device sends interleaved stereo PCM
+from a mixer pthread to an AudioWorklet through shared memory. The browser
+chooses the output sample rate; the device reports it to Audaspace for
+resampling. A click or keypress resumes audio when autoplay policy requires it.
+The worklet uses a versioned URL and is cached on startup for offline playback.
+x264's automatic thread count uses the browser's logical CPU count.
+
+The media checks use authored one-second stereo clips and 24-frame 128×96
+videos. They compare decoded samples, metadata and seeks with desktop Blender,
+export audio and movies through the original APIs, verify visible preview
+pixels, and capture actual Web Audio output during sequencer playback. Host
+FFmpeg independently reads the exports and checks the captured stereo tones.
+The playback check warms the preview and plays four sequential copies of the
+authored clip, so its three-second measurement runs within the timeline.
+These checks do not establish large-timeline, microphone, multichannel,
+time-stretching or AV1/HEVC encoding support.
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH=/path/to/browsers WEB_TEST_HARDWARE=1 node web/tests/media.cjs
+python3 web/tools/native_media_verify.py build/native/media-evidence-hardware
+```
+
+Use `WEB_TEST_UI_FALLBACK=1` for media IO and playback without final rendering.
+Use `WEB_MEDIA_PROFILE=1` to capture a Chromium trace and resource counters.
+For timing comparisons, use `WEB_MEDIA_BENCHMARK=1` with
+`WEB_MEDIA_OUTPUT=build/native/media-benchmark` to disable screen recording;
+`native_media_performance.py` compares three repetitions with the same native
+Blender workload. The [media recording](../docs/media-walkthrough.mp4) includes
+the captured browser audio. Its [chapter metadata](../docs/media-recording.json)
+and [performance report](../docs/media-performance.json) describe the checks.
+
 Runtime scripts, fonts, color-management data, and Python's standard library are
 packaged into the preload data file. User files live under `/user/blender-web/home` in WasmFS's
 OPFS backend. If persistent storage is unavailable, that session uses memory.
@@ -85,7 +117,7 @@ the native server. Set `WEB_TEST_UI_FALLBACK=1` to check the other runtime. Run
 `node web/tests/cache.cjs` for a small deployment fixture that checks reuse across
 versions, old-tab offline reads, changed-file downloads and quota failures.
 The [startup/cache report](../docs/loading-cache.acceptance.json) records both
-runtimes fetching three files on a cold start and zero runtime asset network
+runtimes fetching four files on a cold start and zero runtime asset network
 requests on warm and offline starts. Every start reached Blender's first frame.
 
 ![Blender download progress](../docs/loading-progress.png)
@@ -194,7 +226,7 @@ on software WebGPU. `native_dependency_recording.py` captions the hardware
 image/vector and Freestyle recordings. `native_dependency_status.py --blender
 /path/to/blender` compares the desktop and browser's actual build flags.
 
-`native_validate.py` runs the full 43-stage local acceptance sequence, including
+`native_validate.py` runs the full 54-stage local acceptance sequence, including
 desktop readback, recordings and native/browser benchmarks. Serve the candidate
 site on port 8093 and an unseeded control build of the same Blender release on
 port 8098, or pass `--candidate-url` and `--control-url`. The build helper's

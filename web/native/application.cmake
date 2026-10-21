@@ -8,6 +8,16 @@ function(blender_web_configure_application)
     return()
   endif()
   set(gpu_deps "${CMAKE_BINARY_DIR}/../gpu-deps/build")
+  if(WITH_AUDASPACE)
+    target_sources(blender PRIVATE "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/ghost/GHOST_WebAudio.cc")
+    target_include_directories(blender PRIVATE
+      "${CMAKE_SOURCE_DIR}/extern/audaspace/include" "${CMAKE_BINARY_DIR}/extern/audaspace")
+    target_compile_definitions(blender PRIVATE WITH_AUDASPACE)
+    target_link_libraries(blender PRIVATE audaspace)
+    target_link_options(blender PRIVATE "--pre-js=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/audio.js")
+    set_property(TARGET blender APPEND PROPERTY LINK_DEPENDS
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/audio.js")
+  endif()
   file(GLOB tint_libs "${gpu_deps}/tint/src/tint/libtint*.a")
   file(GLOB absl_libs "${gpu_deps}/tint/third_party/abseil/absl/*/libabsl*.a")
   target_link_libraries(bf_gpu PUBLIC
@@ -32,7 +42,7 @@ function(blender_web_configure_application)
     "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shader-cache.js")
   if(BLENDER_WEB_JSPI)
     target_link_options(blender PRIVATE -sJSPI=1
-      "-sJSPI_EXPORTS=['main','blender_web_run_gpu_jobs']")
+      "-sJSPI_EXPORTS=['main','blender_web_run_gpu_jobs','blender_web_run_frame']")
   endif()
   if(NOT BLENDER_WEB_BINARYEN_INLINING)
     # USD's static bindings make Binaryen 125's extra inliner exceed host RAM.

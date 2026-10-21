@@ -2,6 +2,7 @@
 #pragma once
 #include <emscripten.h>
 #include <blender-web-numpy.hh>
+#include "GHOST_WebAudio.hh"
 #ifdef WITH_USD
 #  include <blender-web-usd.hh>
 #endif
@@ -30,6 +31,9 @@ inline bool GHOST_web_bootstrap(int argc, const char **argv,
 {
   if (web_device_ready) {
     GHOST_web_register_numpy();
+#ifdef WITH_AUDASPACE
+    GHOST_web_register_audio();
+#endif
 #ifdef WITH_USD
     GHOST_web_register_usd();
 #endif

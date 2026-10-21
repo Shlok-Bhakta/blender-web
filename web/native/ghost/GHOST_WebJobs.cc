@@ -38,8 +38,15 @@ bool GHOST_web_schedule_gpu_job(bool uses_gpu, void *(*run)(void *), void *job, 
   }
   jobs.push_back({run, job});
   EM_ASM({
-    setTimeout(() => Module['ccall']('blender_web_run_gpu_jobs', null, [], [], {async:true})
-      .catch(error => console.error('Blender GPU job failed', error)), 0);
+    setTimeout(async () => {
+      try {
+        // Finish a suspended selection/input frame before entering another
+        // promising Wasm call that uses the same Blender main-thread stack.
+        await Module['blenderWebFramePromise'];
+        await Module['ccall']('blender_web_run_gpu_jobs', null, [], [], {async:true});
+      }
+      catch (error) { console.error('Blender GPU job failed', error); }
+    }, 0);
   });
   return true;
 }

@@ -4,6 +4,17 @@ project(blender_web_native_checks LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 list(APPEND CMAKE_MODULE_PATH "${BLENDER_SOURCE}/build_files/cmake/Modules")
 include("${CMAKE_CURRENT_LIST_DIR}/../dependencies.cmake")
+if(WITH_CODEC_FFMPEG AND WITH_CODEC_SNDFILE)
+  add_executable(media-check media.cc)
+  target_include_directories(media-check PRIVATE ${FFMPEG_INCLUDE_DIRS} ${LIBSNDFILE_INCLUDE_DIRS})
+  target_link_libraries(media-check PRIVATE
+    -Wl,--start-group ${FFMPEG_LIBRARIES} ${LIBSNDFILE_LIBRARIES} -Wl,--end-group)
+  target_compile_options(media-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  target_link_options(media-check PRIVATE -O1 -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=16 -sPTHREAD_POOL_SIZE_STRICT=0 -sEXIT_RUNTIME=1
+    -sSTACK_SIZE=8388608 -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1 -sWASMFS=1 -sFORCE_FILESYSTEM=1
+    "SHELL:--embed-file ${CMAKE_CURRENT_LIST_DIR}/../../tests/fixtures/media/reference.mkv@/reference.mkv")
+endif()
 add_executable(dependencies dependencies.cc)
 target_include_directories(dependencies PRIVATE ${FREETYPE_INCLUDE_DIRS})
 target_link_libraries(dependencies PRIVATE TBB::tbb OpenImageIO::OpenImageIO

@@ -1,0 +1,32 @@
+{
+  "bundleVersion": "7d79d17c2a47947bb3c6",
+  "chapters": [
+    {
+      "seconds": 0,
+      "title": "Open original Blender with FFmpeg and Audaspace"
+    },
+    {
+      "seconds": 16.086,
+      "title": "Decode native fixtures, seek video, export audio and movies"
+    },
+    {
+      "seconds": 28.569,
+      "title": "Play the original Video Sequencer with browser audio"
+    },
+    {
+      "seconds": 58.491,
+      "title": "Reopen cached Blender offline and repeat media decoding"
+    }
+  ],
+  "durationSeconds": 74.72,
+  "bytes": 2883016,
+  "captions": true,
+  "source": "Hardware Chromium recording with captured Web Audio output",
+  "path": "web/docs/media-walkthrough.mp4",
+  "sha256": "4accd5eb591494edd21bce4827086b1e576a0518b11951bf74735b7af1f54967",
+  "audioCaptureOffsetSeconds": 54.666,
+  "screenshot": {
+    "path": "web/docs/media-sequencer.png",
+    "sha256": "6d8678e3f9f535037ac8af609b761f59695ae69a29d0e2681690a601017a91f4"
+  }
+}

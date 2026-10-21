@@ -8,6 +8,7 @@ batches. The static site's
 | Feature | Configuration | Verification or remaining work |
 | --- | --- | --- |
 | Original editors, Python, Eevee, color management and image IO | Enabled | Original UI, Python, storage and default-scene render checks |
+| Viewport picking | Enabled in JSPI bundle | Original mouse selection uses serialized JSPI frames for GPU readbacks |
 | OBJ, STL and PLY | Enabled | Native cube export/import, geometry and bounds checks |
 | FBX import | Enabled | Native ufbx importer, independently authored triangle fixture |
 | Standard IK and iTaSC | Enabled | Two-bone chain follows two target positions with each solver |
@@ -31,7 +32,9 @@ batches. The static site's
 | Freestyle contour rendering | Enabled in JSPI bundle | Cycles CPU cube with red contour strokes, saved pixels compared with desktop |
 | USD scene exchange and MaterialX graph export | Enabled | USDA/USDC/USDZ exchange with desktop, animation, UVs, cameras/lights, world textures, Python hooks and eight implicit shape fixtures |
 | Hydra rendering and MaterialX Python bindings | Deferred | CPU imaging adapters supply shape geometry; native Hydra graphics devices are disabled |
-| Audio, FFmpeg, video and time stretching | Deferred | Codec libraries plus browser audio/device integration |
+| Audio/video IO and Video Sequencer | Enabled | WAV/FLAC/Ogg/MP3 and MKV/MP4/WebM inputs, video seeking, original audio and H.264/AAC or VP9/Opus video exports compared with desktop |
+| Browser audio playback | Enabled | Original Audaspace mixer feeds a shared PCM ring and AudioWorklet; stereo playback, timeline advancement, captured output and offline reopen |
+| Time stretching, AV1 backends, HEVC encoding and audio input | Deferred | Rubber Band, libaom/x265, microphone capture and multichannel device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
@@ -57,18 +60,19 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-The remaining portable dependency groups include audio/video codecs, tracking
-and translation. Audio and FFmpeg also need browser playback integration. Device
+The remaining portable dependency groups include tracking and translation.
+Additional codec backends and time stretching remain follow-up work. Device
 file selection and download/export integration remain separate from the persistent
 browser filesystem.
 
 The [dependency status report](../docs/dependency-status.json) compares the actual
 desktop and browser `bpy.app.build_options` values and lists the base library
-recipes. These coarse flags are not a feature-parity percentage. Audio/video,
-tracking and translation remain portable dependency work. OSL,
+recipes. These coarse flags are not a feature-parity percentage. Tracking and
+translation remain portable dependency work. OSL,
 denoising and GPU evaluators also need renderer integration. Desktop JACK,
-PulseAudio and OpenAL drivers are not browser audio backends; browser audio,
-NDOF and XR require platform integrations.
+PulseAudio and OpenAL drivers are not browser audio backends. The web build uses
+Web Audio for stereo output; NDOF, XR and additional audio devices need platform
+integration.
 
 OpenUSD 26.03 and MaterialX 1.39.4 use the pinned release archives. The browser
 loads 32 original static `pxr` extension modules. Eight shape fixtures produce
@@ -88,7 +92,7 @@ reload using the cached application and persistent USD files.
 | Time | What to inspect |
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
-| 0:08 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
+| 0:09 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
 | 0:23 | USD is available in Blender's original export menu |
 | 0:32 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
@@ -140,10 +144,10 @@ variants reopen VDB fixtures from OPFS after an offline reload.
 | Time | What to inspect |
 | --- | --- |
 | 0:00 | Start Blender with OpenVDB and NanoVDB |
-| 0:12 | Compare VDB import and volume modifiers with desktop Blender |
-| 0:15 | Mesh to Volume and Volume to Mesh in the original viewport |
-| 0:21 | Replay the four-frame Mantaflow gas simulation in Blender |
-| 0:31 | Reload offline and reopen the VDB files from browser storage |
+| 0:13 | Compare VDB import and volume modifiers with desktop Blender |
+| 0:16 | Mesh to Volume and Volume to Mesh in the original viewport |
+| 0:22 | Replay the four-frame Mantaflow gas simulation in Blender |
+| 0:32 | Reload offline and reopen the VDB files from browser storage |
 <!-- /VOLUME_RECORDING_CHAPTERS -->
 
 The [memory64 investigation](../docs/memory64.md) records a standalone shared
@@ -273,6 +277,14 @@ and when their context is disposed.
 Validation uses desktop Chromium with the repository's WebGPU launch flags.
 Other browsers and mobile devices still need validation. Remaining dependency
 and integration work is listed in the matrix above.
+
+The [media recording](../docs/media-walkthrough.mp4) includes actual browser
+audio and the original Video Sequencer. The [media benchmark](../docs/media-performance.json)
+compares three native/browser runs on one-second clips and 24-frame 128×96
+exports. Playback checks use a warmed preview and four sequential copies of the
+clip. Timeline advancement under audio sync can skip displayed frames.
+
+![Original Video Sequencer with a decoded movie frame](../docs/media-sequencer.png)
 
 The [native/browser comparison](../docs/native-web-performance.md) records three
 runs per workload on the same machine, including a 2.35-million-face CPU

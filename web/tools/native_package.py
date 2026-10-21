@@ -72,6 +72,7 @@ def collect(base, root, ui_fallback=True):
     if ui_fallback:
         artifacts += [base / 'editor/bin' / f'blender-ui.{suffix}' for suffix in ['js', 'wasm', 'worker.js']]
     artifacts = [path for path in artifacts if path.exists()]
+    artifacts.append(shell / 'audio-worklet.js')
     for required in ['blender.js', 'blender.wasm', 'blender.data']:
         if required not in [path.name for path in artifacts]:
             raise RuntimeError(f'Missing browser artifact: {required}')
@@ -111,6 +112,7 @@ def collect(base, root, ui_fallback=True):
     upstream = base / 'source' if (base / 'source').is_dir() else root
     shutil.copy2(upstream / 'extern/ufbx/LICENSE', notices / 'ufbx-LICENSE.txt')
     shutil.copy2(upstream / 'extern/mantaflow/LICENSE', notices / 'mantaflow-LICENSE.txt')
+    shutil.copy2(upstream / 'extern/audaspace/LICENSE', notices / 'audaspace-LICENSE.txt')
     shutil.copytree(upstream / 'intern/cycles/doc/license', notices / 'cycles',
                     dirs_exist_ok=True, ignore=shutil.ignore_patterns('CMakeLists.txt'))
     bullet = (upstream / 'extern/bullet2/src/btBulletDynamicsCommon.h').read_text()

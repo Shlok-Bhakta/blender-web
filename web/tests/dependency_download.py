@@ -42,6 +42,15 @@ class DependencyDownload(unittest.TestCase):
                     download(self.entry, Path(name))
             self.assertEqual(list(Path(name).iterdir()), [])
 
+    def test_github_friendly_filename_preserves_the_tag(self):
+        entry = {**self.entry, 'FILE':'libvpx-v1.15.2.tar.gz',
+                 'URI':'https://github.com/webmproject/libvpx/archive/v1.15.2/libvpx-v1.15.2.tar.gz'}
+        with tempfile.TemporaryDirectory() as name:
+            with patch('urllib.request.urlopen', return_value=io.BytesIO(self.payload)) as request:
+                self.assertEqual(download(entry, Path(name)).read_bytes(), self.payload)
+                self.assertEqual(request.call_args.args[0],
+                                 'https://codeload.github.com/webmproject/libvpx/tar.gz/v1.15.2')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,36 @@
+--- a/configure
++++ b/configure
+@@ -728,6 +728,10 @@
+     *haiku*)
+         SYS="HAIKU"
+         ;;
++    *none*)
++        SYS="GENERIC"
++        libm="-lm"
++        ;;
+     *)
+         die "Unknown system $host, edit the configure"
+         ;;
+--- a/common/cpu.c
++++ b/common/cpu.c
+@@ -26,6 +26,10 @@
+ 
+ #include "base.h"
+ 
++#ifdef __EMSCRIPTEN__
++#include <emscripten/threading.h>
++#endif
++
+ #if SYS_CYGWIN || SYS_SunOS || SYS_OPENBSD
+ #include <unistd.h>
+ #endif
+@@ -435,6 +439,9 @@ int x264_cpu_num_processors( void )
+ #if !HAVE_THREAD
+     return 1;
+ 
++#elif defined(__EMSCRIPTEN__)
++    return emscripten_num_logical_cores();
++
+ #elif SYS_WINDOWS
+     return x264_pthread_num_processors_np();
+ 

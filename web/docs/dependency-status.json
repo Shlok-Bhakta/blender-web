@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "fd823614d79c02baa17f",
+  "bundleVersion": "7d79d17c2a47947bb3c6",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -50,11 +50,11 @@
   },
   "browserBuildOptions": {
     "alembic": true,
-    "audaspace": false,
+    "audaspace": true,
     "bullet": true,
     "codec_avi": false,
-    "codec_ffmpeg": false,
-    "codec_sndfile": false,
+    "codec_ffmpeg": true,
+    "codec_sndfile": true,
     "compositor_cpu": true,
     "coreaudio": false,
     "cycles": true,
@@ -97,7 +97,10 @@
   "desktopEnabledCount": 38,
   "matchedEnabledFlags": [
     "alembic",
+    "audaspace",
     "bullet",
+    "codec_ffmpeg",
+    "codec_sndfile",
     "compositor_cpu",
     "cycles",
     "fluid",
@@ -125,9 +128,6 @@
     "usd"
   ],
   "missingEnabledFlags": [
-    "audaspace",
-    "codec_ffmpeg",
-    "codec_sndfile",
     "cycles_osl",
     "input_ndof",
     "international",
@@ -139,9 +139,6 @@
   ],
   "remainingGroups": {
     "portableLibraries": [
-      "audaspace",
-      "codec_ffmpeg",
-      "codec_sndfile",
       "international",
       "libmv"
     ],
@@ -317,6 +314,76 @@
       "archiveHash": "8ccbf6a5ea78a16dbc3e1306e234cc5c",
       "hashType": "MD5",
       "source": "http://www.fftw.org/fftw-3.3.10.tar.gz"
+    },
+    {
+      "name": "OGG",
+      "version": "1.3.5",
+      "archiveHash": "0eb4b4b9420a0f51db142ba3f9c64b333f826532dc0f48c6410ae51f4799b664",
+      "hashType": "SHA256",
+      "source": "http://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz"
+    },
+    {
+      "name": "VORBIS",
+      "version": "1.3.7",
+      "archiveHash": "0e982409a9c3fc82ee06e08205b1355e5c6aa4c36bca58146ef399621b0ce5ab",
+      "hashType": "SHA256",
+      "source": "http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz"
+    },
+    {
+      "name": "FLAC",
+      "version": "1.4.2",
+      "archiveHash": "e322d58a1f48d23d9dd38f432672865f6f79e73a6f9cc5a5f57fcaa83eb5a8e4",
+      "hashType": "SHA256",
+      "source": "http://downloads.xiph.org/releases/flac/flac-1.4.2.tar.xz"
+    },
+    {
+      "name": "OPUS",
+      "version": "1.3.1",
+      "archiveHash": "65b58e1e25b2a114157014736a3d9dfeaad8d41be1c8179866f144a2fb44ff9d",
+      "hashType": "SHA256",
+      "source": "https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz"
+    },
+    {
+      "name": "LAME",
+      "version": "3.100",
+      "archiveHash": "83e260acbe4389b54fe08e0bdbf7cddb",
+      "hashType": "MD5",
+      "source": "http://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz"
+    },
+    {
+      "name": "THEORA",
+      "version": "1.1.1",
+      "archiveHash": "b6ae1ee2fa3d42ac489287d3ec34c5885730b1296f0801ae577a35193d3affbc",
+      "hashType": "SHA256",
+      "source": "http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2"
+    },
+    {
+      "name": "VPX",
+      "version": "1.15.2",
+      "archiveHash": "26fcd3db88045dee380e581862a6ef106f49b74b6396ee95c2993a260b4636aa",
+      "hashType": "SHA256",
+      "source": "https://github.com/webmproject/libvpx/archive/v1.15.2/libvpx-v1.15.2.tar.gz"
+    },
+    {
+      "name": "X264",
+      "version": "35fe20d1ba49918ec739a5b068c208ca82f977f7",
+      "archiveHash": "bb4f7da03936b5a030ed5827133b58eb3f701d7e5dce32cca4ba6df93797d42e",
+      "hashType": "SHA256",
+      "source": "https://code.videolan.org/videolan/x264/-/archive/35fe20d1ba49918ec739a5b068c208ca82f977f7/x264-35fe20d1ba49918ec739a5b068c208ca82f977f7.tar.gz"
+    },
+    {
+      "name": "SNDFILE",
+      "version": "1.2.2",
+      "archiveHash": "04e2e6f726da7c5dc87f8cf72f250d04",
+      "hashType": "MD5",
+      "source": "https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz"
+    },
+    {
+      "name": "FFMPEG",
+      "version": "8.1",
+      "archiveHash": "c07039598df7d64d3c8b42c4e25b1959fc908621c6f6c2946881133f3b27eda2",
+      "hashType": "SHA256",
+      "source": "http://ffmpeg.org/releases/ffmpeg-8.1.tar.bz2"
     },
     {
       "name": "ALEMBIC",

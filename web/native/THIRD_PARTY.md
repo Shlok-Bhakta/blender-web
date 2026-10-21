@@ -69,3 +69,14 @@ in [LLVM #226619](https://github.com/llvm/llvm-project/pull/226619). The standal
 USD check runs Python finalization and process exit to cover this callback.
 Hydra rendering and native graphics backends are
 disabled in this scene-exchange build.
+
+The media build uses Blender's pinned FFmpeg 8.1, libsndfile 1.2.2, Ogg 1.3.5,
+Vorbis 1.3.7, FLAC 1.4.2, Opus 1.3.1, LAME 3.100, Theora 1.1.1, libvpx 1.15.2,
+and x264 commit 35fe20d1ba49918ec739a5b068c208ca82f977f7. Their archive checksums
+come from the release's dependency definitions. The static FFmpeg build enables
+GPL codecs, including x264, and retains its upstream license notices alongside
+each codec's notices in `licenses/dependencies/`. Audaspace 1.9.0 comes from
+Blender's bundled source under Apache-2.0; the site includes its `LICENSE`.
+The web audio device and AudioWorklet bridge live in the GHOST web overlay.
+The x264 overlay adds a generic Wasm target and uses Emscripten's logical core
+count for automatic encoder threading.

@@ -49,7 +49,35 @@ def main():
            ['usd-evidence', 'usd-evidence-ui', 'usd-evidence-hardware']]
     usd_native = read(base / 'usd-evidence-hardware/native-crosscheck.json')
     usd_recording = read(docs / 'usd-recording.json')
-    for name in ('usd', 'materialx'):
+    media = [read(base / name / 'acceptance.json') for name in
+             ['media-evidence', 'media-evidence-ui', 'media-evidence-hardware']]
+    media_native = [read(base / name / 'native-verification.json') for name in
+                    ['media-evidence', 'media-evidence-ui', 'media-evidence-hardware']]
+    media_recording = read(docs / 'media-recording.json')
+    media_performance = read(docs / 'media-performance.json')
+    assert media_performance['bundleVersion'] == version
+    assert media_performance['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/media.py').read_bytes()).hexdigest()
+    media_libraries = read(base / 'media-check.json')
+    assert media_libraries['videoFrames'] == 24 and media_libraries['decoderThreads'] == 4
+    assert media_libraries['cpuCores'] <= 1 or media_libraries['automaticEncoderThreads'] > 1
+    for variant, verified in zip(media, media_native):
+        assert variant['bundleVersion'] == verified['bundleVersion'] == version
+        assert variant['offlineReopen'] and not variant['browserErrors']
+        assert all(variant['buildOptions'][name] for name in ('audaspace', 'codec_ffmpeg', 'codec_sndfile'))
+        assert len(variant['audio']) == 7 and len(variant['movies']) == 3
+        assert variant['playback']['state'] == variant['offlinePlayback']['state'] == 'running'
+        assert verified['playbackCapture']['stereoPeakHz'] == [440, 660]
+        assert 22 < variant['playback']['timelineFps'] < 26
+        assert variant['previewPixelsMatched'] > 1000
+        assert variant['interactiveSelectionReadback'] == (not variant['fallback'])
+        assert variant['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/media.py').read_bytes()).hexdigest()
+        for name, expected in variant['fixtureHashes'].items():
+            path = ROOT / 'web/tests/media.py' if name == 'check.py' else ROOT / 'web/tests/fixtures/media' / name
+            assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
+    assert media_recording['bundleVersion'] == version
+    assert hashlib.sha256((ROOT / media_recording['path']).read_bytes()).hexdigest() == media_recording['sha256']
+    assert hashlib.sha256((ROOT / media_recording['screenshot']['path']).read_bytes()).hexdigest() == media_recording['screenshot']['sha256']
+    for name in ('usd', 'materialx', 'x264'):
         installed = read(base / 'deps' / name / 'installed.json')
         patch = ROOT / 'web/native/patches' / (name + '.patch')
         assert installed['patch'] == hashlib.sha256(patch.read_bytes()).hexdigest()
@@ -151,7 +179,7 @@ def main():
     recording['sha256'] = hashlib.sha256(video.read_bytes()).hexdigest()
     recording['path'] = str(video.relative_to(ROOT))
     selected = lambda variant: sum(file['bytes'] for file in manifest['files'] if
-        file['name'].endswith(('/blender.data', f'/{variant}.js', f'/{variant}.wasm')))
+        file['name'].endswith(('/blender.data', f'/{variant}.js', f'/{variant}.wasm', '/audio-worklet.js')))
     native = {path.stem:read(path) for path in sorted(base.glob('*-check.json'))}
     report = {'bundleVersion':version, **read(ROOT / 'web/upstream.json'),
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,
@@ -164,6 +192,8 @@ def main():
               'dependencyStatus':dependency_status,
               'usdMaterialX':{'browserVariants':usd,'browserExportsInDesktop':usd_native,
                               'recording':usd_recording},
+              'media':{'browserVariants':media,'independentNativeVerification':media_native,
+                       'recording':media_recording,'performance':media_performance},
               'performance':performance,
               'renderOptimization':optimization,
               'memory64Probe':{'productionEnabled':False,'standalone':memory64},
@@ -190,6 +220,7 @@ def main():
                   'Vector acceptance covers authored paths, fills and a circle, SVG/PDF export and one-image Potrace tracing. This does not establish every SVG feature or multi-frame vector export.',
                   'Freestyle acceptance covers a 256x256, 16-sample Cycles CPU cube with red contour strokes. Other style modules and large scenes are not covered.',
                   'USD acceptance covers animated mesh, UV, camera/light and environment-texture exchange in USDA/USDC/USDZ, eight implicit shapes, static pxr Python modules and USD hooks. MaterialX checks cover OpenPBR graph export. Hydra rendering, MaterialX Python bindings and arbitrary USD production assets are not covered.',
+                  'Media acceptance uses one-second stereo tones and 128x96 video. Browser output is stereo Web Audio. Microphone capture, multichannel devices, external video devices, AV1/HEVC encoding and Rubber Band time stretching are not covered.',
                   'Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.',
                   'Functional checks ran with other host activity and are not an isolated performance benchmark.']}
     archive = base / 'blender-web-pages.tar.gz'

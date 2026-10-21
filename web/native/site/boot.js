@@ -27,7 +27,7 @@
   const executable = uiOnly ? 'blender-ui.js' : 'blender.js';
   const selected = new Map(manifest.files.filter(file => {
     const name = file.name.split('/').pop();
-    return name === 'blender.data' || name === executable ||
+    return name === 'blender.data' || name === 'audio-worklet.js' || name === executable ||
       name === (uiOnly ? 'blender-ui.wasm' : 'blender.wasm') ||
       name === (uiOnly ? 'blender-ui.worker.js' : 'blender.worker.js');
   }).map(file => [new URL(file.name, location.href).href, {...file, loaded:0, cached:false}]));
@@ -103,6 +103,11 @@
     onAbort: reason => { document.body.append(status); message.textContent = `Blender stopped: ${reason}`; progress.removeAttribute('value'); },
     locateFile: path => new URL(uiOnly && path === 'blender.wasm' ? 'blender-ui.wasm' : path, assetBase).href,
   };
+  // Cache the small, versioned audio processor on the first visit even when
+  // the user has not played a sound yet. It must also be available offline.
+  const audioProcessor = await fetch(new URL('audio-worklet.js', assetBase));
+  if (!audioProcessor.ok) throw new Error('Blender audio processor download failed');
+  await audioProcessor.arrayBuffer();
   const script = document.createElement('script');
   script.src = new URL(executable, assetBase).href;
   script.onerror = () => { message.textContent = 'Blender download failed. Reload to retry.'; };
