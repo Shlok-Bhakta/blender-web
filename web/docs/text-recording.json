@@ -1,0 +1,39 @@
+{
+  "bundleVersion": "778163d96d65c6356773",
+  "chapters": [
+    {
+      "seconds": 0.001,
+      "title": "Start original Blender with translation catalogs"
+    },
+    {
+      "seconds": 9.848,
+      "title": "Compare six languages and four font samples with native Blender"
+    },
+    {
+      "seconds": 14.987,
+      "title": "Switch the original interface to French"
+    },
+    {
+      "seconds": 17.605,
+      "title": "Type Unicode characters through native GHOST keyboard events"
+    },
+    {
+      "seconds": 30.585,
+      "title": "Switch to Japanese and display the native font samples"
+    },
+    {
+      "seconds": 38.947,
+      "title": "Reload offline, restore Japanese preferences and reopen Unicode text"
+    }
+  ],
+  "durationSeconds": 58.72,
+  "bytes": 2647552,
+  "source": "Hardware Chromium browser recording",
+  "captions": true,
+  "path": "web/docs/text-translation-walkthrough.mp4",
+  "sha256": "ba6c8277dac1949a9ae0c1dddf5d008393a4c1f696ccf1e6b84977834ae1678b",
+  "screenshot": {
+    "path": "web/docs/japanese-interface.png",
+    "sha256": "d89a73950153b5325b2d0f1be31a71ea55c0731b8d1b8c81581856c913c78aaf"
+  }
+}

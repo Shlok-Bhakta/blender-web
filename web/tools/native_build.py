@@ -12,7 +12,7 @@ import subprocess
 
 from native_deps import build as build_dependencies
 from prepare import ROOT, prepare_source
-from native_package import stage, collect
+from native_package import stage, stage_locales, collect
 from native_app_deps import build as build_application_dependencies
 
 EDITOR_ARCHIVES = ["bf_rna", "bf_editor_interface", "bf_editor_screen", "bf_windowmanager",
@@ -27,7 +27,8 @@ def check_dependencies(source, base, prefix, jobs):
                     "-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY", "-DCMAKE_BUILD_TYPE=Release",
                     "-DWITH_OPENVDB=ON", "-DWITH_NANOVDB=ON",
                     "-DWITH_USD=ON", "-DWITH_MATERIALX=ON",
-                    "-DWITH_CODEC_FFMPEG=ON", "-DWITH_CODEC_SNDFILE=ON"], check=True)
+                    "-DWITH_CODEC_FFMPEG=ON", "-DWITH_CODEC_SNDFILE=ON",
+                    "-DWITH_HARFBUZZ=ON", "-DWITH_FRIBIDI=ON"], check=True)
     subprocess.run(["cmake", "--build", str(checks), "--parallel", str(jobs)], check=True)
     result = subprocess.run(["node", str(checks / "dependencies.js")], check=True,
                             text=True, stdout=subprocess.PIPE, timeout=120)
@@ -37,6 +38,10 @@ def check_dependencies(source, base, prefix, jobs):
         output = subprocess.check_output(["node", str(checks / f"{name}-check.js")], text=True, timeout=60)
         (base / f"{name}-check.json").write_text(json.dumps(json.loads(output), indent=2) + "\n")
         print(output, end="", flush=True)
+    output = subprocess.check_output(['node', str(checks / 'text-check.js'),
+        str(source / 'release/datafiles/fonts')], text=True, timeout=60)
+    (base / 'text-check.json').write_text(json.dumps(json.loads(output), indent=2) + '\n')
+    print(output, end='', flush=True)
     fixtures = base / 'volume-fixtures'
     fixtures.mkdir(exist_ok=True)
     output = subprocess.check_output(['node', str(checks / 'openvdb-check.js'), str(fixtures)],
@@ -223,7 +228,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -313,6 +318,9 @@ def main():
                     "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"], check=True)
     if not args.configure_only:
         command = ["cmake", "--build", str(base / "editor"), "--parallel", str(args.jobs), "--target"]
+        if args.app:
+            subprocess.run([*command, "locales"], check=True)
+            stage_locales(base, source, prefix)
         if args.targets or args.app:
             subprocess.run([*command, *(args.targets or ["blender"])], check=True)
             if args.app:
@@ -347,7 +355,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 

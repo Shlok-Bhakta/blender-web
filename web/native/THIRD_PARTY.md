@@ -80,3 +80,12 @@ Blender's bundled source under Apache-2.0; the site includes its `LICENSE`.
 The web audio device and AudioWorklet bridge live in the GHOST web overlay.
 The x264 overlay adds a generic Wasm target and uses Emscripten's logical core
 count for automatic encoder threading.
+
+HarfBuzz 10.0.1 and FriBidi 1.0.12 use the release's pinned source archives and
+checksums. Their original notices are published in `licenses/dependencies/`.
+The HarfBuzz build overlay uses Clang's `-fignore-exceptions` for Emscripten,
+keeping the shared Wasm exception ABI while omitting throws from HarfBuzz.
+FriBidi's original Unicode-data generators run as host tools during its Meson
+cross build. Blender's original translation catalogs and language list retain
+the notices in the pinned Blender source. No separate gettext implementation
+is substituted for Blender's message-catalog compiler or runtime reader.

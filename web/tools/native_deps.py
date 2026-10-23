@@ -24,6 +24,8 @@ RECIPES = {
     "ZSTD": ("build/cmake", ["-DZSTD_BUILD_SHARED=OFF", "-DZSTD_BUILD_PROGRAMS=OFF", "-DZSTD_BUILD_TESTS=OFF"]),
     "BROTLI": ("", ["-DBROTLI_DISABLE_TESTS=ON"]),
     "FREETYPE": ("", ["-DFT_DISABLE_BZIP2=ON", "-DFT_DISABLE_HARFBUZZ=ON", "-DFT_DISABLE_PNG=ON", "-DFT_REQUIRE_BROTLI=ON", "-DFT_REQUIRE_ZLIB=ON"]),
+    "HARFBUZZ": ("", ["-Dtests=disabled", "-Dfreetype=enabled", "-Dglib=disabled", "-Dgobject=disabled", "-Dcairo=disabled", "-Dutilities=disabled", "-Dcpp_eh=default"]),
+    "FRIBIDI": ("", ["-Ddocs=false", "-Dbin=false", "-Dtests=false"]),
     "FMT": ("", ["-DFMT_TEST=OFF", "-DFMT_DOC=OFF"]),
     "EIGEN": ("", ["-DEIGEN_BUILD_TESTING=OFF", "-DEIGEN_BUILD_DOC=OFF", "-DEIGEN_BUILD_BLAS=OFF", "-DEIGEN_BUILD_LAPACK=OFF", "-DEIGEN_BUILD_DEMOS=OFF"]),
     "IMATH": ("", ["-DIMATH_BUILD_TESTS=OFF", "-DIMATH_BUILD_EXAMPLES=OFF", "-DPYTHON=OFF"]),
@@ -67,7 +69,7 @@ RECIPES = {
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
-CXX_PACKAGES = {"FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
+CXX_PACKAGES = {"HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
                 "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
@@ -165,6 +167,11 @@ def build(args):
                      "sdk": json.loads((ROOT / "web/upstream.json").read_text())["emscriptenVersion"]}
         if name in CXX_PACKAGES:
             signature["cxxFlags"] = CXX_FLAGS
+        if name == 'BROTLI':
+            signature['staticPkgConfig'] = 2
+        if name in {"HARFBUZZ", "FRIBIDI"}:
+            signature["textBuilder"] = hashlib.sha256(
+                (ROOT / "web/tools/native_text.py").read_bytes()).hexdigest()
         if name in {"OPUS", "LAME", "THEORA", "VPX", "X264", "FFMPEG"}:
             signature["mediaBuilder"] = hashlib.sha256(
                 (ROOT / "web/tools/native_media.py").read_bytes()).hexdigest()
@@ -246,6 +253,12 @@ def build(args):
         if any(previous.get(key) != configuration.get(key) for key in ("toolchain", "sdk", "source")):
             shutil.rmtree(directory / "build", ignore_errors=True)
         configured.write_text(json.dumps(configuration, indent=2) + "\n")
+        if name in {"HARFBUZZ", "FRIBIDI"}:
+            from native_text import build_meson
+            build_meson(source, directory / "build", prefix, options,
+                        args.jobs, log, run, C_FLAGS)
+            stamp.write_text(json.dumps(signature, indent=2) + "\n")
+            continue
         if name in {"OPUS", "LAME", "THEORA", "VPX", "X264", "FFMPEG"}:
             from native_media import build_autoconf
             build_autoconf(name, source, directory / "build", prefix, options,
@@ -302,6 +315,11 @@ def build(args):
             shutil.copytree(source / "c/include/brotli", prefix / "include/brotli", dirs_exist_ok=True)
             for library in (directory / "build").glob("libbrotli*-static.a"):
                 shutil.copy2(library, prefix / "lib" / library.name)
+            for pc in (directory / 'build').glob('libbrotli*.pc'):
+                content = pc.read_text().replace(' -R${libdir}', '')
+                for codec in ('common', 'dec', 'enc'):
+                    content = content.replace(f'-lbrotli{codec}', f'-lbrotli{codec}-static')
+                (prefix / 'lib/pkgconfig' / pc.name).write_text(content)
         stamp.write_text(json.dumps(signature, indent=2) + "\n")
     print(f"Wasm dependency prefix: {prefix}", flush=True)
 

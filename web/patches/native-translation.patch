@@ -1,0 +1,46 @@
+--- a/source/blender/blentranslation/intern/messages.cc
++++ b/source/blender/blentranslation/intern/messages.cc
+@@ -32,6 +32,10 @@
+ #endif
+ 
+ #include "CLG_log.h"
++
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebTranslation.hh"
++#endif
+ 
+ namespace blender::locale {
+ 
+@@ -416,7 +420,11 @@
+ 
+   MessageKey(const StringRef c)
+   {
++#ifdef WITH_GHOST_WEB
++    const auto pos = GHOST_web_translation_find(c, char(4));
++#else
+     const size_t pos = c.find(char(4));
++#endif
+     if (pos == StringRef::not_found) {
+       this->str = c;
+     }
+@@ -575,12 +583,20 @@
+ 
+   static std::string extract(StringRef meta, const std::string &key, const StringRef separators)
+   {
++#ifdef WITH_GHOST_WEB
++    const auto pos = GHOST_web_translation_find(meta, key);
++#else
+     const size_t pos = meta.find(key);
++#endif
+     if (pos == StringRef::not_found) {
+       return "";
+     }
+     meta = meta.substr(pos + key.size());
++#ifdef WITH_GHOST_WEB
++    const auto end_pos = GHOST_web_translation_separator(meta, separators);
++#else
+     const size_t end_pos = meta.find_first_of(separators);
++#endif
+     return std::string(meta.substr(0, end_pos));
+   }
+ };

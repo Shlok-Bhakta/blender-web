@@ -46,6 +46,26 @@ def stage(base, source, prefix, shader_seed=True):
         if path.is_file() and path.stat().st_size < 1024 and path.read_bytes().startswith(b'version https://git-lfs.github.com/spec/v1'):
             raise RuntimeError(f'Unhydrated Blender asset: {path}')
 
+    fingerprint_assets(base, prefix)
+
+
+def stage_locales(base, source, prefix):
+    """Copy catalogs compiled by Blender's original msgfmt target."""
+    destination = base / 'assets/5.2/datafiles/locale'
+    destination.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source / 'locale/languages', destination / 'languages')
+    catalogs = sorted((source / 'locale/po').glob('*.po'))
+    if not catalogs:
+        raise RuntimeError('Missing pinned Blender translation sources')
+    for catalog in catalogs:
+        output = destination / catalog.stem / 'LC_MESSAGES/blender.mo'
+        output.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(base / 'editor/source/creator' / (catalog.stem + '.mo'), output)
+    fingerprint_assets(base, prefix)
+
+
+def fingerprint_assets(base, prefix):
+    target = base / 'assets'
     fingerprint = hashlib.sha256()
     for path in sorted(target.rglob('*')):
         if path.is_file():

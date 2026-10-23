@@ -23,6 +23,30 @@ def main():
     docs = ROOT / 'web/docs'
     manifest = read(base / 'dist/manifest.json')
     version = manifest['version']
+    text = [read(base / name / 'acceptance.json') for name in
+            ['text-evidence', 'text-evidence-ui', 'text-evidence-hardware']]
+    text_libraries = read(base / 'text-check.json')
+    assert text_libraries['arabicGlyphs'] == 3 and text_libraries['devanagariGlyphs'] == 2
+    assert text_libraries['bidiMixedDirection'] and text_libraries['unicodeKeys']
+    assert text_libraries['signedCatalogIndices']
+    text_reference = read(ROOT / 'web/tests/fixtures/text/results.json')
+    for variant in text:
+        assert variant['bundleVersion'] == version
+        assert variant['offlineReopen'] and variant['preferencesRestored'] and not variant['browserErrors']
+        assert variant['buildOptions']['international']
+        assert variant['translations'] == text_reference['translations']
+        assert variant['catalogs'] == text_reference['catalogs'] and len(variant['catalogs']) == 49
+        assert variant['fontPixels']['maximumError'] <= 4 and variant['fontPixels']['meanError'] < .05
+        assert variant['unicodeInput']['typed'] == variant['unicodeInput']['reopened'] == 'Café 日本 😀'
+        assert variant['unicodeInput']['deadKeyIgnored'] and variant['unicodeInput']['trustedBrowserEvents']
+        assert variant['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/text.py').read_bytes()).hexdigest()
+        for name, expected in variant['fixtureHashes'].items():
+            path = ROOT / 'web/tests/text.py' if name == 'check.py' else ROOT / 'web/tests/fixtures/text' / name
+            assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
+    text_recording = read(docs / 'text-recording.json')
+    assert text_recording['bundleVersion'] == version
+    for entry in [text_recording, text_recording['screenshot']]:
+        assert hashlib.sha256((ROOT / entry['path']).read_bytes()).hexdigest() == entry['sha256']
     cmake = dict(re.findall(r'^(\w+):(?:BOOL|STRING)=(.*)$',
                            (base / 'editor/CMakeCache.txt').read_text(), re.MULTILINE))
     wasm_build = {'cxxReleaseFlags': cmake['CMAKE_CXX_FLAGS_RELEASE'],
@@ -77,7 +101,7 @@ def main():
     assert media_recording['bundleVersion'] == version
     assert hashlib.sha256((ROOT / media_recording['path']).read_bytes()).hexdigest() == media_recording['sha256']
     assert hashlib.sha256((ROOT / media_recording['screenshot']['path']).read_bytes()).hexdigest() == media_recording['screenshot']['sha256']
-    for name in ('usd', 'materialx', 'x264'):
+    for name in ('usd', 'materialx', 'x264', 'harfbuzz'):
         installed = read(base / 'deps' / name / 'installed.json')
         patch = ROOT / 'web/native/patches' / (name + '.patch')
         assert installed['patch'] == hashlib.sha256(patch.read_bytes()).hexdigest()
@@ -192,6 +216,8 @@ def main():
               'dependencyStatus':dependency_status,
               'usdMaterialX':{'browserVariants':usd,'browserExportsInDesktop':usd_native,
                               'recording':usd_recording},
+              'textTranslation':{'browserVariants':text,'libraryChecks':text_libraries,
+                                  'recording':text_recording},
               'media':{'browserVariants':media,'independentNativeVerification':media_native,
                        'recording':media_recording,'performance':media_performance},
               'performance':performance,
@@ -213,6 +239,7 @@ def main():
                   'Production Blender uses wasm32 with a 4 GiB linear-memory ceiling. The memory64 result is a separate sparse-addressing probe, not Blender scene-capacity evidence.',
                   'NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.',
                   'Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.',
+                  'All 49 catalogs match native files; translated strings are sampled in six languages. Unicode keyboard input covers one scalar per event. HarfBuzz/FriBidi are verified library ports, not integrated into this release\'s original font renderer. Full shaping and IME composition remain pending.',
                   'Ocean acceptance uses resolution 5 and 12 animation frames. Ocean disk-cache baking is not covered.',
                   'OpenVDB acceptance covers float sphere grids, ZIP/Blosc IO, NanoVDB conversion and mesh/volume modifiers. Mantaflow acceptance covers four resolution-16 gas frames; liquid simulation, long bakes and the Python OpenVDB module are not covered.',
                   'Image acceptance covers small WebP lossless, JP2 16-bit, Cineon 10-bit and DPX 16-bit files. Other format variants, large images and animation are not covered.',

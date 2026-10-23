@@ -90,6 +90,26 @@ and [performance report](../docs/media-performance.json) describe the checks.
 Runtime scripts, fonts, color-management data, and Python's standard library are
 packaged into the preload data file. User files live under `/user/blender-web/home` in WasmFS's
 OPFS backend. If persistent storage is unavailable, that session uses memory.
+
+The application also packages all 49 original translation catalogs, generated
+by Blender's `msgfmt` tool under Node. Saved language preferences load from
+the persistent browser home. The GHOST keyboard path accepts complete UTF-8
+characters from keyboard layouts. Browser IME composition remains pending.
+HarfBuzz and FriBidi are built and tested as libraries; the pinned release's
+font renderer does not yet use them. See the [coverage report](FEATURES.md)
+and [translation recording](../docs/text-translation-walkthrough.mp4).
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH=/path/to/browsers WEB_TEST_HARDWARE=1 node web/tests/text.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/text.cjs
+```
+
+The checks compare all catalog hashes and six language samples with native
+Blender, compare four font samples, send trusted browser Unicode key events,
+save/reopen the resulting text, and restore language preferences offline.
+Library checks separately cover Arabic/Devanagari shaping and mixed-direction
+ordering. Meson 1.9.0 and Ninja 1.13.2 run in an isolated build-tool environment.
+
 The loader shows byte progress for the selected JS/Wasm/data bundle, including
 bytes reused from cache. After downloading it shows startup status until the
 first Blender frame, then removes the loading overlay completely. Sizes are
@@ -226,7 +246,7 @@ on software WebGPU. `native_dependency_recording.py` captions the hardware
 image/vector and Freestyle recordings. `native_dependency_status.py --blender
 /path/to/blender` compares the desktop and browser's actual build flags.
 
-`native_validate.py` runs the full 54-stage local acceptance sequence, including
+`native_validate.py` runs the full 58-stage local acceptance sequence, including
 desktop readback, recordings and native/browser benchmarks. Serve the candidate
 site on port 8093 and an unseeded control build of the same Blender release on
 port 8098, or pass `--candidate-url` and `--control-url`. The build helper's

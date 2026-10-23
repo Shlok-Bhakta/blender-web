@@ -89,7 +89,9 @@
     canvas,
     mainScriptUrlOrBlob: new URL(executable, assetBase).href,
     arguments: ['--factory-startup', '--disable-autoexec', '--python-expr',
-      'import bpy; bpy.context.preferences.view.show_splash = False'],
+      'import bpy, os; config = bpy.utils.user_resource("CONFIG"); ' +
+      'bpy.ops.wm.read_userpref() if config and os.path.isfile(os.path.join(config, "userpref.blend")) else None; ' +
+      'bpy.context.preferences.view.show_splash = False'],
     print: text => console.log(text),
     printErr: text => {
       console.log(text);

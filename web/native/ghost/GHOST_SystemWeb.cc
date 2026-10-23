@@ -20,6 +20,7 @@
 #include "GHOST_SystemWeb.hh"
 #include "GHOST_TimerManager.hh"
 #include "GHOST_WindowManager.hh"
+#include "GHOST_WebText.hh"
 
 #define WEB_CANVAS "#canvas"
 
@@ -266,10 +267,7 @@ bool GHOST_SystemWeb::handleKey(int event_type, const EmscriptenKeyboardEvent *e
   }
 
   char utf8[6] = {0};
-  if (down && e->key[0] != '\0' && e->key[1] == '\0') {
-    /* Single-character `key` value = printable glyph. */
-    utf8[0] = e->key[0];
-  }
+  if (down) GHOST_web_key_utf8(e->key, utf8);
   if (getenv("GHOST_LOG_KEYS")) {
     fprintf(stderr,
             "GHOST_KEY %s code='%s' key='%s' ghost=%d utf8='%s'\n",

@@ -2,7 +2,7 @@
 # Execute the target-architecture generators on the build host using Node.
 # In particular, makesdna must see Wasm's pointer sizes and struct alignment.
 function(blender_web_configure_generators)
-  foreach(generator datatoc makesdna makesrna shader_tool)
+  foreach(generator datatoc makesdna makesrna shader_tool msgfmt)
     if(TARGET ${generator})
       target_link_options(${generator} PRIVATE
         -sENVIRONMENT=node -sNODERAWFS=1 -sALLOW_MEMORY_GROWTH=1

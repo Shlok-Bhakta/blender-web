@@ -4,6 +4,17 @@ project(blender_web_native_checks LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 list(APPEND CMAKE_MODULE_PATH "${BLENDER_SOURCE}/build_files/cmake/Modules")
 include("${CMAKE_CURRENT_LIST_DIR}/../dependencies.cmake")
+if(WITH_HARFBUZZ AND WITH_FRIBIDI)
+  add_executable(text-check text.cc)
+  target_include_directories(text-check PRIVATE ${FREETYPE_INCLUDE_DIRS}
+    ${LIBHARFBUZZ_INCLUDE_DIRS} ${LIBFRIBIDI_INCLUDE_DIRS}
+    "${BLENDER_SOURCE}/source/blender/blenlib" "${BLENDER_SOURCE}/intern/guardedalloc")
+  target_link_libraries(text-check PRIVATE ${LIBHARFBUZZ_LIBRARIES}
+    ${LIBFRIBIDI_LIBRARIES} ${FREETYPE_LIBRARIES} ${BROTLI_LIBRARIES})
+  target_compile_options(text-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  target_link_options(text-check PRIVATE -O1 -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sEXIT_RUNTIME=1 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)
+endif()
 if(WITH_CODEC_FFMPEG AND WITH_CODEC_SNDFILE)
   add_executable(media-check media.cc)
   target_include_directories(media-check PRIVATE ${FFMPEG_INCLUDE_DIRS} ${LIBSNDFILE_INCLUDE_DIRS})

@@ -42,6 +42,9 @@ def main():
         (base / 'validation-status.json').write_text(json.dumps(status, indent=2) + '\n')
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'text-{suffix}', ['node', 'web/tests/text.cjs'], **flags)
+    run('text-video', ['python3', 'web/tools/native_text_recording.py'])
     run('audio-worklet', ['node', 'web/tests/audio-worklet.cjs'])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'media-{suffix}', ['node', 'web/tests/media.cjs'], **flags)

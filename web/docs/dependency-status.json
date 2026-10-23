@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "7d79d17c2a47947bb3c6",
+  "bundleVersion": "778163d96d65c6356773",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -71,7 +71,7 @@
     "image_tiff": true,
     "image_webp": true,
     "input_ndof": false,
-    "international": false,
+    "international": true,
     "io_fbx": true,
     "io_gpencil": true,
     "io_ply": true,
@@ -113,6 +113,7 @@
     "image_openjpeg",
     "image_tiff",
     "image_webp",
+    "international",
     "io_fbx",
     "io_gpencil",
     "io_ply",
@@ -130,7 +131,6 @@
   "missingEnabledFlags": [
     "cycles_osl",
     "input_ndof",
-    "international",
     "jack",
     "libmv",
     "openal",
@@ -139,7 +139,6 @@
   ],
   "remainingGroups": {
     "portableLibraries": [
-      "international",
       "libmv"
     ],
     "rendererIntegration": [
@@ -195,6 +194,20 @@
       "archiveHash": "ac1f0b517f62bd40d50bc995faa5741d",
       "hashType": "MD5",
       "source": "http://prdownloads.sourceforge.net/freetype/freetype-2.13.3.tar.gz"
+    },
+    {
+      "name": "HARFBUZZ",
+      "version": "10.0.1",
+      "archiveHash": "e7358ea86fe10fb9261931af6f010d4358dac64f7074420ca9bc94aae2bdd542",
+      "hashType": "SHA256",
+      "source": "https://github.com/harfbuzz/harfbuzz/archive/refs/tags/10.0.1.tar.gz"
+    },
+    {
+      "name": "FRIBIDI",
+      "version": "v1.0.12",
+      "archiveHash": "2e9e859876571f03567ac91e5ed3b5308791f31cda083408c2b60fa1fe00a39d",
+      "hashType": "SHA256",
+      "source": "https://github.com/fribidi/fribidi/archive/refs/tags/v1.0.12.tar.gz"
     },
     {
       "name": "FMT",

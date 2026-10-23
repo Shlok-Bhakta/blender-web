@@ -40,7 +40,10 @@ batches. The static site's
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
 | Tracking and camera solving | Deferred | libmv/Ceres dependency work and actual tracking/solve checks |
 | glTF Draco and meshoptimizer compression | Deferred | Library ports plus static Python bridges for add-ons that currently load native shared libraries |
-| Translation, text shaping and IME | Deferred | HarfBuzz/FriBidi and browser text input integration |
+| Interface translation and saved language preferences | Enabled | All 49 original catalogs match desktop files; six language samples, French/Japanese UI and offline preference restoration |
+| Unicode keyboard characters | Enabled | GHOST preserves complete one-scalar UTF-8 keyboard values, including four-byte characters; original Text Editor save/reopen |
+| HarfBuzz and FriBidi | Library ports verified | Arabic/Devanagari shaping and mixed-direction ordering checks; this pinned Blender font renderer does not call these libraries |
+| Full text shaping and IME composition | Deferred | Native renderer integration and browser composition input are separate work |
 | Additional windows, NDOF devices and XR | Deferred | Browser platform/device integration |
 
 GMP 6.3.0, Manifold 3.5.2 and NumPy 2.3.4 follow the pinned release's
@@ -60,19 +63,45 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-The remaining portable dependency groups include tracking and translation.
+Tracking remains a portable dependency group.
 Additional codec backends and time stretching remain follow-up work. Device
 file selection and download/export integration remain separate from the persistent
 browser filesystem.
 
 The [dependency status report](../docs/dependency-status.json) compares the actual
 desktop and browser `bpy.app.build_options` values and lists the base library
-recipes. These coarse flags are not a feature-parity percentage. Tracking and
-translation remain portable dependency work. OSL,
+recipes. These coarse flags are not a feature-parity percentage. Tracking
+remains portable dependency work. OSL,
 denoising and GPU evaluators also need renderer integration. Desktop JACK,
 PulseAudio and OpenAL drivers are not browser audio backends. The web build uses
 Web Audio for stereo output; NDOF, XR and additional audio devices need platform
 integration.
+
+HarfBuzz 10.0.1 and FriBidi 1.0.12 use Blender's pinned archives and checksums.
+The Wasm library checks shape Arabic and Devanagari through the original
+OpenType shapers and reorder mixed Latin/Hebrew text through FriBidi. Blender's
+current font renderer does not consume these dependencies, so their presence
+does not establish full shaping in the interface. Font drawing retains the
+same behavior as native Blender, including its current limitations.
+
+The application enables the original translation system and packages all 49
+catalogs produced by Blender's original `msgfmt` executable, run under Node.
+All catalog bytes are compared with the same desktop release. Sample strings
+cover English, French, Spanish, Japanese, simplified Chinese and Russian.
+A guarded GHOST helper preserves the reader's signed string indices on wasm32;
+converting a missing context delimiter to 32-bit `size_t` otherwise prevents
+context-free catalog entries from matching.
+Four font samples compare Latin accents, CJK, Devanagari and Arabic dimensions
+and software-drawn pixels with desktop Blender. The GHOST keyboard check sends
+trusted browser key events into the original Text Editor, saves the Unicode
+text in a `.blend` file and reopens it offline. This covers one Unicode scalar
+per keyboard event; dead-key composition and IME pre-edit/commit remain pending.
+Saved preferences, including language, load from the persistent browser home
+at startup. The startup scene still uses Blender's factory scene.
+
+[Watch the translation and Unicode browser recording](../docs/text-translation-walkthrough.mp4).
+
+![Blender's original interface in Japanese](../docs/japanese-interface.png)
 
 OpenUSD 26.03 and MaterialX 1.39.4 use the pinned release archives. The browser
 loads 32 original static `pxr` extension modules. Eight shape fixtures produce
@@ -92,9 +121,9 @@ reload using the cached application and persistent USD files.
 | Time | What to inspect |
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
-| 0:09 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
-| 0:23 | USD is available in Blender's original export menu |
-| 0:32 | Reload offline and repeat interchange from persistent browser storage |
+| 0:10 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
+| 0:24 | USD is available in Blender's original export menu |
+| 0:33 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
 
 ![USD in Blender's original export menu](../docs/usd-export-menu.png)

@@ -1,0 +1,433 @@
+{
+  "blenderVersion": "5.2.2 LTS",
+  "buildOptions": {
+    "alembic": true,
+    "audaspace": true,
+    "bullet": true,
+    "codec_avi": false,
+    "codec_ffmpeg": true,
+    "codec_sndfile": true,
+    "compositor_cpu": true,
+    "coreaudio": false,
+    "cycles": true,
+    "cycles_osl": true,
+    "experimental_features": false,
+    "fluid": true,
+    "freestyle": true,
+    "haru": true,
+    "image_cineon": true,
+    "image_dds": true,
+    "image_hdr": true,
+    "image_openexr": true,
+    "image_openjpeg": true,
+    "image_tiff": true,
+    "image_webp": true,
+    "input_ndof": true,
+    "international": true,
+    "io_fbx": true,
+    "io_gpencil": true,
+    "io_ply": true,
+    "io_stl": true,
+    "io_wavefront_obj": true,
+    "jack": true,
+    "libmv": true,
+    "mod_oceansim": true,
+    "mod_remesh": true,
+    "openal": true,
+    "opencolorio": true,
+    "openmp": false,
+    "opensubdiv": true,
+    "openvdb": true,
+    "potrace": true,
+    "pugixml": true,
+    "pulseaudio": true,
+    "sdl": false,
+    "usd": true,
+    "wasapi": false,
+    "xr_openxr": true
+  },
+  "translations": {
+    "en_US": {
+      "File": "File",
+      "Edit": "Edit",
+      "Render": "Render",
+      "Window": "Window",
+      "Help": "Help",
+      "Save": "Save",
+      "Open": "Open",
+      "Language": "Language"
+    },
+    "fr_FR": {
+      "File": "Fichier",
+      "Edit": "Édition",
+      "Render": "Rendu",
+      "Window": "Fenêtre",
+      "Help": "Aide",
+      "Save": "Enregistrer",
+      "Open": "Ouvrir",
+      "Language": "Langue"
+    },
+    "es": {
+      "File": "Archivo",
+      "Edit": "Editar",
+      "Render": "Procesar",
+      "Window": "Ventana",
+      "Help": "Ayuda",
+      "Save": "Guardar",
+      "Open": "Abrir",
+      "Language": "Idioma"
+    },
+    "ja_JP": {
+      "File": "ファイル",
+      "Edit": "編集",
+      "Render": "レンダー",
+      "Window": "ウィンドウ",
+      "Help": "ヘルプ",
+      "Save": "保存",
+      "Open": "開く",
+      "Language": "言語"
+    },
+    "zh_HANS": {
+      "File": "文件",
+      "Edit": "编辑",
+      "Render": "渲染",
+      "Window": "窗口",
+      "Help": "帮助",
+      "Save": "保存",
+      "Open": "打开",
+      "Language": "语言"
+    },
+    "ru_RU": {
+      "File": "Файл",
+      "Edit": "Правка",
+      "Render": "Рендеринг",
+      "Window": "Окно",
+      "Help": "Справка",
+      "Save": "Сохранить",
+      "Open": "Открыть",
+      "Language": "Язык"
+    }
+  },
+  "translationStates": {
+    "en_US": {
+      "locale": "en_US",
+      "interface": true,
+      "directFile": "File"
+    },
+    "fr_FR": {
+      "locale": "fr_FR",
+      "interface": true,
+      "directFile": "Fichier"
+    },
+    "es": {
+      "locale": "es",
+      "interface": true,
+      "directFile": "Archivo"
+    },
+    "ja_JP": {
+      "locale": "ja_JP",
+      "interface": true,
+      "directFile": "ファイル"
+    },
+    "zh_HANS": {
+      "locale": "zh_HANS",
+      "interface": true,
+      "directFile": "文件"
+    },
+    "ru_RU": {
+      "locale": "ru_RU",
+      "interface": true,
+      "directFile": "Файл"
+    }
+  },
+  "fonts": [
+    {
+      "font": "Inter.woff2",
+      "text": "Café déjà vu – Ångström",
+      "dimensions": [
+        327.0,
+        36.0
+      ],
+      "fontSha256": "fb865a5087637ba194b14aef6f0558214f3c4b3ec939e3c0812c66de41036a47"
+    },
+    {
+      "font": "Noto Sans CJK Regular.woff2",
+      "text": "日本語 简体中文",
+      "dimensions": [
+        217.0,
+        30.0
+      ],
+      "fontSha256": "264ed9286faf7d057e44574c98bb7ea566d337095474fadb1e6fe3bcad2d982b"
+    },
+    {
+      "font": "NotoSansDevanagari-Regular.woff2",
+      "text": "कर्म हिन्दी",
+      "dimensions": [
+        127.0,
+        37.0
+      ],
+      "fontSha256": "f77f8a5b91334a727beb1283de71e683db8f27e311cc42da433a79cdca36bd76"
+    },
+    {
+      "font": "NotoSansArabic-VariableFont_wdth,wght.woff2",
+      "text": "العربية",
+      "dimensions": [
+        119.0,
+        34.0
+      ],
+      "fontSha256": "3cdcb790d066a3cd1267b08a0e77154cdfccf99e87d8e950abeff4ac40938342"
+    }
+  ],
+  "catalogs": {
+    "ab/LC_MESSAGES/blender.mo": {
+      "bytes": 7659,
+      "sha256": "db6451cfad33db7a5fbc7bee3c3959baa5b54b125d8892afa94ff757b8d50d56"
+    },
+    "ar/LC_MESSAGES/blender.mo": {
+      "bytes": 841310,
+      "sha256": "30a83ca488358774f63dce398d69637709501e078604c49dc67f39be1f2c2a05"
+    },
+    "be/LC_MESSAGES/blender.mo": {
+      "bytes": 10059,
+      "sha256": "b8dc35cff6e6fe3027fd0ee494dbc5d43c8cb4e8b9cdcac09b60e73439e2c412"
+    },
+    "bg/LC_MESSAGES/blender.mo": {
+      "bytes": 38170,
+      "sha256": "ace191af1c81008fc0c4620294bedf4f2b1bec27c34ec39a0195b0e92066b1f9"
+    },
+    "ca/LC_MESSAGES/blender.mo": {
+      "bytes": 3741783,
+      "sha256": "47f1f09cbfc7e7d1c254302ed373049b9e7127fc1a9bb09047587314625bbda4"
+    },
+    "cs/LC_MESSAGES/blender.mo": {
+      "bytes": 615095,
+      "sha256": "d94572c20d7cbeca120ec06422d0c314efc81c28b72b5cc8ae0305f1546e7db9"
+    },
+    "da/LC_MESSAGES/blender.mo": {
+      "bytes": 70448,
+      "sha256": "1799fa6a693d5e72aa5bcf4b7ad5b2b23b936cd12fde5ddbfc1ac6df63964ea4"
+    },
+    "de/LC_MESSAGES/blender.mo": {
+      "bytes": 892794,
+      "sha256": "8082872474d28b0ac7215a82a9ebc6d3e2f0f8270e77753ce0c9bf5c8aa6b325"
+    },
+    "el/LC_MESSAGES/blender.mo": {
+      "bytes": 12367,
+      "sha256": "12e88453f1949ccb9b1fbf2d7b26af05ec8c39b1387c46e2ee27fffc7c47d32f"
+    },
+    "en_GB/LC_MESSAGES/blender.mo": {
+      "bytes": 3113972,
+      "sha256": "bc85bb1a946219201e1af366938bdf0ea0171856a5fcf2610d0537e8482c97e7"
+    },
+    "eo/LC_MESSAGES/blender.mo": {
+      "bytes": 1499,
+      "sha256": "456afbc2f1225c01451136b5b9b5b821b049eced6db1e651bf52d48f33e7f129"
+    },
+    "es/LC_MESSAGES/blender.mo": {
+      "bytes": 3696484,
+      "sha256": "e0778ab88593d7c642b4d0ac804be6daf4ea87a0e5668a54f4ca3cbd2033ef1c"
+    },
+    "eu/LC_MESSAGES/blender.mo": {
+      "bytes": 25564,
+      "sha256": "8dc8d90a7c21100946f164808ea53472fa9c65b612ecd819d3a6db08fb2cfc6f"
+    },
+    "fa/LC_MESSAGES/blender.mo": {
+      "bytes": 94724,
+      "sha256": "808243bc96e65d3b99bdb0795ec5a200920ad1ffcab61d22e19c4cb8035e07c4"
+    },
+    "fi/LC_MESSAGES/blender.mo": {
+      "bytes": 199374,
+      "sha256": "27f4faebff81e97bc8d6ceeef65906a451d5a2d166a5785fda0e4a9dc3a7d6df"
+    },
+    "fr/LC_MESSAGES/blender.mo": {
+      "bytes": 3735144,
+      "sha256": "a5507057883f954a7156083b12a793b8333035558fa921dd35fc49ab7c1a2b52"
+    },
+    "he/LC_MESSAGES/blender.mo": {
+      "bytes": 52518,
+      "sha256": "84d4d7d94e191b84c74b59b81f9e98f16640efcf0904d065549a342af612b267"
+    },
+    "hi/LC_MESSAGES/blender.mo": {
+      "bytes": 101102,
+      "sha256": "c13a80a92dab6f3098c580b22f87c670617cdada46bf1993634b810c607bcfbc"
+    },
+    "hr/LC_MESSAGES/blender.mo": {
+      "bytes": 29728,
+      "sha256": "637ec067ba7544cb15d3fa967cc3c298b4fa0aeef5bfcf7607bf1aac2e61bc3e"
+    },
+    "hu/LC_MESSAGES/blender.mo": {
+      "bytes": 296490,
+      "sha256": "818e9edd7b8c81725c5205ccd7885c28b7301ab807d913bc647661a33fee02e1"
+    },
+    "id/LC_MESSAGES/blender.mo": {
+      "bytes": 498707,
+      "sha256": "70f8e1e1999d02e083dcd79c9612b1f51932ca1870ca012f31f85078fcccd90c"
+    },
+    "it/LC_MESSAGES/blender.mo": {
+      "bytes": 1196867,
+      "sha256": "6cdab8d27965b15f4b367a2e436b45168aa04a505b729595caa954d285351b02"
+    },
+    "ja/LC_MESSAGES/blender.mo": {
+      "bytes": 3887429,
+      "sha256": "e453dd799f9b41af1475af4cde03b3a1ea79b089b7d49540fb27af24af2a6d9b"
+    },
+    "ka/LC_MESSAGES/blender.mo": {
+      "bytes": 6125066,
+      "sha256": "d4ae694d3134f1cc0287542c6ca6e84a86a0f468283dc484c8cf1e4180613ab4"
+    },
+    "ko/LC_MESSAGES/blender.mo": {
+      "bytes": 3309277,
+      "sha256": "952d715997d01b353f75e72160d57b7626fe41e760c78dd39d65e3c9a33c3e46"
+    },
+    "ky/LC_MESSAGES/blender.mo": {
+      "bytes": 41155,
+      "sha256": "b4ba8eb0b9bab6eb6a85a02965c7cb8168c9d207944884da6577d50945a92da5"
+    },
+    "lt/LC_MESSAGES/blender.mo": {
+      "bytes": 53861,
+      "sha256": "6e9738c197c4e5c56cc445627a51b72430dc3e861a04295271ce66d9b20fac9e"
+    },
+    "ml/LC_MESSAGES/blender.mo": {
+      "bytes": 9191,
+      "sha256": "cd285535ccaf87a34dd4c9da2e361f57d992b3d27c71094d84d48ea6741e7536"
+    },
+    "nb/LC_MESSAGES/blender.mo": {
+      "bytes": 114739,
+      "sha256": "3e2b3b35379f621ba443f6733380439fb6a5f9652c7921a83c613480fcfafecb"
+    },
+    "nl/LC_MESSAGES/blender.mo": {
+      "bytes": 167880,
+      "sha256": "f464713a5f58584608602735dc02afa691ab161be1a76f0a98ac00d18741baaf"
+    },
+    "pl/LC_MESSAGES/blender.mo": {
+      "bytes": 3582290,
+      "sha256": "ea30ba252b909c8620de72b3c972d9ffc45e5acbf7a1d1591ef4e5444d3d7d99"
+    },
+    "pt/LC_MESSAGES/blender.mo": {
+      "bytes": 2886891,
+      "sha256": "8f1e56d8e6b12e64a62ffff6c320a40288ccb313edb8a95431e61f4670392691"
+    },
+    "pt_BR/LC_MESSAGES/blender.mo": {
+      "bytes": 1353088,
+      "sha256": "2014e470d8f215a6b7926f38a916c296b1fc7e78050b62b03fe3aba45ea202eb"
+    },
+    "ro/LC_MESSAGES/blender.mo": {
+      "bytes": 56714,
+      "sha256": "e8e01fc73c2cffffc073bbe03e292581d541157da12850619644aa73a7fa589d"
+    },
+    "ru/LC_MESSAGES/blender.mo": {
+      "bytes": 4848137,
+      "sha256": "f14fc2b7b3d87b1380354dd680b0beaf6f1538ec50d241f15b043bf369e39d47"
+    },
+    "sk/LC_MESSAGES/blender.mo": {
+      "bytes": 3544120,
+      "sha256": "3572691a1652916da09a1c0c3ebee9f0f11cd11c3c5dc7e882b9fde1f3107e51"
+    },
+    "sl/LC_MESSAGES/blender.mo": {
+      "bytes": 1237888,
+      "sha256": "fa53a45301e056701b98e35b306cb5d1131ecc0cbeefd6da6ad311ea0b48a073"
+    },
+    "sr/LC_MESSAGES/blender.mo": {
+      "bytes": 431915,
+      "sha256": "47e1763ad5b6a12c6d9c8dd0cbcfd77f5da451406dcd7c8be5182aeaff48dfab"
+    },
+    "sr@latin/LC_MESSAGES/blender.mo": {
+      "bytes": 339191,
+      "sha256": "e84f086f89fe0094ef7f01eff540fb842a5b44dc6677cdfa6e1209b5242aafe6"
+    },
+    "sv/LC_MESSAGES/blender.mo": {
+      "bytes": 3264528,
+      "sha256": "2383bba83867328ff459b9e870af2e668e4b9063ae6157e6eff36bc5c3d0db44"
+    },
+    "sw/LC_MESSAGES/blender.mo": {
+      "bytes": 2315883,
+      "sha256": "68836846d8018933bd598c623ac6c3baf020664771c2c3c0ef1617ca8b0aa681"
+    },
+    "ta/LC_MESSAGES/blender.mo": {
+      "bytes": 6023735,
+      "sha256": "a9316bf13b01d72287c702c25ce0e648d54aacc66cd84de92a61d3304fc1e39e"
+    },
+    "th/LC_MESSAGES/blender.mo": {
+      "bytes": 181556,
+      "sha256": "9afb9d47f95888f89c429baa3d5bc7060a3afb3f48ac63cec705fa8a11bff016"
+    },
+    "tr/LC_MESSAGES/blender.mo": {
+      "bytes": 2300327,
+      "sha256": "c1a46be6ce29778763886b3ec07b1f437a3a9c84e1494ef3afa3f91cd5287dd8"
+    },
+    "uk/LC_MESSAGES/blender.mo": {
+      "bytes": 2278256,
+      "sha256": "1d9ae6658aa969d739d207eb5392a58d36d10482ff345bbd37393417d22a756e"
+    },
+    "ur/LC_MESSAGES/blender.mo": {
+      "bytes": 4241162,
+      "sha256": "eda4a38fbd0bc19df76cc3bea74d672dca1c0d81e83f044cb6f77180080e6e85"
+    },
+    "vi/LC_MESSAGES/blender.mo": {
+      "bytes": 3985001,
+      "sha256": "a1972985ac710de4002ec7e3be5424c4bd28f80bf6480bbf6f23fed97bda19e2"
+    },
+    "zh_HANS/LC_MESSAGES/blender.mo": {
+      "bytes": 3146446,
+      "sha256": "0b02b1d3b2e6b59929f7efbf8957a7d014f5a68777cc428c84240cc7eb8a33e3"
+    },
+    "zh_HANT/LC_MESSAGES/blender.mo": {
+      "bytes": 1436667,
+      "sha256": "86c19d892f0021dbc660e6c0f95c3abffd9007664575befda7f8c1395a242532"
+    }
+  },
+  "availableLanguages": [
+    "DEFAULT",
+    "ab",
+    "ar_EG",
+    "be",
+    "bg_BG",
+    "ca_AD",
+    "cs_CZ",
+    "da",
+    "de_DE",
+    "el_GR",
+    "en_GB",
+    "en_US",
+    "eo",
+    "es",
+    "eu_EU",
+    "fa_IR",
+    "fi_FI",
+    "fr_FR",
+    "he_IL",
+    "hi_IN",
+    "hr",
+    "hu_HU",
+    "id_ID",
+    "it_IT",
+    "ja_JP",
+    "ka",
+    "ko_KR",
+    "ky_KG",
+    "lt",
+    "ml",
+    "nb",
+    "nl_NL",
+    "pl_PL",
+    "pt_BR",
+    "pt_PT",
+    "ro_RO",
+    "ru_RU",
+    "sk_SK",
+    "sl",
+    "sr_RS",
+    "sr_RS@latin",
+    "sv_SE",
+    "sw",
+    "ta",
+    "th_TH",
+    "tr_TR",
+    "uk_UA",
+    "ur",
+    "vi_VN",
+    "zh_HANS",
+    "zh_HANT"
+  ],
+  "sourceSha256": "a68561da3b3e74af6a7eea64ebc4ce551f7aeee33bd9254c69ef5aaa70cafac0"
+}

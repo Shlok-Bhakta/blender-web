@@ -1,0 +1,11 @@
+--- a/meson.build
++++ b/meson.build
+@@ -63,7 +63,7 @@
+ ]), language: 'c')
+ 
+ add_project_arguments(cpp.get_supported_arguments([
+-  '-fno-exceptions',
++  host_machine.system() == 'emscripten' ? '-fignore-exceptions' : '-fno-exceptions',
+   '-fno-rtti',
+   '-fno-threadsafe-statics',
+   '-fvisibility-inlines-hidden',
