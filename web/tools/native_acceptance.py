@@ -23,6 +23,35 @@ def main():
     docs = ROOT / 'web/docs'
     manifest = read(base / 'dist/manifest.json')
     version = manifest['version']
+    tracking = [read(base / name / 'acceptance.json') for name in
+                ['tracking-evidence', 'tracking-evidence-ui', 'tracking-evidence-hardware']]
+    tracking_native = [read(base / name / 'native-verification.json') for name in
+                       ['tracking-evidence', 'tracking-evidence-ui', 'tracking-evidence-hardware']]
+    tracking_libraries = read(base / 'tracking-check.json')
+    assert tracking_libraries['denseQR'] and tracking_libraries['eigenSparse']
+    assert tracking_libraries['threads'] == 8 and tracking_libraries['maximumParameterError'] < 1e-7
+    tracking_reference = read(ROOT / 'web/tests/fixtures/tracking/results.json')
+    tracking_source_hash = hashlib.sha256((ROOT / 'web/tests/tracking.py').read_bytes()).hexdigest()
+    assert tracking_reference['sourceSha256'] == tracking_source_hash
+    for variant, verified in zip(tracking, tracking_native):
+        assert variant['bundleVersion'] == verified['bundleVersion'] == version
+        assert variant['sourceSha256'] == verified['sourceSha256'] == tracking_source_hash
+        assert variant['libmv'] and variant['offlineReopen'] and not variant['browserErrors']
+        assert variant['maximumTrackErrorPixels'] < .15 and variant['maximumNativeMarkerErrorPixels'] < .05
+        assert variant['solve']['valid'] and variant['solve']['cameras'] == 12 and variant['solve']['bundles'] == 32
+        assert variant['solve']['averageErrorPixels'] < .05
+        assert variant['solve']['maximumTrajectoryRatioError'] < .01
+        assert variant['maximumNativeTrajectoryRatioError'] < .001
+        assert variant['saved'] == variant['reopened'] == verified['desktop']
+        assert variant['blend']['sha256'] == verified['blendSha256']
+        assert variant['referenceSha256'] == hashlib.sha256((ROOT / 'web/tests/fixtures/tracking/results.json').read_bytes()).hexdigest()
+        for name, expected in variant['fixtureHashes'].items():
+            path = ROOT / 'web/tests/tracking.py' if name == 'check.py' else ROOT / 'web/tests/fixtures/tracking' / name
+            assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
+    tracking_recording = read(docs / 'tracking-recording.json')
+    assert tracking_recording['bundleVersion'] == version
+    for entry in [tracking_recording, tracking_recording['screenshot']]:
+        assert hashlib.sha256((ROOT / entry['path']).read_bytes()).hexdigest() == entry['sha256']
     text = [read(base / name / 'acceptance.json') for name in
             ['text-evidence', 'text-evidence-ui', 'text-evidence-hardware']]
     text_libraries = read(base / 'text-check.json')
@@ -218,6 +247,8 @@ def main():
                               'recording':usd_recording},
               'textTranslation':{'browserVariants':text,'libraryChecks':text_libraries,
                                   'recording':text_recording},
+              'tracking':{'browserVariants':tracking,'browserFilesInDesktop':tracking_native,
+                          'libraryChecks':tracking_libraries,'recording':tracking_recording},
               'media':{'browserVariants':media,'independentNativeVerification':media_native,
                        'recording':media_recording,'performance':media_performance},
               'performance':performance,
@@ -240,6 +271,7 @@ def main():
                   'NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.',
                   'Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.',
                   'All 49 catalogs match native files; translated strings are sampled in six languages. Unicode keyboard input covers one scalar per event. HarfBuzz/FriBidi are verified library ports, not integrated into this release\'s original font renderer. Full shaping and IME composition remain pending.',
+                  'Tracking acceptance uses one translated textured patch over twelve 256x192 frames and a synthetic twelve-camera, thirty-two-point reconstruction. Real footage, lens refinement, object/tripod solves and long production clips are not covered. Ceres uses Eigen dense/sparse solvers; CUDA, SuiteSparse and LAPACK are disabled.',
                   'Ocean acceptance uses resolution 5 and 12 animation frames. Ocean disk-cache baking is not covered.',
                   'OpenVDB acceptance covers float sphere grids, ZIP/Blosc IO, NanoVDB conversion and mesh/volume modifiers. Mantaflow acceptance covers four resolution-16 gas frames; liquid simulation, long bakes and the Python OpenVDB module are not covered.',
                   'Image acceptance covers small WebP lossless, JP2 16-bit, Cineon 10-bit and DPX 16-bit files. Other format variants, large images and animation are not covered.',

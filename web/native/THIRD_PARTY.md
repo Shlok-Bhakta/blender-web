@@ -4,6 +4,13 @@ and [HeyPuter/blender-wasm](https://github.com/HeyPuter/blender-wasm/tree/f8f811
 under GPL-2.0-or-later. Original file notices are retained.
 The Blender source remains pinned to the official stable release in `web/upstream.json`.
 
+Tracking uses the pinned Blender release's Abseil 20250814.1 archive and Ceres
+commit `0c70ed3a1a2d6ba47c06c7e8b3b040880bc474db`, with original checksums.
+Abseil retains its Apache-2.0 notices and Ceres its BSD-3-Clause notices, both
+published under `licenses/dependencies/`. Bundled libmv source notices and the
+gflags/glog licenses are published under `licenses/`. These libraries and
+Blender's original tracking code are compiled without algorithm substitutions.
+
 The expanded web configuration also compiles Blender's bundled Bullet physics,
 IK solvers and ufbx importer. Their original source notices are retained in the
 pinned source. Bullet uses the zlib license; ufbx is available under its included

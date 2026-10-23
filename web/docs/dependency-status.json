@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "778163d96d65c6356773",
+  "bundleVersion": "c12617abeb6c87291c16",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -78,7 +78,7 @@
     "io_stl": true,
     "io_wavefront_obj": true,
     "jack": false,
-    "libmv": false,
+    "libmv": true,
     "mod_oceansim": true,
     "mod_remesh": true,
     "openal": false,
@@ -119,6 +119,7 @@
     "io_ply",
     "io_stl",
     "io_wavefront_obj",
+    "libmv",
     "mod_oceansim",
     "mod_remesh",
     "opencolorio",
@@ -132,15 +133,12 @@
     "cycles_osl",
     "input_ndof",
     "jack",
-    "libmv",
     "openal",
     "pulseaudio",
     "xr_openxr"
   ],
   "remainingGroups": {
-    "portableLibraries": [
-      "libmv"
-    ],
+    "portableLibraries": [],
     "rendererIntegration": [
       "cycles_osl"
     ],
@@ -299,6 +297,20 @@
       "archiveHash": "2b242c465b194ac8e1451ea1354873ae",
       "hashType": "MD5",
       "source": "https://github.com/uxlfoundation/oneTBB/archive/refs/tags/v2022.3.0.tar.gz"
+    },
+    {
+      "name": "ABSEIL",
+      "version": "20250814.1",
+      "archiveHash": "1692f77d1739bacf3f94337188b78583cf09bab7e420d2dc6c5605a4f86785a1",
+      "hashType": "SHA256",
+      "source": "https://github.com/abseil/abseil-cpp/releases/download/20250814.1/abseil-cpp-20250814.1.tar.gz"
+    },
+    {
+      "name": "CERES",
+      "version": "0c70ed3a1a2d6ba47c06c7e8b3b040880bc474db",
+      "archiveHash": "bf0bcc78fae884e59dd893693e52510da7cc6866a7444fdae9ba8f19eae266cd",
+      "hashType": "SHA256",
+      "source": "https://github.com/ceres-solver/ceres-solver/archive/0c70ed3a1a2d6ba47c06c7e8b3b040880bc474db.tar.gz"
     },
     {
       "name": "OPENSUBDIV",

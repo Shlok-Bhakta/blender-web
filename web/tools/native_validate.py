@@ -43,6 +43,11 @@ def main():
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'tracking-{suffix}', ['node', 'web/tests/tracking.cjs'], **flags)
+        directory = 'build/native/tracking-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
+        run(f'tracking-native-{suffix}', ['python3', 'web/tools/native_tracking_verify.py', directory, '--blender', args.blender])
+    run('tracking-video', ['python3', 'web/tools/native_tracking_recording.py'])
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'text-{suffix}', ['node', 'web/tests/text.cjs'], **flags)
     run('text-video', ['python3', 'web/tools/native_text_recording.py'])
     run('audio-worklet', ['node', 'web/tests/audio-worklet.cjs'])

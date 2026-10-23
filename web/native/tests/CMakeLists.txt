@@ -4,6 +4,14 @@ project(blender_web_native_checks LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 list(APPEND CMAKE_MODULE_PATH "${BLENDER_SOURCE}/build_files/cmake/Modules")
 include("${CMAKE_CURRENT_LIST_DIR}/../dependencies.cmake")
+if(WITH_LIBMV)
+  add_executable(tracking-check tracking.cc)
+  target_link_libraries(tracking-check PRIVATE Ceres::ceres)
+  target_compile_options(tracking-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  target_link_options(tracking-check PRIVATE -O1 -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8 -sPTHREAD_POOL_SIZE_STRICT=0
+    -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1)
+endif()
 if(WITH_HARFBUZZ AND WITH_FRIBIDI)
   add_executable(text-check text.cc)
   target_include_directories(text-check PRIVATE ${FREETYPE_INCLUDE_DIRS}

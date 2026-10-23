@@ -28,13 +28,13 @@ def check_dependencies(source, base, prefix, jobs):
                     "-DWITH_OPENVDB=ON", "-DWITH_NANOVDB=ON",
                     "-DWITH_USD=ON", "-DWITH_MATERIALX=ON",
                     "-DWITH_CODEC_FFMPEG=ON", "-DWITH_CODEC_SNDFILE=ON",
-                    "-DWITH_HARFBUZZ=ON", "-DWITH_FRIBIDI=ON"], check=True)
+                    "-DWITH_HARFBUZZ=ON", "-DWITH_FRIBIDI=ON", "-DWITH_LIBMV=ON"], check=True)
     subprocess.run(["cmake", "--build", str(checks), "--parallel", str(jobs)], check=True)
     result = subprocess.run(["node", str(checks / "dependencies.js")], check=True,
                             text=True, stdout=subprocess.PIPE, timeout=120)
     print(result.stdout, end="", flush=True)
     (base / "dependency-check.json").write_text(json.dumps(json.loads(result.stdout), indent=2) + "\n")
-    for name in ("fftw", "alembic", "media"):
+    for name in ("fftw", "alembic", "media", "tracking"):
         output = subprocess.check_output(["node", str(checks / f"{name}-check.js")], text=True, timeout=60)
         (base / f"{name}-check.json").write_text(json.dumps(json.loads(output), indent=2) + "\n")
         print(output, end="", flush=True)
@@ -228,7 +228,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -355,7 +355,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 

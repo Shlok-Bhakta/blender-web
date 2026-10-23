@@ -38,7 +38,7 @@ batches. The static site's
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
-| Tracking and camera solving | Deferred | libmv/Ceres dependency work and actual tracking/solve checks |
+| Tracking and camera solving | Enabled for tested cases | Original libmv tracking of twelve translated frames and camera reconstruction from thirty-two synthetic point tracks; native readback and offline persistence |
 | glTF Draco and meshoptimizer compression | Deferred | Library ports plus static Python bridges for add-ons that currently load native shared libraries |
 | Interface translation and saved language preferences | Enabled | All 49 original catalogs match desktop files; six language samples, French/Japanese UI and offline preference restoration |
 | Unicode keyboard characters | Enabled | GHOST preserves complete one-scalar UTF-8 keyboard values, including four-byte characters; original Text Editor save/reopen |
@@ -63,19 +63,36 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-Tracking remains a portable dependency group.
 Additional codec backends and time stretching remain follow-up work. Device
 file selection and download/export integration remain separate from the persistent
 browser filesystem.
 
 The [dependency status report](../docs/dependency-status.json) compares the actual
 desktop and browser `bpy.app.build_options` values and lists the base library
-recipes. These coarse flags are not a feature-parity percentage. Tracking
-remains portable dependency work. OSL,
+recipes. These coarse flags are not a feature-parity percentage. OSL,
 denoising and GPU evaluators also need renderer integration. Desktop JACK,
 PulseAudio and OpenAL drivers are not browser audio backends. The web build uses
 Web Audio for stereo output; NDOF, XR and additional audio devices need platform
 integration.
+
+Tracking uses Blender's original libmv code, bundled gflags/glog, pinned Abseil
+20250814.1 and the release's pinned Ceres commit. Ceres retains its Eigen dense
+and sparse solvers and pthread execution. CUDA, SuiteSparse and LAPACK are
+disabled. A separate dependency check recovers known camera offsets using
+dense QR and Eigen sparse normal Cholesky with eight solver threads.
+
+The browser check tracks a deterministic textured patch moving two horizontal
+and one vertical pixel per frame across twelve 256x192 images. It compares
+coordinates with desktop Blender and known motion. A second case solves twelve
+cameras and thirty-two non-coplanar points from exact projected observations.
+Both cases use original operators, persist in a `.blend` file, reopen offline
+and are independently read back by native Blender. Real footage, automatic
+feature detection, lens refinement, object/tripod solves and long clips are
+not established by these small cases.
+
+[Watch tracking and camera reconstruction](../docs/tracking-walkthrough.mp4).
+
+![Original Movie Clip Editor with the tracked footage](../docs/tracked-footage.png)
 
 HarfBuzz 10.0.1 and FriBidi 1.0.12 use Blender's pinned archives and checksums.
 The Wasm library checks shape Arabic and Devanagari through the original
@@ -122,8 +139,8 @@ reload using the cached application and persistent USD files.
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
 | 0:10 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
-| 0:24 | USD is available in Blender's original export menu |
-| 0:33 | Reload offline and repeat interchange from persistent browser storage |
+| 0:25 | USD is available in Blender's original export menu |
+| 0:34 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
 
 ![USD in Blender's original export menu](../docs/usd-export-menu.png)
@@ -174,8 +191,8 @@ variants reopen VDB fixtures from OPFS after an offline reload.
 | --- | --- |
 | 0:00 | Start Blender with OpenVDB and NanoVDB |
 | 0:13 | Compare VDB import and volume modifiers with desktop Blender |
-| 0:16 | Mesh to Volume and Volume to Mesh in the original viewport |
-| 0:22 | Replay the four-frame Mantaflow gas simulation in Blender |
+| 0:17 | Mesh to Volume and Volume to Mesh in the original viewport |
+| 0:23 | Replay the four-frame Mantaflow gas simulation in Blender |
 | 0:32 | Reload offline and reopen the VDB files from browser storage |
 <!-- /VOLUME_RECORDING_CHAPTERS -->
 

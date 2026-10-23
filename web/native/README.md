@@ -110,6 +110,19 @@ save/reopen the resulting text, and restore language preferences offline.
 Library checks separately cover Arabic/Devanagari shaping and mixed-direction
 ordering. Meson 1.9.0 and Ninja 1.13.2 run in an isolated build-tool environment.
 
+Tracking uses the original libmv operators with pinned Abseil/Ceres and bundled
+gflags/glog. The small fixtures cover twelve tracked frames and reconstruction
+of twelve cameras from thirty-two points. Checks compare marker coordinates
+and normalized camera motion with native Blender, then reopen the saved data
+offline and in the desktop build. See the [tracking recording](../docs/tracking-walkthrough.mp4)
+and [coverage limits](FEATURES.md).
+
+```sh
+WEB_TEST_HARDWARE=1 node web/tests/tracking.cjs
+python3 web/tools/native_tracking_verify.py build/native/tracking-evidence-hardware --blender /path/to/blender
+WEB_TEST_UI_FALLBACK=1 node web/tests/tracking.cjs
+```
+
 The loader shows byte progress for the selected JS/Wasm/data bundle, including
 bytes reused from cache. After downloading it shows startup status until the
 first Blender frame, then removes the loading overlay completely. Sizes are
@@ -246,7 +259,7 @@ on software WebGPU. `native_dependency_recording.py` captions the hardware
 image/vector and Freestyle recordings. `native_dependency_status.py --blender
 /path/to/blender` compares the desktop and browser's actual build flags.
 
-`native_validate.py` runs the full 58-stage local acceptance sequence, including
+`native_validate.py` runs the full 65-stage local acceptance sequence, including
 desktop readback, recordings and native/browser benchmarks. Serve the candidate
 site on port 8093 and an unseeded control build of the same Blender release on
 port 8098, or pass `--candidate-url` and `--control-url`. The build helper's

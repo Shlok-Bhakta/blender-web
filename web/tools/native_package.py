@@ -133,6 +133,20 @@ def collect(base, root, ui_fallback=True):
     shutil.copy2(upstream / 'extern/ufbx/LICENSE', notices / 'ufbx-LICENSE.txt')
     shutil.copy2(upstream / 'extern/mantaflow/LICENSE', notices / 'mantaflow-LICENSE.txt')
     shutil.copy2(upstream / 'extern/audaspace/LICENSE', notices / 'audaspace-LICENSE.txt')
+    shutil.copy2(upstream / 'extern/gflags/COPYING.txt', notices / 'gflags-COPYING.txt')
+    shutil.copy2(upstream / 'extern/glog/COPYING', notices / 'glog-COPYING.txt')
+    libmv_notices = []
+    for path in sorted((upstream / 'intern/libmv/libmv').rglob('*')):
+        if path.suffix not in {'.h', '.cc'}:
+            continue
+        header = []
+        for line in path.read_text().splitlines():
+            if line.strip() and not line.startswith('//'):
+                break
+            header.append(line)
+        if any('opyright' in line for line in header):
+            libmv_notices.append(str(path.relative_to(upstream)) + '\n' + '\n'.join(header))
+    (notices / 'libmv-source-notices.txt').write_text('\n\n'.join(libmv_notices) + '\n')
     shutil.copytree(upstream / 'intern/cycles/doc/license', notices / 'cycles',
                     dirs_exist_ok=True, ignore=shutil.ignore_patterns('CMakeLists.txt'))
     bullet = (upstream / 'extern/bullet2/src/btBulletDynamicsCommon.h').read_text()

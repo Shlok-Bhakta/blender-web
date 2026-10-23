@@ -1,0 +1,10 @@
+--- a/extern/glog/src/config.h
++++ b/extern/glog/src/config.h
+@@ -1,5 +1,7 @@
+ #if defined(__APPLE__)
+  #include "config_mac.h"
++#elif defined(WITH_GHOST_WEB)
++ #include "native/ghost/GHOST_WebGlog.hh"
+ #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+  #include "config_freebsd.h"
+ #elif defined(__NetBSD__)

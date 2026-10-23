@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "778163d96d65c6356773",
+  "bundleVersion": "c12617abeb6c87291c16",
   "sessions": {
     "control": [
       {
@@ -15,209 +15,402 @@
         "width": 1920,
         "height": 1080,
         "samples": 64,
-        "renderSeconds": 8.274,
+        "renderSeconds": 8.382,
         "renderRuns": [
-          8.274,
+          8.382,
           3.237,
+          3.131
+        ],
+        "handlerSeconds": [
+          7.587414979934692,
+          3.079464912414551,
+          3.00077486038208
+        ],
+        "videoCaptured": false,
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "gcn-5",
+          "device": "",
+          "description": "",
+          "features": [
+            "depth32float-stencil8",
+            "rg11b10ufloat-renderable",
+            "texture-formats-tier1",
+            "bgra8unorm-storage",
+            "chromium-experimental-multi-draw-indirect",
+            "texture-compression-bc",
+            "dual-source-blending",
+            "core-features-and-limits",
+            "chromium-experimental-timestamp-query-inside-passes",
+            "float32-filterable",
+            "indirect-first-instance",
+            "float32-blendable",
+            "texture-compression-etc2",
+            "depth-clip-control",
+            "texture-compression-bc-sliced-3d",
+            "texture-formats-tier2",
+            "shader-f16",
+            "timestamp-query",
+            "clip-distances",
+            "primitive-index",
+            "texture-component-swizzle",
+            "subgroups"
+          ],
+          "maxComputeInvocationsPerWorkgroup": 1024,
+          "maxStorageTexturesPerShaderStage": 8,
+          "maxStorageBufferBindingSize": 2147483648
+        },
+        "foregroundPixels": 244885,
+        "opaquePixels": 2073600,
+        "browserErrors": 0,
+        "clipStart": 21.376,
+        "clipEnd": 53.252,
+        "defaults": {
+          "engine": "BLENDER_EEVEE",
+          "width": 1920,
+          "height": 1080,
+          "percent": 100,
+          "samples": 64,
+          "frame": 1,
+          "camera": "Camera",
+          "display": "WINDOW",
+          "view_transform": "AgX",
+          "look": "None",
+          "exposure": 0,
+          "gamma": 1,
+          "objects": [
+            {
+              "name": "Camera",
+              "type": "CAMERA",
+              "location": [
+                7.358891487121582,
+                -6.925790786743164,
+                4.958309173583984
+              ],
+              "rotation": [
+                1.1093189716339111,
+                0,
+                0.8149281740188599
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "name": "Cube",
+              "type": "MESH",
+              "location": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "name": "Light",
+              "type": "LIGHT",
+              "location": [
+                4.076245307922363,
+                1.0054539442062378,
+                5.903861999511719
+              ],
+              "rotation": [
+                0.6503279805183411,
+                0.055217113345861435,
+                1.8663908243179321
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "light_energy": 1000,
+          "camera_lens": 50,
+          "eevee": {
+            "gi_diffuse_bounces": 3,
+            "gi_cubemap_resolution": "512",
+            "gi_visibility_resolution": "32",
+            "gi_glossy_clamp": 0,
+            "gi_irradiance_pool_size": "16",
+            "taa_samples": 16,
+            "taa_render_samples": 64,
+            "use_taa_reprojection": true,
+            "ray_tracing_method": "SCREEN",
+            "use_shadow_jitter_viewport": false,
+            "clamp_surface_direct": 0,
+            "clamp_surface_indirect": 10,
+            "clamp_volume_direct": 0,
+            "clamp_volume_indirect": 0,
+            "direct_light_intensity": 1,
+            "indirect_light_intensity": 1,
+            "volumetric_start": 0.10000000149011612,
+            "volumetric_end": 100,
+            "volumetric_tile_size": "8",
+            "volumetric_samples": 64,
+            "volumetric_sample_distribution": 0.800000011920929,
+            "volumetric_ray_depth": 16,
+            "volumetric_light_clamp": 0,
+            "use_volumetric_shadows": false,
+            "volumetric_shadow_samples": 16,
+            "use_volume_custom_range": false,
+            "use_fast_gi": true,
+            "fast_gi_thickness_near": 0.10000000149011612,
+            "fast_gi_quality": 0.25,
+            "fast_gi_step_count": 8,
+            "fast_gi_ray_count": 2,
+            "fast_gi_method": "GLOBAL_ILLUMINATION",
+            "fast_gi_distance": 0,
+            "fast_gi_bias": 0.05000000074505806,
+            "fast_gi_resolution": "2",
+            "bokeh_max_size": 100,
+            "bokeh_threshold": 1,
+            "bokeh_neighbor_max": 10,
+            "use_bokeh_jittered": false,
+            "bokeh_overblur": 5,
+            "motion_blur_depth_scale": 100,
+            "motion_blur_max": 32,
+            "motion_blur_steps": 1,
+            "use_shadows": true,
+            "shadow_pool_size": "512",
+            "shadow_ray_count": 1,
+            "shadow_step_count": 6,
+            "light_threshold": 0.009999999776482582,
+            "use_overscan": false,
+            "overscan_size": 3,
+            "use_raytracing": false,
+            "shadow_resolution_scale": 1
+          }
+        }
+      },
+      {
+        "browserVersion": "145.0.7632.6",
+        "bundleVersion": "7e35e48849404ebeac92",
+        "shaderSeedEntries": 0,
+        "shaderOverrideEntries": 0,
+        "deviceScaleFactor": 1,
+        "renderResizeChecks": [],
+        "engine": "BLENDER_EEVEE",
+        "settingsUnchanged": true,
+        "referencePixelsEqual": true,
+        "width": 1920,
+        "height": 1080,
+        "samples": 64,
+        "renderSeconds": 8.092,
+        "renderRuns": [
+          8.092,
+          3.132,
+          3.132
+        ],
+        "handlerSeconds": [
+          7.1735546588897705,
+          3.0530450344085693,
+          3.022165298461914
+        ],
+        "videoCaptured": false,
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "gcn-5",
+          "device": "",
+          "description": "",
+          "features": [
+            "depth32float-stencil8",
+            "rg11b10ufloat-renderable",
+            "bgra8unorm-storage",
+            "texture-formats-tier1",
+            "chromium-experimental-multi-draw-indirect",
+            "texture-compression-bc",
+            "dual-source-blending",
+            "core-features-and-limits",
+            "chromium-experimental-timestamp-query-inside-passes",
+            "float32-filterable",
+            "indirect-first-instance",
+            "float32-blendable",
+            "texture-compression-etc2",
+            "depth-clip-control",
+            "texture-compression-bc-sliced-3d",
+            "shader-f16",
+            "clip-distances",
+            "timestamp-query",
+            "texture-formats-tier2",
+            "primitive-index",
+            "texture-component-swizzle",
+            "subgroups"
+          ],
+          "maxComputeInvocationsPerWorkgroup": 1024,
+          "maxStorageTexturesPerShaderStage": 8,
+          "maxStorageBufferBindingSize": 2147483648
+        },
+        "foregroundPixels": 244885,
+        "opaquePixels": 2073600,
+        "browserErrors": 0,
+        "clipStart": 21.801,
+        "clipEnd": 53.256,
+        "defaults": {
+          "engine": "BLENDER_EEVEE",
+          "width": 1920,
+          "height": 1080,
+          "percent": 100,
+          "samples": 64,
+          "frame": 1,
+          "camera": "Camera",
+          "display": "WINDOW",
+          "view_transform": "AgX",
+          "look": "None",
+          "exposure": 0,
+          "gamma": 1,
+          "objects": [
+            {
+              "name": "Camera",
+              "type": "CAMERA",
+              "location": [
+                7.358891487121582,
+                -6.925790786743164,
+                4.958309173583984
+              ],
+              "rotation": [
+                1.1093189716339111,
+                0,
+                0.8149281740188599
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "name": "Cube",
+              "type": "MESH",
+              "location": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "name": "Light",
+              "type": "LIGHT",
+              "location": [
+                4.076245307922363,
+                1.0054539442062378,
+                5.903861999511719
+              ],
+              "rotation": [
+                0.6503279805183411,
+                0.055217113345861435,
+                1.8663908243179321
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "light_energy": 1000,
+          "camera_lens": 50,
+          "eevee": {
+            "gi_diffuse_bounces": 3,
+            "gi_cubemap_resolution": "512",
+            "gi_visibility_resolution": "32",
+            "gi_glossy_clamp": 0,
+            "gi_irradiance_pool_size": "16",
+            "taa_samples": 16,
+            "taa_render_samples": 64,
+            "use_taa_reprojection": true,
+            "ray_tracing_method": "SCREEN",
+            "use_shadow_jitter_viewport": false,
+            "clamp_surface_direct": 0,
+            "clamp_surface_indirect": 10,
+            "clamp_volume_direct": 0,
+            "clamp_volume_indirect": 0,
+            "direct_light_intensity": 1,
+            "indirect_light_intensity": 1,
+            "volumetric_start": 0.10000000149011612,
+            "volumetric_end": 100,
+            "volumetric_tile_size": "8",
+            "volumetric_samples": 64,
+            "volumetric_sample_distribution": 0.800000011920929,
+            "volumetric_ray_depth": 16,
+            "volumetric_light_clamp": 0,
+            "use_volumetric_shadows": false,
+            "volumetric_shadow_samples": 16,
+            "use_volume_custom_range": false,
+            "use_fast_gi": true,
+            "fast_gi_thickness_near": 0.10000000149011612,
+            "fast_gi_quality": 0.25,
+            "fast_gi_step_count": 8,
+            "fast_gi_ray_count": 2,
+            "fast_gi_method": "GLOBAL_ILLUMINATION",
+            "fast_gi_distance": 0,
+            "fast_gi_bias": 0.05000000074505806,
+            "fast_gi_resolution": "2",
+            "bokeh_max_size": 100,
+            "bokeh_threshold": 1,
+            "bokeh_neighbor_max": 10,
+            "use_bokeh_jittered": false,
+            "bokeh_overblur": 5,
+            "motion_blur_depth_scale": 100,
+            "motion_blur_max": 32,
+            "motion_blur_steps": 1,
+            "use_shadows": true,
+            "shadow_pool_size": "512",
+            "shadow_ray_count": 1,
+            "shadow_step_count": 6,
+            "light_threshold": 0.009999999776482582,
+            "use_overscan": false,
+            "overscan_size": 3,
+            "use_raytracing": false,
+            "shadow_resolution_scale": 1
+          }
+        }
+      },
+      {
+        "browserVersion": "145.0.7632.6",
+        "bundleVersion": "7e35e48849404ebeac92",
+        "shaderSeedEntries": 0,
+        "shaderOverrideEntries": 0,
+        "deviceScaleFactor": 1,
+        "renderResizeChecks": [],
+        "engine": "BLENDER_EEVEE",
+        "settingsUnchanged": true,
+        "referencePixelsEqual": true,
+        "width": 1920,
+        "height": 1080,
+        "samples": 64,
+        "renderSeconds": 8.272,
+        "renderRuns": [
+          8.272,
+          3.337,
           3.033
         ],
         "handlerSeconds": [
-          7.4151153564453125,
-          3.157449722290039,
-          2.90262508392334
-        ],
-        "videoCaptured": false,
-        "adapter": {
-          "vendor": "amd",
-          "architecture": "gcn-5",
-          "device": "",
-          "description": "",
-          "features": [
-            "depth32float-stencil8",
-            "rg11b10ufloat-renderable",
-            "texture-formats-tier1",
-            "bgra8unorm-storage",
-            "chromium-experimental-multi-draw-indirect",
-            "texture-compression-bc",
-            "dual-source-blending",
-            "core-features-and-limits",
-            "chromium-experimental-timestamp-query-inside-passes",
-            "float32-filterable",
-            "indirect-first-instance",
-            "float32-blendable",
-            "texture-compression-etc2",
-            "depth-clip-control",
-            "texture-compression-bc-sliced-3d",
-            "clip-distances",
-            "texture-formats-tier2",
-            "timestamp-query",
-            "shader-f16",
-            "primitive-index",
-            "texture-component-swizzle",
-            "subgroups"
-          ],
-          "maxComputeInvocationsPerWorkgroup": 1024,
-          "maxStorageTexturesPerShaderStage": 8,
-          "maxStorageBufferBindingSize": 2147483648
-        },
-        "foregroundPixels": 244885,
-        "opaquePixels": 2073600,
-        "browserErrors": 0,
-        "clipStart": 21.726,
-        "clipEnd": 53.314,
-        "defaults": {
-          "engine": "BLENDER_EEVEE",
-          "width": 1920,
-          "height": 1080,
-          "percent": 100,
-          "samples": 64,
-          "frame": 1,
-          "camera": "Camera",
-          "display": "WINDOW",
-          "view_transform": "AgX",
-          "look": "None",
-          "exposure": 0,
-          "gamma": 1,
-          "objects": [
-            {
-              "name": "Camera",
-              "type": "CAMERA",
-              "location": [
-                7.358891487121582,
-                -6.925790786743164,
-                4.958309173583984
-              ],
-              "rotation": [
-                1.1093189716339111,
-                0,
-                0.8149281740188599
-              ],
-              "scale": [
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "name": "Cube",
-              "type": "MESH",
-              "location": [
-                0,
-                0,
-                0
-              ],
-              "rotation": [
-                0,
-                0,
-                0
-              ],
-              "scale": [
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "name": "Light",
-              "type": "LIGHT",
-              "location": [
-                4.076245307922363,
-                1.0054539442062378,
-                5.903861999511719
-              ],
-              "rotation": [
-                0.6503279805183411,
-                0.055217113345861435,
-                1.8663908243179321
-              ],
-              "scale": [
-                1,
-                1,
-                1
-              ]
-            }
-          ],
-          "light_energy": 1000,
-          "camera_lens": 50,
-          "eevee": {
-            "gi_diffuse_bounces": 3,
-            "gi_cubemap_resolution": "512",
-            "gi_visibility_resolution": "32",
-            "gi_glossy_clamp": 0,
-            "gi_irradiance_pool_size": "16",
-            "taa_samples": 16,
-            "taa_render_samples": 64,
-            "use_taa_reprojection": true,
-            "ray_tracing_method": "SCREEN",
-            "use_shadow_jitter_viewport": false,
-            "clamp_surface_direct": 0,
-            "clamp_surface_indirect": 10,
-            "clamp_volume_direct": 0,
-            "clamp_volume_indirect": 0,
-            "direct_light_intensity": 1,
-            "indirect_light_intensity": 1,
-            "volumetric_start": 0.10000000149011612,
-            "volumetric_end": 100,
-            "volumetric_tile_size": "8",
-            "volumetric_samples": 64,
-            "volumetric_sample_distribution": 0.800000011920929,
-            "volumetric_ray_depth": 16,
-            "volumetric_light_clamp": 0,
-            "use_volumetric_shadows": false,
-            "volumetric_shadow_samples": 16,
-            "use_volume_custom_range": false,
-            "use_fast_gi": true,
-            "fast_gi_thickness_near": 0.10000000149011612,
-            "fast_gi_quality": 0.25,
-            "fast_gi_step_count": 8,
-            "fast_gi_ray_count": 2,
-            "fast_gi_method": "GLOBAL_ILLUMINATION",
-            "fast_gi_distance": 0,
-            "fast_gi_bias": 0.05000000074505806,
-            "fast_gi_resolution": "2",
-            "bokeh_max_size": 100,
-            "bokeh_threshold": 1,
-            "bokeh_neighbor_max": 10,
-            "use_bokeh_jittered": false,
-            "bokeh_overblur": 5,
-            "motion_blur_depth_scale": 100,
-            "motion_blur_max": 32,
-            "motion_blur_steps": 1,
-            "use_shadows": true,
-            "shadow_pool_size": "512",
-            "shadow_ray_count": 1,
-            "shadow_step_count": 6,
-            "light_threshold": 0.009999999776482582,
-            "use_overscan": false,
-            "overscan_size": 3,
-            "use_raytracing": false,
-            "shadow_resolution_scale": 1
-          }
-        }
-      },
-      {
-        "browserVersion": "145.0.7632.6",
-        "bundleVersion": "7e35e48849404ebeac92",
-        "shaderSeedEntries": 0,
-        "shaderOverrideEntries": 0,
-        "deviceScaleFactor": 1,
-        "renderResizeChecks": [],
-        "engine": "BLENDER_EEVEE",
-        "settingsUnchanged": true,
-        "referencePixelsEqual": true,
-        "width": 1920,
-        "height": 1080,
-        "samples": 64,
-        "renderSeconds": 8.474,
-        "renderRuns": [
-          8.474,
-          3.234,
-          3.036
-        ],
-        "handlerSeconds": [
-          7.690915107727051,
-          3.1004951000213623,
-          2.9207448959350586
+          7.474854946136475,
+          3.1658904552459717,
+          2.9274048805236816
         ],
         "videoCaptured": false,
         "adapter": {
@@ -241,201 +434,8 @@
             "texture-compression-etc2",
             "depth-clip-control",
             "texture-compression-bc-sliced-3d",
-            "clip-distances",
-            "texture-formats-tier2",
             "timestamp-query",
             "shader-f16",
-            "primitive-index",
-            "texture-component-swizzle",
-            "subgroups"
-          ],
-          "maxComputeInvocationsPerWorkgroup": 1024,
-          "maxStorageTexturesPerShaderStage": 8,
-          "maxStorageBufferBindingSize": 2147483648
-        },
-        "foregroundPixels": 244885,
-        "opaquePixels": 2073600,
-        "browserErrors": 0,
-        "clipStart": 21.74,
-        "clipEnd": 53.628,
-        "defaults": {
-          "engine": "BLENDER_EEVEE",
-          "width": 1920,
-          "height": 1080,
-          "percent": 100,
-          "samples": 64,
-          "frame": 1,
-          "camera": "Camera",
-          "display": "WINDOW",
-          "view_transform": "AgX",
-          "look": "None",
-          "exposure": 0,
-          "gamma": 1,
-          "objects": [
-            {
-              "name": "Camera",
-              "type": "CAMERA",
-              "location": [
-                7.358891487121582,
-                -6.925790786743164,
-                4.958309173583984
-              ],
-              "rotation": [
-                1.1093189716339111,
-                0,
-                0.8149281740188599
-              ],
-              "scale": [
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "name": "Cube",
-              "type": "MESH",
-              "location": [
-                0,
-                0,
-                0
-              ],
-              "rotation": [
-                0,
-                0,
-                0
-              ],
-              "scale": [
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "name": "Light",
-              "type": "LIGHT",
-              "location": [
-                4.076245307922363,
-                1.0054539442062378,
-                5.903861999511719
-              ],
-              "rotation": [
-                0.6503279805183411,
-                0.055217113345861435,
-                1.8663908243179321
-              ],
-              "scale": [
-                1,
-                1,
-                1
-              ]
-            }
-          ],
-          "light_energy": 1000,
-          "camera_lens": 50,
-          "eevee": {
-            "gi_diffuse_bounces": 3,
-            "gi_cubemap_resolution": "512",
-            "gi_visibility_resolution": "32",
-            "gi_glossy_clamp": 0,
-            "gi_irradiance_pool_size": "16",
-            "taa_samples": 16,
-            "taa_render_samples": 64,
-            "use_taa_reprojection": true,
-            "ray_tracing_method": "SCREEN",
-            "use_shadow_jitter_viewport": false,
-            "clamp_surface_direct": 0,
-            "clamp_surface_indirect": 10,
-            "clamp_volume_direct": 0,
-            "clamp_volume_indirect": 0,
-            "direct_light_intensity": 1,
-            "indirect_light_intensity": 1,
-            "volumetric_start": 0.10000000149011612,
-            "volumetric_end": 100,
-            "volumetric_tile_size": "8",
-            "volumetric_samples": 64,
-            "volumetric_sample_distribution": 0.800000011920929,
-            "volumetric_ray_depth": 16,
-            "volumetric_light_clamp": 0,
-            "use_volumetric_shadows": false,
-            "volumetric_shadow_samples": 16,
-            "use_volume_custom_range": false,
-            "use_fast_gi": true,
-            "fast_gi_thickness_near": 0.10000000149011612,
-            "fast_gi_quality": 0.25,
-            "fast_gi_step_count": 8,
-            "fast_gi_ray_count": 2,
-            "fast_gi_method": "GLOBAL_ILLUMINATION",
-            "fast_gi_distance": 0,
-            "fast_gi_bias": 0.05000000074505806,
-            "fast_gi_resolution": "2",
-            "bokeh_max_size": 100,
-            "bokeh_threshold": 1,
-            "bokeh_neighbor_max": 10,
-            "use_bokeh_jittered": false,
-            "bokeh_overblur": 5,
-            "motion_blur_depth_scale": 100,
-            "motion_blur_max": 32,
-            "motion_blur_steps": 1,
-            "use_shadows": true,
-            "shadow_pool_size": "512",
-            "shadow_ray_count": 1,
-            "shadow_step_count": 6,
-            "light_threshold": 0.009999999776482582,
-            "use_overscan": false,
-            "overscan_size": 3,
-            "use_raytracing": false,
-            "shadow_resolution_scale": 1
-          }
-        }
-      },
-      {
-        "browserVersion": "145.0.7632.6",
-        "bundleVersion": "7e35e48849404ebeac92",
-        "shaderSeedEntries": 0,
-        "shaderOverrideEntries": 0,
-        "deviceScaleFactor": 1,
-        "renderResizeChecks": [],
-        "engine": "BLENDER_EEVEE",
-        "settingsUnchanged": true,
-        "referencePixelsEqual": true,
-        "width": 1920,
-        "height": 1080,
-        "samples": 64,
-        "renderSeconds": 8.077,
-        "renderRuns": [
-          8.077,
-          3.136,
-          3.737
-        ],
-        "handlerSeconds": [
-          7.293654680252075,
-          3.0238051414489746,
-          3.609269857406616
-        ],
-        "videoCaptured": false,
-        "adapter": {
-          "vendor": "amd",
-          "architecture": "gcn-5",
-          "device": "",
-          "description": "",
-          "features": [
-            "depth32float-stencil8",
-            "rg11b10ufloat-renderable",
-            "texture-formats-tier1",
-            "bgra8unorm-storage",
-            "chromium-experimental-multi-draw-indirect",
-            "texture-compression-bc",
-            "dual-source-blending",
-            "core-features-and-limits",
-            "chromium-experimental-timestamp-query-inside-passes",
-            "float32-filterable",
-            "indirect-first-instance",
-            "float32-blendable",
-            "texture-compression-etc2",
-            "depth-clip-control",
-            "texture-compression-bc-sliced-3d",
-            "shader-f16",
-            "timestamp-query",
             "clip-distances",
             "texture-formats-tier2",
             "primitive-index",
@@ -449,8 +449,8 @@
         "foregroundPixels": 244885,
         "opaquePixels": 2073600,
         "browserErrors": 0,
-        "clipStart": 21.565,
-        "clipEnd": 53.661,
+        "clipStart": 21.571,
+        "clipEnd": 53.309,
         "defaults": {
           "engine": "BLENDER_EEVEE",
           "width": 1920,
@@ -585,7 +585,7 @@
     "candidate": [
       {
         "browserVersion": "145.0.7632.6",
-        "bundleVersion": "778163d96d65c6356773",
+        "bundleVersion": "c12617abeb6c87291c16",
         "shaderSeedEntries": 124,
         "shaderOverrideEntries": 0,
         "deviceScaleFactor": 1,
@@ -596,16 +596,16 @@
         "width": 1920,
         "height": 1080,
         "samples": 64,
-        "renderSeconds": 5.15,
+        "renderSeconds": 4.939,
         "renderRuns": [
-          5.15,
-          3.142,
+          4.939,
+          3.232,
           3.03
         ],
         "handlerSeconds": [
-          4.433305025100708,
-          3.0335402488708496,
-          2.9462099075317383
+          4.311004638671875,
+          3.110610246658325,
+          2.9245550632476807
         ],
         "videoCaptured": false,
         "adapter": {
@@ -616,8 +616,8 @@
           "features": [
             "depth32float-stencil8",
             "rg11b10ufloat-renderable",
-            "bgra8unorm-storage",
             "texture-formats-tier1",
+            "bgra8unorm-storage",
             "chromium-experimental-multi-draw-indirect",
             "texture-compression-bc",
             "dual-source-blending",
@@ -630,9 +630,9 @@
             "depth-clip-control",
             "texture-compression-bc-sliced-3d",
             "clip-distances",
+            "texture-formats-tier2",
             "timestamp-query",
             "shader-f16",
-            "texture-formats-tier2",
             "primitive-index",
             "texture-component-swizzle",
             "subgroups"
@@ -644,8 +644,8 @@
         "foregroundPixels": 244885,
         "opaquePixels": 2073600,
         "browserErrors": 0,
-        "clipStart": 20.383,
-        "clipEnd": 48.714,
+        "clipStart": 21.252,
+        "clipEnd": 49.489,
         "defaults": {
           "engine": "BLENDER_EEVEE",
           "width": 1920,
@@ -778,7 +778,7 @@
       },
       {
         "browserVersion": "145.0.7632.6",
-        "bundleVersion": "778163d96d65c6356773",
+        "bundleVersion": "c12617abeb6c87291c16",
         "shaderSeedEntries": 124,
         "shaderOverrideEntries": 0,
         "deviceScaleFactor": 1,
@@ -792,13 +792,13 @@
         "renderSeconds": 5.247,
         "renderRuns": [
           5.247,
-          3.235,
-          3.03
+          3.131,
+          3.735
         ],
         "handlerSeconds": [
-          4.567049741744995,
-          3.14231014251709,
-          2.881085157394409
+          4.621374845504761,
+          2.9910600185394287,
+          3.56935977935791
         ],
         "videoCaptured": false,
         "adapter": {
@@ -809,8 +809,8 @@
           "features": [
             "depth32float-stencil8",
             "rg11b10ufloat-renderable",
-            "bgra8unorm-storage",
             "texture-formats-tier1",
+            "bgra8unorm-storage",
             "chromium-experimental-multi-draw-indirect",
             "texture-compression-bc",
             "dual-source-blending",
@@ -822,10 +822,10 @@
             "texture-compression-etc2",
             "depth-clip-control",
             "texture-compression-bc-sliced-3d",
-            "shader-f16",
-            "texture-formats-tier2",
-            "timestamp-query",
             "clip-distances",
+            "shader-f16",
+            "timestamp-query",
+            "texture-formats-tier2",
             "primitive-index",
             "texture-component-swizzle",
             "subgroups"
@@ -837,8 +837,8 @@
         "foregroundPixels": 244885,
         "opaquePixels": 2073600,
         "browserErrors": 0,
-        "clipStart": 20.985,
-        "clipEnd": 49.55,
+        "clipStart": 20.911,
+        "clipEnd": 49.998,
         "defaults": {
           "engine": "BLENDER_EEVEE",
           "width": 1920,
@@ -971,7 +971,7 @@
       },
       {
         "browserVersion": "145.0.7632.6",
-        "bundleVersion": "778163d96d65c6356773",
+        "bundleVersion": "c12617abeb6c87291c16",
         "shaderSeedEntries": 124,
         "shaderOverrideEntries": 0,
         "deviceScaleFactor": 1,
@@ -982,16 +982,16 @@
         "width": 1920,
         "height": 1080,
         "samples": 64,
-        "renderSeconds": 5.145,
+        "renderSeconds": 5.24,
         "renderRuns": [
-          5.145,
-          3.129,
-          3.237
+          5.24,
+          3.133,
+          3.136
         ],
         "handlerSeconds": [
-          4.52640962600708,
-          3.0473999977111816,
-          3.075929880142212
+          4.663490056991577,
+          2.9991800785064697,
+          3.023444890975952
         ],
         "videoCaptured": false,
         "adapter": {
@@ -1015,10 +1015,10 @@
             "texture-compression-etc2",
             "depth-clip-control",
             "texture-compression-bc-sliced-3d",
-            "texture-formats-tier2",
             "shader-f16",
             "timestamp-query",
             "clip-distances",
+            "texture-formats-tier2",
             "primitive-index",
             "texture-component-swizzle",
             "subgroups"
@@ -1030,8 +1030,8 @@
         "foregroundPixels": 244885,
         "opaquePixels": 2073600,
         "browserErrors": 0,
-        "clipStart": 21.611,
-        "clipEnd": 50.201,
+        "clipStart": 20.428,
+        "clipEnd": 49.012,
         "defaults": {
           "engine": "BLENDER_EEVEE",
           "width": 1920,
@@ -1168,39 +1168,39 @@
     "control": {
       "bundleVersion": "7e35e48849404ebeac92",
       "coldSeconds": [
-        7.4151153564453125,
-        7.690915107727051,
-        7.293654680252075
+        7.587414979934692,
+        7.1735546588897705,
+        7.474854946136475
       ],
       "warmSeconds": [
-        3.157449722290039,
-        2.90262508392334,
-        3.1004951000213623,
-        2.9207448959350586,
-        3.0238051414489746,
-        3.609269857406616
+        3.079464912414551,
+        3.00077486038208,
+        3.0530450344085693,
+        3.022165298461914,
+        3.1658904552459717,
+        2.9274048805236816
       ],
-      "coldMedian": 7.4151153564453125,
-      "warmMedian": 3.0621501207351685,
+      "coldMedian": 7.474854946136475,
+      "warmMedian": 3.0376051664352417,
       "shaderSeed": null
     },
     "candidate": {
-      "bundleVersion": "778163d96d65c6356773",
+      "bundleVersion": "c12617abeb6c87291c16",
       "coldSeconds": [
-        4.433305025100708,
-        4.567049741744995,
-        4.52640962600708
+        4.311004638671875,
+        4.621374845504761,
+        4.663490056991577
       ],
       "warmSeconds": [
-        3.0335402488708496,
-        2.9462099075317383,
-        3.14231014251709,
-        2.881085157394409,
-        3.0473999977111816,
-        3.075929880142212
+        3.110610246658325,
+        2.9245550632476807,
+        2.9910600185394287,
+        3.56935977935791,
+        2.9991800785064697,
+        3.023444890975952
       ],
-      "coldMedian": 4.52640962600708,
-      "warmMedian": 3.0404701232910156,
+      "coldMedian": 4.621374845504761,
+      "warmMedian": 3.011312484741211,
       "shaderSeed": {
         "entries": 124,
         "sha256": "00ba4e4dd6aff424058edc727570482db2269ffa2c0d9823c1276d4a3610ddd1"
@@ -1208,8 +1208,8 @@
     }
   },
   "reductionPercent": {
-    "cold": 38.9569897645265,
-    "warm": 0.7079991701696153
+    "cold": 38.17438761278693,
+    "warm": 0.8655727210553299
   },
   "workloadSHA256": "544a2d37e7ea7bed41e47b51e2d92e4e108953e1589d4f6706c4ee6a79836116",
   "method": "Three fresh Chromium sessions per build, alternated control/candidate. Three renders per session, no video/tracing, original factory settings. First-in-process engine handler time; global GPU driver caches are not cleared. This compares complete packaged builds: enabled dependencies, debug-name metadata and compiler configuration may differ, so it does not isolate a single cache or optimizer change."
