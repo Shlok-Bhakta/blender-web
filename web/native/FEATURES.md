@@ -79,7 +79,7 @@ Tracking uses Blender's original libmv code, bundled gflags/glog, pinned Abseil
 20250814.1 and the release's pinned Ceres commit. Ceres retains its Eigen dense
 and sparse solvers and pthread execution. CUDA, SuiteSparse and LAPACK are
 disabled. A separate dependency check recovers known camera offsets using
-dense QR and Eigen sparse normal Cholesky with eight solver threads.
+dense QR and Eigen sparse normal Cholesky with up to eight available solver threads.
 
 The browser check tracks a deterministic textured patch moving two horizontal
 and one vertical pixel per frame across twelve 256x192 images. It compares

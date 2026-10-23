@@ -2964,6 +2964,17 @@
       "denseQR": true,
       "eigenSparse": true,
       "threads": 8,
+      "requestedThreads": 8,
+      "hardwareThreads": 8,
+      "maximumParameterError": 4.66515714947e-13
+    },
+    "tracking-four-cores-check": {
+      "ceres": "2.3.0",
+      "denseQR": true,
+      "eigenSparse": true,
+      "threads": 4,
+      "requestedThreads": 8,
+      "hardwareThreads": 4,
       "maximumParameterError": 4.66515714947e-13
     },
     "usd-python-check": {
@@ -12579,6 +12590,8 @@
       "denseQR": true,
       "eigenSparse": true,
       "threads": 8,
+      "requestedThreads": 8,
+      "hardwareThreads": 8,
       "maximumParameterError": 4.66515714947e-13
     },
     "recording": {

@@ -29,7 +29,9 @@ def main():
                        ['tracking-evidence', 'tracking-evidence-ui', 'tracking-evidence-hardware']]
     tracking_libraries = read(base / 'tracking-check.json')
     assert tracking_libraries['denseQR'] and tracking_libraries['eigenSparse']
-    assert tracking_libraries['threads'] == 8 and tracking_libraries['maximumParameterError'] < 1e-7
+    assert tracking_libraries['requestedThreads'] == 8
+    assert tracking_libraries['threads'] == min(8, tracking_libraries['hardwareThreads'] or 8)
+    assert tracking_libraries['maximumParameterError'] < 1e-7
     tracking_reference = read(ROOT / 'web/tests/fixtures/tracking/results.json')
     tracking_source_hash = hashlib.sha256((ROOT / 'web/tests/tracking.py').read_bytes()).hexdigest()
     assert tracking_reference['sourceSha256'] == tracking_source_hash

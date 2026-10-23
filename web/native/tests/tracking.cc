@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 #include <cassert>
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <thread>
 #include <ceres/ceres.h>
 #include <ceres/version.h>
 
@@ -19,6 +21,10 @@ struct Projection {
 int main()
 {
   const double expected[] = {1.25, -.5, .3};
+  const unsigned hardware_threads = std::thread::hardware_concurrency();
+  const unsigned requested_threads = 8;
+  const unsigned expected_threads = hardware_threads ?
+      std::min(requested_threads, hardware_threads) : requested_threads;
   double maximum = 0;
   for (const auto solver : {ceres::DENSE_QR, ceres::SPARSE_NORMAL_CHOLESKY}) {
     double offset[] = {0, 0, 0};
@@ -36,17 +42,20 @@ int main()
     ceres::Solver::Options options;
     options.linear_solver_type = solver;
     options.sparse_linear_algebra_library_type = ceres::EIGEN_SPARSE;
-    options.num_threads = 8;
+    options.num_threads = requested_threads;
     options.max_num_iterations = 50;
     options.function_tolerance = 1e-12;
     options.parameter_tolerance = 1e-12;
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
     assert(summary.IsSolutionUsable() && summary.final_cost < 1e-12);
-    assert(summary.linear_solver_type_used == solver && summary.num_threads_used == 8);
+    assert(summary.linear_solver_type_used == solver);
+    assert(summary.num_threads_used == int(expected_threads));
     for (int i = 0; i < 3; i++) maximum = std::max(maximum, std::abs(offset[i] - expected[i]));
   }
   assert(maximum < 1e-7);
   std::printf("{\"ceres\":\"%s\",\"denseQR\":true,\"eigenSparse\":true,"
-              "\"threads\":8,\"maximumParameterError\":%.12g}\n", CERES_VERSION_STRING, maximum);
+              "\"threads\":%u,\"requestedThreads\":%u,\"hardwareThreads\":%u,"
+              "\"maximumParameterError\":%.12g}\n", CERES_VERSION_STRING,
+              expected_threads, requested_threads, hardware_threads, maximum);
 }
