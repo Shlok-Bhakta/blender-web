@@ -429,3 +429,9 @@ committed bundle version and every runtime file, then repeats startup, cache,
 resize/storage, modeling, scene exchange, image/vector and render checks before
 GitHub Pages deployment. The automatic
 source-build workflow remains available and builds the application itself.
+
+Source CI builds and tests the application on pushes and publishes its artifacts.
+GitHub Pages publication goes through `publish-validated.yml`, which verifies the
+release archive's SHA-256 and runs thirteen browser validation groups before
+deployment. This keeps a later source rebuild from replacing the tested release
+with a separately packaged bundle.

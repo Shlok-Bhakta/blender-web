@@ -185,17 +185,5 @@ jobs:
         with:
           path: build/native/dist
 
-  deploy:
-    if: github.event_name != 'pull_request'
-    needs: build
-    runs-on: ubuntu-24.04
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy static site
-        id: deployment
-        uses: actions/deploy-pages@v4
+  # Pages publication is owned by publish-validated.yml. A later source rebuild
+  # must not replace the exact archive that passed the release verification gate.
