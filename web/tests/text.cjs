@@ -95,10 +95,18 @@ async function main() {
     await command("bpy.context.preferences.view.language='fr_FR'; __import__('os').write(1,b'TEXT_FRENCH\\n')", 'TEXT_FRENCH');
     await page.screenshot({path:path.join(output, 'french-interface.png')});
     chapter('Type Unicode characters through native GHOST keyboard events');
-    const editor = `def text_editor():\n    area=max((a for a in bpy.context.screen.areas if a.type in {'CONSOLE','VIEW_3D'}),key=lambda a:a.width*a.height)\n    area.type='TEXT_EDITOR'\n    area.spaces.active.text=bpy.data.texts.new('Unicode key proof')\n    area.tag_redraw()\nbpy.app.timers.register(text_editor,first_interval=1.5)`;
+    const editor = `def text_editor():\n    area=max((a for a in bpy.context.screen.areas if a.type in {'CONSOLE','VIEW_3D'}),key=lambda a:a.width*a.height)\n    area.type='TEXT_EDITOR'\n    area.spaces.active.text=bpy.data.texts.new('Unicode key proof')\n    area.tag_redraw()\n    __import__('os').write(1,b'TEXT_EDITOR_READY\\n')\nbpy.app.timers.register(text_editor,first_interval=1.5)`;
     await command(`exec(${JSON.stringify(editor)}); __import__('os').write(1,b'TEXT_EDITOR_SCHEDULED\\n')`, 'TEXT_EDITOR_SCHEDULED');
-    await page.waitForTimeout(2000);
-    await page.locator('canvas').focus(); await page.mouse.move(300, 250);
+    const editorDeadline = Date.now() + 30000;
+    while (!messages.includes('TEXT_EDITOR_READY')) {
+      if (Date.now() > editorDeadline) throw new Error('Text Editor did not become ready');
+      await page.waitForTimeout(100);
+    }
+    await page.locator('canvas').focus();
+    // Changing editor type under a stationary pointer does not establish its
+    // active native region. Focus the text body before sending trusted keys.
+    await page.mouse.click(100, 100);
+    await page.screenshot();
     await page.evaluate(() => {
       window.textKeyProof = [];
       window.addEventListener('keydown', event => window.textKeyProof.push({key:event.key,

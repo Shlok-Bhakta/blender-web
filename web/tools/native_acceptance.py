@@ -23,6 +23,45 @@ def main():
     docs = ROOT / 'web/docs'
     manifest = read(base / 'dist/manifest.json')
     version = manifest['version']
+    gltf_names = ['gltf-evidence', 'gltf-evidence-ui', 'gltf-evidence-hardware']
+    gltf = [read(base / name / 'acceptance.json') for name in gltf_names]
+    gltf_native = [read(base / name / 'native-verification.json') for name in gltf_names]
+    gltf_library = read(base / 'gltf-check.json')
+    for name,expected in gltf_library['sourceHashes'].items():
+        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected
+    assert gltf_library['draco'] and gltf_library['meshoptVertexVersions'] == [0, 1]
+    assert gltf_library['legacyQuaternionStride']
+    assert gltf_library['capsuleCleanup'] and gltf_library['truncatedDataRejected']
+    assert len(gltf_library['rejectedCases']) >= 16
+    gltf_source_hash = hashlib.sha256((ROOT / 'web/tests/gltf.py').read_bytes()).hexdigest()
+    for variant, verified in zip(gltf, gltf_native):
+        assert variant['bundleVersion'] == verified['bundleVersion'] == version
+        assert variant['sourceSha256'] == verified['sourceSha256'] == gltf_source_hash
+        assert variant['offlineReopen'] and not variant['browserErrors']
+        assert not variant['developmentOverlay']
+        assert variant['bridge'] == {key:value for key,value in gltf_library.items() if key != 'sourceHashes'}
+        assert variant['colorFilter']['knownColors'] == 4
+        assert variant['colorFilter']['maximumUnorm8Error'] <= 2
+        assert variant['colorFilter']['cachedBufferReused']
+        assert set(variant['cases']) == set(verified['cases']) == {'draco', 'meshopt-ext', 'meshopt-khr'}
+        assert variant['exports'] == verified['exports'] and verified['savedBlendVerified']
+        assert variant['blend']['sha256'] == verified['blendSha256']
+        assert variant['saved'] == variant['reopened']
+        assert len(variant['malformed']['rejectedFiles']) == 3 and variant['malformed']['validImportAfterFailures']
+        assert variant['referenceSha256'] == hashlib.sha256((ROOT / 'web/tests/fixtures/gltf/results.json').read_bytes()).hexdigest()
+        for name, expected in variant['fixtureHashes'].items():
+            path = (ROOT / 'web/tests/gltf.py' if name == 'check.py' else
+                    ROOT / 'web/native/tests/gltf.py' if name == 'bridge-check.py' else
+                    ROOT / 'web/tests/fixtures/gltf' / name)
+            assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
+        for name, entry in variant['cases'].items():
+            assert entry['nativeImportError'] < .005 and entry['roundtripError'] < .005
+            assert verified['cases'][name]['maximumPositionError'] < .005
+            assert entry['snapshot']['triangles'] == 528 and entry['snapshot']['shapeKeys'] == 2
+    gltf_recording = read(docs / 'gltf-recording.json')
+    assert gltf_recording['bundleVersion'] == version
+    for entry in (gltf_recording, gltf_recording['screenshot']):
+        assert hashlib.sha256((ROOT / entry['path']).read_bytes()).hexdigest() == entry['sha256']
     tracking = [read(base / name / 'acceptance.json') for name in
                 ['tracking-evidence', 'tracking-evidence-ui', 'tracking-evidence-hardware']]
     tracking_native = [read(base / name / 'native-verification.json') for name in
@@ -249,6 +288,8 @@ def main():
                               'recording':usd_recording},
               'textTranslation':{'browserVariants':text,'libraryChecks':text_libraries,
                                   'recording':text_recording},
+              'gltf':{'browserVariants':gltf,'browserFilesInDesktop':gltf_native,
+                      'libraryChecks':gltf_library,'recording':gltf_recording},
               'tracking':{'browserVariants':tracking,'browserFilesInDesktop':tracking_native,
                           'libraryChecks':tracking_libraries,'recording':tracking_recording},
               'media':{'browserVariants':media,'independentNativeVerification':media_native,
@@ -272,6 +313,7 @@ def main():
                   'Production Blender uses wasm32 with a 4 GiB linear-memory ceiling. The memory64 result is a separate sparse-addressing probe, not Blender scene-capacity evidence.',
                   'NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.',
                   'Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.',
+                  'Compressed glTF acceptance covers small authored meshes, UV/color/normal moments, morph targets and animation in Draco and EXT/KHR meshoptimizer. Skinning, external asset collections and large-scene stress tests remain pending.',
                   'All 49 catalogs match native files; translated strings are sampled in six languages. Unicode keyboard input covers one scalar per event. HarfBuzz/FriBidi are verified library ports, not integrated into this release\'s original font renderer. Full shaping and IME composition remain pending.',
                   'Tracking acceptance uses one translated textured patch over twelve 256x192 frames and a synthetic twelve-camera, thirty-two-point reconstruction. Real footage, lens refinement, object/tripod solves and long production clips are not covered. Ceres uses Eigen dense/sparse solvers; CUDA, SuiteSparse and LAPACK are disabled.',
                   'Ocean acceptance uses resolution 5 and 12 animation frames. Ocean disk-cache baking is not covered.',

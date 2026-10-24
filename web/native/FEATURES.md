@@ -39,7 +39,7 @@ batches. The static site's
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
 | Tracking and camera solving | Enabled for tested cases | Original libmv tracking of twelve translated frames and camera reconstruction from thirty-two synthetic point tracks; native readback and offline persistence |
-| glTF Draco and meshoptimizer compression | Deferred | Library ports plus static Python bridges for add-ons that currently load native shared libraries |
+| glTF Draco and meshoptimizer compression | Enabled for tested cases | Original codecs and add-on operators; Draco and EXT/KHR meshoptimizer exchange, UV/color/normal checks, morphs and animation, malformed-file recovery, desktop readback and offline persistence |
 | Interface translation and saved language preferences | Enabled | All 49 original catalogs match desktop files; six language samples, French/Japanese UI and offline preference restoration |
 | Unicode keyboard characters | Enabled | GHOST preserves complete one-scalar UTF-8 keyboard values, including four-byte characters; original Text Editor save/reopen |
 | HarfBuzz and FriBidi | Library ports verified | Arabic/Devanagari shaping and mixed-direction ordering checks; this pinned Blender font renderer does not call these libraries |
@@ -139,8 +139,8 @@ reload using the cached application and persistent USD files.
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
 | 0:10 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
-| 0:25 | USD is available in Blender's original export menu |
-| 0:34 | Reload offline and repeat interchange from persistent browser storage |
+| 0:26 | USD is available in Blender's original export menu |
+| 0:35 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
 
 ![USD in Blender's original export menu](../docs/usd-export-menu.png)
@@ -345,3 +345,19 @@ the largest evaluated mesh.
 ![Blender after resizing to a 2× display density](../docs/web-hidpi.png)
 
 ![Physics scene reopened from OPFS after a browser reload, at frame 1](../docs/web-features-reopened.png)
+
+Draco 1.5.7 and meshoptimizer 1.1 link statically through a GHOST Python adapter.
+The web hooks correct COLOR filter dispatch, sampled quaternion export stride,
+and decoded placeholder lengths. The decoder also accepts the pinned desktop
+exporter's older quaternion layout with explicit buffer bounds. New exports use
+canonical eight-byte quaternion strides. Codec handles release automatically
+when Python unwinds, and the adapter rejects invalid sizes, strides and writes
+to read-only buffers before entering native codec functions.
+
+The authored glTF checks cover one 528-triangle mesh with UVs, vertex colors,
+normals, one morph target and animation, in three compression formats. They
+also exercise the KHR COLOR filter with known values and reject three malformed
+files before importing a valid asset in the same session. Skinning, external
+compressed asset collections, large-scene stress tests and broader glTF
+extension compatibility remain outside this coverage. See the
+[recording](../docs/gltf-walkthrough.mp4) and [test source](../tests/gltf.py).

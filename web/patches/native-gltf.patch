@@ -1,0 +1,246 @@
+--- a/scripts/addons_core/io_scene_gltf2/io/exp/draco.py
++++ b/scripts/addons_core/io_scene_gltf2/io/exp/draco.py
+@@ -2,7 +2,11 @@
+ #
+ # SPDX-License-Identifier: Apache-2.0
+ 
+-from ctypes import *
++import sys
++if sys.platform == "emscripten":
++    from _bpy_ghost_web_gltf import *
++else:
++    from ctypes import *
+ 
+ from ...io.exp.binary_data import BinaryData
+ from ...io.com.library import dll_path
+@@ -147,9 +151,12 @@
+     if not dll.encoderEncode(encoder, preserve_triangle_order):
+         export_settings['log'].error('Could not encode primitive. Skipping primitive.')
+ 
+-    byte_length = dll.encoderGetByteLength(encoder)
+-    encoded_data = bytes(byte_length)
+-    dll.encoderCopy(encoder, encoded_data)
++    if sys.platform == "emscripten":
++        encoded_data = dll.encoderBytes(encoder)
++    else:
++        byte_length = dll.encoderGetByteLength(encoder)
++        encoded_data = bytes(byte_length)
++        dll.encoderCopy(encoder, encoded_data)
+ 
+     if primitive.extensions is None:
+         primitive.extensions = {}
+--- a/scripts/addons_core/io_scene_gltf2/blender/imp/draco_compression_extension.py
++++ b/scripts/addons_core/io_scene_gltf2/blender/imp/draco_compression_extension.py
+@@ -2,7 +2,11 @@
+ #
+ # SPDX-License-Identifier: Apache-2.0
+ 
+-from ctypes import *
++import sys
++if sys.platform == "emscripten":
++    from _bpy_ghost_web_gltf import *
++else:
++    from ctypes import *
+ 
+ from ...io.com.gltf2_io import BufferView
+ from ...io.imp.gltf2_io_binary import BinaryData
+@@ -82,9 +86,13 @@
+         gltf.log.error('Draco Decoder: Unable to decode indices. Skipping primitive {}.'.format(name))
+         return
+ 
+-    indices_byte_length = dll.decoderGetIndicesByteLength(decoder)
+-    decoded_data = bytes(indices_byte_length)
+-    dll.decoderCopyIndices(decoder, decoded_data)
++    if sys.platform == "emscripten":
++        decoded_data = dll.decoderIndices(decoder)
++        indices_byte_length = len(decoded_data)
++    else:
++        indices_byte_length = dll.decoderGetIndicesByteLength(decoder)
++        decoded_data = bytes(indices_byte_length)
++        dll.decoderCopyIndices(decoder, decoded_data)
+ 
+     # Generate a new buffer holding the decoded indices.
+     gltf.buffers[base_buffer_idx] = decoded_data
+@@ -118,9 +126,13 @@
+             gltf.log.error('Draco Decoder: Could not decode attribute {}. Skipping primitive {}.'.format(attr, name))
+             return
+ 
+-        byte_length = dll.decoderGetAttributeByteLength(decoder, dracoId)
+-        decoded_data = bytes(byte_length)
+-        dll.decoderCopyAttribute(decoder, dracoId, decoded_data)
++        if sys.platform == "emscripten":
++            decoded_data = dll.decoderAttribute(decoder, dracoId)
++            byte_length = len(decoded_data)
++        else:
++            byte_length = dll.decoderGetAttributeByteLength(decoder, dracoId)
++            decoded_data = bytes(byte_length)
++            dll.decoderCopyAttribute(decoder, dracoId, decoded_data)
+ 
+         # Generate a new buffer holding the decoded vertex data.
+         buffer_idx = base_buffer_idx + 1 + attr_idx
+--- a/scripts/addons_core/io_scene_gltf2/io/exp/meshopt.py
++++ b/scripts/addons_core/io_scene_gltf2/io/exp/meshopt.py
+@@ -2,7 +2,11 @@
+ #
+ # SPDX-License-Identifier: Apache-2.0
+ 
+-import ctypes
++import sys
++if sys.platform == "emscripten":
++    import _bpy_ghost_web_gltf as ctypes
++else:
++    import ctypes
+ import numpy as np
+ 
+ from ...io.com.library import dll_path
+@@ -152,7 +156,7 @@
+         written = lib.encodeIndexBuffer(
+             buffer,
+             bound,
+-            to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
++            to_be_converted_data if sys.platform == "emscripten" else to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
+             index_count
+         )
+ 
+@@ -177,7 +181,7 @@
+         written = lib.encodeIndexSequence(
+             buffer,
+             bound,
+-            to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
++            to_be_converted_data if sys.platform == "emscripten" else to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
+             index_count
+         )
+ 
+@@ -209,32 +213,32 @@
+         if filter == 'EXPONENTIAL':
+             filtered_data = np.empty(vertex_count * byteStride, dtype=np.uint8)
+             lib.encodeFilterExp(
+-                filtered_data.ctypes.data_as(ctypes.c_void_p),
++                filtered_data if sys.platform == "emscripten" else filtered_data.ctypes.data_as(ctypes.c_void_p),
+                 vertex_count,
+                 byteStride,
+                 EXP_FILTER_BITS,
+-                to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
++                to_be_converted_data if sys.platform == "emscripten" else to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
+                 ENCODE_EXP_SHARED_VECTOR
+             )
+         elif filter == 'QUATERNION':
+             filtered_data = np.empty(vertex_count * byteStride, dtype=np.uint8)
+             lib.encodeFilterQuat(
+-                filtered_data.ctypes.data_as(ctypes.c_void_p),
++                filtered_data if sys.platform == "emscripten" else filtered_data.ctypes.data_as(ctypes.c_void_p),
+                 vertex_count,
+                 byteStride,
+                 QUAT_FILTER_BITS,
+-                to_be_converted_data.ctypes.data_as(ctypes.c_void_p)
++                to_be_converted_data if sys.platform == "emscripten" else to_be_converted_data.ctypes.data_as(ctypes.c_void_p)
+             )
+ 
+         if filter is not None:
+             written = lib.encodeVertexBuffer(
+                 buffer, bound,
+-                filtered_data.ctypes.data_as(ctypes.c_void_p),
++                filtered_data if sys.platform == "emscripten" else filtered_data.ctypes.data_as(ctypes.c_void_p),
+                 vertex_count, byteStride)
+         else:
+             written = lib.encodeVertexBuffer(
+                 buffer, bound,
+-                to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
++                to_be_converted_data if sys.platform == "emscripten" else to_be_converted_data.ctypes.data_as(ctypes.c_void_p),
+                 vertex_count, vertex_size)
+ 
+         return bytes(buffer[:written]), filter
+--- a/scripts/addons_core/io_scene_gltf2/io/imp/gltf2_io_binary_meshopt.py
++++ b/scripts/addons_core/io_scene_gltf2/io/imp/gltf2_io_binary_meshopt.py
+@@ -2,8 +2,11 @@
+ #
+ # SPDX-License-Identifier: Apache-2.0
+ 
+-import ctypes
+ import sys
++if sys.platform == "emscripten":
++    import _bpy_ghost_web_gltf as ctypes
++else:
++    import ctypes
+ import os
+ from .gltf2_io_gltf import ImportError
+ from ..com.library import dll_path
+--- a/scripts/addons_core/io_scene_gltf2/io/com/library.py
++++ b/scripts/addons_core/io_scene_gltf2/io/com/library.py
+@@ -12,6 +12,9 @@
+     Get the library path, that should be at addon root
+     :return: library path.
+     """
++    if sys.platform == "emscripten":
++        return __import__("_bpy_ghost_web_gltf").dll_path(lib_name, lib_display_name)
++
+     import bpy
+ 
+     if sys.platform == 'win32':
+--- a/intern/draco_bridge/CMakeLists.txt
++++ b/intern/draco_bridge/CMakeLists.txt
+@@ -17,7 +17,12 @@
+ )
+ 
+ # Equivalent `blender_add_lib`, unrolled and stripped down to be able to set the library type to `SHARED`.
+-add_library(bf_intern_draco_bridge SHARED "${SRC}")
++if(WITH_GHOST_WEB)
++  include("${CMAKE_SOURCE_DIR}/intern/ghost/web/native/gltf.cmake")
++  blender_web_add_gltf_bridge(bf_intern_draco_bridge "${SRC}")
++else()
++  add_library(bf_intern_draco_bridge SHARED "${SRC}")
++endif()
+ blender_link_libraries(bf_intern_draco_bridge "${LIB}")
+ blender_source_group(bf_intern_draco_bridge "${SRC}")
+ 
+--- a/intern/meshoptimizer_bridge/CMakeLists.txt
++++ b/intern/meshoptimizer_bridge/CMakeLists.txt
+@@ -18,7 +18,12 @@
+ 
+ # Equivalent `blender_add_lib`,
+ # unrolled and stripped down to be able to set the library type to `SHARED`.
+-add_library(bf_intern_meshopt_bridge SHARED "${SRC}")
++if(WITH_GHOST_WEB)
++  include("${CMAKE_SOURCE_DIR}/intern/ghost/web/native/gltf.cmake")
++  blender_web_add_gltf_bridge(bf_intern_meshopt_bridge "${SRC}")
++else()
++  add_library(bf_intern_meshopt_bridge SHARED "${SRC}")
++endif()
+ blender_link_libraries(bf_intern_meshopt_bridge "${LIB}")
+ blender_source_group(bf_intern_meshopt_bridge "${SRC}")
+ 
+--- a/scripts/addons_core/io_scene_gltf2/io/imp/gltf2_io_binary_meshopt.py
++++ b/scripts/addons_core/io_scene_gltf2/io/imp/gltf2_io_binary_meshopt.py
+@@ -126,7 +126,7 @@
+                 'OCTAHEDRAL': lib.decodeFilterOct,
+                 'QUATERNION': lib.decodeFilterQuat,
+                 'EXPONENTIAL': lib.decodeFilterExp,
+-                'COLOR': lib.decodeFilterExp,
++                'COLOR': lib.decodeFilterColor if sys.platform == 'emscripten' else lib.decodeFilterExp,
+             }.get(filter)
+             filter_func(dst_ptr, count, byte_stride)
+ 
+--- a/scripts/addons_core/io_scene_gltf2/blender/exp/animation/sampled/object/sampler.py
++++ b/scripts/addons_core/io_scene_gltf2/blender/exp/animation/sampled/object/sampler.py
+@@ -158,6 +158,9 @@
+             'rotation_quaternion': 16,
+             'scale': 12,
+         }.get(channel, None)
++
++        if __import__('sys').platform == 'emscripten':
++            byteStride = __import__('_bpy_ghost_web_gltf').meshopt_stride(compressed_type, byteStride)
+ 
+         if compressed_type is not None:
+             num_components = gltf2_io_constants.DataType.num_elements(data_type)
+--- a/scripts/addons_core/io_scene_gltf2/io/exp/buffer.py
++++ b/scripts/addons_core/io_scene_gltf2/io/exp/buffer.py
+@@ -40,6 +40,9 @@
+         # if hasattr(binary_data, 'extensions') => Compressed data,
+         # So populate main bufferview with main buffer, extension buffer view with additional buffer
+         # else => no compressed data, so populate main bufferview with additional (compressed) buffer, no extension
++
++        if __import__('sys').platform == 'emscripten':
++            binary_data = __import__('_bpy_ghost_web_gltf').meshopt_fallback_data(binary_data, self.meshopt_extension)
+ 
+         if not additional_buffer:
+             offset = len(self.__data)

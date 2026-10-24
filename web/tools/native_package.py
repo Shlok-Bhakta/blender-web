@@ -25,6 +25,8 @@ def stage(base, source, prefix, shader_seed=True):
             'turtledemo', 'ensurepip', 'config-3.13-*', '*.a', '*.xcf'))
     shutil.copy2(source / 'intern/ghost/web/native/ghost/GHOST_WebClock.py',
                  blender / 'scripts/modules/_bpy_ghost_web_clock.py')
+    shutil.copy2(source / "intern/ghost/web/native/ghost/GHOST_WebGLTF.py",
+                 blender / "scripts/modules/_bpy_ghost_web_gltf.py")
     # The extension code is static; retain OpenUSD's original Python packages.
     usd_python = prefix / 'lib/python/pxr'
     if usd_python.is_dir():
@@ -147,6 +149,16 @@ def collect(base, root, ui_fallback=True):
         if any('opyright' in line for line in header):
             libmv_notices.append(str(path.relative_to(upstream)) + '\n' + '\n'.join(header))
     (notices / 'libmv-source-notices.txt').write_text('\n\n'.join(libmv_notices) + '\n')
+    gltf_notices = []
+    for bridge in ('draco_bridge', 'meshoptimizer_bridge'):
+        for path in sorted((upstream / 'intern' / bridge / 'intern').glob('*')):
+            if path.suffix not in {'.h', '.cpp'}:
+                continue
+            # Retain all leading license/author comments from the original bridge.
+            content = path.read_text()
+            header = content.split('#include', 1)[0].split('#pragma', 1)[0]
+            gltf_notices.append(str(path.relative_to(upstream)) + '\n' + header.strip())
+    (notices / 'gltf-bridge-source-notices.txt').write_text('\n\n'.join(gltf_notices) + '\n')
     shutil.copytree(upstream / 'intern/cycles/doc/license', notices / 'cycles',
                     dirs_exist_ok=True, ignore=shutil.ignore_patterns('CMakeLists.txt'))
     bullet = (upstream / 'extern/bullet2/src/btBulletDynamicsCommon.h').read_text()

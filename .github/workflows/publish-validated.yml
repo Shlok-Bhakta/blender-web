@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        group: [startup, ui, features, ocean, volume, cycles, image-vector, freestyle, usd, media, text, tracking]
+        group: [startup, ui, features, ocean, volume, cycles, image-vector, freestyle, usd, media, text, tracking, gltf]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -118,6 +118,10 @@ jobs:
               node web/tests/usd-exchange.cjs
               WEB_TEST_UI_FALLBACK=1 node web/tests/usd-exchange.cjs
               ;;
+            gltf)
+              node web/tests/gltf.cjs
+              WEB_TEST_UI_FALLBACK=1 node web/tests/gltf.cjs
+              ;;
             tracking)
               node web/tests/tracking.cjs
               WEB_TEST_UI_FALLBACK=1 node web/tests/tracking.cjs
@@ -153,6 +157,7 @@ jobs:
             build/native/usd-evidence*
             build/native/media-evidence*
             build/native/text-evidence*
+            build/native/gltf-evidence*
             build/native/tracking-evidence*
           if-no-files-found: ignore
       - uses: actions/upload-pages-artifact@v3

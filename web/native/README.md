@@ -123,6 +123,41 @@ python3 web/tools/native_tracking_verify.py build/native/tracking-evidence-hardw
 WEB_TEST_UI_FALLBACK=1 node web/tests/tracking.cjs
 ```
 
+The glTF add-on links Draco and meshoptimizer through static Python calls in
+GHOST. It keeps Blender's original C++ codec bridges and Python import/export
+logic. The adapter passes Python buffers instead of integer memory addresses,
+retains their lifetime during each call, and returns immutable Draco output
+bytes. This is specific to these codecs and does not enable arbitrary shared
+libraries or general ctypes support.
+
+The adapter also corrects the pinned add-on's COLOR decoder dispatch and its
+sampled-object quaternion export stride. New compressed buffer views match
+the decoded count and stride, as required by the
+[meshoptimizer extension](https://github.com/KhronosGroup/glTF/blob/main/extensions/2.0/Vendor/EXT_meshopt_compression/README.md#json-schema-updates).
+A bounded decoder path accepts the pinned desktop exporter's older quaternion
+layout. Native reference generation zeroes that exporter's unused allocation
+padding. Stored input hashes identify the exact fixtures; comparisons use
+geometry and attribute tolerances rather than requiring repeat exports to have
+identical compressed bytes.
+
+The glTF checks exchange authored Draco, EXT meshoptimizer and KHR meshoptimizer
+GLBs with desktop Blender. They cover 528 triangles, UVs, colors, normals,
+a shape key and animation, with offline `.blend` reopen. Library checks also
+exercise both index modes, the original filters and the KHR color filter, truncated input,
+invalid dimensions, write access and codec-handle cleanup. Skinning, external
+compressed asset collections and large-scene stress testing remain follow-up
+coverage. See the [recording](../docs/gltf-walkthrough.mp4).
+
+```sh
+WEB_TEST_HARDWARE=1 node web/tests/gltf.cjs
+python3 web/tools/native_gltf_verify.py build/native/gltf-evidence-hardware --blender /path/to/blender
+WEB_TEST_UI_FALLBACK=1 node web/tests/gltf.cjs
+```
+
+For Python-only development, `WEB_GLTF_PYTHON_OVERLAY=1` injects the current
+adapter and guarded exporter files into a test session while the package links.
+Release acceptance rejects runs with this overlay enabled.
+
 The loader shows byte progress for the selected JS/Wasm/data bundle, including
 bytes reused from cache. After downloading it shows startup status until the
 first Blender frame, then removes the loading overlay completely. Sizes are

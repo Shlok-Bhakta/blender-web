@@ -3,6 +3,7 @@
 #include <emscripten.h>
 #include <blender-web-numpy.hh>
 #include "GHOST_WebAudio.hh"
+#include "GHOST_WebGLTF.hh"
 #ifdef WITH_USD
 #  include <blender-web-usd.hh>
 #endif
@@ -31,6 +32,7 @@ inline bool GHOST_web_bootstrap(int argc, const char **argv,
 {
   if (web_device_ready) {
     GHOST_web_register_numpy();
+    GHOST_web_register_gltf();
 #ifdef WITH_AUDASPACE
     GHOST_web_register_audio();
 #endif

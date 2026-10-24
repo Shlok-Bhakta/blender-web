@@ -96,3 +96,10 @@ FriBidi's original Unicode-data generators run as host tools during its Meson
 cross build. Blender's original translation catalogs and language list retain
 the notices in the pinned Blender source. No separate gettext implementation
 is substituted for Blender's message-catalog compiler or runtime reader.
+
+Draco 1.5.7 and meshoptimizer 1.1 use the pinned release's ZIP archives and
+checksums. They link statically with Blender's original compression bridges.
+Draco retains its Apache-2.0 notices and meshoptimizer its MIT notices in
+`licenses/dependencies/`. The glTF Python adapter lives in the GHOST overlay
+and calls only these compiled functions. It does not provide dynamic loading
+or a general-purpose ctypes module.

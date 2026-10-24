@@ -25,6 +25,8 @@ The `blender/` submodule pins the official stable release. Platform code lives i
 
 [Watch image codecs, SVG/PDF and Freestyle](web/docs/image-vector-freestyle-walkthrough.mp4) · [Dependency status](web/docs/dependency-status.json)
 
+[Watch compressed glTF exchange and offline reopening](web/docs/gltf-walkthrough.mp4)
+
 [Native versus browser performance and RAM measurements](web/docs/native-web-performance.md)
 
 [Watch the first Eevee render](web/docs/eevee-default-scene.mp4) · [Render details and validation](web/docs/eevee-default-scene.md)

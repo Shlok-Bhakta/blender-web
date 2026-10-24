@@ -43,6 +43,11 @@ def main():
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'gltf-{suffix}', ['node', 'web/tests/gltf.cjs'], **flags)
+        directory = 'build/native/gltf-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
+        run(f'gltf-native-{suffix}', ['python3', 'web/tools/native_gltf_verify.py', directory, '--blender', args.blender])
+    run('gltf-video', ['python3', 'web/tools/native_gltf_recording.py'])
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'tracking-{suffix}', ['node', 'web/tests/tracking.cjs'], **flags)
         directory = 'build/native/tracking-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
         run(f'tracking-native-{suffix}', ['python3', 'web/tools/native_tracking_verify.py', directory, '--blender', args.blender])

@@ -1,43 +1,43 @@
 {
-  "bundleVersion": "c12617abeb6c87291c16",
+  "bundleVersion": "51bc909261449341b1fc",
   "chapters": [
     {
       "seconds": 0.001,
       "title": "Start Blender with image and vector dependencies"
     },
     {
-      "seconds": 10.784,
+      "seconds": 10.828,
       "title": "Compare image codecs, SVG import and Potrace with desktop Blender"
     },
     {
-      "seconds": 17.551,
+      "seconds": 17.855,
       "title": "Native SVG artwork in the original Grease Pencil viewport"
     },
     {
-      "seconds": 27.236,
+      "seconds": 27.607,
       "title": "Reload offline and reopen images and vectors from browser storage"
     },
     {
-      "seconds": 40.561,
+      "seconds": 41.440999999999995,
       "title": "Start the original Blender interface"
     },
     {
-      "seconds": 50.102000000000004,
+      "seconds": 51.132999999999996,
       "title": "Enable Cycles CPU and Freestyle red contour strokes"
     },
     {
-      "seconds": 54.154,
+      "seconds": 54.668,
       "title": "Render the cube with original Freestyle stroke rendering"
     },
     {
-      "seconds": 62.336,
+      "seconds": 62.727999999999994,
       "title": "Save the Freestyle scene for desktop Blender verification"
     }
   ],
-  "durationSeconds": 65.24000000000001,
-  "bytes": 1764042,
+  "durationSeconds": 65.72,
+  "bytes": 1741846,
   "source": "Hardware Chromium browser recordings",
   "captions": true,
   "path": "web/docs/image-vector-freestyle-walkthrough.mp4",
-  "sha256": "c382fe8fdd3d0ec651aa7c85082563f6ab1b7d254f739ef2245ebdaa5c7a7a18"
+  "sha256": "f87b7502d4cb3ed957e622b3137ebada909d06ef4c3a4a80c03bbcc1ddeb7668"
 }

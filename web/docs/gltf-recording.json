@@ -1,0 +1,35 @@
+{
+  "bundleVersion": "51bc909261449341b1fc",
+  "chapters": [
+    {
+      "seconds": 0,
+      "title": "Start Blender with static Draco and meshoptimizer codecs"
+    },
+    {
+      "seconds": 10.064,
+      "title": "Reject malformed buffers and test codec lifetime cleanup"
+    },
+    {
+      "seconds": 15.948,
+      "title": "Reject malformed GLBs, then import and export Draco, EXT and KHR meshoptimizer"
+    },
+    {
+      "seconds": 23.95,
+      "title": "Inspect imported geometry and animation in the original Blender viewport"
+    },
+    {
+      "seconds": 33.232,
+      "title": "Reload offline and reopen compressed assets from persistent storage"
+    }
+  ],
+  "durationSeconds": 44.8,
+  "bytes": 1803450,
+  "source": "Hardware Chromium browser recording",
+  "captions": true,
+  "path": "web/docs/gltf-walkthrough.mp4",
+  "sha256": "a701e1f8f8d08ff2762ec2c9f1f8ae1acb2d3124dac2d652848d76fcf9dac8fd",
+  "screenshot": {
+    "path": "web/docs/compressed-assets.png",
+    "sha256": "f5f7527d1f2a343f09e8ae007a7e90f8e3691006adca8f0982738667c2e8b603"
+  }
+}

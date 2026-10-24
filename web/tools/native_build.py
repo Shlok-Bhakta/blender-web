@@ -204,6 +204,39 @@ def check_python(base, prefix):
     print(output, end="", flush=True)
 
 
+def check_gltf(base, source, prefix):
+    inputs = [ROOT / 'web/native/ghost/GHOST_WebGLTF.cc', ROOT / 'web/native/ghost/GHOST_WebGLTF.hh',
+              ROOT / 'web/native/ghost/GHOST_WebGLTF.py', ROOT / 'web/native/tests/gltf.cc',
+              ROOT / 'web/native/tests/gltf.py', ROOT / 'web/patches/native-gltf.patch']
+    source_hashes = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
+                     for path in inputs}
+    executable = base / "gltf-check.js"
+    bridge_sources = [source / "intern" / library / "intern" / name
+                      for library in ("draco_bridge", "meshoptimizer_bridge")
+                      for name in ("common.cpp", "encoder.cpp", "decoder.cpp")]
+    subprocess.run(["em++", "-std=c++20", "-O2", "-pthread", "-msimd128", "-fwasm-exceptions",
+        f"-I{prefix / 'include/python3.13'}", f"-I{prefix / 'include'}", f"-I{source}",
+        str(ROOT / "web/native/tests/gltf.cc"), str(ROOT / "web/native/ghost/GHOST_WebGLTF.cc"),
+        *map(str, bridge_sources), "-Wl,--start-group",
+        str(prefix / "lib/libdraco.a"), str(prefix / "lib/libmeshoptimizer.a"),
+        str(prefix / "lib/libpython3.13.a"), str(prefix / "lib/libz.a"), "-Wl,--end-group",
+        "-sUSE_BZIP2=1", "-sENVIRONMENT=node", "-sEXIT_RUNTIME=1", "-sALLOW_MEMORY_GROWTH=1",
+        "-sSTACK_SIZE=8388608", "-sWASMFS=1", "-sFORCE_FILESYSTEM=1",
+        "--preload-file", f"{base / 'assets/python3.13'}@/python/lib/python3.13",
+        "--preload-file", f"{ROOT / 'web/native/ghost/GHOST_WebGLTF.py'}@/_bpy_ghost_web_gltf.py",
+        "--preload-file", f"{ROOT / 'web/native/tests/gltf.py'}@/check.py",
+        "-o", str(executable)], check=True)
+    output = subprocess.check_output(["node", str(executable)], cwd=base, text=True, timeout=60)
+    report = json.loads(next(line.removeprefix('GLTF_CHECK:') for line in output.splitlines()
+                             if line.startswith('GLTF_CHECK:')))
+    if source_hashes != {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
+                         for path in inputs}:
+        raise RuntimeError('glTF inputs changed during validation; rerun the check')
+    report['sourceHashes'] = source_hashes
+    (base / "gltf-check.json").write_text(json.dumps(report, indent=2) + "\n")
+    print(json.dumps(report), flush=True)
+
+
 def check_expressions(base, source, prefix):
     library = base / "editor/lib"
     executable = base / "expression-check.js"
@@ -228,7 +261,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -305,6 +338,7 @@ def main():
         stage(base, source, prefix, shader_seed=not args.skip_shader_seed)
         if args.check_deps:
             check_python(base, prefix)
+            check_gltf(base, source, prefix)
             check_shader_translation(base, prefix)
             check_switch_lowering(base)
             check_shader_adaptation(base)
@@ -355,7 +389,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 

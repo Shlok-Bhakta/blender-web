@@ -116,3 +116,10 @@ if(WITH_USD)
   set(USD_LIBRARIES "$<LINK_LIBRARY:WHOLE_ARCHIVE,usdShaders>"
                     "$<LINK_LIBRARY:WHOLE_ARCHIVE,sdrGlslfx>")
 endif()
+
+if(WITH_DRACO)
+  find_package(draco CONFIG REQUIRED)
+endif()
+if(WITH_MESHOPTIMIZER)
+  find_package(meshoptimizer CONFIG REQUIRED)
+endif()

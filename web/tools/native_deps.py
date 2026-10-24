@@ -12,6 +12,7 @@ import subprocess
 import tarfile
 import urllib.error
 import urllib.request
+import zipfile
 
 from prepare import ROOT
 
@@ -26,6 +27,8 @@ RECIPES = {
     "FREETYPE": ("", ["-DFT_DISABLE_BZIP2=ON", "-DFT_DISABLE_HARFBUZZ=ON", "-DFT_DISABLE_PNG=ON", "-DFT_REQUIRE_BROTLI=ON", "-DFT_REQUIRE_ZLIB=ON"]),
     "HARFBUZZ": ("", ["-Dtests=disabled", "-Dfreetype=enabled", "-Dglib=disabled", "-Dgobject=disabled", "-Dcairo=disabled", "-Dutilities=disabled", "-Dcpp_eh=default"]),
     "FRIBIDI": ("", ["-Ddocs=false", "-Dbin=false", "-Dtests=false"]),
+    "DRACO": ("", ["-DDRACO_JS_GLUE=OFF", "-DDRACO_WASM=OFF", "-DDRACO_TESTS=OFF"]),
+    "MESHOPTIMIZER": ("", ["-DMESHOPT_BUILD_SHARED_LIBS=OFF", "-DMESHOPT_BUILD_DEMO=OFF", "-DMESHOPT_BUILD_GLTFPACK=OFF"]),
     "FMT": ("", ["-DFMT_TEST=OFF", "-DFMT_DOC=OFF"]),
     "EIGEN": ("", ["-DEIGEN_BUILD_TESTING=OFF", "-DEIGEN_BUILD_DOC=OFF", "-DEIGEN_BUILD_BLAS=OFF", "-DEIGEN_BUILD_LAPACK=OFF", "-DEIGEN_BUILD_DEMOS=OFF"]),
     "IMATH": ("", ["-DIMATH_BUILD_TESTS=OFF", "-DIMATH_BUILD_EXAMPLES=OFF", "-DPYTHON=OFF"]),
@@ -71,7 +74,7 @@ RECIPES = {
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
-CXX_PACKAGES = {"ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
+CXX_PACKAGES = {"DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
                 "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
@@ -97,7 +100,8 @@ def download(entry, downloads):
         # Some pinned recipes append a friendly archive filename after the ref.
         if ref.endswith("/" + entry["FILE"]):
             ref = ref.removesuffix("/" + entry["FILE"])
-        url = f"https://codeload.github.com/{repo}/tar.gz/{ref.removesuffix('.tar.gz')}"
+        archive_format = "zip" if ref.endswith(".zip") else "tar.gz"
+        url = f"https://codeload.github.com/{repo}/{archive_format}/{ref.removesuffix('.' + archive_format)}"
     urls = [url]
     if url.startswith("https://gmplib.org/download/gmp/"):
         # Some CI clients receive an HTTP-200 bot challenge from gmplib.org.
@@ -140,6 +144,8 @@ def install_notices(source, prefix, name):
 def build(args):
     if not shutil.which("emcmake"):
         raise RuntimeError("Activate the pinned Emscripten SDK before building dependencies.")
+    # Draco 1.5 requires the legacy SDK path even with its JS glue disabled.
+    os.environ["EMSCRIPTEN"] = str(Path(shutil.which("emcc")).resolve().parent)
     expected = json.loads((ROOT / "web/upstream.json").read_text())["emscriptenVersion"]
     installed = subprocess.check_output(["emcc", "-dumpversion"], text=True).strip()
     if installed != expected:
@@ -221,8 +227,12 @@ def build(args):
         if not source.exists():
             extracted = directory / "extract"
             extracted.mkdir(exist_ok=True)
-            with tarfile.open(archives[name]) as archive:
-                archive.extractall(extracted, filter="data")
+            if zipfile.is_zipfile(archives[name]):
+                with zipfile.ZipFile(archives[name]) as archive:
+                    archive.extractall(extracted)
+            else:
+                with tarfile.open(archives[name]) as archive:
+                    archive.extractall(extracted, filter="data")
             roots = list(extracted.iterdir())
             if len(roots) != 1 or not roots[0].is_dir():
                 raise RuntimeError(f"Unexpected archive structure in {archives[name]}")
