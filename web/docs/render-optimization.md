@@ -4,10 +4,10 @@ Three fresh Chromium sessions per build, alternated control/candidate. Three ren
 
 | Build | First render, median | Warm render, median |
 | --- | ---: | ---: |
-| control | 7.604 s | 3.068 s |
-| candidate | 4.547 s | 3.143 s |
+| control | 8.173 s | 3.174 s |
+| candidate | 4.801 s | 3.145 s |
 
-First-render time reduction: 40.2%. Warm-render median change: +2.4%, where positive means slower.
+First-render time reduction: 41.3%. Warm-render median change: -0.9%, where positive means slower.
 
 Every run retained the original scene settings and matched the prior browser reference pixels exactly.
 

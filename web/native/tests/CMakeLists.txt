@@ -25,9 +25,9 @@ if(WITH_HARFBUZZ AND WITH_FRIBIDI)
 endif()
 if(WITH_CODEC_FFMPEG AND WITH_CODEC_SNDFILE)
   add_executable(media-check media.cc)
-  target_include_directories(media-check PRIVATE ${FFMPEG_INCLUDE_DIRS} ${LIBSNDFILE_INCLUDE_DIRS})
+  target_include_directories(media-check PRIVATE ${FFMPEG_INCLUDE_DIRS} ${LIBSNDFILE_INCLUDE_DIRS} ${RUBBERBAND_INCLUDE_DIRS})
   target_link_libraries(media-check PRIVATE
-    -Wl,--start-group ${FFMPEG_LIBRARIES} ${LIBSNDFILE_LIBRARIES} -Wl,--end-group)
+    -Wl,--start-group ${FFMPEG_LIBRARIES} ${LIBSNDFILE_LIBRARIES} ${RUBBERBAND_LIBRARIES} -Wl,--end-group)
   target_compile_options(media-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
   target_link_options(media-check PRIVATE -O1 -pthread -msimd128 -fwasm-exceptions
     -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=16 -sPTHREAD_POOL_SIZE_STRICT=0 -sEXIT_RUNTIME=1

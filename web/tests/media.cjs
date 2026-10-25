@@ -81,7 +81,7 @@ async function main() {
       const picked = JSON.parse(messages.find(text => text.startsWith('MEDIA_PICKED:')).slice('MEDIA_PICKED:'.length));
       assert.deepEqual(picked, ['Cube'], 'Native mouse selection must read back the cube ID');
     }
-    for (const flag of ['WITH_CODEC_FFMPEG', 'WITH_CODEC_SNDFILE', 'WITH_AUDASPACE']) assert.equal(manifest.buildOptions[flag], true, flag);
+    for (const flag of ['WITH_CODEC_FFMPEG', 'WITH_CODEC_SNDFILE', 'WITH_AUDASPACE', 'WITH_RUBBERBAND']) assert.equal(manifest.buildOptions[flag], true, flag);
     const source = fs.readFileSync(path.join(__dirname, 'media.py'), 'utf8');
     const sourceSha256 = crypto.createHash('sha256').update(source).digest('hex');
     const fixtures = path.join(__dirname, 'fixtures/media');
@@ -100,7 +100,7 @@ async function main() {
         }
       }, {name,base64:bytes.toString('base64')});
     }
-    chapter('Decode native fixtures, seek video, export audio and movies');
+    chapter('Stretch audio without changing pitch; export H264, VP9, AV1 and HEVC');
     await page.mouse.move(300, 250);
     if (profile) await profile.start();
     await command(`exec(compile(__import__('pathlib').Path('/tmp/media/check.py').read_text(),'media.py','exec')); browser_check('/tmp/media',render=${fallback ? 'False' : 'True'})`, 'MEDIA_FINISHED');
@@ -108,7 +108,7 @@ async function main() {
     const report = JSON.parse(messages.find(text => text.startsWith('MEDIA_DONE:')).slice('MEDIA_DONE:'.length));
     report.resources = await page.evaluate(() => ({hardwareConcurrency:navigator.hardwareConcurrency,
       wasmHeapCapacityBytes:typeof wasmMemory === 'undefined' ? null : wasmMemory.buffer.byteLength}));
-    for (const name of await page.evaluate(() => Module.FS.readdir('/tmp/media').filter(name => /^(export\.|frame-|media\.blend|results\.json)/.test(name)))) {
+    for (const name of await page.evaluate(() => Module.FS.readdir('/tmp/media').filter(name => /^(export\.|stretch-|roundtrip-|frame-|media\.blend|results\.json)/.test(name)))) {
       const bytes = await page.evaluate(name => Array.from(Module.FS.readFile('/tmp/media/' + name)), name);
       fs.writeFileSync(path.join(output, name), Buffer.from(bytes));
     }

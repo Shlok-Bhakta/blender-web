@@ -6,6 +6,7 @@
 #include <vector>
 #include <sndfile.h>
 #include <x264.h>
+#include <rubberband/RubberBandStretcher.h>
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -14,10 +15,33 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
+static void check_stretch()
+{
+  // Offline FFTW-backed processing: a half second tone becomes one second.
+  const unsigned count = 24000;
+  std::vector<float> input(count);
+  for (unsigned i = 0; i < count; i++) input[i] = 0.3f * std::sin(2 * 3.141592653589793 * 440 * i / 48000);
+  const float *source[] = {input.data()};
+  RubberBand::RubberBandStretcher stretch(48000, 1,
+      RubberBand::RubberBandStretcher::OptionProcessOffline |
+      RubberBand::RubberBandStretcher::OptionThreadingNever, 2.0, 1.0);
+  stretch.setExpectedInputDuration(count);
+  stretch.study(source, count, true);
+  stretch.process(source, count, true);
+  assert(stretch.available() == 48000);
+  std::vector<float> result(48000);
+  float *destination[] = {result.data()};
+  assert(stretch.retrieve(destination, result.size()) == result.size());
+  unsigned crossings = 0;
+  for (unsigned i = 12001; i < 36000; i++) crossings += result[i-1] <= 0 && result[i] > 0;
+  assert(std::abs(int(crossings * 2) - 440) <= 4);
+}
+
 int main()
 {
+  check_stretch();
   assert(av_get_cpu_flags() & AV_CPU_FLAG_SIMD128);
-  for (const char *name : {"libx264", "libvpx-vp9", "libopus", "aac", "libmp3lame", "ffv1"}) {
+  for (const char *name : {"libx264", "libvpx-vp9", "libopus", "aac", "libmp3lame", "ffv1", "libaom-av1", "libx265"}) {
     assert(avcodec_find_encoder_by_name(name));
   }
   SF_INFO info{};
@@ -97,5 +121,5 @@ int main()
   const int encoder_threads = parameters.i_threads;
   assert(encoder_threads >= 1 && (av_cpu_count() <= 1 || encoder_threads > 1));
   x264_encoder_close(encoder);
-  std::printf("{\"videoFrames\":%u,\"decoderThreads\":4,\"automaticEncoderThreads\":%d,\"cpuCores\":%d,\"flacSamplesExact\":4096,\"ffmpegVersion\":\"%s\"}\n", frames, encoder_threads, av_cpu_count(), av_version_info());
+  std::printf("{\"rubberBandOutputFrames\":48000,\"rubberBandPitchHz\":440,\"videoEncoders\":[\"libaom-av1\",\"libx265\"],\"videoFrames\":%u,\"decoderThreads\":4,\"automaticEncoderThreads\":%d,\"cpuCores\":%d,\"flacSamplesExact\":4096,\"ffmpegVersion\":\"%s\"}\n", frames, encoder_threads, av_cpu_count(), av_version_info());
 }

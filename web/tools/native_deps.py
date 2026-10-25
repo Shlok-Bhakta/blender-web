@@ -48,6 +48,9 @@ RECIPES = {
     "GMP": ("", ["--host=none", "--enable-cxx", "--disable-assembly", "--disable-shared", "--enable-static"]),
     "MANIFOLD": ("", ["-DMANIFOLD_JSBIND=OFF", "-DMANIFOLD_CBIND=OFF", "-DMANIFOLD_PYBIND=OFF", "-DMANIFOLD_PAR=ON", "-DMANIFOLD_CROSS_SECTION=OFF", "-DMANIFOLD_EXPORT=OFF", "-DMANIFOLD_DEBUG=OFF", "-DMANIFOLD_TEST=OFF", "-DMANIFOLD_DOWNLOADS=OFF"]),
     "FFTW": ("", ["-DENABLE_THREADS=ON", "-DWITH_COMBINED_THREADS=OFF", "-DBUILD_TESTS=OFF"]),
+    "RUBBERBAND": ("", ["-Dauto_features=disabled", "-Dfft=fftw", "-Dresampler=builtin"]),
+    "AOM": ("", ["-DAOM_TARGET_CPU=generic", "-DENABLE_DOCS=OFF", "-DENABLE_EXAMPLES=OFF", "-DENABLE_TESTS=OFF", "-DENABLE_TOOLS=OFF", "-DCONFIG_RUNTIME_CPU_DETECT=OFF"]),
+    "X265": ("source", ["-DENABLE_SHARED=OFF", "-DENABLE_CLI=OFF", "-DENABLE_ASSEMBLY=OFF", "-DENABLE_LIBNUMA=OFF"]),
     "OGG": ("", ["-DBUILD_TESTING=OFF"]),
     "VORBIS": ("", []),
     "FLAC": ("", ["-DBUILD_CXXLIBS=OFF", "-DBUILD_PROGRAMS=OFF", "-DBUILD_EXAMPLES=OFF", "-DBUILD_TESTING=OFF", "-DINSTALL_MANPAGES=OFF"]),
@@ -57,7 +60,7 @@ RECIPES = {
     "VPX": ("", ["--target=generic-gnu", "--disable-examples", "--disable-tools", "--disable-docs", "--disable-unit-tests", "--disable-shared", "--enable-static", "--disable-runtime-cpu-detect"]),
     "X264": ("", ["--host=wasm32-unknown-none", "--disable-cli", "--disable-asm", "--enable-static", "--disable-opencl"]),
     "SNDFILE": ("", ["-DBUILD_PROGRAMS=OFF", "-DBUILD_EXAMPLES=OFF", "-DBUILD_TESTING=OFF", "-DENABLE_EXTERNAL_LIBS=ON", "-DENABLE_MPEG=ON"]),
-    "FFMPEG": ("", ["--target-os=none", "--arch=wasm32", "--enable-cross-compile", "--disable-inline-asm", "--disable-runtime-cpudetect", "--disable-autodetect", "--disable-programs", "--disable-doc", "--disable-debug", "--disable-network", "--disable-devices", "--disable-shared", "--enable-static", "--enable-pthreads", "--enable-gpl", "--enable-zlib", "--enable-libmp3lame", "--enable-libopus", "--enable-libvorbis", "--enable-libtheora", "--enable-libvpx", "--enable-libx264", "--pkg-config-flags=--static"]),
+    "FFMPEG": ("", ["--target-os=none", "--arch=wasm32", "--enable-cross-compile", "--disable-inline-asm", "--disable-runtime-cpudetect", "--disable-autodetect", "--disable-programs", "--disable-doc", "--disable-debug", "--disable-network", "--disable-devices", "--disable-shared", "--enable-static", "--enable-pthreads", "--enable-gpl", "--enable-zlib", "--enable-libmp3lame", "--enable-libopus", "--enable-libvorbis", "--enable-libtheora", "--enable-libvpx", "--enable-libx264", "--enable-libaom", "--enable-libx265", "--pkg-config-flags=--static"]),
     "ALEMBIC": ("", ["-DUSE_PYALEMBIC=OFF", "-DUSE_ARNOLD=OFF", "-DUSE_MAYA=OFF", "-DUSE_PRMAN=OFF", "-DUSE_HDF5=OFF", "-DUSE_TESTS=OFF", "-DUSE_BINARIES=OFF", "-DALEMBIC_SHARED_LIBS=OFF"]),
     "BLOSC": ("", ["-DBUILD_SHARED=OFF", "-DBUILD_TESTS=OFF", "-DBUILD_BENCHMARKS=OFF", "-DDEACTIVATE_SSE2=ON", "-DDEACTIVATE_AVX2=ON", "-DPREFER_EXTERNAL_ZLIB=ON", "-DPREFER_EXTERNAL_ZSTD=ON"]),
     "OPENVDB": ("", ["-DOPENVDB_CORE_SHARED=OFF", "-DOPENVDB_CORE_STATIC=ON", "-DOPENVDB_BUILD_BINARIES=OFF", "-DOPENVDB_BUILD_UNITTESTS=OFF", "-DOPENVDB_BUILD_PYTHON_MODULE=OFF", "-DOPENVDB_BUILD_NANOVDB=ON", "-DNANOVDB_BUILD_TOOLS=OFF", "-DNANOVDB_BUILD_UNITTESTS=OFF", "-DNANOVDB_USE_CUDA=OFF", "-DOPENVDB_USE_DELAYED_LOADING=OFF", "-DUSE_STATIC_DEPENDENCIES=ON", "-DUSE_BLOSC=ON", "-DUSE_ZLIB=ON", "-DUSE_LOG4CPLUS=OFF"]),
@@ -74,7 +77,7 @@ RECIPES = {
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
-CXX_PACKAGES = {"DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
+CXX_PACKAGES = {"RUBBERBAND", "AOM", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
                 "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
@@ -177,7 +180,7 @@ def build(args):
             signature["cxxFlags"] = CXX_FLAGS
         if name == 'BROTLI':
             signature['staticPkgConfig'] = 2
-        if name in {"HARFBUZZ", "FRIBIDI"}:
+        if name in {"HARFBUZZ", "FRIBIDI", "RUBBERBAND"}:
             signature["textBuilder"] = hashlib.sha256(
                 (ROOT / "web/tools/native_text.py").read_bytes()).hexdigest()
         if name in {"OPUS", "LAME", "THEORA", "VPX", "X264", "FFMPEG"}:
@@ -186,6 +189,14 @@ def build(args):
         patch = ROOT / "web/native/patches" / f"{name.lower()}.patch"
         if patch.exists():
             signature["patch"] = hashlib.sha256(patch.read_bytes()).hexdigest()
+        if name in {"FFMPEG", "RUBBERBAND"}:
+            dependencies = ("AOM", "X265", "X264", "VPX", "OPUS", "LAME", "VORBIS", "THEORA") if name == "FFMPEG" else ("FFTW",)
+            signature["dependencyStamps"] = {}
+            for dependency in dependencies:
+                dependency_stamp = base / dependency.lower() / 'installed.json'
+                if not dependency_stamp.is_file():
+                    raise RuntimeError(f"Build {dependency} before {name}")
+                signature["dependencyStamps"][dependency] = hashlib.sha256(dependency_stamp.read_bytes()).hexdigest()
         if name == "CERES":
             signature["dependencyStamps"] = {}
             for dependency in ("ABSEIL", "EIGEN"):
@@ -273,7 +284,7 @@ def build(args):
         if any(previous.get(key) != configuration.get(key) for key in ("toolchain", "sdk", "source")):
             shutil.rmtree(directory / "build", ignore_errors=True)
         configured.write_text(json.dumps(configuration, indent=2) + "\n")
-        if name in {"HARFBUZZ", "FRIBIDI"}:
+        if name in {"HARFBUZZ", "FRIBIDI", "RUBBERBAND"}:
             from native_text import build_meson
             build_meson(source, directory / "build", prefix, options,
                         args.jobs, log, run, C_FLAGS)

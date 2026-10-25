@@ -32,7 +32,7 @@ def main():
     result = dict(bundleVersion=browser['bundleVersion'], sourceSha256=source_hash,
         adapter=browser['adapter'], resources=browser['resources'], decode=decode, export=export,
         playback=browser['playback'],
-        methodology='Three sequential measurements per operation on one-second stereo clips and 24-frame 128x96 video. Original Audaspace decoding includes cache creation and the NumPy transfer. Video timings include Blender sequencer evaluation, encoding and file output. Native Blender runs in background mode; browser Blender runs its original UI. The browser benchmark disables screen recording and profiling. Playback rate counts timeline advancement under audio sync, which can skip display frames. These are small-workload baselines, not isolated codec throughput or large-timeline results.')
+        methodology='Three sequential measurements per operation on one-second stereo clips and 24-frame 128x96 video, with a 512x512 AV1 probe to satisfy upstream tiling. Original Audaspace decoding includes cache creation and the NumPy transfer. Video timings include Blender sequencer evaluation, encoding and file output. Native Blender runs in background mode; browser Blender runs its original UI. The browser benchmark disables screen recording and profiling. Playback rate counts timeline advancement under audio sync, which can skip display frames. These are small-workload baselines, not isolated codec throughput or large-timeline results.')
     (ROOT / 'web/docs/media-performance.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result))
 

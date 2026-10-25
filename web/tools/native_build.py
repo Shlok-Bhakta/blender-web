@@ -19,6 +19,11 @@ EDITOR_ARCHIVES = ["bf_rna", "bf_editor_interface", "bf_editor_screen", "bf_wind
                    "bf_blenfont", "bf_intern_ghost"]
 
 def check_dependencies(source, base, prefix, jobs):
+    media_sources = ["web/native/tests/media.cc", "web/native/tests/CMakeLists.txt",
+                     "web/native/dependencies.cmake", "web/tools/native_deps.py",
+                     "web/tools/native_media.py", "web/tools/native_text.py"]
+    media_hashes = {name:hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                    for name in media_sources}
     checks = base / "checks"
     subprocess.run(["emcmake", "cmake", "-S", str(ROOT / "web/native/tests"), "-B", str(checks),
                     f"-DBLENDER_SOURCE={source}",
@@ -27,7 +32,7 @@ def check_dependencies(source, base, prefix, jobs):
                     "-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY", "-DCMAKE_BUILD_TYPE=Release",
                     "-DWITH_OPENVDB=ON", "-DWITH_NANOVDB=ON",
                     "-DWITH_USD=ON", "-DWITH_MATERIALX=ON",
-                    "-DWITH_CODEC_FFMPEG=ON", "-DWITH_CODEC_SNDFILE=ON",
+                    "-DWITH_CODEC_FFMPEG=ON", "-DWITH_CODEC_SNDFILE=ON", "-DWITH_RUBBERBAND=ON",
                     "-DWITH_HARFBUZZ=ON", "-DWITH_FRIBIDI=ON", "-DWITH_LIBMV=ON"], check=True)
     subprocess.run(["cmake", "--build", str(checks), "--parallel", str(jobs)], check=True)
     result = subprocess.run(["node", str(checks / "dependencies.js")], check=True,
@@ -36,7 +41,10 @@ def check_dependencies(source, base, prefix, jobs):
     (base / "dependency-check.json").write_text(json.dumps(json.loads(result.stdout), indent=2) + "\n")
     for name in ("fftw", "alembic", "media", "tracking"):
         output = subprocess.check_output(["node", str(checks / f"{name}-check.js")], text=True, timeout=60)
-        (base / f"{name}-check.json").write_text(json.dumps(json.loads(output), indent=2) + "\n")
+        report = json.loads(output)
+        if name == "media":
+            report['sourceHashes'] = media_hashes
+        (base / f"{name}-check.json").write_text(json.dumps(report, indent=2) + "\n")
         print(output, end="", flush=True)
     output = subprocess.check_output(['node', str(checks / 'text-check.js'),
         str(source / 'release/datafiles/fonts')], text=True, timeout=60)

@@ -103,3 +103,9 @@ Draco retains its Apache-2.0 notices and meshoptimizer its MIT notices in
 `licenses/dependencies/`. The glTF Python adapter lives in the GHOST overlay
 and calls only these compiled functions. It does not provide dynamic loading
 or a general-purpose ctypes module.
+
+Rubber Band 4.0.0 uses Blender's pinned source archive and its FFTW backend.
+It retains GPL-2.0-or-later notices. libaom 3.13.1 retains its BSD-2-Clause
+license and patent notices; x265 4.1 retains GPL-2.0-or-later notices. All three
+are static Wasm libraries built with pthreads and SIMD compiler flags. Their
+portable C/C++ implementations are used; x86/ARM assembly is disabled.

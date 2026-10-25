@@ -152,12 +152,19 @@ def main():
     assert media_performance['bundleVersion'] == version
     assert media_performance['sourceSha256'] == hashlib.sha256((ROOT / 'web/tests/media.py').read_bytes()).hexdigest()
     media_libraries = read(base / 'media-check.json')
+    for name, expected in media_libraries['sourceHashes'].items():
+        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected
+    assert media_libraries['rubberBandOutputFrames'] == 48000
+    assert media_libraries['videoEncoders'] == ['libaom-av1', 'libx265']
     assert media_libraries['videoFrames'] == 24 and media_libraries['decoderThreads'] == 4
     assert media_libraries['cpuCores'] <= 1 or media_libraries['automaticEncoderThreads'] > 1
     for variant, verified in zip(media, media_native):
         assert variant['bundleVersion'] == verified['bundleVersion'] == version
         assert variant['offlineReopen'] and not variant['browserErrors']
         assert all(variant['buildOptions'][name] for name in ('audaspace', 'codec_ffmpeg', 'codec_sndfile'))
+        assert set(variant['stretch']) == set(verified['stretch']) == {'slow', 'fast', 'pitch'}
+        if not variant['fallback']:
+            assert set(verified['videos']) == {'mp4', 'webm', 'av1.mkv', 'hevc.mkv'}
         assert len(variant['audio']) == 7 and len(variant['movies']) == 3
         assert variant['playback']['state'] == variant['offlinePlayback']['state'] == 'running'
         assert verified['playbackCapture']['stereoPeakHz'] == [440, 660]
@@ -323,7 +330,7 @@ def main():
                   'Vector acceptance covers authored paths, fills and a circle, SVG/PDF export and one-image Potrace tracing. This does not establish every SVG feature or multi-frame vector export.',
                   'Freestyle acceptance covers a 256x256, 16-sample Cycles CPU cube with red contour strokes. Other style modules and large scenes are not covered.',
                   'USD acceptance covers animated mesh, UV, camera/light and environment-texture exchange in USDA/USDC/USDZ, eight implicit shapes, static pxr Python modules and USD hooks. MaterialX checks cover OpenPBR graph export. Hydra rendering, MaterialX Python bindings and arbitrary USD production assets are not covered.',
-                  'Media acceptance uses one-second stereo tones and 128x96 video. Browser output is stereo Web Audio. Microphone capture, multichannel devices, external video devices, AV1/HEVC encoding and Rubber Band time stretching are not covered.',
+                  'Media acceptance uses one-second stereo tones and 128x96 video, with 512x512 AV1 exports. Rubber Band checks cover constant time/pitch ratios and stereo tones, including the native real-time processing tail. AV1 and 8-bit HEVC exports are independently decoded. Microphone capture, multichannel devices, external video devices, high-bit-depth x265 and large production timelines are not covered.',
                   'Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.',
                   'Functional checks ran with other host activity and are not an isolated performance benchmark.']}
     archive = base / 'blender-web-pages.tar.gz'

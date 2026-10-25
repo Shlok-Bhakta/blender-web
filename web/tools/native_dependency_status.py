@@ -64,7 +64,7 @@ def main():
             'WITH_LLVM':'LLVM compiler infrastructure',
             'WITH_HYDRA':'Hydra rendering integration',
         }.items() if not manifest['buildOptions'].get(name,False)},
-        additionalLibraryGaps=['FFmpeg libaom/AV1 and x265/HEVC encoding backends',
+        additionalLibraryGaps=['x265 high-bit-depth encoding',
             'NumPy BLAS acceleration', 'MaterialX Python bindings',
             'HarfBuzz/FriBidi integration into Blender font rendering', 'OpenSubdiv GPU evaluation'],
         baseLibraryRecipes=libraries,

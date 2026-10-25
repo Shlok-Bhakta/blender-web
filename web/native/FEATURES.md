@@ -34,7 +34,9 @@ batches. The static site's
 | Hydra rendering and MaterialX Python bindings | Deferred | CPU imaging adapters supply shape geometry; native Hydra graphics devices are disabled |
 | Audio/video IO and Video Sequencer | Enabled | WAV/FLAC/Ogg/MP3 and MKV/MP4/WebM inputs, video seeking, original audio and H.264/AAC or VP9/Opus video exports compared with desktop |
 | Browser audio playback | Enabled | Original Audaspace mixer feeds a shared PCM ring and AudioWorklet; stereo playback, timeline advancement, captured output and offline reopen |
-| Time stretching, AV1 backends, HEVC encoding and audio input | Deferred | Rubber Band, libaom/x265, microphone capture and multichannel device integration |
+| Audio time stretching and pitch shifting | Implemented, tested | Rubber Band with FFTW, original Audaspace APIs, independent duration and stereo pitch checks |
+| AV1 and HEVC encoding | Implemented, tested | libaom and 8-bit x265 through original Blender FFmpeg exports; native decode comparison |
+| Audio input and multichannel devices | Deferred | Microphone capture and multichannel device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
@@ -63,7 +65,7 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-Additional codec backends and time stretching remain follow-up work. Device
+High-bit-depth x265, additional codec backends and audio input remain follow-up work. Device
 file selection and download/export integration remain separate from the persistent
 browser filesystem.
 
@@ -139,8 +141,8 @@ reload using the cached application and persistent USD files.
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
 | 0:10 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
-| 0:26 | USD is available in Blender's original export menu |
-| 0:35 | Reload offline and repeat interchange from persistent browser storage |
+| 0:25 | USD is available in Blender's original export menu |
+| 0:34 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
 
 ![USD in Blender's original export menu](../docs/usd-export-menu.png)

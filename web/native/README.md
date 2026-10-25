@@ -56,7 +56,9 @@ native window to one canvas; additional browser windows remain follow-up work.
 Desktop Chromium is the initial validation target. iOS Safari needs device testing.
 
 FFmpeg, libsndfile and Blender's original Audaspace provide media decoding,
-encoding and mixing. The GHOST web audio device sends interleaved stereo PCM
+encoding and mixing. Rubber Band 4.0.0 uses FFTW for time stretching and
+pitch shifting. libaom 3.13.1 and x265 4.1 provide AV1 and 8-bit HEVC encoding
+through Blender's original FFmpeg output settings. The GHOST web audio device sends interleaved stereo PCM
 from a mixer pthread to an AudioWorklet through shared memory. The browser
 chooses the output sample rate; the device reports it to Audaspace for
 resampling. A click or keypress resumes audio when autoplay policy requires it.
@@ -64,14 +66,19 @@ The worklet uses a versioned URL and is cached on startup for offline playback.
 x264's automatic thread count uses the browser's logical CPU count.
 
 The media checks use authored one-second stereo clips and 24-frame 128×96
-videos. They compare decoded samples, metadata and seeks with desktop Blender,
+videos, plus 512×512 AV1 exports to satisfy upstream tile sizing. They compare
+decoded samples, metadata and seeks with desktop Blender,
 export audio and movies through the original APIs, verify visible preview
 pixels, and capture actual Web Audio output during sequencer playback. Host
 FFmpeg independently reads the exports and checks the captured stereo tones.
 The playback check warms the preview and plays four sequential copies of the
 authored clip, so its three-second measurement runs within the timeline.
-These checks do not establish large-timeline, microphone, multichannel,
-time-stretching or AV1/HEVC encoding support.
+These checks do not establish large-timeline, microphone or multichannel
+support. Time-stretch checks independently verify doubled and
+halved durations with preserved stereo pitch, plus a separate 1.5× pitch shift.
+Audaspace's real-time stretcher retains a short processing tail, matched against
+the native result. The AV1 and HEVC exports are decoded by host FFmpeg and compared with native
+Blender exports. x265 is currently built for 8-bit output.
 
 ```sh
 PLAYWRIGHT_BROWSERS_PATH=/path/to/browsers WEB_TEST_HARDWARE=1 node web/tests/media.cjs

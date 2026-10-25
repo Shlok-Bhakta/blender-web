@@ -5,6 +5,8 @@ import argparse
 import array
 import hashlib
 import json
+import cmath
+import math
 from pathlib import Path
 import subprocess
 
@@ -23,6 +25,23 @@ def probe(path):
         '-show_streams', '-of', 'json', str(path)]))['streams']
 
 
+def tone_peaks(samples, start, length, centers):
+    frequencies = []
+    for channel, center in enumerate(centers):
+        powers = {}
+        for frequency in range(center - 6, center + 7, 2):
+            step = cmath.exp(-2j * math.pi * frequency / 48000)
+            oscillator, value = 1 + 0j, 0j
+            for index in range(length):
+                value += samples[(start + index) * 2 + channel] * oscillator
+                oscillator *= step
+            powers[frequency] = abs(value)
+        peak = max(powers, key=powers.get)
+        assert abs(peak - center) <= 2, (channel, powers)
+        frequencies.append(peak)
+    return frequencies
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory', type=Path)
@@ -33,20 +52,30 @@ def main():
     result = {'bundleVersion':report['bundleVersion'], 'videos':{}, 'audio':{},
               'ffmpeg':subprocess.check_output(['ffmpeg', '-version'], text=True).splitlines()[0]}
     if not report['fallback']:
-        for extension in ['mp4', 'webm']:
+        for extension in ['mp4', 'webm', 'av1.mkv', 'hevc.mkv']:
             path = directory / f'export.{extension}'
             streams = probe(path)
             video = next(stream for stream in streams if stream['codec_type'] == 'video')
             audio = next(stream for stream in streams if stream['codec_type'] == 'audio')
-            assert int(video['nb_read_frames']) == 24 and [video['width'], video['height']] == [128, 96]
-            assert audio['codec_name'] == ('aac' if extension == 'mp4' else 'opus')
+            width, height = (512, 512) if extension == 'av1.mkv' else (128, 96)
+            assert int(video['nb_read_frames']) == 24 and [video['width'], video['height']] == [width, height]
+            assert video['codec_name'] == {'mp4':'h264', 'webm':'vp9', 'av1.mkv':'av1', 'hevc.mkv':'hevc'}[extension]
+            assert audio['codec_name'] == ('opus' if extension == 'webm' else 'aac')
             actual, expected = decode(path, 'video'), decode(reference / path.name, 'video')
-            assert len(actual) == len(expected) == 24 * 128 * 96 * 3
+            assert len(actual) == len(expected) == 24 * width * height * 3
             errors = [abs(a - b) for a, b in zip(actual, expected)]
             maximum, mean = max(errors), sum(errors) / len(errors)
-            assert maximum <= 6 and mean < 1.5, (extension, maximum, mean)
-            result['videos'][extension] = dict(codec=video['codec_name'], frames=24,
-                audioCodec=audio['codec_name'], maxPixelError=maximum, meanPixelError=mean)
+            over_six = sum(error > 6 for error in errors) / len(errors)
+            if extension == 'av1.mkv':
+                # Native SIMD and portable libaom can choose different lossy
+                # predictions. Bound both the worst sample and affected area.
+                assert maximum <= 16 and mean < .1 and over_six < .0001, (extension, maximum, mean, over_six)
+            else:
+                assert maximum <= 6 and mean < 1.5, (extension, maximum, mean)
+            pcm = array.array('f', decode(path, 'audio'))
+            peaks = tone_peaks(pcm, 12000, 24000, [440, 660])
+            result['videos'][extension] = dict(codec=video['codec_name'], frames=24, stereoPeakHz=peaks,
+                audioCodec=audio['codec_name'], maxPixelError=maximum, meanPixelError=mean, fractionOverSix=over_six)
     for extension in ['wav', 'flac', 'ogg', 'mp3']:
         path = directory / f'export.{extension}'
         actual, expected = decode(path, 'audio'), decode(reference / path.name, 'audio')
@@ -56,10 +85,19 @@ def main():
         assert maximum < 0.0005, (extension, maximum)
         result['audio'][extension] = dict(samples=len(av), maxSampleError=maximum,
             sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+    # Decode the actual stretched files independently of Blender/Audaspace.
+    result['stretch'] = {}
+    for name, ratio, expected_hz in [('slow', 2., [440,660]), ('fast', .5, [440,660]), ('pitch', 1., [660,990])]:
+        path = directory / f'stretch-{name}.wav'
+        samples = array.array('f', decode(path, 'audio'))
+        frames = len(samples) // 2
+        native_frames = len(decode(reference / path.name, 'audio')) // 8
+        assert abs(frames - native_frames) < 256, (name, frames, native_frames)
+        assert abs(frames / 48000 - ratio) < .15
+        frequencies = tone_peaks(samples, frames // 4, frames // 2, expected_hz)
+        result['stretch'][name] = dict(frames=frames, peakHz=frequencies, sha256=hashlib.sha256(path.read_bytes()).hexdigest())
     # A direct DFT at a small set of frequencies avoids adding a host NumPy
     # requirement to this independent acceptance tool.
-    import cmath
-    import math
     data = array.array('f', decode(directory / 'playback-audio.webm', 'audio'))
     frames = len(data) // 2
     active = [index for index in range(frames) if max(abs(data[index * 2]), abs(data[index * 2 + 1])) > .01]
@@ -68,19 +106,7 @@ def main():
     assert last - first > 48000 * 2.5
     start = first + 12000
     length = min(24000, last - start)
-    frequencies = []
-    for channel, center in enumerate([440, 660]):
-        powers = {}
-        for frequency in range(center - 6, center + 7, 2):
-            step = cmath.exp(-2j * math.pi * frequency / 48000)
-            oscillator, value = 1 + 0j, 0j
-            for index in range(length):
-                value += data[(start + index) * 2 + channel] * oscillator
-                oscillator *= step
-            powers[frequency] = abs(value)
-        peak = max(powers, key=powers.get)
-        assert abs(peak - center) <= 2, (channel, powers)
-        frequencies.append(peak)
+    frequencies = tone_peaks(data, start, length, [440, 660])
     result['playbackCapture'] = dict(frames=frames, nonzeroFrames=len(active),
         firstSignalSeconds=first / 48000, lastSignalSeconds=last / 48000,
         stereoPeakHz=frequencies, sha256=hashlib.sha256((directory / 'playback-audio.webm').read_bytes()).hexdigest())

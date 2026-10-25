@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "51bc909261449341b1fc",
+  "bundleVersion": "46ac9677ec2d70d43d63",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -152,7 +152,6 @@
   },
   "remainingGroupsScope": "Only the coarse bpy.app.build_options flags above. An empty portableLibraries group does not establish full dependency parity.",
   "disabledLibraryOptions": {
-    "WITH_RUBBERBAND": "Audio time stretching",
     "WITH_OPENIMAGEDENOISE": "Render denoising",
     "WITH_CYCLES_EMBREE": "Cycles Embree acceleration",
     "WITH_CYCLES_PATH_GUIDING": "Cycles OpenPGL path guiding",
@@ -161,7 +160,7 @@
     "WITH_HYDRA": "Hydra rendering integration"
   },
   "additionalLibraryGaps": [
-    "FFmpeg libaom/AV1 and x265/HEVC encoding backends",
+    "x265 high-bit-depth encoding",
     "NumPy BLAS acceleration",
     "MaterialX Python bindings",
     "HarfBuzz/FriBidi integration into Blender font rendering",
@@ -370,6 +369,27 @@
       "archiveHash": "8ccbf6a5ea78a16dbc3e1306e234cc5c",
       "hashType": "MD5",
       "source": "http://www.fftw.org/fftw-3.3.10.tar.gz"
+    },
+    {
+      "name": "RUBBERBAND",
+      "version": "4.0.0",
+      "archiveHash": "93bf3159eb91048e76eba35cf1bf766f",
+      "hashType": "MD5",
+      "source": "https://breakfastquay.com/files/releases/rubberband-4.0.0.tar.bz2"
+    },
+    {
+      "name": "AOM",
+      "version": "3.13.1",
+      "archiveHash": "19e45a5a7192d690565229983dad900e76b513a02306c12053fb9a262cbeca7d",
+      "hashType": "SHA256",
+      "source": "https://storage.googleapis.com/aom-releases/libaom-3.13.1.tar.gz"
+    },
+    {
+      "name": "X265",
+      "version": "4.1",
+      "archiveHash": "a31699c6a89806b74b0151e5e6a7df65de4b49050482fe5ebf8a4379d7af8f29",
+      "hashType": "SHA256",
+      "source": "https://bitbucket.org/multicoreware/x265_git/downloads/x265_4.1.tar.gz"
     },
     {
       "name": "OGG",

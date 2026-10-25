@@ -84,6 +84,29 @@ def export_audio(directory):
     return outputs
 
 
+def stretch_audio(directory):
+    source = aud.Sound(str(directory / 'tone.wav'))
+    outputs = {}
+    for name, ratio, pitch, hz in [
+        ('slow', 2.0, 1.0, [440, 660]),
+        ('fast', .5, 1.0, [440, 660]),
+        ('pitch', 1.0, 1.5, [660, 990]),
+    ]:
+        started = time.perf_counter()
+        sound = source.timeStretchPitchScale(ratio, pitch).cache()
+        data = sound.data()
+        frames = len(data)
+        assert data.shape[1] == 2 and abs(frames / 48000 - ratio) < .15, (name, data.shape)
+        middle = data[frames // 4:3 * frames // 4]
+        frequencies = (np.argmax(np.abs(np.fft.rfft(middle, axis=0)), axis=0) * 48000 / len(middle)).tolist()
+        assert np.allclose(frequencies, hz, atol=3), (name, frequencies)
+        target = directory / f'stretch-{name}.wav'
+        sound.write(str(target), 48000, 2, aud.FORMAT_S16, aud.CONTAINER_WAV, aud.CODEC_PCM, 192000, 1024)
+        outputs[name] = dict(frames=frames, peakHz=frequencies, timeRatio=ratio,
+                             pitchScale=pitch, seconds=time.perf_counter()-started)
+    return outputs
+
+
 def render_media(directory):
     scene = bpy.context.scene
     # A CPU renderer lets the same sequencer pipeline run on software WebGPU.
@@ -93,6 +116,8 @@ def render_media(directory):
     scene.cycles.use_denoising = False
     scene.render.resolution_x, scene.render.resolution_y = 128, 96
     scene.render.resolution_percentage = 100
+    scene.render.threads_mode = 'FIXED'
+    scene.render.threads = 8
     scene.render.use_sequencer = True
     scene.render.use_compositing = False
     scene.view_settings.view_transform = 'Standard'
@@ -112,7 +137,10 @@ def render_media(directory):
     exports = {}
     for extension, container, codec, audio in [
         ('mp4', 'MPEG4', 'H264', 'AAC'), ('webm', 'WEBM', 'WEBM', 'OPUS'),
+        ('av1.mkv', 'MKV', 'AV1', 'AAC'), ('hevc.mkv', 'MKV', 'H265', 'AAC'),
     ]:
+        # Upstream libaom tiling needs more than the tiny 128x96 probe.
+        scene.render.resolution_x, scene.render.resolution_y = (512, 512) if codec == 'AV1' else (128, 96)
         scene.render.image_settings.media_type = 'VIDEO'
         scene.render.image_settings.file_format = 'FFMPEG'
         scene.render.ffmpeg.format = container
@@ -131,8 +159,35 @@ def render_media(directory):
         target = candidates[0]
         exports[target.name] = dict(bytes=target.stat().st_size, seconds=statistics.median(runs), runs=runs,
                                     audio=audio_summary(target))
+        # Reimport each exported movie through Blender's original decoder.
+        editor = scene.sequence_editor
+        visible = [(strip, strip.mute) for strip in editor.strips if strip.type == 'MOVIE']
+        for strip, _ in visible:
+            strip.mute = True
+        imported = editor.strips.new_movie('Roundtrip ' + codec, str(target), 7, 1)
+        # AAC padding can extend the container estimate by one timeline frame.
+        assert 24 <= imported.frame_final_duration <= 25, (codec, imported.frame_final_duration)
+        exports[target.name]['reimportDuration'] = imported.frame_final_duration
+        scene.render.image_settings.media_type = 'IMAGE'
+        scene.render.image_settings.file_format = 'PNG'
+        scene.frame_set(12)
+        scene.render.filepath = str(directory / f'roundtrip-{codec}.png')
+        assert bpy.ops.render.render(write_still=True) == {'FINISHED'}
+        image = bpy.data.images.load(scene.render.filepath, check_existing=False)
+        pixels = np.empty(len(image.pixels), dtype=np.float32)
+        image.pixels.foreach_get(pixels)
+        width, height = scene.render.resolution_x, scene.render.resolution_y
+        pixel = pixels.reshape(height, width, 4)[height // 2, width // 2].tolist()
+        assert np.allclose(pixel, frames['12'], atol=.03), (codec, pixel, frames['12'])
+        exports[target.name]['roundtripPixel'] = pixel
+        bpy.data.images.remove(image)
+        editor.strips.remove(imported)
+        for strip, muted in visible:
+            strip.mute = muted
+
     scene.render.image_settings.media_type = 'IMAGE'
     scene.render.image_settings.file_format = 'PNG'
+    scene.render.resolution_x, scene.render.resolution_y = 128, 96
     return dict(seekFrames=frames, videos=exports)
 
 
@@ -145,6 +200,10 @@ def browser_check(directory, render=True):
         actual['exports'] = export_audio(directory)
         compare_audio({'audio':actual['exports'], 'movies':{}},
                       {'audio':expected['exports'], 'movies':{}})
+        actual['stretch'] = stretch_audio(directory)
+        for name, reference in expected['stretch'].items():
+            assert abs(actual['stretch'][name]['frames'] - reference['frames']) < 256
+            assert np.allclose(actual['stretch'][name]['peakHz'], reference['peakHz'], atol=3)
         if render:
             actual['render'] = render_media(directory)
             for frame, pixel in actual['render']['seekFrames'].items():
@@ -172,6 +231,7 @@ if __name__ == '__main__' and '--' in sys.argv:
     directory = Path(sys.argv[sys.argv.index('--') + 1])
     result = inspect_media(directory)
     result['exports'] = export_audio(directory)
+    result['stretch'] = stretch_audio(directory)
     result['render'] = render_media(directory)
     result['sourceSha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     (directory / 'reference.json').write_text(json.dumps(result, indent=2) + '\n')

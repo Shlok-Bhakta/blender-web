@@ -13,7 +13,7 @@ python3 web/tools/native_build.py --app --jobs 8 --check-deps
 python3 web/tools/serve.py --pages-mode
 ```
 
-Open `http://localhost:8080`. GitHub Actions builds the original application, runs browser acceptance checks, and deploys the static files to GitHub Pages. The first visit downloads the application and runtime assets; a service worker caches versioned files and supplies cross-origin isolation for pthreads. User files use browser OPFS storage.
+Open `http://localhost:8080`. GitHub Actions builds the original application, runs browser acceptance checks, and uploads build artifacts. A separate validated-release workflow verifies the packaged archive, runs deployment checks, and deploys the static files to GitHub Pages. The first visit downloads the application and runtime assets; a service worker caches versioned files and supplies cross-origin isolation for pthreads. User files use browser OPFS storage.
 
 The `blender/` submodule pins the official stable release. Platform code lives in `intern/ghost/web/` and `web/native/`. Guarded patches in `web/patches/` connect it to upstream in an isolated build worktree, keeping the reference checkout clean. Native C++ uses optimization, SIMD, pthreads, and oneTBB.
 
@@ -24,6 +24,8 @@ The `blender/` submodule pins the official stable release. Platform code lives i
 [Watch volumes and Mantaflow gas in the browser](web/docs/volume-walkthrough.mp4) · [Memory64 investigation](web/docs/memory64.md)
 
 [Watch image codecs, SVG/PDF and Freestyle](web/docs/image-vector-freestyle-walkthrough.mp4) · [Dependency status](web/docs/dependency-status.json)
+
+[Watch audio stretching and AV1/HEVC exports](web/docs/media-walkthrough.mp4)
 
 [Watch compressed glTF exchange and offline reopening](web/docs/gltf-walkthrough.mp4)
 
