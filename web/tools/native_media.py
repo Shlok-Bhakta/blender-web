@@ -26,3 +26,34 @@ def build_autoconf(name, source, work, prefix, options, jobs, log, run, flags):
         log, cwd=work, env=env)
     run(["emmake", "make", f"-j{jobs}"], log, cwd=work, env=env)
     run(["emmake", "make", "install"], log, cwd=work, env=env)
+
+
+def build_x265(source, work, prefix, options, jobs, log, run, flags):
+    """Build the original 8/10/12-bit namespaces and merge their static objects."""
+    from prepare import ROOT
+    archives = {}
+    for depth in (12, 10, 8):
+        build = work / str(depth)
+        extra = [f'-DHIGH_BIT_DEPTH={"ON" if depth > 8 else "OFF"}',
+                 f'-DEXPORT_C_API={"ON" if depth == 8 else "OFF"}',
+                 f'-DMAIN12={"ON" if depth == 12 else "OFF"}']
+        if depth == 8:
+            extra += ['-DLINKED_10BIT=ON', '-DLINKED_12BIT=ON',
+                      '-DEXTRA_LIB=' + ';'.join(str(archives[value]) for value in (10, 12))]
+        run(['emcmake', 'cmake', '-S', source / 'source', '-B', build,
+             f'-DCMAKE_TOOLCHAIN_FILE={ROOT / "web/native/toolchain.cmake"}',
+             f'-DCMAKE_INSTALL_PREFIX={prefix}', '-DCMAKE_BUILD_TYPE=Release',
+             f'-DCMAKE_C_FLAGS={flags}', f'-DCMAKE_CXX_FLAGS={flags}',
+             *options, *extra], log)
+        run(['cmake', '--build', build, '--parallel', jobs], log)
+        archives[depth] = build / 'libx265.a'
+    run(['cmake', '--install', work / '8'], log)
+    merged = prefix / 'lib/libx265-multilib.a'
+    merged.unlink(missing_ok=True)
+    # q appends duplicate object basenames from the different namespaces;
+    # replacing members by basename would silently discard other bit depths.
+    run(['emar', 'qcsL', merged, *(archives[depth] for depth in (8, 10, 12))], log)
+    merged.replace(prefix / 'lib/libx265.a')
+    pc = prefix / 'lib/pkgconfig/x265.pc'
+    pc.write_text('\n'.join('Libs.private:' if line.startswith('Libs.private:') else line
+                            for line in pc.read_text().splitlines()) + '\n')

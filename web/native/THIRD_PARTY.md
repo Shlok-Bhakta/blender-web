@@ -115,3 +115,14 @@ upstream Emscripten path lowers its SSE2 kernels to Wasm SIMD, with the existing
 oneTBB port for task scheduling. ISPC and SYCL are disabled. A build-only patch
 selects the same Wasm exception ABI as Blender; the SSE2 compiler options omit
 an x86-only negative feature flag rejected by Emscripten.
+
+OpenPGL 0.7.1 and Open Image Denoise 2.5.0 use Blender's pinned source archives
+and Apache-2.0 notices. OpenPGL uses its original CPU-4 kernels and bundled
+Embree helpers, with private helper namespaces to avoid collisions with Embree
+4. Its missing Wasm emulation header comes from pinned Embree 4.4.1 and retains
+that header's copyright. OIDN uses its original RT weights and generic ISPC
+kernels. Its Wasm compiler bridge uses the checksum-pinned official ISPC 1.30.0
+host binary and existing Imath binary16 conversions. Their original notices
+are included with the dependency notices. See [the compiler bridge notes](oidn/README.md)
+for the 32-bit adaptation and numerical checks. Native GPU denoisers and
+RTLightmap weights are not part of this build.

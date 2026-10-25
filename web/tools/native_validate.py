@@ -42,10 +42,17 @@ def main():
         (base / 'validation-status.json').write_text(json.dumps(status, indent=2) + '\n')
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
+    run('hevc-native', ['python3', 'web/tools/native_hevc_verify.py'])
+    run('render-libraries-baseline', ['python3', 'web/tools/native_render_libraries_baseline.py', '--blender', args.blender])
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'render-libraries-{suffix}', ['node', 'web/tests/render-libraries.cjs'], **flags)
+        directory='build/native/render-libraries-evidence'+('-hardware' if suffix=='hardware' else '-ui' if suffix=='ui' else '')
+        run(f'render-libraries-native-{suffix}', ['python3', 'web/tools/native_render_libraries_verify.py', directory, '--blender', args.blender])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'embree-{suffix}', ['node', 'web/tests/embree.cjs'], **flags)
         directory='build/native/embree-evidence'+('-hardware' if suffix=='hardware' else '-ui' if suffix=='ui' else '')
         run(f'embree-native-{suffix}', ['python3', 'web/tools/native_embree_verify.py', directory, '--blender', args.blender])
+    run('render-libraries-video', ['python3', 'web/tools/native_render_libraries_recording.py'])
     run('embree-video', ['python3', 'web/tools/native_embree_recording.py'])
     run('embree-benchmark', ['node', 'web/tests/embree.cjs'], WEB_TEST_HARDWARE='1',
         WEB_EMBREE_BENCHMARK='1', WEB_EMBREE_OUTPUT='build/native/embree-benchmark')

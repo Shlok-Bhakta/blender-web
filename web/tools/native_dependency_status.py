@@ -64,8 +64,7 @@ def main():
             'WITH_LLVM':'LLVM compiler infrastructure',
             'WITH_HYDRA':'Hydra rendering integration',
         }.items() if not manifest['buildOptions'].get(name,False)},
-        additionalLibraryGaps=['x265 high-bit-depth encoding',
-            'NumPy BLAS acceleration', 'MaterialX Python bindings',
+        additionalLibraryGaps=['NumPy BLAS acceleration', 'MaterialX Python bindings',
             'HarfBuzz/FriBidi integration into Blender font rendering', 'OpenSubdiv GPU evaluation'],
         baseLibraryRecipes=libraries,
         baseLibraryRecipeScope='The base static-library builder only; excludes CPython/NumPy, shader compilers, bundled Blender code and platform SDKs.',
@@ -73,7 +72,7 @@ def main():
         limitations=[
             'Build flags are configuration evidence, not proof of every operation or performance parity.',
             'Desktop audio drivers require browser audio integration instead of loading JACK or PulseAudio into Wasm.',
-            'Cycles GPU, denoising, OpenSubdiv GPU and other subfeatures are not represented by these coarse Python API flags.',
+            'Cycles GPU, OpenSubdiv GPU and other subfeatures are not represented by these coarse Python API flags.',
             'Some enabled dependencies have disabled subcomponents; see FEATURES.md for actual operation coverage.'])
     destination=ROOT/'web/docs/dependency-status.json'
     destination.write_text(json.dumps(report,indent=2)+'\n')

@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        group: [startup, ui, features, ocean, volume, cycles, image-vector, freestyle, usd, media, text, tracking, gltf, embree]
+        group: [startup, ui, features, ocean, volume, cycles, image-vector, freestyle, usd, media, text, tracking, gltf, embree, render-libraries]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -122,6 +122,10 @@ jobs:
               node web/tests/gltf.cjs
               WEB_TEST_UI_FALLBACK=1 node web/tests/gltf.cjs
               ;;
+            render-libraries)
+              node web/tests/render-libraries.cjs
+              WEB_TEST_UI_FALLBACK=1 node web/tests/render-libraries.cjs
+              ;;
             embree)
               node web/tests/embree.cjs
               WEB_TEST_UI_FALLBACK=1 node web/tests/embree.cjs
@@ -159,6 +163,7 @@ jobs:
             build/native/image-vector-evidence*
             build/native/freestyle-evidence*
             build/native/usd-evidence*
+            build/native/render-libraries-evidence*
             build/native/embree-evidence*
             build/native/media-evidence*
             build/native/text-evidence*

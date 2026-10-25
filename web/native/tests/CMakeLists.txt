@@ -117,3 +117,35 @@ if(WITH_CYCLES_EMBREE)
     -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
     -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1)
 endif()
+
+if(WITH_CYCLES_PATH_GUIDING)
+  add_executable(openpgl-check openpgl.cc)
+  target_link_libraries(openpgl-check PRIVATE openpgl::openpgl ${EMBREE_LIBRARIES} TBB::tbb)
+  target_compile_options(openpgl-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  target_link_options(openpgl-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8 -sPTHREAD_POOL_SIZE_STRICT=0
+    -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
+    -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1)
+endif()
+
+if(WITH_OPENIMAGEDENOISE)
+  add_executable(oidn-check oidn.cc)
+  target_link_libraries(oidn-check PRIVATE OpenImageDenoise)
+  target_include_directories(oidn-check PRIVATE $<TARGET_PROPERTY:Imath::Imath,INTERFACE_INCLUDE_DIRECTORIES>)
+  target_compile_options(oidn-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  target_link_options(oidn-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8 -sPTHREAD_POOL_SIZE_STRICT=0
+    -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
+    -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)
+endif()
+
+if(WITH_CODEC_FFMPEG)
+  add_executable(hevc-check hevc.cc)
+  target_include_directories(hevc-check PRIVATE ${FFMPEG_INCLUDE_DIRS})
+  target_link_libraries(hevc-check PRIVATE -Wl,--start-group ${FFMPEG_LIBRARIES} -Wl,--end-group)
+  target_compile_options(hevc-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  target_link_options(hevc-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=12 -sPTHREAD_POOL_SIZE_STRICT=0
+    -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
+    -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)
+endif()

@@ -43,6 +43,8 @@ RECIPES = {
     "ROBINMAP": ("", ["-DTSL_ROBIN_MAP_BUILD_TESTS=OFF"]),
     "TBB": ("", ["-DTBB_TEST=OFF", "-DTBB_EXAMPLES=OFF", "-DTBB_STRICT=OFF", "-DTBBMALLOC_BUILD=OFF", "-DTBBMALLOC_PROXY_BUILD=OFF", "-DTBB_ENABLE_IPO=OFF", "-DTBB_DISABLE_HWLOC_AUTOMATIC_SEARCH=ON"]),
     "EMBREE": ("", ["-DEMBREE_STATIC_LIB=ON", "-DEMBREE_TUTORIALS=OFF", "-DEMBREE_ISPC_SUPPORT=OFF", "-DEMBREE_SYCL_SUPPORT=OFF", "-DEMBREE_MAX_ISA=SSE2", "-DFLAGS_SSE2=-msse2", "-DEMBREE_IGNORE_CMAKE_CXX_FLAGS=OFF", "-DEMBREE_TASKING_SYSTEM=TBB", "-DEMBREE_RAY_MASK=ON", "-DEMBREE_FILTER_FUNCTION=ON", "-DEMBREE_BACKFACE_CULLING=OFF", "-DEMBREE_BACKFACE_CULLING_CURVES=ON", "-DEMBREE_BACKFACE_CULLING_SPHERES=ON"]),
+    "OPENPGL": ("", ["-DOPENPGL_BUILD_STATIC=ON", "-DOPENPGL_BUILD_TOOLS=OFF", "-DOPENPGL_BUILD_CHECK_TOOL=OFF", "-DOPENPGL_ISA_SSE4=ON", "-DOPENPGL_ISA_AVX2=OFF", "-DOPENPGL_ISA_AVX512=OFF", "-DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON"]),
+    "OIDN": ("", ["-DOIDN_STATIC_LIB=ON", "-DOIDN_APPS=OFF", "-DOIDN_DEVICE_CPU=ON", "-DOIDN_DEVICE_SYCL=OFF", "-DOIDN_DEVICE_CUDA=OFF", "-DOIDN_DEVICE_HIP=OFF", "-DOIDN_DEVICE_METAL=OFF", "-DOIDN_FILTER_RTLIGHTMAP=OFF"]),
     "ABSEIL": ("", ["-DABSL_BUILD_TESTING=OFF", "-DABSL_ENABLE_INSTALL=ON", "-DABSL_PROPAGATE_CXX_STD=ON", "-DCMAKE_CXX_STANDARD=17"]),
     "CERES": ("", ["-DBUILD_TESTING=OFF", "-DBUILD_BENCHMARKS=OFF", "-DBUILD_EXAMPLES=OFF", "-DUSE_CUDA=OFF", "-DSUITESPARSE=OFF", "-DACCELERATESPARSE=OFF", "-DLAPACK=OFF"]),
     "OPENSUBDIV": ("", ["-DNO_EXAMPLES=ON", "-DNO_TUTORIALS=ON", "-DNO_REGRESSION=ON", "-DNO_PTEX=ON", "-DNO_DOC=ON", "-DNO_OMP=ON", "-DNO_TBB=OFF", "-DNO_CUDA=ON", "-DNO_OPENCL=ON", "-DNO_CLEW=ON", "-DNO_OPENGL=ON", "-DNO_METAL=ON", "-DNO_DX=ON", "-DNO_TESTS=ON", "-DNO_GLTESTS=ON", "-DNO_GLEW=ON", "-DNO_GLFW=ON"]),
@@ -78,7 +80,7 @@ RECIPES = {
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
-CXX_PACKAGES = {"EMBREE", "RUBBERBAND", "AOM", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
+CXX_PACKAGES = {"OIDN", "OPENPGL", "EMBREE", "RUBBERBAND", "AOM", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
                 "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
@@ -140,6 +142,9 @@ def install_notices(source, prefix, name):
                 shutil.copy2(notice, destination / notice.name)
             elif notice.is_dir():
                 shutil.copytree(notice, destination / notice.name, dirs_exist_ok=True)
+    if name == 'OIDN':
+        for notice in source.glob('third-party-programs*.txt'):
+            shutil.copy2(notice, destination / notice.name)
     if name == 'MATERIALX':
         shutil.copy2(source / 'source/MaterialXFormat/External/PugiXML/readme.txt',
                      destination / 'PugiXML-1.9-MIT.txt')
@@ -184,7 +189,7 @@ def build(args):
         if name in {"HARFBUZZ", "FRIBIDI", "RUBBERBAND"}:
             signature["textBuilder"] = hashlib.sha256(
                 (ROOT / "web/tools/native_text.py").read_bytes()).hexdigest()
-        if name in {"OPUS", "LAME", "THEORA", "VPX", "X264", "FFMPEG"}:
+        if name in {"X265", "OPUS", "LAME", "THEORA", "VPX", "X264", "FFMPEG"}:
             signature["mediaBuilder"] = hashlib.sha256(
                 (ROOT / "web/tools/native_media.py").read_bytes()).hexdigest()
         patch = ROOT / "web/native/patches" / f"{name.lower()}.patch"
@@ -198,11 +203,19 @@ def build(args):
                 if not dependency_stamp.is_file():
                     raise RuntimeError(f"Build {dependency} before {name}")
                 signature["dependencyStamps"][dependency] = hashlib.sha256(dependency_stamp.read_bytes()).hexdigest()
-        if name == "EMBREE":
+        if name in {"EMBREE", "OPENPGL", "OIDN"}:
             dependency_stamp = base / 'tbb/installed.json'
             if not dependency_stamp.is_file():
-                raise RuntimeError("Build TBB before EMBREE")
+                raise RuntimeError(f"Build TBB before {name}")
             signature['dependencyStamps'] = {'TBB': hashlib.sha256(dependency_stamp.read_bytes()).hexdigest()}
+        if name == "OIDN":
+            from native_oidn import INPUTS
+            signature['compilerBridge'] = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                                           for name in INPUTS}
+            imath_stamp = base / 'imath/installed.json'
+            if not imath_stamp.is_file():
+                raise RuntimeError("Build IMATH before OIDN")
+            signature['dependencyStamps']['IMATH'] = hashlib.sha256(imath_stamp.read_bytes()).hexdigest()
         if name == "CERES":
             signature["dependencyStamps"] = {}
             for dependency in ("ABSEIL", "EIGEN"):
@@ -231,6 +244,11 @@ def build(args):
         notices_ready = notices.is_dir()
         if name == 'MATERIALX':
             notices_ready = notices_ready and (notices / 'PugiXML-1.9-MIT.txt').is_file()
+        if name == 'OIDN' and cached:
+            # CI restores installed archives/stamps, not host executables or
+            # build-tree launchers. The compiler check still needs both.
+            from native_oidn import configure as configure_oidn
+            configure_oidn(base, download, prefix)
         if cached and notices_ready:
             if (directory / 'source').is_dir():
                 install_notices(directory / 'source', prefix, name)
@@ -241,6 +259,12 @@ def build(args):
         if source_record.exists() and json.loads(source_record.read_text()) != lock[name]:
             shutil.rmtree(source, ignore_errors=True)
             shutil.rmtree(directory / "build", ignore_errors=True)
+        # These are generated dependency trees. A changed patch must start from
+        # the pinned archive, rather than layering incompatible patch revisions.
+        if source.is_dir() and stamp.is_file():
+            installed_patch = json.loads(stamp.read_text()).get('patch')
+            if installed_patch != signature.get('patch'):
+                shutil.rmtree(source)
         if not source.exists():
             extracted = directory / "extract"
             extracted.mkdir(exist_ok=True)
@@ -276,6 +300,9 @@ def build(args):
         log = directory / "build.log"
         subdir, options = RECIPES[name]
         options = list(options)
+        if name == "OIDN":
+            from native_oidn import configure as configure_oidn
+            options += configure_oidn(base, download, prefix)
         if name == "FREETYPE":
             options += [f"-DBROTLIDEC_INCLUDE_DIRS={prefix / 'include'}",
                         f"-DBROTLIDEC_LIBRARIES={prefix / 'lib/libbrotlidec-static.a'};{prefix / 'lib/libbrotlicommon-static.a'}"]
@@ -300,6 +327,12 @@ def build(args):
             from native_media import build_autoconf
             build_autoconf(name, source, directory / "build", prefix, options,
                            args.jobs, log, run, C_FLAGS)
+            stamp.write_text(json.dumps(signature, indent=2) + "\n")
+            continue
+        if name == "X265":
+            from native_media import build_x265
+            build_x265(source, directory / "build", prefix, options,
+                       args.jobs, log, run, C_FLAGS)
             stamp.write_text(json.dumps(signature, indent=2) + "\n")
             continue
         if name == "GMP":

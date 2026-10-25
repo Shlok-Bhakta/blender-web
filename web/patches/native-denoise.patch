@@ -1,0 +1,47 @@
+--- a/intern/cycles/util/openimagedenoise.h
++++ b/intern/cycles/util/openimagedenoise.h
+@@ -3,6 +3,9 @@
+  * SPDX-License-Identifier: Apache-2.0 */
+ 
+ #pragma once
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebCycles.hh"
++#endif
+ 
+ #ifdef WITH_OPENIMAGEDENOISE
+ #  include <OpenImageDenoise/oidn.hpp>  // IWYU pragma: export
+@@ -15,7 +18,9 @@
+ static inline bool openimagedenoise_supported()
+ {
+ #ifdef WITH_OPENIMAGEDENOISE
+-#  if defined(__APPLE__)
++#  if defined(WITH_GHOST_WEB)
++  return GHOST_web_cycles_denoising_supported();
++#  elif defined(__APPLE__)
+   /* Always supported through Accelerate framework BNNS. */
+   return true;
+ #  elif defined(__aarch64__) || defined(_M_ARM64)
+--- a/source/blender/nodes/composite/nodes/node_composite_denoise.cc
++++ b/source/blender/nodes/composite/nodes/node_composite_denoise.cc
+@@ -4,6 +4,10 @@
+ 
+ #ifndef __APPLE__
+ #  include "BLI_system.h"
++#endif
++
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebDenoise.hh"
+ #endif
+ 
+ #include "MEM_guardedalloc.h"
+@@ -105,7 +109,9 @@
+ static bool is_oidn_supported()
+ {
+ #ifdef WITH_OPENIMAGEDENOISE
+-#  if defined(__APPLE__)
++#  if defined(WITH_GHOST_WEB)
++  return GHOST_web_denoising_supported();
++#  elif defined(__APPLE__)
+   /* Always supported through Accelerate framework BNNS. */
+   return true;
+ #  elif defined(__aarch64__) || defined(_M_ARM64)

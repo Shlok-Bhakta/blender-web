@@ -1,0 +1,58 @@
+{
+  "sourceSha256": "5474b61a1616e4d2705758aca395ade1ec4afe1855ebafb168df6957ce3a6f96",
+  "blenderVersion": "5.2.2 LTS",
+  "cases": {
+    "noisy": {
+      "seconds": 0.7314447648823261,
+      "guiding": false,
+      "denoising": false,
+      "samples": 16,
+      "bytes": 67598
+    },
+    "denoised": {
+      "seconds": 1.8031167672015727,
+      "guiding": false,
+      "denoising": true,
+      "samples": 16,
+      "bytes": 38871
+    },
+    "guided": {
+      "seconds": 3.8397613931447268,
+      "guiding": true,
+      "denoising": false,
+      "samples": 64,
+      "bytes": 59785
+    },
+    "volume-guided": {
+      "seconds": 6.482102506328374,
+      "guiding": true,
+      "denoising": true,
+      "samples": 64,
+      "bytes": 37375
+    },
+    "compositor": {
+      "seconds": 1.182612579781562,
+      "guiding": false,
+      "denoising": false,
+      "samples": 16,
+      "bytes": 38871
+    }
+  },
+  "hevc": {
+    "8": {
+      "path": "hevc-8.mkv",
+      "bytes": 7894,
+      "frames": 3
+    },
+    "10": {
+      "path": "hevc-10.mkv",
+      "bytes": 10810,
+      "frames": 3
+    },
+    "12": {
+      "path": "hevc-12.mkv",
+      "bytes": 15849,
+      "frames": 3
+    }
+  }
+}

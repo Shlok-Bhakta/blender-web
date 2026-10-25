@@ -33,3 +33,19 @@ inline bool GHOST_web_cycles_progressive_display()
 {
   return false;
 }
+
+/* OpenPGL's CPU-4 kernels compile through its SSE-to-Wasm SIMD path. This
+ * identifies the compiled library variant without claiming a native x86 ISA. */
+inline int GHOST_web_cycles_guiding_device_type()
+{
+  return 4;
+}
+
+#ifdef WITH_OPENIMAGEDENOISE
+#  include "GHOST_WebDenoise.hh"
+/* Query the actual Wasm device rather than testing native x86 CPUID bits. */
+inline bool GHOST_web_cycles_denoising_supported()
+{
+  return GHOST_web_denoising_supported();
+}
+#endif

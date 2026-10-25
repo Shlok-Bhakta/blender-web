@@ -29,6 +29,18 @@ def check_dependencies(source, base, prefix, jobs):
                       "web/native/patches/embree.patch", "web/native/toolchain.cmake"]
     embree_hashes = {name:hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
                      for name in embree_sources}
+    cpu_library_inputs = {
+        'openpgl': ['web/native/tests/openpgl.cc', 'web/native/patches/openpgl.patch'],
+        'oidn': ['web/native/tests/oidn.cc', 'web/native/patches/oidn.patch',
+                 'web/native/oidn/half.cpp', 'web/tools/native_oidn.py',
+                 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json'],
+        'hevc': ['web/native/tests/hevc.cc', 'web/tools/native_media.py'],
+    }
+    common_inputs = ['web/native/tests/CMakeLists.txt', 'web/native/dependencies.cmake',
+                     'web/tools/native_deps.py', 'web/native/toolchain.cmake']
+    cpu_library_hashes = {name: {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+                                for path in [*paths, *common_inputs]}
+                          for name, paths in cpu_library_inputs.items()}
     checks = base / "checks"
     subprocess.run(["emcmake", "cmake", "-S", str(ROOT / "web/native/tests"), "-B", str(checks),
                     f"-DBLENDER_SOURCE={source}",
@@ -38,21 +50,28 @@ def check_dependencies(source, base, prefix, jobs):
                     "-DWITH_OPENVDB=ON", "-DWITH_NANOVDB=ON",
                     "-DWITH_USD=ON", "-DWITH_MATERIALX=ON",
                     "-DWITH_CODEC_FFMPEG=ON", "-DWITH_CODEC_SNDFILE=ON", "-DWITH_RUBBERBAND=ON", "-DWITH_CYCLES_EMBREE=ON",
+                    "-DWITH_OPENIMAGEDENOISE=ON", "-DWITH_CYCLES_PATH_GUIDING=ON",
                     "-DWITH_HARFBUZZ=ON", "-DWITH_FRIBIDI=ON", "-DWITH_LIBMV=ON"], check=True)
     subprocess.run(["cmake", "--build", str(checks), "--parallel", str(jobs)], check=True)
     result = subprocess.run(["node", str(checks / "dependencies.js")], check=True,
                             text=True, stdout=subprocess.PIPE, timeout=120)
     print(result.stdout, end="", flush=True)
     (base / "dependency-check.json").write_text(json.dumps(json.loads(result.stdout), indent=2) + "\n")
-    for name in ("fftw", "alembic", "media", "tracking", "embree"):
-        output = subprocess.check_output(["node", str(checks / f"{name}-check.js")], text=True, timeout=60)
+    for name in ("fftw", "alembic", "media", "tracking", "embree", "openpgl", "oidn", "hevc"):
+        command = ["node", str(checks / f"{name}-check.js")]
+        if name in {'oidn', 'hevc'}:
+            command.append(str(base / f'{name}-check'))
+        output = subprocess.check_output(command, text=True, timeout=60)
         report = json.loads(output)
         if name == "media":
             report['sourceHashes'] = media_hashes
         if name == 'embree':
             report['sourceHashes'] = embree_hashes
+        if name in cpu_library_hashes:
+            report['sourceHashes'] = cpu_library_hashes[name]
         (base / f"{name}-check.json").write_text(json.dumps(report, indent=2) + "\n")
         print(output, end="", flush=True)
+    subprocess.run(['python3', str(ROOT / 'web/tools/native_ispc_check.py'), '--base', str(base)], check=True)
     output = subprocess.check_output(['node', str(checks / 'text-check.js'),
         str(source / 'release/datafiles/fonts')], text=True, timeout=60)
     (base / 'text-check.json').write_text(json.dumps(json.loads(output), indent=2) + '\n')
@@ -276,7 +295,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -404,7 +423,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 

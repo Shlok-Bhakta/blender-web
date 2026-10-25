@@ -35,12 +35,13 @@ batches. The static site's
 | Audio/video IO and Video Sequencer | Enabled | WAV/FLAC/Ogg/MP3 and MKV/MP4/WebM inputs, video seeking, original audio and H.264/AAC or VP9/Opus video exports compared with desktop |
 | Browser audio playback | Enabled | Original Audaspace mixer feeds a shared PCM ring and AudioWorklet; stereo playback, timeline advancement, captured output and offline reopen |
 | Audio time stretching and pitch shifting | Implemented, tested | Rubber Band with FFTW, original Audaspace APIs, independent duration and stereo pitch checks |
-| AV1 and HEVC encoding | Implemented, tested | libaom and 8-bit x265 through original Blender FFmpeg exports; native decode comparison |
+| AV1 and HEVC encoding | Implemented, tested | libaom and 8/10/12-bit x265 through original Blender FFmpeg exports; native decode comparison and lossless precision checks |
 | Audio input and multichannel devices | Deferred | Microphone capture and multichannel device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
 | Cycles Embree CPU acceleration | Enabled | Upstream Wasm SIMD and oneTBB, 64 linked meshes, curves, sphere points, transparency, motion blur, BVH2 comparisons and native readback |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
-| Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
+| Cycles CPU denoising and path guiding | Enabled in JSPI bundle | Original OIDN and OpenPGL integration, compositor Denoise node, surface/volume training, native image comparison and offline reopen |
+| Cycles GPU and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
 | Tracking and camera solving | Enabled for tested cases | Original libmv tracking of twelve translated frames and camera reconstruction from thirty-two synthetic point tracks; native readback and offline persistence |
 | glTF Draco and meshoptimizer compression | Enabled for tested cases | Original codecs and add-on operators; Draco and EXT/KHR meshoptimizer exchange, UV/color/normal checks, morphs and animation, malformed-file recovery, desktop readback and offline persistence |
 | Interface translation and saved language preferences | Enabled | All 49 original catalogs match desktop files; six language samples, French/Japanese UI and offline preference restoration |
@@ -66,14 +67,14 @@ Blender binds its unused second output to the first output's texture; WebGPU
 requires distinct writable bindings, so the adapter supplies unused storage for
 that second output. The 128-pixel Cycles Image Editor check exercises this case.
 
-High-bit-depth x265, additional codec backends and audio input remain follow-up work. Device
+Additional codec backends and audio input remain follow-up work. Device
 file selection and download/export integration remain separate from the persistent
 browser filesystem.
 
 The [dependency status report](../docs/dependency-status.json) compares the actual
 desktop and browser `bpy.app.build_options` values and lists the base library
-recipes. These coarse flags are not a feature-parity percentage. OSL,
-denoising and GPU evaluators also need renderer integration. Desktop JACK,
+recipes. These coarse flags are not a feature-parity percentage. OSL and
+GPU evaluators still need renderer integration. Desktop JACK,
 PulseAudio and OpenAL drivers are not browser audio backends. The web build uses
 Web Audio for stereo output; NDOF, XR and additional audio devices need platform
 integration.
@@ -364,3 +365,33 @@ files before importing a valid asset in the same session. Skinning, external
 compressed asset collections, large-scene stress tests and broader glTF
 extension compatibility remain outside this coverage. See the
 [recording](../docs/gltf-walkthrough.mp4) and [test source](../tests/gltf.py).
+
+
+OpenPGL 0.7.1 uses its original CPU-4 kernels through Wasm SIMD and oneTBB.
+Standalone checks train all three directional models with surface and volume
+samples, compare PDFs and sample directions with a matching native CPU-4 build,
+and store/reload their fields. The browser scene trains surface and volume
+fields through original Cycles code. Original trace logs require at least four
+valid updates per guiding case. Native and Wasm floating-point training can
+change sampled paths, so guided images use separate tolerances. Field files
+are only checked for self-roundtrip; upstream's native-size serialization does
+not establish native/Wasm field-file interoperability.
+
+OIDN 2.5.0 retains its CPU network, RT weights, prefilters and half-image APIs.
+The [compiler bridge](oidn/README.md) lowers generic ISPC vectors to Wasm SIMD,
+with IEEE half conversions and checked 32-bit sizes. Color-only and guided
+network outputs are compared with pinned native OIDN. Compiler checks cover
+321,531 conversion cases, 65,537 half comparisons and 786,432 packed-mask
+comparisons. Library checks also cover cancellation/recovery and invalid
+sizes, buffer regions and weight offsets. Cycles CPU denoising and the original
+compositor Denoise node are compared with native renders in a 192x144 scene.
+Native GPU denoisers and RTLightmap weights are absent, following Blender's
+native RTLightmap configuration. Large denoising workloads remain untested.
+
+x265 now includes its original 8/10/12-bit namespaces in one static archive.
+Lossless 96x64 codec checks preserve every tested YUV sample across three frames
+at each depth. Host FFmpeg decodes those exports independently. Blender's own
+Video Sequencer also exports three-frame float EXR gradients at all three bit
+depths. Host decoding verifies the encoded precision and compares native and
+browser YUV samples within one least-significant bit. This does not establish
+large-video throughput or every HEVC profile.

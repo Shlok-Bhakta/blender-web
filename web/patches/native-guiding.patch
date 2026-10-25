@@ -1,0 +1,23 @@
+--- a/intern/cycles/util/guiding.h
++++ b/intern/cycles/util/guiding.h
+@@ -3,6 +3,9 @@
+  * SPDX-License-Identifier: Apache-2.0 */
+ 
+ #pragma once
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebCycles.hh"
++#endif
+ 
+ #if defined(WITH_PATH_GUIDING)
+ #  include <openpgl/cpp/OpenPGL.h>  // IWYU pragma: export
+@@ -16,7 +19,9 @@
+ static int guiding_device_type()
+ {
+ #if defined(WITH_PATH_GUIDING)
+-#  if defined(__ARM_NEON)
++#  if defined(WITH_GHOST_WEB)
++  return GHOST_web_cycles_guiding_device_type();
++#  elif defined(__ARM_NEON)
+   return 8;
+ #  else
+   if (system_cpu_support_avx2()) {

@@ -90,9 +90,23 @@ or `EMBREE`, verifies the backend in C++ logs, and retains first/warm render
 times. Use `WEB_CYCLES_BENCHMARK=1`, `WEB_CYCLES_REPEATS=6` and a distinct
 `WEB_CYCLES_OUTPUT` directory for each backend.
 
+OpenPGL 0.7.1 path guiding and OIDN 2.5.0 CPU denoising use Blender's original
+Cycles integration. The compositor's original Denoise node uses the same OIDN
+library. [Watch the browser recording](../docs/render-libraries-walkthrough.mp4).
+The authored scene covers surface and volume training, CPU denoising and the
+compositor node, with independent native readback and offline reopening.
+The [compiler bridge notes](oidn/README.md) explain generic ISPC SIMD compilation,
+half precision and 32-bit size checks. Native GPU denoisers and OSL still need
+separate work.
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH=/path/to/browsers WEB_TEST_HARDWARE=1 node web/tests/render-libraries.cjs
+python3 web/tools/native_render_libraries_verify.py build/native/render-libraries-evidence-hardware --blender /path/to/blender
+```
+
 FFmpeg, libsndfile and Blender's original Audaspace provide media decoding,
 encoding and mixing. Rubber Band 4.0.0 uses FFTW for time stretching and
-pitch shifting. libaom 3.13.1 and x265 4.1 provide AV1 and 8-bit HEVC encoding
+pitch shifting. libaom 3.13.1 and x265 4.1 provide AV1 and 8/10/12-bit HEVC encoding
 through Blender's original FFmpeg output settings. The GHOST web audio device sends interleaved stereo PCM
 from a mixer pthread to an AudioWorklet through shared memory. The browser
 chooses the output sample rate; the device reports it to Audaspace for
@@ -113,7 +127,7 @@ support. Time-stretch checks independently verify doubled and
 halved durations with preserved stereo pitch, plus a separate 1.5× pitch shift.
 Audaspace's real-time stretcher retains a short processing tail, matched against
 the native result. The AV1 and HEVC exports are decoded by host FFmpeg and compared with native
-Blender exports. x265 is currently built for 8-bit output.
+Blender exports. The separate render-libraries check exports three-frame float gradients through Blender at 8/10/12 bits. Standalone lossless codec checks verify every sample at each depth with an independent host decoder.
 
 ```sh
 PLAYWRIGHT_BROWSERS_PATH=/path/to/browsers WEB_TEST_HARDWARE=1 node web/tests/media.cjs

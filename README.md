@@ -27,6 +27,8 @@ The `blender/` submodule pins the official stable release. Platform code lives i
 
 [Watch Embree acceleration in Cycles CPU](web/docs/embree-walkthrough.mp4) · [BVH2/Embree timings](web/docs/embree-performance.json)
 
+[Watch CPU denoising and path guiding](web/docs/render-libraries-walkthrough.mp4)
+
 [Watch audio stretching and AV1/HEVC exports](web/docs/media-walkthrough.mp4)
 
 [Watch compressed glTF exchange and offline reopening](web/docs/gltf-walkthrough.mp4)

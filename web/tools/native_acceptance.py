@@ -23,6 +23,8 @@ def main():
     docs = ROOT / 'web/docs'
     manifest = read(base / 'dist/manifest.json')
     version = manifest['version']
+    from native_render_libraries_acceptance import validate as validate_render_libraries
+    render_libraries = validate_render_libraries(base, manifest)
     embree_names=['embree-evidence','embree-evidence-ui','embree-evidence-hardware']
     embree=[read(base/name/'acceptance.json') for name in embree_names]
     embree_native=[read(base/name/'native-verification.json') for name in embree_names]
@@ -332,6 +334,7 @@ def main():
     native = {path.stem:read(path) for path in sorted(base.glob('*-check.json'))}
     report = {'bundleVersion':version, **read(ROOT / 'web/upstream.json'),
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,
+              'renderLibraries':render_libraries,
               'nativeChecks':native, 'recording':recording, 'wasmBuild':wasm_build,
               'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
               'openvdbNanoVDB':{'browserVariants':volumes},
@@ -364,7 +367,7 @@ def main():
                                        for path in sorted((ROOT / 'web/native/patches').glob('*.patch'))},
               'limitations':[
                   'Cycles CPU acceptance uses the factory cube at 128x128 and 16 samples, with denoising and adaptive sampling disabled.',
-                  'Cycles GPU, denoising, progressive display and rendered viewport are not supported.',
+                  'Cycles GPU devices, progressive display and rendered viewport are not supported. CPU denoising and path guiding have separate authored-scene acceptance.',
                   'Final rendering requires the JSPI bundle in current desktop Chromium.',
                   'Production Blender uses wasm32 with a 4 GiB linear-memory ceiling. The memory64 result is a separate sparse-addressing probe, not Blender scene-capacity evidence.',
                   'NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.',
@@ -380,7 +383,7 @@ def main():
                   'Vector acceptance covers authored paths, fills and a circle, SVG/PDF export and one-image Potrace tracing. This does not establish every SVG feature or multi-frame vector export.',
                   'Freestyle acceptance covers a 256x256, 16-sample Cycles CPU cube with red contour strokes. Other style modules and large scenes are not covered.',
                   'USD acceptance covers animated mesh, UV, camera/light and environment-texture exchange in USDA/USDC/USDZ, eight implicit shapes, static pxr Python modules and USD hooks. MaterialX checks cover OpenPBR graph export. Hydra rendering, MaterialX Python bindings and arbitrary USD production assets are not covered.',
-                  'Media acceptance uses one-second stereo tones and 128x96 video, with 512x512 AV1 exports. Rubber Band checks cover constant time/pitch ratios and stereo tones, including the native real-time processing tail. AV1 and 8-bit HEVC exports are independently decoded. Microphone capture, multichannel devices, external video devices, high-bit-depth x265 and large production timelines are not covered.',
+                  'Media acceptance uses one-second stereo tones and 128x96 video, with 512x512 AV1 exports. Rubber Band checks cover constant time/pitch ratios and stereo tones, including the native real-time processing tail. AV1 and 8-bit HEVC exports are independently decoded. A separate three-frame float-gradient fixture covers 8/10/12-bit HEVC, with native sample comparisons and bit-exact codec checks. Microphone capture, multichannel devices, external video devices and large production timelines are not covered.',
                   'Alembic acceptance covers Ogawa mesh deformation, UVs and animated transforms; HDF5 archives and other schema types are not covered.',
                   'Functional checks ran with other host activity and are not an isolated performance benchmark.']}
     archive = base / 'blender-web-pages.tar.gz'

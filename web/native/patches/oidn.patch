@@ -1,0 +1,550 @@
+--- a/cmake/oidn_ispc.cmake
++++ b/cmake/oidn_ispc.cmake
+@@ -90,7 +90,9 @@
+   set(ISPC_TARGET_EXT ${CMAKE_CXX_OUTPUT_EXTENSION})
+   string(REPLACE ";" "," ISPC_TARGET_ARGS "${ISPC_TARGETS}")
+ 
+-  if(OIDN_ARCH STREQUAL "X64")
++  if(EMSCRIPTEN)
++    set(ISPC_ARCHITECTURE "x86")
++  elseif(OIDN_ARCH STREQUAL "X64")
+     set(ISPC_ARCHITECTURE "x86-64")
+   elseif(OIDN_ARCH STREQUAL "ARM64")
+     set(ISPC_ARCHITECTURE "aarch64")
+@@ -191,7 +193,7 @@
+       -o ${output}
+       ${ISPC_TARGET_OS}
+       ${input}
+-      DEPENDS ${input} ${deps}
++      DEPENDS ${input} ${deps} ${OIDN_WEB_COMPILER_DEPENDS}
+       COMMENT "Building ISPC object ${output_rel}"
+     )
+ 
+--- a/cmake/oidn_platform.cmake
++++ b/cmake/oidn_platform.cmake
+@@ -4,10 +4,15 @@
+ include(CheckCXXCompilerFlag)
+ 
+ # Detect the processor architecture
+-if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
++if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8 AND NOT EMSCRIPTEN)
+   message(FATAL_ERROR "Intel(R) Open Image Denoise supports 64-bit platforms only")
+ endif()
+-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm64|aarch64|ARM64" OR IOS)
++if(EMSCRIPTEN)
++  if(NOT OIDN_STATIC_LIB OR OIDN_DEVICE_SYCL OR OIDN_DEVICE_CUDA OR OIDN_DEVICE_HIP OR OIDN_DEVICE_METAL)
++    message(FATAL_ERROR "The Wasm port requires a static CPU-only OIDN build")
++  endif()
++  set(OIDN_ARCH "WASM32")
++elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm64|aarch64|ARM64" OR IOS)
+   set(OIDN_ARCH "ARM64")
+ else()
+   set(OIDN_ARCH "X64")
+--- a/common/platform.h
++++ b/common/platform.h
+@@ -267,7 +267,11 @@
+   void* alignedMalloc(size_t size, size_t alignment = memoryAlignment);
+   void alignedFree(void* ptr);
+ 
++#if defined(__EMSCRIPTEN__)
++  static_assert(sizeof(size_t) == 4, "Wasm32 requires 32-bit size_t");
++#else
+   static_assert(sizeof(size_t) == 8, "size_t is not 64-bit!");
++#endif
+ 
+   // -----------------------------------------------------------------------------------------------
+   // String functions
+--- a/core/buffer.cpp
++++ b/core/buffer.cpp
+@@ -46,7 +46,7 @@
+   {
+     if (!arena)
+       throw Exception(Error::InvalidOperation, "cannot suballocate a buffer without an arena");
+-    if (byteOffset + byteSize > getByteSize())
++    if (byteOffset > getByteSize() || byteSize > getByteSize() - byteOffset)
+       throw Exception(Error::InvalidArgument, "buffer region is out of bounds");
+ 
+     return arena->newBuffer(byteSize, this->byteOffset + byteOffset);
+@@ -138,7 +138,7 @@
+       shared(true),
+       storage(arena->getHeap()->getStorage())
+   {
+-    if (byteOffset + byteSize > arena->getByteSize())
++    if (byteOffset > arena->getByteSize() || byteSize > arena->getByteSize() - byteOffset)
+       throw Exception(Error::InvalidArgument, "arena region is out of bounds");
+ 
+     USMHeap* heap = dynamic_cast<USMHeap*>(arena->getHeap());
+@@ -173,7 +173,7 @@
+ 
+   void USMBuffer::read(size_t byteOffset, size_t byteSize, void* dstHostPtr, SyncMode sync)
+   {
+-    if (byteOffset + byteSize > this->byteSize)
++    if (byteOffset > this->byteSize || byteSize > this->byteSize - byteOffset)
+       throw Exception(Error::InvalidArgument, "buffer region is out of bounds");
+     if (dstHostPtr == nullptr && byteSize > 0)
+       throw Exception(Error::InvalidArgument, "destination host pointer is null");
+@@ -186,7 +186,7 @@
+ 
+   void USMBuffer::write(size_t byteOffset, size_t byteSize, const void* srcHostPtr, SyncMode sync)
+   {
+-    if (byteOffset + byteSize > this->byteSize)
++    if (byteOffset > this->byteSize || byteSize > this->byteSize - byteOffset)
+       throw Exception(Error::InvalidArgument, "buffer region is out of bounds");
+     if (srcHostPtr == nullptr && byteSize > 0)
+       throw Exception(Error::InvalidArgument, "source host pointer is null");
+--- /dev/null
++++ b/core/checked_size.h
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: Apache-2.0
++#pragma once
++#include "exception.h"
++OIDN_NAMESPACE_BEGIN
++  inline size_t checkedSizeMul(size_t a, size_t b)
++    {
++      if (b && a > std::numeric_limits<size_t>::max() / b)
++        throw Exception(Error::InvalidArgument, "image byte size overflows address space");
++      return a * b;
++    }
++
++  inline size_t checkedSizeAdd(size_t a, size_t b)
++    {
++      if (a > std::numeric_limits<size_t>::max() - b)
++        throw Exception(Error::InvalidArgument, "image byte offset overflows address space");
++      return a + b;
++    }
++
++  inline size_t checkedSizeRoundUp(size_t size, size_t alignment)
++  {
++    return checkedSizeAdd(size, alignment - 1) / alignment * alignment;
++  }
++OIDN_NAMESPACE_END
+--- a/core/context.h
++++ b/core/context.h
+@@ -117,7 +117,9 @@
+     std::mutex mutex;
+     bool fullyInited = false;
+     std::set<DeviceType> initedDeviceTypes;
++#if !(defined(__EMSCRIPTEN__) && defined(OIDN_STATIC_LIB))
+     ModuleLoader modules;
++#endif
+     std::map<DeviceType, std::unique_ptr<DeviceFactory>> deviceFactories;
+     std::vector<Ref<PhysicalDevice>> physicalDevices;
+   };
+--- a/core/image.cpp
++++ b/core/image.cpp
+@@ -11,7 +11,7 @@
+       height(height),
+       format(format)
+   {
+-    if (width > maxDim || height > maxDim || width * height * getC() > std::numeric_limits<int>::max())
++    if (width > maxDim || height > maxDim || uint64_t(width) * height * getC() > std::numeric_limits<int>::max())
+       throw Exception(Error::InvalidArgument, "image size is too large");
+ 
+     const size_t pixelByteSize = getFormatSize(format);
+@@ -26,12 +26,12 @@
+ 
+     if (rowByteStride != 0)
+     {
+-      if (rowByteStride < width * wByteStride)
++      if (rowByteStride < checkedSizeMul(width, wByteStride))
+         throw Exception(Error::InvalidArgument, "row stride is smaller than width * pixel stride");
+       hByteStride = rowByteStride;
+     }
+     else
+-      hByteStride = width * wByteStride;
++      hByteStride = checkedSizeMul(width, wByteStride);
+   }
+ 
+   Image::Image() :
+@@ -41,9 +41,10 @@
+   Image::Image(void* ptr, Format format, size_t width, size_t height, size_t byteOffset, size_t pixelByteStride, size_t rowByteStride)
+     : ImageDesc(format, width, height, pixelByteStride, rowByteStride)
+   {
+-    if ((ptr == nullptr) && (byteOffset + getByteSize() > 0))
++    if ((ptr == nullptr) && (byteOffset != 0 || getByteSize() != 0))
+       throw Exception(Error::InvalidArgument, "image pointer is null");
+ 
++    checkedSizeAdd(reinterpret_cast<uintptr_t>(ptr), checkedSizeAdd(byteOffset, getByteSize()));
+     this->ptr = static_cast<char*>(ptr) + byteOffset;
+   }
+ 
+@@ -51,7 +52,7 @@
+     : Memory(buffer, byteOffset),
+       ImageDesc(desc)
+   {
+-    if (byteOffset + getByteSize() > buffer->getByteSize())
++    if (byteOffset > buffer->getByteSize() || getByteSize() > buffer->getByteSize() - byteOffset)
+       throw Exception(Error::InvalidArgument, "buffer region is out of bounds");
+ 
+     this->ptr = static_cast<char*>(buffer->getPtr()) + byteOffset;
+@@ -61,14 +62,14 @@
+     : Memory(buffer, byteOffset),
+       ImageDesc(format, width, height, pixelByteStride, rowByteStride)
+   {
+-    if (byteOffset + getByteSize() > buffer->getByteSize())
++    if (byteOffset > buffer->getByteSize() || getByteSize() > buffer->getByteSize() - byteOffset)
+       throw Exception(Error::InvalidArgument, "buffer region is out of bounds");
+ 
+     this->ptr = static_cast<char*>(buffer->getPtr()) + byteOffset;
+   }
+ 
+   Image::Image(Engine* engine, Format format, size_t width, size_t height)
+-    : Memory(engine->newBuffer(width * height * getFormatSize(format), Storage::Device)),
++    : Memory(engine->newBuffer(ImageDesc(format, width, height).getByteSize(), Storage::Device)),
+       ImageDesc(format, width, height)
+   {
+     this->ptr = static_cast<char*>(buffer->getPtr());
+--- a/core/image.h
++++ b/core/image.h
+@@ -6,6 +6,7 @@
+ #include "buffer.h"
+ #include "image_accessor.h"
+ #include "exception.h"
++#include "checked_size.h"
+ 
+ OIDN_NAMESPACE_BEGIN
+ 
+@@ -62,7 +63,7 @@
+     {
+       if (width == 0 || height == 0)
+         return 0;
+-      return (height - 1) * hByteStride + (width - 1) * wByteStride + getFormatSize(format);
++      return checkedSizeAdd(checkedSizeAdd(checkedSizeMul(height - 1, hByteStride), checkedSizeMul(width - 1, wByteStride)), getFormatSize(format));
+     }
+ 
+     oidn_inline DataType getDataType() const
+--- a/core/tensor.cpp
++++ b/core/tensor.cpp
+@@ -166,7 +166,7 @@
+   DeviceTensor::DeviceTensor(const Ref<Buffer>& buffer, const TensorDesc& desc, size_t byteOffset)
+     : Tensor(buffer, desc, byteOffset)
+   {
+-    if (byteOffset + getByteSize() > buffer->getByteSize())
++    if (byteOffset > buffer->getByteSize() || getByteSize() > buffer->getByteSize() - byteOffset)
+       throw Exception(Error::InvalidArgument, "buffer region is out of bounds");
+ 
+     ptr = static_cast<char*>(buffer->getPtr()) + byteOffset;
+--- a/core/tensor_desc.h
++++ b/core/tensor_desc.h
+@@ -4,6 +4,7 @@
+ #pragma once
+ 
+ #include "tensor_layout.h"
++#include "checked_size.h"
+ #include <vector>
+ 
+ OIDN_NAMESPACE_BEGIN
+@@ -125,7 +126,11 @@
+         return 0;
+       size_t num = 1;
+       for (size_t i = 0; i < dims.size(); ++i)
+-        num *= size_t(dims[i]);
++        {
++          if (dims[i] < 0)
++            throw Exception(Error::InvalidArgument, "negative tensor dimension");
++          num = checkedSizeMul(num, size_t(dims[i]));
++        }
+       return num;
+     }
+ 
+@@ -145,16 +150,20 @@
+         const size_t B = getTensorLayoutInfo(layout).blockC;
+         const size_t cByteStride = elementSize;
+         const size_t wByteStride = B * cByteStride;
+-        const size_t hByteStride = size_t(getW()) * wByteStride;
+-        const size_t CByteStride = round_up(size_t(getH()) * hByteStride, TensorLayoutTraitsChwBc::CByteAlignment);
+-        return size_t(getPaddedC() / B) * CByteStride;
++        const size_t hByteStride = checkedSizeMul(size_t(getW()), wByteStride);
++        const size_t CByteStride = checkedSizeRoundUp(checkedSizeMul(size_t(getH()), hByteStride), TensorLayoutTraitsChwBc::CByteAlignment);
++        return checkedSizeMul(size_t(getPaddedC() / B), CByteStride);
+       }
+       else
+       {
+         size_t num = 1;
+         for (size_t i = 0; i < paddedDims.size(); ++i)
+-          num *= size_t(paddedDims[i]);
+-        return num * elementSize;
++          {
++            if (paddedDims[i] < 0)
++              throw Exception(Error::InvalidArgument, "negative tensor dimension");
++            num = checkedSizeMul(num, size_t(paddedDims[i]));
++          }
++        return checkedSizeMul(num, elementSize);
+       }
+     }
+ 
+--- a/core/tza.cpp
++++ b/core/tza.cpp
+@@ -9,7 +9,7 @@
+   // Checks for buffer overrun
+   oidn_inline void checkBounds(const char* ptr, const char* end, size_t size)
+   {
+-    if (end - ptr < (ptrdiff_t)size)
++    if (ptr > end || size > size_t(end - ptr))
+       throw Exception(Error::InvalidOperation, "invalid or corrupted weights blob");
+   }
+ 
+@@ -43,7 +43,9 @@
+ 
+     // Parse the table offset and jump to the table
+     const uint64_t tableOffset = read<uint64_t>(input, bufferEnd);
+-    input = static_cast<const char*>(buffer) + tableOffset;
++    if (tableOffset > size)
++      throw Exception(Error::InvalidOperation, "invalid weights table offset");
++    input = static_cast<const char*>(buffer) + size_t(tableOffset);
+ 
+     // Parse the number of tensors
+     const size_t numTensors = read<uint32_t>(input, bufferEnd);
+@@ -91,7 +93,9 @@
+ 
+       // Parse the offset to the tensor data
+       const uint64_t tensorOffset = read<uint64_t>(input, bufferEnd);
+-      const char* tensorData = static_cast<const char*>(buffer) + tensorOffset;
++      if (tensorOffset > size)
++        throw Exception(Error::InvalidOperation, "invalid weights tensor offset");
++      const char* tensorData = static_cast<const char*>(buffer) + size_t(tensorOffset);
+       checkBounds(tensorData, bufferEnd, tensorDesc.getByteSize());
+ 
+       // Add the tensor to the map
+--- a/devices/cpu/CMakeLists.txt
++++ b/devices/cpu/CMakeLists.txt
+@@ -27,7 +27,9 @@
+ endif()
+ 
+ # ISPC
+-if(OIDN_ARCH STREQUAL "X64")
++if(EMSCRIPTEN)
++  set(OIDN_ISPC_TARGET_LIST generic-i32x8)
++elseif(OIDN_ARCH STREQUAL "X64")
+   if(APPLE)
+     set(OIDN_ISPC_TARGET_LIST sse4.1-i32x8 avx2-i32x8 avx512skx-x16)
+   else()
+@@ -36,7 +38,11 @@
+ elseif(OIDN_ARCH STREQUAL "ARM64")
+   set(OIDN_ISPC_TARGET_LIST neon-i32x8)
+ endif()
+-set(ISPC_ADDRESSING 64)
++if(EMSCRIPTEN)
++  set(ISPC_ADDRESSING 32)
++else()
++  set(ISPC_ADDRESSING 64)
++endif()
+ include(oidn_ispc)
+ 
+ set(OIDN_CPU_SOURCES
+@@ -160,6 +166,15 @@
+     cpu_upsample_f16.ispc
+     TARGET_LIST avx512gnr-x32
+   )
++elseif(EMSCRIPTEN)
++  ispc_target_add_sources(OpenImageDenoise_device_cpu
++    cpu_input_process_f16.ispc cpu_output_process_f16.ispc
++    TARGET_LIST generic-i32x8
++  )
++  ispc_target_add_sources(OpenImageDenoise_device_cpu
++    cpu_pool_f16.ispc cpu_upsample_f16.ispc
++    TARGET_LIST generic-i32x16
++  )
+ elseif(OIDN_ARCH STREQUAL "ARM64")
+   ispc_target_add_sources(OpenImageDenoise_device_cpu
+     cpu_input_process_f16.ispc
+@@ -184,6 +199,12 @@
+     cpu_upsample_f16.ispc
+     TARGET_LIST avx512skx-x32
+   )
++endif()
++
++if(EMSCRIPTEN)
++  target_sources(OpenImageDenoise_device_cpu PRIVATE "${OIDN_WEB_HALF_SOURCE}")
++  find_package(Imath CONFIG REQUIRED)
++  target_include_directories(OpenImageDenoise_device_cpu PRIVATE $<TARGET_PROPERTY:Imath::Imath,INTERFACE_INCLUDE_DIRECTORIES>)
+ endif()
+ 
+ target_link_libraries(OpenImageDenoise_device_cpu PRIVATE OpenImageDenoise_core ${CMAKE_THREAD_LIBS_INIT} TBB::tbb)
+--- a/devices/cpu/cpu_conv.ispc
++++ b/devices/cpu/cpu_conv.ispc
+@@ -187,7 +187,7 @@
+   #define blockOW1 9
+   #define blockOW2 5
+   #define blockOW3 3
+-#elif defined(OIDN_ARCH_SSE4)
++#elif defined(OIDN_ARCH_SSE4) || defined(OIDN_ARCH_WASM)
+   #define maxBlockOCB 1
+   #define blockOW1 5
+ #else
+--- a/devices/cpu/cpu_device.cpp
++++ b/devices/cpu/cpu_device.cpp
+@@ -102,6 +102,7 @@
+     case ispc::CPUArch_AVX2:           return CPUArch::AVX2;
+     case ispc::CPUArch_AVX512:         return CPUArch::AVX512;
+     case ispc::CPUArch_AVX512_AMXFP16: return CPUArch::AVX512_AMXFP16;
++    case ispc::CPUArch_WASM:           return CPUArch::WASM;
+     case ispc::CPUArch_NEON:           return CPUArch::NEON;
+     default:                           return CPUArch::Unknown;
+     }
+@@ -192,7 +193,11 @@
+   #endif
+ 
+     numThreads = engine->arena->max_concurrency();
++#if defined(__EMSCRIPTEN__)
++    setAffinity = false; // Browser workers have no CPU affinity API.
++#else
+     setAffinity = bool(engine->affinity);
++#endif
+ 
+     subdevices.emplace_back(new Subdevice(std::move(engine)));
+ 
+@@ -208,6 +213,7 @@
+       case CPUArch::AVX2:           std::cout << "AVX2";             break;
+       case CPUArch::AVX512:         std::cout << "AVX-512";          break;
+       case CPUArch::AVX512_AMXFP16: std::cout << "AVX-512 AMX-FP16"; break;
++      case CPUArch::WASM:           std::cout << "Wasm SIMD128";     break;
+       case CPUArch::NEON:           std::cout << "NEON";             break;
+       default:                      std::cout << "Unknown";          break;
+       }
+--- a/devices/cpu/cpu_device.h
++++ b/devices/cpu/cpu_device.h
+@@ -19,7 +19,8 @@
+     AVX2,
+     AVX512,
+     AVX512_AMXFP16,
+-    NEON
++    NEON,
++    WASM
+   };
+ 
+   class CPUPhysicalDevice final : public PhysicalDevice
+--- a/devices/cpu/cpu_engine.cpp
++++ b/devices/cpu/cpu_engine.cpp
+@@ -23,7 +23,7 @@
+     : device(device)
+   {
+     // Get the thread affinities for one thread per core on non-hybrid CPUs with SMT
+-  #if !(defined(__APPLE__) && defined(OIDN_ARCH_ARM64))
++  #if !defined(__EMSCRIPTEN__) && !(defined(__APPLE__) && defined(OIDN_ARCH_ARM64))
+     if (device->setAffinity
+       #if TBB_INTERFACE_VERSION >= 12020 // oneTBB 2021.2 or later
+         && tbb::info::core_types().size() <= 1 // non-hybrid cores
+@@ -39,13 +39,19 @@
+   #endif
+ 
+     // Create the task arena
++#if defined(__EMSCRIPTEN__)
++    const int maxNumThreads = tbb::this_task_arena::max_concurrency();
++#else
+     const int maxNumThreads = affinity ? affinity->getNumThreads() : tbb::this_task_arena::max_concurrency();
++#endif
+     numThreads = (numThreads > 0) ? min(numThreads, maxNumThreads) : maxNumThreads;
+     arena = std::make_shared<tbb::task_arena>(numThreads);
+ 
+     // Automatically set the thread affinities
++#if !defined(__EMSCRIPTEN__)
+     if (affinity)
+       observer = std::make_shared<PinningObserver>(affinity, *arena);
++#endif
+ 
+     // Start the queue processing thread
+     queueThread = std::thread([&]() { processQueue(); });
+@@ -60,8 +66,10 @@
+     queueCond.notify_all();
+     queueThread.join();
+ 
++#if !defined(__EMSCRIPTEN__)
+     if (observer)
+       observer.reset();
++#endif
+   }
+ 
+   bool CPUEngine::isConvSupported(Fusion fusion) const
+--- a/devices/cpu/cpu_engine.h
++++ b/devices/cpu/cpu_engine.h
+@@ -69,8 +69,10 @@
+     std::condition_variable queueCond;         // condition variable for the queue
+ 
+     std::shared_ptr<tbb::task_arena> arena;    // task arena where the functions are executed
++#if !defined(__EMSCRIPTEN__)
+     std::shared_ptr<PinningObserver> observer; // task scheduler observer for pinning threads
+     std::shared_ptr<ThreadAffinity> affinity;  // thread affinity manager for pinning threads
++#endif
+   };
+ 
+ OIDN_NAMESPACE_END
+--- a/devices/cpu/platform.ispc
++++ b/devices/cpu/platform.ispc
+@@ -15,12 +15,15 @@
+   CPUArch_AVX2,
+   CPUArch_AVX512,
+   CPUArch_AVX512_AMXFP16,
+-  CPUArch_NEON
++  CPUArch_NEON,
++  CPUArch_WASM
+ };
+ 
+ export uniform CPUArch getCPUArch()
+ {
+-#if defined(OIDN_ARCH_AVX512_AMXFP16)
++#if defined(OIDN_ARCH_WASM)
++  return CPUArch_WASM;
++#elif defined(OIDN_ARCH_AVX512_AMXFP16)
+   return CPUArch_AVX512_AMXFP16;
+ #elif defined(OIDN_ARCH_AVX512)
+   return CPUArch_AVX512;
+--- a/devices/cpu/platform.isph
++++ b/devices/cpu/platform.isph
+@@ -7,7 +7,9 @@
+ // Macros
+ // -------------------------------------------------------------------------------------------------
+ 
+-#if defined(ISPC_TARGET_AVX512SKX) || defined(ISPC_TARGET_AVX512ICL) || defined(ISPC_TARGET_AVX512SPR)
++#if defined(ISPC_TARGET_GENERIC)
++  #define OIDN_ARCH_WASM
++#elif defined(ISPC_TARGET_AVX512SKX) || defined(ISPC_TARGET_AVX512ICL) || defined(ISPC_TARGET_AVX512SPR)
+   #define OIDN_ARCH_AVX512
+ #elif defined(ISPC_TARGET_AVX512GNR)
+   #define OIDN_ARCH_AVX512
+--- a/devices/cpu/tasking.cpp
++++ b/devices/cpu/tasking.cpp
+@@ -4,6 +4,7 @@
+ #include "tasking.h"
+ 
+ OIDN_NAMESPACE_BEGIN
++#if !defined(__EMSCRIPTEN__)
+ 
+   // -----------------------------------------------------------------------------------------------
+   // PinningObserver
+@@ -41,4 +42,5 @@
+       affinity->restore(threadIndex);
+   }
+ 
++#endif
+ OIDN_NAMESPACE_END
+--- a/devices/cpu/tasking.h
++++ b/devices/cpu/tasking.h
+@@ -41,6 +41,7 @@
+   // PinningObserver
+   // -----------------------------------------------------------------------------------------------
+ 
++#if !defined(__EMSCRIPTEN__)
+   class PinningObserver : public tbb::task_scheduler_observer
+   {
+   public:
+@@ -54,6 +55,8 @@
+   private:
+     std::shared_ptr<ThreadAffinity> affinity;
+   };
++
++#endif
+ 
+   // -----------------------------------------------------------------------------------------------
+   // parallel_for
+--- a/devices/cpu/tensor_accessor.isph
++++ b/devices/cpu/tensor_accessor.isph
+@@ -8,7 +8,7 @@
+ // Compute the channel block size in bytes
+ #if defined(OIDN_ARCH_AVX512)
+   #define BLOCKC_BYTESIZE 64
+-#elif defined(OIDN_ARCH_AVX2) || defined(OIDN_ARCH_SSE4) || defined(OIDN_ARCH_NEON)
++#elif defined(OIDN_ARCH_AVX2) || defined(OIDN_ARCH_SSE4) || defined(OIDN_ARCH_NEON) || defined(OIDN_ARCH_WASM)
+   #define BLOCKC_BYTESIZE 32
+ #else
+   #error "Unsupported architecture"

@@ -1,0 +1,9 @@
+{
+  "version": "1.30.0",
+  "linux-x86_64": {
+    "FILE": "ispc-v1.30.0-linux.tar.gz",
+    "URI": "https://github.com/ispc/ispc/releases/download/v1.30.0/ispc-v1.30.0-linux.tar.gz",
+    "HASH_TYPE": "SHA256",
+    "HASH": "63e7d61037849fa1ed644f0398d21740ee9f880b9bf81f017c65eebe1d42c02b"
+  }
+}
