@@ -109,3 +109,9 @@ It retains GPL-2.0-or-later notices. libaom 3.13.1 retains its BSD-2-Clause
 license and patent notices; x265 4.1 retains GPL-2.0-or-later notices. All three
 are static Wasm libraries built with pthreads and SIMD compiler flags. Their
 portable C/C++ implementations are used; x86/ARM assembly is disabled.
+
+Embree 4.4.1 uses Blender's pinned ZIP archive and Apache-2.0 notices. The
+upstream Emscripten path lowers its SSE2 kernels to Wasm SIMD, with the existing
+oneTBB port for task scheduling. ISPC and SYCL are disabled. A build-only patch
+selects the same Wasm exception ABI as Blender; the SSE2 compiler options omit
+an x86-only negative feature flag rejected by Emscripten.

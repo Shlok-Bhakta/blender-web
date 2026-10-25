@@ -1,29 +1,29 @@
 {
-  "bundleVersion": "46ac9677ec2d70d43d63",
+  "bundleVersion": "c4b7c35a6133dd692484",
   "chapters": [
     {
       "seconds": 0,
       "title": "Start original Blender with libmv and Ceres"
     },
     {
-      "seconds": 10.357,
+      "seconds": 10.22,
       "title": "Track known pixel motion and solve twelve cameras from thirty-two points"
     },
     {
-      "seconds": 19.262,
+      "seconds": 19.537,
       "title": "Inspect tracked footage in Blender\u2019s original Movie Clip Editor"
     },
     {
-      "seconds": 28.556,
+      "seconds": 28.804,
       "title": "Reload offline and reopen the saved tracks and reconstructed cameras"
     }
   ],
   "durationSeconds": 41.72,
-  "bytes": 1247569,
+  "bytes": 1294113,
   "source": "Hardware Chromium browser recording",
   "captions": true,
   "path": "web/docs/tracking-walkthrough.mp4",
-  "sha256": "47e189e2d1b318876cf9efef4e40810d92f5b6c78549434cd19f3dedd793f74e",
+  "sha256": "63ec9a7cfa61893cdc42a330da93a33192181d066e2741e2a4666d6f34adae99",
   "screenshot": {
     "path": "web/docs/tracked-footage.png",
     "sha256": "ddcd756030256110d8b04936b16781213a518b7060f6be107a35fc3e528d0509"

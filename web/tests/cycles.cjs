@@ -6,7 +6,9 @@ const {chromium}=require('playwright');
 const {PNG}=require('pngjs');
 const {ready,consoleCommand,messages}=require('./native.cjs');
 const output=path.resolve(process.env.WEB_CYCLES_OUTPUT || path.join(__dirname,'../../build/native/cycles-evidence'));
+const backend=process.env.WEB_CYCLES_BVH || null;
 async function main() {
+  if(backend)assert(['BVH2','EMBREE'].includes(backend));
   fs.mkdirSync(output,{recursive:true});
   fs.writeFileSync(path.join(output,'browser.log'),'');
   messages.length=0;
@@ -19,6 +21,15 @@ async function main() {
   const benchmark=process.env.WEB_CYCLES_BENCHMARK==='1';
   const context=await browser.newContext({viewport:{width:1280,height:800},
     ...(benchmark?{}:{recordVideo:{dir:output,size:{width:1280,height:800}}})});
+  if(backend) {
+    await context.addInitScript(()=>{
+      let module;
+      Object.defineProperty(window,'Module',{configurable:true,get:()=>module,set:value=>{
+        if(value?.arguments&&!value.arguments.includes('--log'))value.arguments.unshift('--log','cycles','--log-level','info');
+        module=value;
+      }});
+    });
+  }
   const created=Date.now();
   const page=await context.newPage();
   const errors=[];
@@ -38,6 +49,7 @@ async function main() {
     // eight-core host. Normal acceptance follows the browser's CPU count.
     const setup="exec(compile(open('/tmp/cycles-timing.py').read(),'/tmp/cycles-timing.py','exec')); configure_cycles_timing(); "+
       (benchmark?"":"bpy.context.scene.render.threads_mode='AUTO'; ")+
+      (backend?"import _cycles; bpy.context.preferences.experimental.use_cycles_debug=True; bpy.context.preferences.view.show_developer_ui=True; bpy.context.scene.cycles.debug_bvh_layout='"+backend+"'; _cycles.debug_flags_update(bpy.context.scene.as_pointer()); ":"")+
       "__import__('os').write(1,('CYCLES_THREADS:'+str(bpy.context.scene.render.threads)+'\\nCYCLES_CONFIGURED\\n').encode())";
     await consoleCommand(page,setup,'CYCLES_CONFIGURED');
     const clipStart=(Date.now()-created)/1000;
@@ -99,6 +111,12 @@ async function main() {
       clipStart,clipEnd,renderSeconds,renderRuns,handlerSeconds,
       threads:Number(messages.findLast(text=>text.startsWith('CYCLES_THREADS:')).slice('CYCLES_THREADS:'.length)),
       videoCaptured:!benchmark,meanAbsoluteError,outlierFraction,errors};
+    if(backend) {
+      report.bvhBackend=backend;
+      report.backendLogs=messages.filter(text=>/Using (BVH2|EMBREE) layout\./.test(text));
+      assert.equal(report.backendLogs.length,repeats);
+      assert(report.backendLogs.every(text=>text.includes('Using '+backend+' layout.')));
+    }
     report.adapter=await page.evaluate(async()=>{
       const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
       return {vendor:adapter.info.vendor,architecture:adapter.info.architecture,

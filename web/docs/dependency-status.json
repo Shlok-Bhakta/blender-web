@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "46ac9677ec2d70d43d63",
+  "bundleVersion": "c4b7c35a6133dd692484",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -153,7 +153,6 @@
   "remainingGroupsScope": "Only the coarse bpy.app.build_options flags above. An empty portableLibraries group does not establish full dependency parity.",
   "disabledLibraryOptions": {
     "WITH_OPENIMAGEDENOISE": "Render denoising",
-    "WITH_CYCLES_EMBREE": "Cycles Embree acceleration",
     "WITH_CYCLES_PATH_GUIDING": "Cycles OpenPGL path guiding",
     "WITH_CYCLES_OSL": "Cycles Open Shading Language integration",
     "WITH_LLVM": "LLVM compiler infrastructure",
@@ -327,6 +326,13 @@
       "archiveHash": "2b242c465b194ac8e1451ea1354873ae",
       "hashType": "MD5",
       "source": "https://github.com/uxlfoundation/oneTBB/archive/refs/tags/v2022.3.0.tar.gz"
+    },
+    {
+      "name": "EMBREE",
+      "version": "4.4.1",
+      "archiveHash": "6e2eecafb312d8cf1f1ff555702637cf",
+      "hashType": "MD5",
+      "source": "https://github.com/RenderKit/embree/archive/v4.4.1.zip"
     },
     {
       "name": "ABSEIL",

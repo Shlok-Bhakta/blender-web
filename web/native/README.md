@@ -55,6 +55,41 @@ grow to 4 GiB, subject to browser and device limits. This first backend maps one
 native window to one canvas; additional browser windows remain follow-up work.
 Desktop Chromium is the initial validation target. iOS Safari needs device testing.
 
+Cycles CPU builds use Embree 4.4.1 through its upstream Emscripten/SIMD path
+and the existing oneTBB library. The original Cycles BVH2 path remains available
+for paired tests. The [Embree recording](../docs/embree-walkthrough.mp4) shows
+linked meshes, round curves, sphere points, transparency and motion blur.
+The [timing report](../docs/embree-performance.json) compares three render runs
+per backend within each binary and against native Blender. It uses a small
+256×192 scene at 16 samples and eight CPU threads; it does not establish
+large-scene performance or memory capacity. SYCL/GPU and ISPC paths are disabled.
+The local paired baseline measured 1.177 s with BVH2 and 1.007 s with Embree,
+a 1.17× speedup. Native Embree measured 0.556 s, putting this browser workload
+at 1.81× native time. These are render/export medians, not viewport timings.
+Native Blender also reopens and renders each browser-saved scene, with image
+comparisons against the browser output or the native fixture.
+The tiny factory-cube probe shows little backend difference: warm medians were
+0.101 s with BVH2 and 0.097 s with Embree. The broader factory-cube baseline
+measured 0.096 s browser versus 0.023 s native, or 4.10× native time. The
+linked-scene speedup does not establish a general Cycles speedup.
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH=/path/to/browsers WEB_TEST_HARDWARE=1 node web/tests/embree.cjs
+python3 web/tools/native_embree_verify.py build/native/embree-evidence-hardware --blender /path/to/blender
+```
+
+The native image comparison requires host `ffmpeg` on `PATH`.
+
+The test enables original Cycles logging and debug settings inside its isolated
+browser context, and requires C++ logs to confirm the selected BVH. Production
+startup does not enable those diagnostics. `WEB_EMBREE_BENCHMARK=1` and
+`WEB_EMBREE_OUTPUT=build/native/embree-benchmark` disable recording for timings.
+`WEB_EMBREE_PROFILE=1` captures a separate Chromium trace and resource counters.
+For the separate cube probe, `web/tests/cycles.cjs` accepts `WEB_CYCLES_BVH=BVH2`
+or `EMBREE`, verifies the backend in C++ logs, and retains first/warm render
+times. Use `WEB_CYCLES_BENCHMARK=1`, `WEB_CYCLES_REPEATS=6` and a distinct
+`WEB_CYCLES_OUTPUT` directory for each backend.
+
 FFmpeg, libsndfile and Blender's original Audaspace provide media decoding,
 encoding and mixing. Rubber Band 4.0.0 uses FFTW for time stretching and
 pitch shifting. libaom 3.13.1 and x265 4.1 provide AV1 and 8-bit HEVC encoding

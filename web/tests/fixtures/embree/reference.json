@@ -1,0 +1,79 @@
+{
+  "scene": {
+    "instances": 64,
+    "sharedMeshes": 1,
+    "animatedObjects": 8,
+    "sourceTriangles": 320,
+    "curvePoints": 56,
+    "spherePoints": 10,
+    "transparency": true,
+    "motionBlur": true,
+    "withEmbree": true,
+    "threads": 8
+  },
+  "images": {
+    "BVH2": {
+      "1": {
+        "path": "bvh2-1.png",
+        "bytes": 103064,
+        "seconds": 0.7468177969567478,
+        "runs": [
+          0.7468177969567478
+        ]
+      },
+      "3": {
+        "path": "bvh2-3.png",
+        "bytes": 103296,
+        "seconds": 0.833522071596235,
+        "runs": [
+          0.833522071596235
+        ]
+      }
+    },
+    "EMBREE": {
+      "1": {
+        "path": "embree-1.png",
+        "bytes": 103071,
+        "seconds": 0.7075969809666276,
+        "runs": [
+          0.7075969809666276
+        ]
+      },
+      "3": {
+        "path": "embree-3.png",
+        "bytes": 103317,
+        "seconds": 0.6765412366949022,
+        "runs": [
+          0.6765412366949022
+        ]
+      }
+    }
+  },
+  "benchmark": {
+    "BVH2": {
+      "2": {
+        "path": "bvh2-2.png",
+        "bytes": 103216,
+        "seconds": 0.5877693640068173,
+        "runs": [
+          0.6291364901699126,
+          0.5687266997992992,
+          0.5877693640068173
+        ]
+      }
+    },
+    "EMBREE": {
+      "2": {
+        "path": "embree-2.png",
+        "bytes": 103222,
+        "seconds": 0.5562988296151161,
+        "runs": [
+          0.5617695432156324,
+          0.5562988296151161,
+          0.5503953760489821
+        ]
+      }
+    }
+  },
+  "sourceSha256": "e14018222f3c8ab46334cc26ab61ddd3a1a0d219bf52cdc5a2b2bd4c8fa665c0"
+}

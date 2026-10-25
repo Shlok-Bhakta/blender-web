@@ -23,6 +23,54 @@ def main():
     docs = ROOT / 'web/docs'
     manifest = read(base / 'dist/manifest.json')
     version = manifest['version']
+    embree_names=['embree-evidence','embree-evidence-ui','embree-evidence-hardware']
+    embree=[read(base/name/'acceptance.json') for name in embree_names]
+    embree_native=[read(base/name/'native-verification.json') for name in embree_names]
+    embree_library=read(base/'embree-check.json')
+    for name,expected in embree_library['sourceHashes'].items():
+        assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==expected
+    assert embree_library['version']=='4.4.1' and embree_library['parallelRays']==65536
+    assert embree_library['workers'] > 1
+    assert all(embree_library[name] for name in ('rayPacket4','maskedMiss','occlusion','instance','motion','spherePoint','roundCurve','filter','invalidGeometryRecovery'))
+    embree_source=hashlib.sha256((ROOT/'web/tests/embree.py').read_bytes()).hexdigest()
+    assert manifest['buildOptions']['WITH_CYCLES_EMBREE']
+    for name,variant,verified in zip(embree_names,embree,embree_native):
+        assert variant['bundleVersion']==verified['bundleVersion']==version
+        assert variant['sourceSha256']==verified['sourceSha256']==embree_source
+        assert variant['scene']==verified['scene'] and verified['savedBlendVerified']
+        assert variant['scene']['withEmbree'] and variant['scene']['instances']==64 and variant['scene']['animatedObjects']==8
+        assert variant['scene']['curvePoints']==56 and variant['scene']['spherePoints']==10 and variant['scene']['motionBlur']
+        assert variant['offlineReopen'] and not variant['browserErrors']
+        assert verified['blendSha256']==variant['blend']['sha256']==hashlib.sha256((base/name/'embree.blend').read_bytes()).hexdigest()
+        assert verified['nativeRender']['meanAbsoluteError']<1.5 and verified['nativeRender']['outlierFraction']<.005
+        assert verified['nativeRender']['sha256']==hashlib.sha256((base/name/verified['nativeRender']['path']).read_bytes()).hexdigest()
+        if not variant['fallback']:
+            assert len(variant['backends'])==4
+            assert {entry['actual'] for entry in variant['backends']}=={'BVH2','EMBREE'}
+            assert all(entry['backend']==entry['actual'] for entry in variant['backends'])
+            assert set(variant['images'])=={'bvh2-1.png','bvh2-3.png','embree-1.png','embree-3.png'}
+            for image_name,entry in variant['images'].items():
+                assert entry['sha256']==hashlib.sha256((base/name/image_name).read_bytes()).hexdigest()
+                assert entry['meanAbsoluteError']<1.5 and entry['outlierFraction']<.005
+                assert set(entry['regions'])=={'curves','points'}
+                assert all(region['meanAbsoluteError']<2 and region['outlierFraction']<.02 for region in entry['regions'].values())
+        for fixture,expected in variant['fixtureHashes'].items():
+            path=ROOT/'web/tests/embree.py' if fixture=='check.py' else ROOT/'web/tests/fixtures/embree'/fixture
+            assert hashlib.sha256(path.read_bytes()).hexdigest()==expected
+    embree_recording=read(docs/'embree-recording.json')
+    assert embree_recording['bundleVersion']==version and embree_recording['sourceSha256']==embree_source
+    for entry in (embree_recording,embree_recording['screenshot']):
+        assert hashlib.sha256((ROOT/entry['path']).read_bytes()).hexdigest()==entry['sha256']
+    embree_performance=read(docs/'embree-performance.json')
+    assert embree_performance['bundleVersion']==version and embree_performance['sourceSha256']==embree_source
+    for backend,probe in embree_performance['tinyCubeProbe']['backends'].items():
+        path=base/('embree-cube-'+backend.lower())/'acceptance.json'
+        assert probe['reportSha256']==hashlib.sha256(path.read_bytes()).hexdigest()
+        assert read(path)['bundleVersion']==version and read(path)['bvhBackend']==backend
+    embree_profile=read(base/'embree-profile/acceptance.json')
+    assert embree_profile['bundleVersion']==version and embree_profile['profiled'] and not embree_profile['videoCaptured']
+    assert embree_performance['profiling']['wasmThreadsSampled'] > 1
+    assert embree_performance['profiling']['traceSha256']==hashlib.sha256((base/'embree-profile/browser-trace-0.json').read_bytes()).hexdigest()
     gltf_names = ['gltf-evidence', 'gltf-evidence-ui', 'gltf-evidence-hardware']
     gltf = [read(base / name / 'acceptance.json') for name in gltf_names]
     gltf_native = [read(base / name / 'native-verification.json') for name in gltf_names]
@@ -178,7 +226,7 @@ def main():
     assert media_recording['bundleVersion'] == version
     assert hashlib.sha256((ROOT / media_recording['path']).read_bytes()).hexdigest() == media_recording['sha256']
     assert hashlib.sha256((ROOT / media_recording['screenshot']['path']).read_bytes()).hexdigest() == media_recording['screenshot']['sha256']
-    for name in ('usd', 'materialx', 'x264', 'harfbuzz'):
+    for name in ('usd', 'materialx', 'x264', 'harfbuzz', 'embree'):
         installed = read(base / 'deps' / name / 'installed.json')
         patch = ROOT / 'web/native/patches' / (name + '.patch')
         assert installed['patch'] == hashlib.sha256(patch.read_bytes()).hexdigest()
@@ -295,6 +343,7 @@ def main():
                               'recording':usd_recording},
               'textTranslation':{'browserVariants':text,'libraryChecks':text_libraries,
                                   'recording':text_recording},
+              'embree':dict(libraries=embree_library,variants=embree,nativeReadback=embree_native,recording=embree_recording,performance=embree_performance,profile=embree_profile),
               'gltf':{'browserVariants':gltf,'browserFilesInDesktop':gltf_native,
                       'libraryChecks':gltf_library,'recording':gltf_recording},
               'tracking':{'browserVariants':tracking,'browserFilesInDesktop':tracking_native,
@@ -320,6 +369,7 @@ def main():
                   'Production Blender uses wasm32 with a 4 GiB linear-memory ceiling. The memory64 result is a separate sparse-addressing probe, not Blender scene-capacity evidence.',
                   'NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.',
                   'Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.',
+                  'Embree acceptance covers 64 linked icospheres, round curves, sphere points, transparency and motion blur at 256x192 with 16 samples. Original C++ logs verify BVH2/Embree selection; standalone tests also cover ray packets, masks, occlusion, instances, motion, filters and error recovery. SYCL/GPU and ISPC paths are disabled. Large scenes, subdivision primitives and arbitrary user geometry remain untested.',
                   'Compressed glTF acceptance covers small authored meshes, UV/color/normal moments, morph targets and animation in Draco and EXT/KHR meshoptimizer. Skinning, external asset collections and large-scene stress tests remain pending.',
                   'All 49 catalogs match native files; translated strings are sampled in six languages. Unicode keyboard input covers one scalar per event. HarfBuzz/FriBidi are verified library ports, not integrated into this release\'s original font renderer. Full shaping and IME composition remain pending.',
                   'Tracking acceptance uses one translated textured patch over twelve 256x192 frames and a synthetic twelve-camera, thirty-two-point reconstruction. Real footage, lens refinement, object/tripod solves and long production clips are not covered. Ceres uses Eigen dense/sparse solvers; CUDA, SuiteSparse and LAPACK are disabled.',

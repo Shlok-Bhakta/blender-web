@@ -107,3 +107,13 @@ if(WITH_MATERIALX)
     -sWASMFS=1 -sFORCE_FILESYSTEM=1
     "SHELL:--embed-file ${CMAKE_PREFIX_PATH}/libraries@/libraries")
 endif()
+
+if(WITH_CYCLES_EMBREE)
+  add_executable(embree-check embree.cc)
+  target_link_libraries(embree-check PRIVATE ${EMBREE_LIBRARIES} TBB::tbb)
+  target_compile_options(embree-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  target_link_options(embree-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+    -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8 -sPTHREAD_POOL_SIZE_STRICT=0
+    -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
+    -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1)
+endif()

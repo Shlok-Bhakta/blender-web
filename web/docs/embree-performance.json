@@ -1,0 +1,113 @@
+{
+  "bundleVersion": "c4b7c35a6133dd692484",
+  "sourceSha256": "e14018222f3c8ab46334cc26ab61ddd3a1a0d219bf52cdc5a2b2bd4c8fa665c0",
+  "cases": {
+    "BVH2": {
+      "nativeSeconds": 0.5877693640068173,
+      "browserSeconds": 1.1773951053619385,
+      "browserToNative": 2.003158343156317,
+      "nativeRuns": [
+        0.6291364901699126,
+        0.5687266997992992,
+        0.5877693640068173
+      ],
+      "browserRuns": [
+        1.1773951053619385,
+        1.2068548202514648,
+        1.1700799465179443
+      ]
+    },
+    "EMBREE": {
+      "nativeSeconds": 0.5562988296151161,
+      "browserSeconds": 1.0070345401763916,
+      "browserToNative": 1.8102402639838806,
+      "nativeRuns": [
+        0.5617695432156324,
+        0.5562988296151161,
+        0.5503953760489821
+      ],
+      "browserRuns": [
+        1.0842299461364746,
+        1.0070345401763916,
+        0.9877150058746338
+      ]
+    }
+  },
+  "browserEmbreeSpeedup": 1.1691705283075062,
+  "nativeEmbreeSpeedup": 1.0565712755740913,
+  "adapter": {
+    "vendor": "amd",
+    "architecture": "gcn-5",
+    "device": "",
+    "description": ""
+  },
+  "scene": {
+    "instances": 64,
+    "sharedMeshes": 1,
+    "animatedObjects": 8,
+    "sourceTriangles": 320,
+    "curvePoints": 56,
+    "spherePoints": 10,
+    "transparency": true,
+    "motionBlur": true,
+    "withEmbree": true,
+    "threads": 8
+  },
+  "tinyCubeProbe": {
+    "backends": {
+      "BVH2": {
+        "runs": [
+          0.4030451774597168,
+          0.10707998275756836,
+          0.08631491661071777,
+          0.0979001522064209,
+          0.10070490837097168,
+          0.10366487503051758
+        ],
+        "firstSeconds": 0.4030451774597168,
+        "reportSha256": "28b8666657e84d0689933fa263572f528823de04a39d81760e706c425826efad",
+        "warmMedianSeconds": 0.10070490837097168
+      },
+      "EMBREE": {
+        "runs": [
+          0.3818650245666504,
+          0.08692479133605957,
+          0.09744000434875488,
+          0.09764957427978516,
+          0.09285497665405273,
+          0.10091519355773926
+        ],
+        "firstSeconds": 0.3818650245666504,
+        "reportSha256": "4c5272e4d723c7b3e4a19774b344912c7e04a1de0aa3ab3c6f091a4695048ba5",
+        "warmMedianSeconds": 0.09744000434875488
+      }
+    },
+    "method": "Separate fresh hardware browser per backend, six original F12 renders at 128x128 and 16 samples with eight CPU threads. Timed with render_pre/render_post, without PNG output, video or profiling. Original C++ logs confirm each backend. First render and the median of five subsequent renders are reported. This does not establish the cause of differences from older release baselines."
+  },
+  "profiling": {
+    "traceSha256": "4c7681a070555e40aa4eab0fc3c1f7fb04f11bc4dca8a8bf7c850807b5ad2794",
+    "wasmSampleCount": 38706,
+    "wasmThreadsSampled": 15,
+    "samplesPerThread": [
+      7010,
+      4992,
+      4882,
+      4551,
+      4384,
+      4306,
+      4280,
+      4239,
+      34,
+      18,
+      3,
+      2,
+      2,
+      2,
+      1
+    ],
+    "resourceSamples": 140,
+    "nativeFunctionNamesAvailable": false,
+    "limitations": "Separate instrumented run of both backends. Wasm samples retain function indices, not C++ names. Sample counts do not measure CPU utilization or establish simultaneous worker activity. Resource counters describe the shared host; WebGPU activity includes Blender UI drawing."
+  },
+  "methodology": "Three sequential render/export runs per backend at frame 2, after rendering frames 1 and 3 with each backend. Both BVH2 and Embree run within the same binary, selected through original Cycles debug flags and verified in C++ logs. Scene uses 64 linked icospheres, true round curves, sphere points, transparency and motion blur, 256x192 pixels, 16 samples and eight CPU threads. Persistent data, adaptive sampling and denoising are disabled. Timings include scene synchronization, BVH construction, tracing and PNG output. Browser timings exclude recording and profiling. Runs were sequential on a shared host, without controlled CPU affinity or cleared system caches. These small-scene timings do not establish large-scene performance or memory capacity."
+}

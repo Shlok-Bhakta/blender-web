@@ -42,6 +42,7 @@ RECIPES = {
     "OPENCOLORIO": ("", ["-DOCIO_BUILD_APPS=OFF", "-DOCIO_BUILD_PYTHON=OFF", "-DOCIO_BUILD_TESTS=OFF", "-DOCIO_BUILD_GPU_TESTS=OFF", "-DOCIO_BUILD_DOCS=OFF", "-DOCIO_USE_SIMD=OFF", "-DOCIO_INSTALL_EXT_PACKAGES=NONE"]),
     "ROBINMAP": ("", ["-DTSL_ROBIN_MAP_BUILD_TESTS=OFF"]),
     "TBB": ("", ["-DTBB_TEST=OFF", "-DTBB_EXAMPLES=OFF", "-DTBB_STRICT=OFF", "-DTBBMALLOC_BUILD=OFF", "-DTBBMALLOC_PROXY_BUILD=OFF", "-DTBB_ENABLE_IPO=OFF", "-DTBB_DISABLE_HWLOC_AUTOMATIC_SEARCH=ON"]),
+    "EMBREE": ("", ["-DEMBREE_STATIC_LIB=ON", "-DEMBREE_TUTORIALS=OFF", "-DEMBREE_ISPC_SUPPORT=OFF", "-DEMBREE_SYCL_SUPPORT=OFF", "-DEMBREE_MAX_ISA=SSE2", "-DFLAGS_SSE2=-msse2", "-DEMBREE_IGNORE_CMAKE_CXX_FLAGS=OFF", "-DEMBREE_TASKING_SYSTEM=TBB", "-DEMBREE_RAY_MASK=ON", "-DEMBREE_FILTER_FUNCTION=ON", "-DEMBREE_BACKFACE_CULLING=OFF", "-DEMBREE_BACKFACE_CULLING_CURVES=ON", "-DEMBREE_BACKFACE_CULLING_SPHERES=ON"]),
     "ABSEIL": ("", ["-DABSL_BUILD_TESTING=OFF", "-DABSL_ENABLE_INSTALL=ON", "-DABSL_PROPAGATE_CXX_STD=ON", "-DCMAKE_CXX_STANDARD=17"]),
     "CERES": ("", ["-DBUILD_TESTING=OFF", "-DBUILD_BENCHMARKS=OFF", "-DBUILD_EXAMPLES=OFF", "-DUSE_CUDA=OFF", "-DSUITESPARSE=OFF", "-DACCELERATESPARSE=OFF", "-DLAPACK=OFF"]),
     "OPENSUBDIV": ("", ["-DNO_EXAMPLES=ON", "-DNO_TUTORIALS=ON", "-DNO_REGRESSION=ON", "-DNO_PTEX=ON", "-DNO_DOC=ON", "-DNO_OMP=ON", "-DNO_TBB=OFF", "-DNO_CUDA=ON", "-DNO_OPENCL=ON", "-DNO_CLEW=ON", "-DNO_OPENGL=ON", "-DNO_METAL=ON", "-DNO_DX=ON", "-DNO_TESTS=ON", "-DNO_GLTESTS=ON", "-DNO_GLEW=ON", "-DNO_GLFW=ON"]),
@@ -77,7 +78,7 @@ RECIPES = {
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
-CXX_PACKAGES = {"RUBBERBAND", "AOM", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
+CXX_PACKAGES = {"EMBREE", "RUBBERBAND", "AOM", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
                 "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
@@ -197,6 +198,11 @@ def build(args):
                 if not dependency_stamp.is_file():
                     raise RuntimeError(f"Build {dependency} before {name}")
                 signature["dependencyStamps"][dependency] = hashlib.sha256(dependency_stamp.read_bytes()).hexdigest()
+        if name == "EMBREE":
+            dependency_stamp = base / 'tbb/installed.json'
+            if not dependency_stamp.is_file():
+                raise RuntimeError("Build TBB before EMBREE")
+            signature['dependencyStamps'] = {'TBB': hashlib.sha256(dependency_stamp.read_bytes()).hexdigest()}
         if name == "CERES":
             signature["dependencyStamps"] = {}
             for dependency in ("ABSEIL", "EIGEN"):

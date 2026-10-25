@@ -38,6 +38,7 @@ batches. The static site's
 | AV1 and HEVC encoding | Implemented, tested | libaom and 8-bit x265 through original Blender FFmpeg exports; native decode comparison |
 | Audio input and multichannel devices | Deferred | Microphone capture and multichannel device integration |
 | Cycles CPU final render | Enabled in JSPI bundle | 128×128, 16-sample factory cube compared with the pinned desktop release |
+| Cycles Embree CPU acceleration | Enabled | Upstream Wasm SIMD and oneTBB, 64 linked meshes, curves, sphere points, transparency, motion blur, BVH2 comparisons and native readback |
 | Cycles progressive display and rendered viewport | Deferred | CPU final renders publish the completed Render Result; live display still needs browser-safe Python/GPU waits |
 | Cycles GPU, denoising and OSL | Deferred | Separate device/backend and compiler work; Eevee WebGPU does not supply a Cycles device |
 | Tracking and camera solving | Enabled for tested cases | Original libmv tracking of twelve translated frames and camera reconstruction from thirty-two synthetic point tracks; native readback and offline persistence |
@@ -141,8 +142,8 @@ reload using the cached application and persistent USD files.
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
 | 0:10 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
-| 0:25 | USD is available in Blender's original export menu |
-| 0:34 | Reload offline and repeat interchange from persistent browser storage |
+| 0:24 | USD is available in Blender's original export menu |
+| 0:33 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
 
 ![USD in Blender's original export menu](../docs/usd-export-menu.png)

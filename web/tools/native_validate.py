@@ -42,6 +42,20 @@ def main():
         (base / 'validation-status.json').write_text(json.dumps(status, indent=2) + '\n')
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'embree-{suffix}', ['node', 'web/tests/embree.cjs'], **flags)
+        directory='build/native/embree-evidence'+('-hardware' if suffix=='hardware' else '-ui' if suffix=='ui' else '')
+        run(f'embree-native-{suffix}', ['python3', 'web/tools/native_embree_verify.py', directory, '--blender', args.blender])
+    run('embree-video', ['python3', 'web/tools/native_embree_recording.py'])
+    run('embree-benchmark', ['node', 'web/tests/embree.cjs'], WEB_TEST_HARDWARE='1',
+        WEB_EMBREE_BENCHMARK='1', WEB_EMBREE_OUTPUT='build/native/embree-benchmark')
+    run('embree-profile', ['node', 'web/tests/embree.cjs'], WEB_TEST_HARDWARE='1',
+        WEB_EMBREE_PROFILE='1', WEB_EMBREE_OUTPUT='build/native/embree-profile')
+    for backend in ('BVH2', 'EMBREE'):
+        run('embree-cube-'+backend.lower(), ['node', 'web/tests/cycles.cjs'],
+            WEB_CYCLES_BENCHMARK='1', WEB_CYCLES_REPEATS='6', WEB_CYCLES_BVH=backend,
+            WEB_CYCLES_OUTPUT='build/native/embree-cube-'+backend.lower())
+    run('embree-performance', ['python3', 'web/tools/native_embree_performance.py'])
     run('audio-worklet', ['node', 'web/tests/audio-worklet.cjs'])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'media-{suffix}', ['node', 'web/tests/media.cjs'], **flags)

@@ -1,31 +1,31 @@
 {
-  "bundleVersion": "46ac9677ec2d70d43d63",
+  "bundleVersion": "c4b7c35a6133dd692484",
   "chapters": [
     {
       "seconds": 0,
       "title": "Start Blender with OpenVDB and NanoVDB"
     },
     {
-      "seconds": 13.554,
+      "seconds": 13.561,
       "title": "Compare VDB import and volume modifiers with desktop Blender"
     },
     {
-      "seconds": 17.202,
+      "seconds": 17.106,
       "title": "Mesh to Volume and Volume to Mesh in the original viewport"
     },
     {
-      "seconds": 23.288,
+      "seconds": 23.074,
       "title": "Replay the four-frame Mantaflow gas simulation in Blender"
     },
     {
-      "seconds": 32.866,
+      "seconds": 32.885,
       "title": "Reload offline and reopen the VDB files from browser storage"
     }
   ],
-  "durationSeconds": 44.04,
-  "bytes": 1466559,
+  "durationSeconds": 43.88,
+  "bytes": 1502367,
   "source": "Hardware Chromium browser recording",
   "captions": true,
   "path": "web/docs/volume-walkthrough.mp4",
-  "sha256": "53dad1a3add5b59aa702a5480b36775071d2b07605a6e515108cc09fccdf922b"
+  "sha256": "fd8d99ac962d31ffb1ed00385d72e3a35dc7f4b16dbd77fd19776c500d09a70e"
 }
