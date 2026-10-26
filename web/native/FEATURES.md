@@ -145,9 +145,9 @@ reload using the cached application and persistent USD files.
 | Time | What to inspect |
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
-| 0:10 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
-| 0:25 | USD is available in Blender's original export menu |
-| 0:34 | Reload offline and repeat interchange from persistent browser storage |
+| 0:12 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
+| 0:27 | USD is available in Blender's original export menu |
+| 0:36 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
 
 ![USD in Blender's original export menu](../docs/usd-export-menu.png)
@@ -197,10 +197,10 @@ variants reopen VDB fixtures from OPFS after an offline reload.
 | Time | What to inspect |
 | --- | --- |
 | 0:00 | Start Blender with OpenVDB and NanoVDB |
-| 0:14 | Compare VDB import and volume modifiers with desktop Blender |
-| 0:17 | Mesh to Volume and Volume to Mesh in the original viewport |
-| 0:23 | Replay the four-frame Mantaflow gas simulation in Blender |
-| 0:33 | Reload offline and reopen the VDB files from browser storage |
+| 0:15 | Compare VDB import and volume modifiers with desktop Blender |
+| 0:19 | Mesh to Volume and Volume to Mesh in the original viewport |
+| 0:24 | Replay the four-frame Mantaflow gas simulation in Blender |
+| 0:34 | Reload offline and reopen the VDB files from browser storage |
 <!-- /VOLUME_RECORDING_CHAPTERS -->
 
 The [memory64 investigation](../docs/memory64.md) records a standalone shared

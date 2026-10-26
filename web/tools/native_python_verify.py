@@ -61,7 +61,9 @@ result=dict(sqliteReadback=True,lzmaReadback=True,zstandardReadback=True,
     with (output / 'readback.log').open('w') as log:
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1',
             '--python', str(script), '--', str(directory)], stdout=log, stderr=subprocess.STDOUT, check=True)
-    subprocess.run(['openssl', 'verify', '-check_ss_sig', '-CAfile', str(directory / 'test.cert.pem'),
+    # This readback checks the archived certificate signature. Its short-lived
+    # fixture validity is checked by the actual browser TLS handshakes.
+    subprocess.run(['openssl', 'verify', '-no_check_time', '-check_ss_sig', '-CAfile', str(directory / 'test.cert.pem'),
                     str(directory / 'test.cert.pem')], check=True, capture_output=True)
     result = json.loads((output / 'results.json').read_text())
     result.update(bundleVersion=report['bundleVersion'], sourceSha256=report['sourceSha256'],

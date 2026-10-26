@@ -35,6 +35,9 @@ def main():
     assert browser['bundleVersion']==manifest['version']
     assert desktop['version'].split()[0]==manifest['blenderVersion']
     assert manifest['blenderRevision'].startswith(desktop['revision'])
+    from native_python_acceptance import validate as validate_python
+    python_proof = validate_python(base, manifest)
+    foundation = python_proof['libraryChecks']['foundation']
     native=desktop['options'];web=browser['buildOptions']
     assert set(native)==set(web),'Compare the same release API fields'
     missing=sorted(name for name,enabled in native.items() if enabled and not web[name])
@@ -65,13 +68,23 @@ def main():
             'WITH_HYDRA':'Hydra rendering integration',
         }.items() if not manifest['buildOptions'].get(name,False)},
         additionalLibraryGaps=[
-            'CPython _ctypes, _sqlite3, _lzma, _ssl and _hashlib modules',
-            'Native Python site packages, including zstandard and requests',
+            'CPython _ctypes/libffi, general multiprocessing and raw socket transport',
+            'Cython native accelerators and arbitrary dynamic Wasm extension loading',
             'OpenImageIO, OpenColorIO, OpenVDB and MaterialX Python bindings',
+            'MaterialX OSL/MDL shader generators and render utilities',
             'libheif AVIF images through OpenImageIO',
             'USD OpenVDB support and the Hydra OpenImageIO image plugin',
             'OpenSubdiv GPU evaluation'],
         componentAudit='web/docs/dependency-components.md',
+        pythonFoundation=dict(
+            verifiedBundle=manifest['version'],
+            modules=['_sqlite3','_lzma','_ssl','_hashlib','zstandard.backend_c'],
+            packages=foundation['packages'],
+            browserVariants=len(python_proof['browserVariants']),
+            independentNativeReadbacks=len(python_proof['nativeReadback']),
+            originalConditionalDownloader=True, originalBackgroundDownloader=True,
+            networkStreaming=False,
+            evidence='web/docs/python-foundation.acceptance.json'),
         optimizationWork=['NumPy explicit Wasm SIMD kernels', 'OpenColorIO SIMD kernels'],
         separateEnhancements=['HarfBuzz/FriBidi integration into Blender font rendering'],
         baseLibraryRecipes=libraries,

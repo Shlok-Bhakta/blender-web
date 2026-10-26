@@ -4,8 +4,8 @@
 
 Candidate bundle `8f28615dc99fd90616b7` passed the Python foundation checks on
 hardware WebGPU, software WebGPU and the fallback runtime. Each variant also
-passed independent readback in native Blender 5.2.2 LTS. The complete application
-regression run and source CI are still in progress. This candidate has not yet
+passed independent readback in native Blender 5.2.2 LTS. All 100 local application
+regression stages passed; source CI is still in progress. This candidate has not yet
 replaced the published Pages release.
 
 | Added component | Verified operations |

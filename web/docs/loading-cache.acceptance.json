@@ -4,38 +4,38 @@
       {
         "mode": "cold",
         "networkRequests": 4,
-        "totalBytes": 411642051,
-        "cacheBytes": 826016,
-        "progressUpdates": 96,
+        "totalBytes": 434622370,
+        "cacheBytes": 1111306,
+        "progressUpdates": 118,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 411642051,
-        "cacheBytes": 411642051,
+        "totalBytes": 434622370,
+        "cacheBytes": 434622370,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 411642051,
-        "cacheBytes": 411642051,
+        "totalBytes": 434622370,
+        "cacheBytes": 434622370,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       },
       {
         "mode": "restarted-offline",
         "networkRequests": 0,
-        "totalBytes": 411642051,
-        "cacheBytes": 411642051,
+        "totalBytes": 434622370,
+        "cacheBytes": 434622370,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       }
     ],
     "browserErrors": []
@@ -45,38 +45,38 @@
       {
         "mode": "cold",
         "networkRequests": 4,
-        "totalBytes": 411637759,
-        "cacheBytes": 821724,
-        "progressUpdates": 160,
+        "totalBytes": 434618046,
+        "cacheBytes": 1106982,
+        "progressUpdates": 117,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 411637759,
-        "cacheBytes": 411637759,
-        "progressUpdates": 24,
+        "totalBytes": 434618046,
+        "cacheBytes": 434618046,
+        "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 411637759,
-        "cacheBytes": 411637759,
-        "progressUpdates": 21,
+        "totalBytes": 434618046,
+        "cacheBytes": 434618046,
+        "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       },
       {
         "mode": "restarted-offline",
         "networkRequests": 0,
-        "totalBytes": 411637759,
-        "cacheBytes": 411637759,
+        "totalBytes": 434618046,
+        "cacheBytes": 434618046,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "087a1025b9389b80e57d"
+        "bundleVersion": "8f28615dc99fd90616b7"
       }
     ],
     "browserErrors": []
@@ -98,14 +98,14 @@
       "description": ""
     },
     "browserVersion": "145.0.7632.6",
-    "bundleVersion": "087a1025b9389b80e57d",
-    "measuredAt": "2026-10-25T22:32:26.025Z",
+    "bundleVersion": "8f28615dc99fd90616b7",
+    "measuredAt": "2026-10-26T14:46:05.176Z",
     "originalUI": true,
     "startupCube": true,
     "webgpu": true,
     "isolated": true,
     "workers": 19,
-    "colors": 845,
+    "colors": 837,
     "resize": true,
     "resizeChecks": [
       {
@@ -115,7 +115,7 @@
         ],
         "scale": 1,
         "pixels": "1040x720",
-        "colors": 384,
+        "colors": 385,
         "cubePixels": 480,
         "window": [
           1040,
@@ -172,8 +172,8 @@
         ],
         "scale": 2,
         "pixels": "2080x1440",
-        "colors": 1231,
-        "cubePixels": 1629,
+        "colors": 527,
+        "cubePixels": 2492,
         "window": [
           1040,
           720
@@ -210,8 +210,8 @@
         ],
         "scale": 1,
         "pixels": "1040x720",
-        "colors": 378,
-        "cubePixels": 479,
+        "colors": 383,
+        "cubePixels": 480,
         "window": [
           1040,
           720

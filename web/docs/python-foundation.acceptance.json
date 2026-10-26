@@ -826,7 +826,7 @@
       "sqliteOptionsMatchExceptMmapAndCompiler": true,
       "bundleVersion": "8f28615dc99fd90616b7",
       "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
-      "verifierSourceSha256": "e01bb69a2d55976536ff9d498d31202c4a8e5971cfe8d0b246fcef6fb7784486",
+      "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
       "files": {
         "python-foundation.json": {
           "sha256": "b4d96defa0a5a51c521ba606f5e610433b07a0db668d9e0106714d9bbb88f04f",
@@ -958,7 +958,7 @@
       "sqliteOptionsMatchExceptMmapAndCompiler": true,
       "bundleVersion": "8f28615dc99fd90616b7",
       "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
-      "verifierSourceSha256": "e01bb69a2d55976536ff9d498d31202c4a8e5971cfe8d0b246fcef6fb7784486",
+      "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
       "files": {
         "python-foundation.json": {
           "sha256": "b4d96defa0a5a51c521ba606f5e610433b07a0db668d9e0106714d9bbb88f04f",
@@ -1090,7 +1090,7 @@
       "sqliteOptionsMatchExceptMmapAndCompiler": true,
       "bundleVersion": "8f28615dc99fd90616b7",
       "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
-      "verifierSourceSha256": "e01bb69a2d55976536ff9d498d31202c4a8e5971cfe8d0b246fcef6fb7784486",
+      "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
       "files": {
         "python-foundation.json": {
           "sha256": "b4d96defa0a5a51c521ba606f5e610433b07a0db668d9e0106714d9bbb88f04f",
