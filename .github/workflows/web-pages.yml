@@ -3,9 +3,9 @@ name: Blender Web native UI
 on:
   push:
     branches: [main, blender-web/v5.2]
-    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml']
+    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml', '!web/docs/**', '!web/native/*.md', '!web/README.md']
   pull_request:
-    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml']
+    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml', '!web/docs/**', '!web/native/*.md', '!web/README.md']
   workflow_dispatch:
 
 defaults:

@@ -12,6 +12,7 @@ on:
       - 'intern/ghost/**'
       - 'blender'
       - '.github/workflows/native-editors.yml'
+      - '!web/native/*.md'
   pull_request:
     paths:
       - 'web/native/**'
@@ -22,6 +23,7 @@ on:
       - 'intern/ghost/**'
       - 'blender'
       - '.github/workflows/native-editors.yml'
+      - '!web/native/*.md'
   workflow_dispatch:
 
 defaults:
