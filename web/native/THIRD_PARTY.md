@@ -126,3 +126,19 @@ host binary and existing Imath binary16 conversions. Their original notices
 are included with the dependency notices. See [the compiler bridge notes](oidn/README.md)
 for the 32-bit adaptation and numerical checks. Native GPU denoisers and
 RTLightmap weights are not part of this build.
+
+SQLite 3.51.3, XZ/LZMA 5.2.5 and OpenSSL 3.5.6 use Blender's pinned archives
+and checksums. Their original public-domain, mixed XZ component and Apache-2.0
+notices are published under `licenses/dependencies/`. The static CPython
+extensions use the original CPython 3.13.13 sources and Python Software
+Foundation notices. Python Zstandard 0.25.0 uses the pinned source archive and
+the existing Zstandard library; its original license files are retained.
+
+The pure Python wheel lock in `python-packages.json` records each original
+archive URL and SHA-256 and checks versions against Blender's dependency pins.
+The installer retains package and vendored license files in both the installed
+distribution and `licenses/dependencies/`. pip comes from the verified CPython
+source archive's bundled wheel. Cython 3.0.11 uses the verified Blender-pinned
+source archive, retaining its original pure Python compiler and Apache-2.0
+notices. The urllib3 patch selects the GHOST HTTP adapter instead of requiring
+Pyodide's JavaScript bridge. Browser TLS, CORS and redirect policy apply.

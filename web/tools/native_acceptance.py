@@ -23,6 +23,8 @@ def main():
     docs = ROOT / 'web/docs'
     manifest = read(base / 'dist/manifest.json')
     version = manifest['version']
+    from native_python_acceptance import validate as validate_python
+    python_foundation = validate_python(base, manifest)
     from native_render_libraries_acceptance import validate as validate_render_libraries
     render_libraries = validate_render_libraries(base, manifest)
     embree_names=['embree-evidence','embree-evidence-ui','embree-evidence-hardware']
@@ -335,6 +337,7 @@ def main():
     report = {'bundleVersion':version, **read(ROOT / 'web/upstream.json'),
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,
               'renderLibraries':render_libraries,
+              'pythonFoundation':python_foundation,
               'nativeChecks':native, 'recording':recording, 'wasmBuild':wasm_build,
               'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
               'openvdbNanoVDB':{'browserVariants':volumes},
@@ -371,6 +374,7 @@ def main():
                   'Final rendering requires the JSPI bundle in current desktop Chromium.',
                   'Production Blender uses wasm32 with a 4 GiB linear-memory ceiling. The memory64 result is a separate sparse-addressing probe, not Blender scene-capacity evidence.',
                   'NumPy has no BLAS; native subprocesses, arbitrary dynamic extension modules and the extension marketplace remain unsupported.',
+                  'Python HTTP uses browser TLS and CORS with buffered responses. Tests cover original conditional and two-worker background downloads, not unrestricted sockets, proxy configuration or marketplace installation. Cython code generation works; compiling and loading its generated extensions in the browser remains pending.',
                   'Device file selection, browser downloads, additional windows and remaining dependency groups are still pending.',
                   'Embree acceptance covers 64 linked icospheres, round curves, sphere points, transparency and motion blur at 256x192 with 16 samples. Original C++ logs verify BVH2/Embree selection; standalone tests also cover ray packets, masks, occlusion, instances, motion, filters and error recovery. SYCL/GPU and ISPC paths are disabled. Large scenes, subdivision primitives and arbitrary user geometry remain untested.',
                   'Compressed glTF acceptance covers small authored meshes, UV/color/normal moments, morph targets and animation in Draco and EXT/KHR meshoptimizer. Skinning, external asset collections and large-scene stress tests remain pending.',

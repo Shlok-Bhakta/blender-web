@@ -224,17 +224,33 @@ def check_shader_translation(base, prefix):
 
 
 def check_python(base, prefix):
+    inputs = ['web/native/tests/python.cc', 'web/native/tests/python-foundation.py',
+              'web/native/tests/python-tls-fixture.hh', 'web/tools/native_build.py',
+              'web/tools/native_python.py', 'web/tools/native_python_packages.py',
+              'web/native/python-packages.json', 'web/native/openssl-wasm.conf',
+              'web/native/ghost/GHOST_WebNetwork.cc', 'web/native/ghost/GHOST_WebNetwork.py',
+              'web/native/ghost/GHOST_WebDownload.py', 'web/patches/native-python-download.patch',
+              'web/native/patches/urllib3.patch', 'web/tools/native_deps.py']
+    source_hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs}
     executable = base / "python-check.js"
     subprocess.run(["em++", "-O2", "-pthread", "-msimd128", "-fwasm-exceptions",
         f"-I{prefix / 'include/python3.13'}", f"-I{prefix / 'include'}", str(ROOT / "web/native/tests/python.cc"),
         "-Wl,--start-group", *map(str, sorted((prefix / "lib/blender-web-numpy").glob("*.a"))),
+        str(prefix / 'lib/blender-web-python/extensions.a'),
+        *[str(prefix / 'lib' / ('lib' + name + '.a')) for name in ('sqlite3', 'lzma', 'ssl', 'crypto', 'zstd')],
         str(prefix / "lib/libpython3.13.a"), str(prefix / "lib/libexpat.a"),
         str(prefix / "lib/libz.a"), "-Wl,--end-group", "-sUSE_BZIP2=1",
-        "-sENVIRONMENT=node", "-sEXIT_RUNTIME=1", "-sALLOW_MEMORY_GROWTH=1",
+        "-sENVIRONMENT=node", "-sPROXY_TO_PTHREAD=1", "-sPTHREAD_POOL_SIZE=8", "-sEXIT_RUNTIME=1", "-sALLOW_MEMORY_GROWTH=1",
+        "-sINITIAL_MEMORY=134217728", "-sDEFAULT_PTHREAD_STACK_SIZE=8388608", "-UNDEBUG",
         "-sSTACK_SIZE=8388608", "-sWASMFS=1", "-sFORCE_FILESYSTEM=1", "--preload-file",
-        f"{base / 'assets/python3.13'}@/python/lib/python3.13", "-o", str(executable)], check=True)
-    output = subprocess.check_output(["node", str(executable)], cwd=base, text=True, timeout=60)
-    (base / "python-check.json").write_text(json.dumps(json.loads(output), indent=2)+"\n")
+        f"{base / 'assets/python3.13'}@/python/lib/python3.13", "--preload-file",
+        f"{ROOT / 'web/native/tests/python-foundation.py'}@/python-foundation.py", "-o", str(executable)], check=True)
+    output = subprocess.check_output(["node", str(executable)], cwd=base, text=True, timeout=120)
+    report = json.loads(output)
+    if source_hashes != {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs}:
+        raise RuntimeError('Python check inputs changed during validation; rerun the check')
+    report['sourceHashes'] = source_hashes
+    (base / "python-check.json").write_text(json.dumps(report, indent=2)+"\n")
     print(output, end="", flush=True)
 
 
@@ -295,7 +311,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch", "native-python-download.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -423,7 +439,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch", "native-python-download.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 

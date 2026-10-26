@@ -54,6 +54,10 @@ def build(base, jobs, only=None):
         reports.append(json.loads(stamp.read_text()))
         if name == 'python' and only is None:
             reports.append(build_numpy(base, jobs))
+            from native_python import build as build_python_extensions
+            reports.append(build_python_extensions(base, jobs))
+            from native_python_packages import build as build_python_packages
+            reports.append(build_python_packages(base))
     if only is not None:
         return reports
     (base / 'application-dependencies.json').write_text(json.dumps(reports, indent=2)+'\n')

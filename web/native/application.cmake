@@ -35,6 +35,9 @@ function(blender_web_configure_application)
   target_include_directories(blender PRIVATE "${CMAKE_PREFIX_PATH}/include" ${PYTHON_INCLUDE_DIRS})
   target_link_libraries(blender PRIVATE
     -Wl,--start-group ${BLENDER_WEB_NUMPY_LIBRARIES} -Wl,--end-group)
+  include("${CMAKE_PREFIX_PATH}/lib/blender-web-python/libraries.cmake")
+  target_link_libraries(blender PRIVATE
+    -Wl,--start-group ${BLENDER_WEB_PYTHON_EXTENSION_LIBRARIES} -Wl,--end-group)
   if(WITH_USD)
     include("${CMAKE_PREFIX_PATH}/lib/blender-web-usd/libraries.cmake")
     target_link_libraries(blender PRIVATE

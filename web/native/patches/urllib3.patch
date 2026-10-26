@@ -1,0 +1,43 @@
+--- a/urllib3/contrib/emscripten/connection.py
++++ b/urllib3/contrib/emscripten/connection.py
+@@ -9,12 +9,15 @@
+ 
+ from ..._base_connection import _TYPE_BODY
+ from ...connection import HTTPConnection, ProxyConfig, port_by_scheme
+-from ...exceptions import TimeoutError
++from ...exceptions import ReadTimeoutError
+ from ...response import BaseHTTPResponse
+ from ...util.connection import _TYPE_SOCKET_OPTIONS
+ from ...util.timeout import _DEFAULT_TIMEOUT, _TYPE_TIMEOUT
+ from ...util.url import Url
+-from .fetch import _RequestError, _TimeoutError, send_request, send_streaming_request
++try:
++    from _bpy_ghost_web_network import _RequestError, _TimeoutError, send_request, send_streaming_request
++except ImportError:
++    from .fetch import _RequestError, _TimeoutError, send_request, send_streaming_request
+ from .request import EmscriptenRequest
+ from .response import EmscriptenHttpResponseWrapper, EmscriptenResponse
+ 
+@@ -117,7 +120,7 @@
+             if self._response is None:
+                 self._response = send_request(request)
+         except _TimeoutError as e:
+-            raise TimeoutError(e.message) from e
++            raise ReadTimeoutError(None, request.url, e.message) from e
+         except _RequestError as e:
+             raise HTTPException(e.message) from e
+ 
+--- a/urllib3/contrib/emscripten/response.py
++++ b/urllib3/contrib/emscripten/response.py
+@@ -241,7 +241,10 @@
+ 
+         On exit, release the connection back to the pool.
+         """
+-        from .fetch import _RequestError, _TimeoutError  # avoid circular import
++        try:
++            from _bpy_ghost_web_network import _RequestError, _TimeoutError
++        except ImportError:
++            from .fetch import _RequestError, _TimeoutError  # avoid circular import
+ 
+         clean_exit = False
+ 

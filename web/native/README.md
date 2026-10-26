@@ -261,6 +261,37 @@ filesystem access confined to the build tools. This preserves target pointer
 sizes and alignment during DNA generation. The shader regression check also builds a host executable and compares its
 output with the Wasm processor.
 
+The Python foundation adds the original CPython SQLite, LZMA, SSL and OpenSSL
+hash modules, Python Zstandard, the pinned pure Python site packages and pip.
+Cython runs its original Python compiler to generate C source. Its compiled
+accelerators and arbitrary generated extension loading are separate work.
+
+```sh
+WEB_TEST_HARDWARE=1 node web/tests/python-foundation.cjs
+node web/tests/python-foundation.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/python-foundation.cjs
+python3 web/tools/native_python_verify.py build/native/python-foundation-evidence-hardware --blender /path/to/blender
+python3 web/tools/native_python_recording.py
+```
+
+These checks run through Blender's original console. They cover database
+transactions, FTS3/4/5, WAL read isolation and writer locks, LZMA/Zstandard file
+exchange, TLS 1.2/1.3 memory-BIO handshakes and certificate rejection, package
+APIs and Cython code generation. Native Blender independently reads the saved
+database, compressed files, HTTP outputs and `.blend`, and compares package
+versions and SQLite compile options. SQLite file mmap is disabled for browser
+storage; the other tested functional compile options match the native build.
+
+Python HTTP runs on dedicated workers and uses synchronous worker XHR with the
+GIL released. urllib3 keeps its original connection and response classes.
+Responses are buffered; iterating response chunks does not stream from the
+network. The browser controls TLS, redirects, CORS and restricted headers.
+Blender's original conditional and background downloaders use guarded GHOST
+hooks for decoded response lengths, thread workers, copied message channels
+and metadata locks. This context only implements the downloader's operations.
+It does not provide general multiprocessing, raw sockets or subprocesses.
+Marketplace installation and cross-tab metadata locking remain unverified.
+
 The dependency checks exercise actual oneTBB workers, exception propagation,
 PNG round trips and error recovery through OpenImageIO, OpenColorIO, and Blender's
 WOFF2 font through FreeType/Brotli. Application checks also run embedded Python

@@ -1,0 +1,51 @@
+--- a/scripts/modules/_bpy_internal/http/downloader.py
++++ b/scripts/modules/_bpy_internal/http/downloader.py
+@@ -46,7 +46,10 @@
+ # mypy   : Variable "multiprocessing.Event" is not valid as a type
+ #          note: See https://mypy.readthedocs.io/en/stable/common_issues.html#variables-vs-type-aliases
+ # Pylance: Variable not allowed in type expression
+-from multiprocessing.synchronize import Event as EventClass
++if sys.platform == 'emscripten':
++    from _bpy_ghost_web_download import EventClass
++else:
++    from multiprocessing.synchronize import Event as EventClass
+ 
+ import cattrs
+ import cattrs.preconf.json
+@@ -266,6 +269,10 @@
+             metadata matches the URL (a "304 Not Modified" was returned).
+         """
+ 
++        if sys.platform == 'emscripten':
++            from _bpy_ghost_web_network import prepare_downloader_response
++            prepare_downloader_response(stream)
++
+         # Determine how many bytes are expected.
+         content_length_str: str = stream.headers.get("Content-Length") or ""
+         content_length: int | None
+@@ -414,7 +421,11 @@
+ #
+ # So I (Sybren) figure it's better to test with the 'spawn' method,
+ # which is also the current default on Windows and macOS.
+-_mp_context = multiprocessing.get_context(method='spawn')
++if sys.platform == 'emscripten':
++    from _bpy_ghost_web_download import downloader_context
++    _mp_context = downloader_context()
++else:
++    _mp_context = multiprocessing.get_context(method='spawn')
+ 
+ 
+ @dataclasses.dataclass
+--- a/scripts/modules/_bpy_internal/filesystem/locking.py
++++ b/scripts/modules/_bpy_internal/filesystem/locking.py
+@@ -74,6 +74,10 @@
+ 
+     import sys
+ 
++    if sys.platform == 'emscripten':
++        from _bpy_ghost_web_download import mutex_lock_and_open as browser_mutex
++        return browser_mutex(file_path, mode)
++
+     # Choose platform-dependent _obtain_lock(file) and _release_lock() functions.
+     if sys.platform == "win32":
+         import msvcrt

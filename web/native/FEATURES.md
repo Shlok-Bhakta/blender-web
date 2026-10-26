@@ -17,7 +17,10 @@ batches. The static site's
 | Device file picker, uploads and downloads | Deferred | Native file IO currently sees WasmFS; connect user-selected device files and exported results to browser APIs |
 | Automatic `.blend` thumbnails | Deferred | Synchronous preview generation hangs outside a browser GPU job; a guarded GHOST save hook skips capture and restores the user's preview preference |
 | NumPy and FBX Python exporter | Enabled | Static NumPy extensions, linear algebra, FFT, both random APIs, RNA array transfer and FBX export/native import round trip |
-| Process-dependent add-ons and extension marketplace | Deferred | Native subprocesses, multiprocessing and arbitrary dynamic extensions are unavailable; the marketplace downloader currently reports a Python startup error |
+| SQLite, LZMA, OpenSSL and Python Zstandard | Implemented, tested | Original CPython extensions, database callbacks/WAL/FTS, three LZMA formats, multithreaded Zstandard, TLS 1.2/1.3 memory-BIO handshakes and certificate rejection |
+| Native Python site packages and Cython | Implemented, tested | Pinned pure Python runtime packages and pip; original Cython compiler generates C source. Compiling and loading arbitrary generated extensions remains pending |
+| Python HTTP and Blender background downloader | Implemented, tested | Dedicated worker transport, binary transfers, timeout/CORS errors, gzip and conditional 304 downloads, two background download workers and shutdown |
+| Process-dependent add-ons and extension marketplace | Deferred | The downloader uses thread workers and copied channels. Native subprocesses, general multiprocessing, dynamic extensions and complete marketplace installation remain unavailable |
 | OpenSubdiv CPU | Enabled | Catmull-Clark cubes at levels 1–3, simple subdivision, open boundaries and native viewport drawing |
 | OpenSubdiv GPU | Deferred | Patch-basis shaders and evaluator/draw validation for WebGPU; the platform selects CPU evaluation |
 | GMP and Manifold Boolean solvers | Enabled | Both solvers: union, intersection and difference with volume, bounds and closed-mesh checks |

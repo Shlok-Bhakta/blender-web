@@ -42,6 +42,11 @@ def main():
         (base / 'validation-status.json').write_text(json.dumps(status, indent=2) + '\n')
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'python-foundation-{suffix}', ['node', 'web/tests/python-foundation.cjs'], **flags)
+        directory = 'build/native/python-foundation-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
+        run(f'python-foundation-native-{suffix}', ['python3', 'web/tools/native_python_verify.py', directory, '--blender', args.blender])
+    run('python-foundation-video', ['python3', 'web/tools/native_python_recording.py'])
     run('hevc-native', ['python3', 'web/tools/native_hevc_verify.py'])
     run('render-libraries-baseline', ['python3', 'web/tools/native_render_libraries_baseline.py', '--blender', args.blender])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:

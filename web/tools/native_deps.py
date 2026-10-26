@@ -20,6 +20,9 @@ from prepare import ROOT
 # Ordered by dependencies. These are build options, not substitute implementations.
 RECIPES = {
     "ZLIB": ("", ["-DZLIB_BUILD_EXAMPLES=OFF"]),
+    "SQLITE": ("", []),
+    "LZMA": ("", ["--host=wasm32-unknown-none", "--disable-shared", "--enable-static", "--disable-xz", "--disable-xzdec", "--disable-lzmadec", "--disable-lzmainfo", "--disable-lzma-links", "--disable-scripts", "--disable-doc", "--disable-nls", "--disable-assembler"]),
+    "SSL": ("", ["no-shared", "no-asm", "no-dso", "no-module", "no-engine", "no-async", "no-tests", "no-ui-console", "no-idea", "no-mdc2", "no-rc5", "no-zlib", "no-ssl3", "no-ssl3-method", "enable-rfc3779", "enable-cms"]),
     "JPEG": ("", ["-DENABLE_SHARED=OFF", "-DWITH_SIMD=OFF", "-DWITH_TURBOJPEG=OFF"]),
     "PNG": ("", ["-DPNG_SHARED=OFF", "-DPNG_TESTS=OFF", "-DPNG_TOOLS=OFF", "-DPNG_HARDWARE_OPTIMIZATIONS=OFF"]),
     "ZSTD": ("build/cmake", ["-DZSTD_BUILD_SHARED=OFF", "-DZSTD_BUILD_PROGRAMS=OFF", "-DZSTD_BUILD_TESTS=OFF"]),
@@ -186,6 +189,12 @@ def build(args):
             signature["cxxFlags"] = CXX_FLAGS
         if name == 'BROTLI':
             signature['staticPkgConfig'] = 2
+        if name in {'SQLITE', 'LZMA', 'SSL'}:
+            signature['pythonBuilder'] = hashlib.sha256(
+                (ROOT / 'web/tools/native_python.py').read_bytes()).hexdigest()
+        if name == 'SSL':
+            signature['opensslTarget'] = hashlib.sha256(
+                (ROOT / 'web/native/openssl-wasm.conf').read_bytes()).hexdigest()
         if name in {"HARFBUZZ", "FRIBIDI", "RUBBERBAND"}:
             signature["textBuilder"] = hashlib.sha256(
                 (ROOT / "web/tools/native_text.py").read_bytes()).hexdigest()
@@ -317,6 +326,12 @@ def build(args):
         if any(previous.get(key) != configuration.get(key) for key in ("toolchain", "sdk", "source")):
             shutil.rmtree(directory / "build", ignore_errors=True)
         configured.write_text(json.dumps(configuration, indent=2) + "\n")
+        if name in {'SQLITE', 'LZMA', 'SSL'}:
+            from native_python import build_library
+            build_library(name, source, directory / 'build', prefix, options,
+                          args.jobs, log, run, C_FLAGS)
+            stamp.write_text(json.dumps(signature, indent=2) + '\n')
+            continue
         if name in {"HARFBUZZ", "FRIBIDI", "RUBBERBAND"}:
             from native_text import build_meson
             build_meson(source, directory / "build", prefix, options,

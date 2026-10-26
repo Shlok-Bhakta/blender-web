@@ -1,0 +1,149 @@
+{
+  "scope": "Pure Python runtime packages shipped with the pinned Blender release; host-only Meson build tools are excluded.",
+  "packages": [
+    {
+      "name": "setuptools",
+      "version": "80.9.0",
+      "blenderVersionVariable": "SETUPTOOLS_VERSION",
+      "blenderVersionLiteral": "80.9.0",
+      "file": "setuptools-80.9.0-py3-none-any.whl",
+      "sha256": "062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922",
+      "url": "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl"
+    },
+    {
+      "name": "packaging",
+      "version": "25.0",
+      "blenderVersionVariable": "PACKAGING_VERSION",
+      "blenderVersionLiteral": "25.0",
+      "file": "packaging-25.0-py3-none-any.whl",
+      "sha256": "29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484",
+      "url": "https://files.pythonhosted.org/packages/20/12/38679034af332785aac8774540895e234f4d07f7545804097de4b666afd8/packaging-25.0-py3-none-any.whl"
+    },
+    {
+      "name": "pyproject-metadata",
+      "version": "0.9.1",
+      "blenderVersionVariable": "PYPROJECT_METADATA_VERSION",
+      "blenderVersionLiteral": "0.9.1",
+      "file": "pyproject_metadata-0.9.1-py3-none-any.whl",
+      "sha256": "ee5efde548c3ed9b75a354fc319d5afd25e9585fa918a34f62f904cc731973ad",
+      "url": "https://files.pythonhosted.org/packages/7e/b1/8e63033b259e0a4e40dd1ec4a9fee17718016845048b43a36ec67d62e6fe/pyproject_metadata-0.9.1-py3-none-any.whl"
+    },
+    {
+      "name": "idna",
+      "version": "3.10",
+      "blenderVersionVariable": "IDNA_VERSION",
+      "blenderVersionLiteral": "3.10",
+      "file": "idna-3.10-py3-none-any.whl",
+      "sha256": "946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3",
+      "url": "https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.4.1",
+      "blenderVersionVariable": "CHARSET_NORMALIZER_VERSION",
+      "blenderVersionLiteral": "3.4.1",
+      "file": "charset_normalizer-3.4.1-py3-none-any.whl",
+      "sha256": "d98b1668f06378c6dbefec3b92299716b931cd4e6061f3c875a71ced1780ab85",
+      "url": "https://files.pythonhosted.org/packages/0e/f6/65ecc6878a89bb1c23a086ea335ad4bf21a588990c3f535a227b9eea9108/charset_normalizer-3.4.1-py3-none-any.whl"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.4.0",
+      "blenderVersionVariable": "URLLIB3_VERSION",
+      "blenderVersionLiteral": "2.4.0",
+      "file": "urllib3-2.4.0-py3-none-any.whl",
+      "sha256": "4e16665048960a0900c702d4a66415956a584919c03361cac9f1df5c5dd7e813",
+      "url": "https://files.pythonhosted.org/packages/6b/11/cc635220681e93a0183390e26485430ca2c7b5f9d33b15c74c2861cb8091/urllib3-2.4.0-py3-none-any.whl"
+    },
+    {
+      "name": "certifi",
+      "version": "2025.4.26",
+      "blenderVersionVariable": "CERTIFI_VERSION",
+      "blenderVersionLiteral": "2025.4.26",
+      "file": "certifi-2025.4.26-py3-none-any.whl",
+      "sha256": "30350364dfe371162649852c63336a15c70c6510c2ad5015b21c2345311805f3",
+      "url": "https://files.pythonhosted.org/packages/4a/7e/3db2bd1b1f9e95f7cddca6d6e75e2f2bd9f51b1246e546d88addca0106bd/certifi-2025.4.26-py3-none-any.whl"
+    },
+    {
+      "name": "requests",
+      "version": "2.32.3",
+      "blenderVersionVariable": "REQUESTS_VERSION",
+      "blenderVersionLiteral": "2.32.3",
+      "file": "requests-2.32.3-py3-none-any.whl",
+      "sha256": "70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6",
+      "url": "https://files.pythonhosted.org/packages/f9/9b/335f9764261e915ed497fcdeb11df5dfd6f7bf257d4a6a2a686d80da4d54/requests-2.32.3-py3-none-any.whl"
+    },
+    {
+      "name": "autopep8",
+      "version": "2.3.1",
+      "blenderVersionVariable": "AUTOPEP8_VERSION",
+      "blenderVersionLiteral": "2.3.1",
+      "file": "autopep8-2.3.1-py2.py3-none-any.whl",
+      "sha256": "a203fe0fcad7939987422140ab17a930f684763bf7335bdb6709991dd7ef6c2d",
+      "url": "https://files.pythonhosted.org/packages/ad/9e/f0beffe45b507dca9d7540fad42b316b2fd1076dc484c9b1f23d9da570d7/autopep8-2.3.1-py2.py3-none-any.whl"
+    },
+    {
+      "name": "pycodestyle",
+      "version": "2.13.0",
+      "blenderVersionVariable": "PYCODESTYLE_VERSION",
+      "blenderVersionLiteral": "2.13",
+      "file": "pycodestyle-2.13.0-py2.py3-none-any.whl",
+      "sha256": "35863c5974a271c7a726ed228a14a4f6daf49df369d8c50cd9a6f58a5e143ba9",
+      "url": "https://files.pythonhosted.org/packages/07/be/b00116df1bfb3e0bb5b45e29d604799f7b91dd861637e4d448b4e09e6a3e/pycodestyle-2.13.0-py2.py3-none-any.whl"
+    },
+    {
+      "name": "docutils",
+      "version": "0.22.4",
+      "blenderVersionVariable": "DOCUTILS_VERSION",
+      "blenderVersionLiteral": "0.22.4",
+      "file": "docutils-0.22.4-py3-none-any.whl",
+      "sha256": "d0013f540772d1420576855455d050a2180186c91c15779301ac2ccb3eeb68de",
+      "url": "https://files.pythonhosted.org/packages/02/10/5da547df7a391dcde17f59520a231527b8571e6f46fc8efb02ccb370ab12/docutils-0.22.4-py3-none-any.whl"
+    },
+    {
+      "name": "attrs",
+      "version": "25.3.0",
+      "blenderVersionVariable": "ATTRS_VERSION",
+      "blenderVersionLiteral": "25.3.0",
+      "file": "attrs-25.3.0-py3-none-any.whl",
+      "sha256": "427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3",
+      "url": "https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl"
+    },
+    {
+      "name": "cattrs",
+      "version": "25.1.1",
+      "blenderVersionVariable": "CATTRS_VERSION",
+      "blenderVersionLiteral": "25.1.1",
+      "file": "cattrs-25.1.1-py3-none-any.whl",
+      "sha256": "1b40b2d3402af7be79a7e7e097a9b4cd16d4c06e6d526644b0b26a063a1cc064",
+      "url": "https://files.pythonhosted.org/packages/18/b0/215274ef0d835bbc1056392a367646648b6084e39d489099959aefcca2af/cattrs-25.1.1-py3-none-any.whl"
+    },
+    {
+      "name": "fastjsonschema",
+      "version": "2.21.1",
+      "blenderVersionVariable": "FASTJSONSCHEMA_VERSION",
+      "blenderVersionLiteral": "2.21.1",
+      "file": "fastjsonschema-2.21.1-py3-none-any.whl",
+      "sha256": "c9e5b7e908310918cf494a434eeb31384dd84a98b57a30bcb1f535015b554667",
+      "url": "https://files.pythonhosted.org/packages/90/2b/0817a2b257fe88725c25589d89aec060581aabf668707a8d03b2e9e0cb2a/fastjsonschema-2.21.1-py3-none-any.whl"
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.14.1",
+      "blenderVersionVariable": "TYPING_EXTENSIONS_VERSION",
+      "blenderVersionLiteral": "4.14.1",
+      "file": "typing_extensions-4.14.1-py3-none-any.whl",
+      "sha256": "d1e1e3b58374dc93031d6eda2420a48ea44a36c2b4766a4fdeb3710755731d76",
+      "url": "https://files.pythonhosted.org/packages/b5/00/d631e67a838026495268c2f6884f3711a15a9a2a96cd244fdaea53b823fb/typing_extensions-4.14.1-py3-none-any.whl"
+    },
+    {
+      "name": "tomli-w",
+      "version": "1.2.0",
+      "blenderVersionVariable": "TOMLI_W_VERSION",
+      "blenderVersionLiteral": "1.2.0",
+      "file": "tomli_w-1.2.0-py3-none-any.whl",
+      "sha256": "188306098d013b691fcadc011abd66727d3c414c571bb01b1a174ba8c983cf90",
+      "url": "https://files.pythonhosted.org/packages/c7/18/c86eb8e0202e32dd3df50d43d7ff9854f8e0603945ff398974c1d91ac1ef/tomli_w-1.2.0-py3-none-any.whl"
+    }
+  ]
+}
