@@ -16,6 +16,7 @@ def main():
     parser.add_argument('--candidate-url', default='http://127.0.0.1:8093/')
     parser.add_argument('--control-url', default='http://127.0.0.1:8098/')
     parser.add_argument('--list', action='store_true', help='Print the checks without running them')
+    parser.add_argument('--resume-from', help='Rerun a recorded stage and continue with the same packaged candidate')
     args = parser.parse_args()
     if not args.list and (not shutil.which(args.blender)):
         parser.error('Native Blender is required; provide --blender /path/to/blender')
@@ -25,15 +26,32 @@ def main():
     for flag in ('WEB_TEST_HARDWARE', 'WEB_TEST_UI_FALLBACK', 'WEB_RENDER_SOFTWARE'):
         env.pop(flag, None)
     status = []
+    previous = []
+    resume_from = args.resume_from
     if not args.list:
         link = (base / 'editor/source/creator/CMakeFiles/blender.dir/link.txt').read_text()
         assert '-O3' in link and ' -O0' not in link, 'Release optimization is required'
-        assert json.loads((base / 'dist/manifest.json').read_text())['uiFallback'], 'Final package must include both variants'
+        manifest = json.loads((base / 'dist/manifest.json').read_text())
+        assert manifest['uiFallback'], 'Final package must include both variants'
+        checkpoint = base / 'validation-candidate.json'
+        if resume_from:
+            assert json.loads(checkpoint.read_text()) == manifest, 'Resume requires the identical packaged candidate'
+            previous = json.loads((base / 'validation-status.json').read_text())
+            assert resume_from in {entry['name'] for entry in previous}, 'Resume must start at a previously recorded stage'
+        else:
+            checkpoint.write_text(json.dumps(manifest, indent=2) + '\n')
 
     def run(name, command, **extra):
+        nonlocal resume_from
         if args.list:
             print(name + ': ' + shlex.join(command))
             return
+        if resume_from and name != resume_from:
+            entry = previous[len(status)]
+            assert entry['name'] == name and entry['exitCode'] == 0, 'Only a successful unchanged prefix may be reused'
+            status.append(entry)
+            return
+        resume_from = None
         print(name, flush=True)
         start = time.time()
         with (base / f'validate-{name}.log').open('w') as log:

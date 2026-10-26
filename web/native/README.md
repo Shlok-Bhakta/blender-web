@@ -261,6 +261,12 @@ filesystem access confined to the build tools. This preserves target pointer
 sizes and alignment during DNA generation. The shader regression check also builds a host executable and compares its
 output with the Wasm processor.
 
+The full regression runner records its packaged candidate and stage results.
+After investigating a failed stage, resume it with
+`python3 web/tools/native_validate.py --resume-from STAGE --blender /path/to/blender`.
+Resuming requires the identical manifest and a successful recorded prefix; the
+final acceptance checks still verify each report against the current sources.
+
 The Python foundation adds the original CPython SQLite, LZMA, SSL and OpenSSL
 hash modules, Python Zstandard, the pinned pure Python site packages and pip.
 Cython runs its original Python compiler to generate C source. Its compiled
