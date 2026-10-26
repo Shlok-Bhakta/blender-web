@@ -1,39 +1,39 @@
 {
-  "bundleVersion": "c4b7c35a6133dd692484",
+  "bundleVersion": "087a1025b9389b80e57d",
   "sourceSha256": "e14018222f3c8ab46334cc26ab61ddd3a1a0d219bf52cdc5a2b2bd4c8fa665c0",
   "cases": {
     "BVH2": {
       "nativeSeconds": 0.5877693640068173,
-      "browserSeconds": 1.1773951053619385,
-      "browserToNative": 2.003158343156317,
+      "browserSeconds": 1.034749984741211,
+      "browserToNative": 1.7604694087615107,
       "nativeRuns": [
         0.6291364901699126,
         0.5687266997992992,
         0.5877693640068173
       ],
       "browserRuns": [
-        1.1773951053619385,
-        1.2068548202514648,
-        1.1700799465179443
+        1.0104150772094727,
+        1.034749984741211,
+        1.1263296604156494
       ]
     },
     "EMBREE": {
       "nativeSeconds": 0.5562988296151161,
-      "browserSeconds": 1.0070345401763916,
-      "browserToNative": 1.8102402639838806,
+      "browserSeconds": 0.8991549015045166,
+      "browserToNative": 1.6163163638625857,
       "nativeRuns": [
         0.5617695432156324,
         0.5562988296151161,
         0.5503953760489821
       ],
       "browserRuns": [
-        1.0842299461364746,
-        1.0070345401763916,
-        0.9877150058746338
+        0.9891350269317627,
+        0.8991549015045166,
+        0.8966948986053467
       ]
     }
   },
-  "browserEmbreeSpeedup": 1.1691705283075062,
+  "browserEmbreeSpeedup": 1.1508028071801744,
   "nativeEmbreeSpeedup": 1.0565712755740913,
   "adapter": {
     "vendor": "amd",
@@ -57,55 +57,59 @@
     "backends": {
       "BVH2": {
         "runs": [
-          0.4030451774597168,
-          0.10707998275756836,
-          0.08631491661071777,
-          0.0979001522064209,
-          0.10070490837097168,
-          0.10366487503051758
+          0.4211997985839844,
+          0.09098005294799805,
+          0.09863495826721191,
+          0.09916496276855469,
+          0.09040498733520508,
+          0.09280967712402344
         ],
-        "firstSeconds": 0.4030451774597168,
-        "reportSha256": "28b8666657e84d0689933fa263572f528823de04a39d81760e706c425826efad",
-        "warmMedianSeconds": 0.10070490837097168
+        "firstSeconds": 0.4211997985839844,
+        "reportSha256": "77b01ef93bbea61163aec790119a23aff82a9b46bd8bb442d12e5a9a5962456e",
+        "warmMedianSeconds": 0.09280967712402344
       },
       "EMBREE": {
         "runs": [
-          0.3818650245666504,
-          0.08692479133605957,
-          0.09744000434875488,
-          0.09764957427978516,
-          0.09285497665405273,
-          0.10091519355773926
+          0.45068931579589844,
+          0.09884953498840332,
+          0.10519981384277344,
+          0.09562492370605469,
+          0.09572982788085938,
+          0.10473012924194336
         ],
-        "firstSeconds": 0.3818650245666504,
-        "reportSha256": "4c5272e4d723c7b3e4a19774b344912c7e04a1de0aa3ab3c6f091a4695048ba5",
-        "warmMedianSeconds": 0.09744000434875488
+        "firstSeconds": 0.45068931579589844,
+        "reportSha256": "a2c5fec0c9df07e90512492ba73f99b5a93b0fbbc8642ba5da636fee03191397",
+        "warmMedianSeconds": 0.09884953498840332
       }
     },
     "method": "Separate fresh hardware browser per backend, six original F12 renders at 128x128 and 16 samples with eight CPU threads. Timed with render_pre/render_post, without PNG output, video or profiling. Original C++ logs confirm each backend. First render and the median of five subsequent renders are reported. This does not establish the cause of differences from older release baselines."
   },
   "profiling": {
-    "traceSha256": "4c7681a070555e40aa4eab0fc3c1f7fb04f11bc4dca8a8bf7c850807b5ad2794",
-    "wasmSampleCount": 38706,
-    "wasmThreadsSampled": 15,
+    "traceSha256": "48f1ab298df08fc738ea0fa1aba40638fd71d6e542fc6eec47bd4f1f3cb0d261",
+    "wasmSampleCount": 46256,
+    "wasmThreadsSampled": 19,
     "samplesPerThread": [
-      7010,
-      4992,
-      4882,
-      4551,
-      4384,
-      4306,
-      4280,
-      4239,
-      34,
-      18,
+      7774,
+      6211,
+      6033,
+      5567,
+      5339,
+      5160,
+      5059,
+      5053,
+      25,
+      17,
+      4,
       3,
       2,
       2,
       2,
+      2,
+      1,
+      1,
       1
     ],
-    "resourceSamples": 140,
+    "resourceSamples": 118,
     "nativeFunctionNamesAvailable": false,
     "limitations": "Separate instrumented run of both backends. Wasm samples retain function indices, not C++ names. Sample counts do not measure CPU utilization or establish simultaneous worker activity. Resource counters describe the shared host; WebGPU activity includes Blender UI drawing."
   },

@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "c4b7c35a6133dd692484",
+  "bundleVersion": "087a1025b9389b80e57d",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -152,18 +152,25 @@
   },
   "remainingGroupsScope": "Only the coarse bpy.app.build_options flags above. An empty portableLibraries group does not establish full dependency parity.",
   "disabledLibraryOptions": {
-    "WITH_OPENIMAGEDENOISE": "Render denoising",
-    "WITH_CYCLES_PATH_GUIDING": "Cycles OpenPGL path guiding",
     "WITH_CYCLES_OSL": "Cycles Open Shading Language integration",
     "WITH_LLVM": "LLVM compiler infrastructure",
     "WITH_HYDRA": "Hydra rendering integration"
   },
   "additionalLibraryGaps": [
-    "x265 high-bit-depth encoding",
-    "NumPy BLAS acceleration",
-    "MaterialX Python bindings",
-    "HarfBuzz/FriBidi integration into Blender font rendering",
+    "CPython _ctypes, _sqlite3, _lzma, _ssl and _hashlib modules",
+    "Native Python site packages, including zstandard and requests",
+    "OpenImageIO, OpenColorIO, OpenVDB and MaterialX Python bindings",
+    "libheif AVIF images through OpenImageIO",
+    "USD OpenVDB support and the Hydra OpenImageIO image plugin",
     "OpenSubdiv GPU evaluation"
+  ],
+  "componentAudit": "web/docs/dependency-components.md",
+  "optimizationWork": [
+    "NumPy explicit Wasm SIMD kernels",
+    "OpenColorIO SIMD kernels"
+  ],
+  "separateEnhancements": [
+    "HarfBuzz/FriBidi integration into Blender font rendering"
   ],
   "baseLibraryRecipes": [
     {
@@ -333,6 +340,20 @@
       "archiveHash": "6e2eecafb312d8cf1f1ff555702637cf",
       "hashType": "MD5",
       "source": "https://github.com/RenderKit/embree/archive/v4.4.1.zip"
+    },
+    {
+      "name": "OPENPGL",
+      "version": "v0.7.1",
+      "archiveHash": "d62d24241232a526491328f341df9add274fc84ae9818470d3edb5ae6141ac63",
+      "hashType": "SHA256",
+      "source": "https://github.com/OpenPathGuidingLibrary/openpgl/archive/refs/tags/v0.7.1.tar.gz"
+    },
+    {
+      "name": "OIDN",
+      "version": "2.5.0",
+      "archiveHash": "ae984ce4cc4c81ec152ab81b241a8738",
+      "hashType": "MD5",
+      "source": "https://github.com/RenderKit/oidn/releases/download/v2.5.0/oidn-2.5.0.src.tar.gz"
     },
     {
       "name": "ABSEIL",
@@ -557,7 +578,7 @@
   "limitations": [
     "Build flags are configuration evidence, not proof of every operation or performance parity.",
     "Desktop audio drivers require browser audio integration instead of loading JACK or PulseAudio into Wasm.",
-    "Cycles GPU, denoising, OpenSubdiv GPU and other subfeatures are not represented by these coarse Python API flags.",
+    "Cycles GPU, OpenSubdiv GPU and other subfeatures are not represented by these coarse Python API flags.",
     "Some enabled dependencies have disabled subcomponents; see FEATURES.md for actual operation coverage."
   ]
 }

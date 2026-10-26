@@ -25,6 +25,8 @@ The `blender/` submodule pins the official stable release. Platform code lives i
 
 [Watch image codecs, SVG/PDF and Freestyle](web/docs/image-vector-freestyle-walkthrough.mp4) · [Dependency status](web/docs/dependency-status.json)
 
+[Remaining dependency components](web/docs/dependency-components.md)
+
 [Watch Embree acceleration in Cycles CPU](web/docs/embree-walkthrough.mp4) · [BVH2/Embree timings](web/docs/embree-performance.json)
 
 [Watch CPU denoising and path guiding](web/docs/render-libraries-walkthrough.mp4)

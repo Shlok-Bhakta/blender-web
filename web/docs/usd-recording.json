@@ -1,31 +1,31 @@
 {
-  "bundleVersion": "c4b7c35a6133dd692484",
+  "bundleVersion": "087a1025b9389b80e57d",
   "chapters": [
     {
-      "seconds": 0.001,
+      "seconds": 0,
       "title": "Open original Blender with USD and MaterialX"
     },
     {
-      "seconds": 10.25,
+      "seconds": 10.8,
       "title": "Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks"
     },
     {
-      "seconds": 24.572,
+      "seconds": 25.345,
       "title": "USD is available in Blender's original export menu"
     },
     {
-      "seconds": 33.377,
+      "seconds": 34.298,
       "title": "Reload offline and repeat interchange from persistent browser storage"
     }
   ],
-  "durationSeconds": 44.88,
-  "bytes": 1608663,
+  "durationSeconds": 46.64,
+  "bytes": 1558778,
   "source": "Hardware Chromium browser recording",
   "captions": true,
   "path": "web/docs/usd-materialx-walkthrough.mp4",
-  "sha256": "a1b60f88aa3ee8bb5ad503d40a04a5ac17dc142c392c2abfff62d26a523411bf",
+  "sha256": "c52710283b90e12b4ca48e1affe2114659ef542121f7a64444e4ae4a92b5eb80",
   "screenshot": {
     "path": "web/docs/usd-export-menu.png",
-    "sha256": "707c51c87ddf2eae6d854169f7ad01ce9a59e1bfe1a2017717c5bc6198993164"
+    "sha256": "2c95f713968f895971aeb9a15ddc46ca6e33069e4ffe582b4ab4e2098a07cd26"
   }
 }
