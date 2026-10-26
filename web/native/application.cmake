@@ -40,7 +40,8 @@ function(blender_web_configure_application)
     -Wl,--start-group ${BLENDER_WEB_PYTHON_EXTENSION_LIBRARIES} -Wl,--end-group)
   include("${CMAKE_PREFIX_PATH}/lib/blender-web-bindings/libraries.cmake")
   target_link_libraries(blender PRIVATE
-    -Wl,--start-group ${BLENDER_WEB_PYTHON_BINDING_LIBRARIES} -Wl,--end-group)
+    -Wl,--start-group ${BLENDER_WEB_PYTHON_BINDING_LIBRARIES}
+    MaterialXGenGlsl MaterialXGenMsl MaterialXGenShader -Wl,--end-group)
   if(WITH_USD)
     include("${CMAKE_PREFIX_PATH}/lib/blender-web-usd/libraries.cmake")
     target_link_libraries(blender PRIVATE

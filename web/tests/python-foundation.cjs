@@ -42,9 +42,11 @@ async function main(){
     if(route==='/slow'){setTimeout(()=>response.end('late'),1200);return;}
     response.writeHead(route==='/missing'?404:200);response.end('fixture');
   });
-  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  await new Promise(resolve=>server.listen(Number(process.env.WEB_PYTHON_FIXTURE_PORT||0),'127.0.0.1',resolve));
   server.unref();
-  const networkURL='http://127.0.0.1:'+server.address().port;
+  // A public HTTPS page needs a public HTTPS fixture endpoint. Keep CORS and
+  // local-network protections enabled when checking the deployed Pages build.
+  const networkURL=process.env.WEB_PYTHON_NETWORK_URL||'http://127.0.0.1:'+server.address().port;
   const browser=await chromium.launch({headless:true,args:hardware?[
     '--enable-unsafe-webgpu','--use-angle=vulkan','--enable-features=Vulkan','--use-vulkan=native','--disable-vulkan-surface',
   ]:[
@@ -99,7 +101,7 @@ async function main(){
     await context.setOffline(true);checking=false;await page.reload();await ready(page,failure);checking=true;await page.mouse.move(300,250);
     await command(`import runpy; pf=runpy.run_path('${directory}/check.py'); pf['browser_check']('offline','${directory}')`,'PYTHON_FOUNDATION_OFFLINE');
     await page.waitForTimeout(1500);assert.deepEqual(errors,[]);
-    const acceptance={bundleVersion:manifest.version,sourceSha256:hash(source),runnerSourceSha256:hash(fs.readFileSync(__filename)),hardware,fallback,adapter,report,files,peakBackgroundDownloads,offlineReopen:true,browserErrors:errors,startupPythonErrors,chapters,durationSeconds:(Date.now()-started)/1000,videoPath:path.join(output,'python-foundation.webm')};
+    const acceptance={bundleVersion:manifest.version,sourceSha256:hash(source),runnerSourceSha256:hash(fs.readFileSync(__filename)),hardware,fallback,adapter,report,files,networkURL,peakBackgroundDownloads,offlineReopen:true,browserErrors:errors,startupPythonErrors,chapters,durationSeconds:(Date.now()-started)/1000,videoPath:path.join(output,'python-foundation.webm')};
     fs.writeFileSync(path.join(output,'acceptance.json'),JSON.stringify(acceptance,null,2)+'\n');
     assert.deepEqual(startupPythonErrors,[],'Original Blender must start without Python tracebacks');
     console.log(JSON.stringify({bundleVersion:manifest.version,pythonFoundation:true,network:true,offlineReopen:true}));
