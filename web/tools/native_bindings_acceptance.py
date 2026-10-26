@@ -15,6 +15,7 @@ def validate(base, manifest):
     library = read(base / 'python-bindings-check.json')
     avif = read(base / 'avif-check.json')
     assert avif['libheifVersion'] == '1.20.2' and avif['originalOIIOPlugin']
+    assert avif['dracoBridgeCoexistence']
     assert avif['oddDimensions'] == [37, 23] and avif['invalidInputRejected'] and avif['decoderRecovery']
     assert {(item['bits'], item['channels']) for item in avif['cases']} == {
         (bits, channels) for bits in (8, 10, 12) for channels in (1, 3, 4)}
@@ -62,6 +63,11 @@ def validate(base, manifest):
             'volumeTransform', 'colorConfig', 'materialDocument', 'shaderTextExactlyMatchesNative',
             'savedBlendVerified', 'originalBlenderAVIF'))
         assert verified['volumeGridTypes'] == 9 and len(verified['avif']) == 9
+        scalar = verified['scalarColorReference']
+        assert scalar['nativeScalarColorReference'] and len(scalar['cases']) == 9
+        assert scalar['disabledOptimization'] == 'OPTIMIZATION_FAST_LOG_EXP_POW'
+        assert scalar['defaultFlags'] ^ scalar['scalarFlags'] == 0x04000000
+        assert all(case['scalarPixelsExact'] for case in scalar['cases'])
         assert report['files'] == verified['files']
         for name, entry in report['files'].items():
             assert (directory / name).stat().st_size == entry['bytes']

@@ -323,9 +323,14 @@ These checks compare CPU color transforms, image pixels, all nine OpenVDB grid
 types and four generated shader texts with native Blender. Integer values beyond
 53 bits pass through JSON as decimal strings. AVIF checks use Blender's original
 image API at 8, 10 and 12 bits in grayscale, RGB and RGBA. The 37-pixel width
-exercises its byte-buffer padding workaround. Native Blender independently reads
+covers odd-width byte input. Native Blender independently reads
 the exported files and saved scene. Expected truncated-input errors are consumed
 before checking decoder recovery.
+
+Native AVIF readback records Blender's default color conversion. A second native
+process disables only OpenColorIO's `OPTIMIZATION_FAST_LOG_EXP_POW` approximation
+and requires exact equality with the browser's scalar color results. The report
+retains the difference from native SSE defaults separately from codec errors.
 
 The combined interpreter check runs all eleven extensions in one process and
 requires clean Python finalization. The Wasm-only nanobind patch supplies the
@@ -333,6 +338,12 @@ constructor callback's exact three-argument signature. Module-specific compiler
 definitions keep MaterialX's internal helper names distinct when statically
 linked. The guarded yaml-cpp value lifetime fix avoids an invalid shutdown
 callback signature without changing its native build.
+
+The static Draco bridge gives its opaque `Encoder` and `Decoder` types web-specific
+names so they cannot collide with libheif's global classes and destructors. Its
+original C entry points stay intact. The AVIF regression executable links both
+libraries, creates and releases both Draco objects, and exercises all nine codec
+cases. The standalone glTF check uses the same type shim.
 
 The dependency checks exercise actual oneTBB workers, exception propagation,
 PNG round trips and error recovery through OpenImageIO, OpenColorIO, and Blender's
@@ -467,7 +478,8 @@ python3 web/tools/native_usd_recording.py
 
 The USD importer reads USD Preview Surface materials. The MaterialX check
 covers graph export; USD's CPU imaging libraries provide primitive geometry.
-Hydra rendering and MaterialX's separate Python bindings remain disabled. The standalone dependency checks also import static `pxr`
+Hydra graphics rendering remains disabled. MaterialX's Python bindings are
+covered by the separate binding checks above. The standalone dependency checks also import static `pxr`
 modules, exercise USDC and tetrahedral surface extraction, and validate an
 OpenPBR MaterialX document with both PugiXML versions linked.
 

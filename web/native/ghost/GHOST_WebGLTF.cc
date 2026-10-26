@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <tuple>
 #include <type_traits>
+#include "GHOST_WebDracoTypes.hh"
 #include "intern/draco_bridge/intern/encoder.h"
 #include "intern/draco_bridge/intern/decoder.h"
 #include "intern/meshoptimizer_bridge/intern/encoder.h"

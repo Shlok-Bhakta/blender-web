@@ -16,6 +16,7 @@ def main():
     assert report['hardware'] and not report['fallback'] and report['offlineReopen']
     assert not report['browserErrors'] and not report['startupPythonErrors']
     assert verified['savedBlendVerified'] and verified['shaderTextExactlyMatchesNative'] and verified['originalBlenderAVIF']
+    assert verified['scalarColorReference']['nativeScalarColorReference']
     duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries',
         'format=duration','-of','default=noprint_wrappers=1:nokey=1',report['videoPath']],text=True))
     work=ROOT/'build/native/python-bindings-recording';work.mkdir(exist_ok=True)

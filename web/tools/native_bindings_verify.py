@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 
@@ -89,7 +90,9 @@ for case in report['avif']['cases']:
     blender_pixels=np.array(image.pixels[:],np.float32)
     wasm_pixels=np.fromfile(directory/(name+'.blender.f32'),dtype='<f4')
     blender_error=float(np.max(np.abs(blender_pixels-wasm_pixels)))
-    assert blender_error<2e-5,(name,blender_error)
+    # Preserve native defaults here. A fresh process below checks exact scalar
+    # color math, separating the native SSE approximation from codec errors.
+    blender_pixels.astype('<f4').tofile(directory/'native'/(name+'.default.f32'))
     bpy.data.images.remove(image)
     avif_results.append(dict(name=name,readerMaxError=reader_error,encoderMaxError=encoder_error,
                              encoderTolerance=tolerance,blenderReaderMaxError=blender_error))
@@ -99,14 +102,49 @@ assert saved==expected
 result=dict(nativeAPIsEqual=True,images=images,volumeGridTypes=9,volumeNumpyExact=True,
             int64Exact=True,volumeMetadata=True,volumeTransform=True,colorConfig=True,
             materialDocument=True,shaderTextExactlyMatchesNative=True,savedBlendVerified=True,
-            originalBlenderAVIF=True,avif=avif_results)
+            originalBlenderAVIF=True,avif=avif_results,
+            nativeDefaultOptimizationFlags=int(ocio.OPTIMIZATION_DEFAULT),
+            nativeScalarOptimizationFlags=int(ocio.OPTIMIZATION_DEFAULT)&~int(ocio.OPTIMIZATION_FAST_LOG_EXP_POW))
 (directory/'native/results.json').write_text(json.dumps(result,indent=2)+'\\n')
 ''')
+    native_env = dict(os.environ)
+    native_env.pop('OCIO_OPTIMIZATION_FLAGS', None)
     with (output / 'readback.log').open('w') as log:
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1',
             '--python', str(script), '--', str(directory), str(source), str(avif_source)],
-            stdout=log, stderr=subprocess.STDOUT, check=True)
+            stdout=log, stderr=subprocess.STDOUT, env=native_env, check=True)
     result = json.loads((output / 'results.json').read_text())
+    scalar = output / 'scalar-color.py'
+    scalar.write_text('''import bpy, hashlib, json, os, sys
+from pathlib import Path
+import numpy as np
+directory=Path(sys.argv[sys.argv.index('--')+1])
+report=json.loads((directory/'acceptance.json').read_text())
+native=json.loads((directory/'native/results.json').read_text())
+assert os.environ['OCIO_OPTIMIZATION_FLAGS']==str(native['nativeScalarOptimizationFlags'])
+cases=[]
+for case in report['avif']['cases']:
+    name=case['name']
+    image=bpy.data.images.load(str(directory/name),check_existing=False)
+    precise=np.array(image.pixels[:],np.float32)
+    bpy.data.images.remove(image)
+    wasm=np.fromfile(directory/(name+'.blender.f32'),dtype='<f4')
+    default=np.fromfile(directory/'native'/(name+'.default.f32'),dtype='<f4')
+    assert np.array_equal(precise,wasm),(name,float(np.max(np.abs(precise-wasm))))
+    difference=float(np.max(np.abs(default-precise)))
+    original=next(item for item in native['avif'] if item['name']==name)
+    assert difference==original['blenderReaderMaxError']
+    cases.append(dict(name=name,scalarPixelsExact=True,defaultApproximationMaxError=difference,
+                      nativeDefaultPixelsSha256=hashlib.sha256(default.tobytes()).hexdigest()))
+result=dict(nativeScalarColorReference=True,disabledOptimization='OPTIMIZATION_FAST_LOG_EXP_POW',
+            defaultFlags=native['nativeDefaultOptimizationFlags'],scalarFlags=native['nativeScalarOptimizationFlags'],cases=cases)
+(directory/'native/scalar-color.json').write_text(json.dumps(result,indent=2)+'\\n')
+''')
+    with (output / 'scalar-readback.log').open('w') as log:
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1',
+            '--python', str(scalar), '--', str(directory)], stdout=log, stderr=subprocess.STDOUT,
+            env=dict(native_env, OCIO_OPTIMIZATION_FLAGS=str(result['nativeScalarOptimizationFlags'])), check=True)
+    result['scalarColorReference'] = json.loads((output / 'scalar-color.json').read_text())
     result.update(bundleVersion=report['bundleVersion'], sourceSha256=report['sourceSha256'],
                   avifSourceSha256=report['avifSourceSha256'],
                   verifierSourceSha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

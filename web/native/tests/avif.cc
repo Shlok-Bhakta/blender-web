@@ -6,8 +6,13 @@
 #include <cstdio>
 #include <vector>
 #include <string>
+#include "../ghost/GHOST_WebDracoTypes.hh"
+#include "intern/draco_bridge/intern/encoder.h"
+#include "intern/draco_bridge/intern/decoder.h"
 int main(int argc,char**argv){
  assert(argc==2);assert(std::string(heif_get_version())=="1.20.2");std::string directory=argv[1];OIIO::attribute("threads",4);
+ auto encoder=encoderCreate(3);assert(encoder);encoderRelease(encoder);
+ auto decoder=decoderCreate();assert(decoder);decoderRelease(decoder);
  std::puts("{\"cases\":[");bool first=true;
  for(int bits:{8,10,12})for(int channels:{1,3,4}){
   const int width=37,height=23;std::vector<float>data(width*height*channels);
@@ -28,5 +33,5 @@ int main(int argc,char**argv){
  assert(fwrite(invalid,1,sizeof(invalid),file)==sizeof(invalid));fclose(file);
  assert(!OIIO::ImageInput::open(bad));assert(!OIIO::geterror().empty());
  auto recovered=OIIO::ImageInput::open(directory+"/oiio-12-4.avif");assert(recovered);assert(recovered->close());
- std::puts("],\"libheifVersion\":\"1.20.2\",\"originalOIIOPlugin\":true,\"oddDimensions\":[37,23],\"invalidInputRejected\":true,\"decoderRecovery\":true}");return 0;
+ std::puts("],\"libheifVersion\":\"1.20.2\",\"originalOIIOPlugin\":true,\"dracoBridgeCoexistence\":true,\"oddDimensions\":[37,23],\"invalidInputRejected\":true,\"decoderRecovery\":true}");return 0;
 }

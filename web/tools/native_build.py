@@ -35,7 +35,8 @@ def check_dependencies(source, base, prefix, jobs):
                  'web/native/oidn/half.cpp', 'web/tools/native_oidn.py',
                  'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json'],
         'hevc': ['web/native/tests/hevc.cc', 'web/tools/native_media.py'],
-        'avif': ['web/native/tests/avif.cc'],
+        'avif': ['web/native/tests/avif.cc', 'web/native/gltf.cmake',
+                 'web/native/ghost/GHOST_WebDracoTypes.hh'],
     }
     common_inputs = ['web/native/tests/CMakeLists.txt', 'web/native/dependencies.cmake',
                      'web/tools/native_deps.py', 'web/native/toolchain.cmake']
@@ -259,6 +260,7 @@ def check_python(base, prefix):
 
 def check_gltf(base, source, prefix):
     inputs = [ROOT / 'web/native/ghost/GHOST_WebGLTF.cc', ROOT / 'web/native/ghost/GHOST_WebGLTF.hh',
+              ROOT / 'web/native/ghost/GHOST_WebDracoTypes.hh', ROOT / 'web/native/gltf.cmake',
               ROOT / 'web/native/ghost/GHOST_WebGLTF.py', ROOT / 'web/native/tests/gltf.cc',
               ROOT / 'web/native/tests/gltf.py', ROOT / 'web/patches/native-gltf.patch']
     source_hashes = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
@@ -268,6 +270,7 @@ def check_gltf(base, source, prefix):
                       for library in ("draco_bridge", "meshoptimizer_bridge")
                       for name in ("common.cpp", "encoder.cpp", "decoder.cpp")]
     subprocess.run(["em++", "-std=c++20", "-O2", "-pthread", "-msimd128", "-fwasm-exceptions",
+        '-include', str(ROOT / 'web/native/ghost/GHOST_WebDracoTypes.hh'),
         f"-I{prefix / 'include/python3.13'}", f"-I{prefix / 'include'}", f"-I{source}",
         str(ROOT / "web/native/tests/gltf.cc"), str(ROOT / "web/native/ghost/GHOST_WebGLTF.cc"),
         *map(str, bridge_sources), "-Wl,--start-group",

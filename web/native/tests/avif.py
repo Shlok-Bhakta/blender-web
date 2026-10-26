@@ -1,18 +1,22 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Exercise Blender's original ImBuf AVIF path, including odd-width byte input."""
 from pathlib import Path
+import os
 
 
 def run(directory):
+    os.write(1, b'AVIF_BEGIN\n')
     import bpy
     import numpy as np
     import OpenImageIO as oiio
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     scene = bpy.context.scene
+    os.write(1, b'AVIF_CONTEXT\n')
     old_settings = (scene.render.image_settings.file_format, scene.render.image_settings.color_mode,
                     scene.render.image_settings.color_depth, scene.render.image_settings.quality,
                     scene.view_settings.view_transform, scene.view_settings.look)
+    os.write(1, b'AVIF_SETTINGS\n')
     array = np.array([((x * 7 + y * 11 + c * 31) % 256) / 255 if c < 3 else (x % 5 + 1) / 5
                       for y in range(23) for x in range(37) for c in range(4)], np.float32)
     cases = []
@@ -32,12 +36,15 @@ def run(directory):
                 image.pixels.foreach_set(array)
                 name = f'avif-{bits}-{mode}.avif'
                 path = directory / name
+                os.write(1, f'AVIF_SAVE:{name}\n'.encode())
                 image.save_render(str(path), scene=scene)
+                os.write(1, f'AVIF_LOAD:{name}\n'.encode())
                 loaded = bpy.data.images.load(str(path), check_existing=False)
                 assert tuple(loaded.size) == (37, 23)
                 pixels = np.array(loaded.pixels[:], np.float32)
                 assert np.isfinite(pixels).all()
                 reader = oiio.ImageInput.open(str(path))
+                os.write(1, f'AVIF_OIIO:{name}\n'.encode())
                 assert reader, oiio.geterror()
                 spec = reader.spec()
                 assert spec.get_int_attribute('oiio:BitsPerSample', 8) == bits

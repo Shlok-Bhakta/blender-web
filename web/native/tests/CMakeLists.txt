@@ -150,8 +150,19 @@ if(WITH_CODEC_FFMPEG)
     -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)
 endif()
 
+find_package(draco CONFIG REQUIRED)
+include("${CMAKE_CURRENT_LIST_DIR}/../gltf.cmake")
+set(avif_draco_sources
+  "${BLENDER_SOURCE}/intern/draco_bridge/intern/common.cpp"
+  "${BLENDER_SOURCE}/intern/draco_bridge/intern/encoder.cpp"
+  "${BLENDER_SOURCE}/intern/draco_bridge/intern/decoder.cpp")
+blender_web_add_gltf_bridge(bf_intern_draco_bridge "${avif_draco_sources}")
+target_compile_options(bf_intern_draco_bridge PRIVATE -pthread -msimd128 -fwasm-exceptions)
+target_link_libraries(bf_intern_draco_bridge PRIVATE draco::draco)
 add_executable(avif-check avif.cc)
-target_link_libraries(avif-check PRIVATE OpenImageIO::OpenImageIO heif Freetype::Freetype)
+target_include_directories(avif-check PRIVATE "${BLENDER_SOURCE}")
+target_link_libraries(avif-check PRIVATE bf_intern_draco_bridge draco::draco
+  OpenImageIO::OpenImageIO heif Freetype::Freetype)
 target_compile_options(avif-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
 target_link_options(avif-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
   -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8 -sPTHREAD_POOL_SIZE_STRICT=0

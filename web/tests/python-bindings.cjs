@@ -22,7 +22,7 @@ async function main(){
   const page=await context.newPage(),errors=[],startupPythonErrors=[],chapters=[],started=Date.now();
   let checking=false,rejectFailure;
   const failure=new Promise((_,reject)=>rejectFailure=reject);failure.catch(()=>{});
-  const fail=text=>{errors.push(text);rejectFailure(Error(text));};
+  const fail=text=>{errors.push(text);fs.appendFileSync(path.join(output,'browser.log'),'BROWSER_FAILURE:'+text+'\n');rejectFailure(Error(text));};
   page.on('console',message=>{const text=message.text();messages.push(text);fs.appendFileSync(path.join(output,'browser.log'),text+'\n');
     if(/Traceback \(most recent call last\)/.test(text)){
       if(checking)fail(text);else startupPythonErrors.push(text);
@@ -30,6 +30,7 @@ async function main(){
     if(/PYTHON_BINDINGS_FAILED:|Aborted\(|Blender startup failed|Blender UI frame failed|Blender GPU job failed|Blender WebGPU (error|device lost)/.test(text))fail(text);
   });
   page.on('pageerror',error=>fail(error.stack||error.message));
+  page.on('crash',()=>fail('Chromium renderer crashed during the Blender binding checks'));
   const command=(code,marker)=>Promise.race([failure,consoleCommand(page,code,marker,()=>page.screenshot(),300000)]);
   const chapter=title=>chapters.push({seconds:(Date.now()-started)/1000,title});
   try{
