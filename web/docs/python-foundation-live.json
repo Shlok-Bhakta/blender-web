@@ -1,0 +1,31 @@
+{
+  "bundleVersion": "8f28615dc99fd90616b7",
+  "url": "https://shlok-bhakta.github.io/blender-web/",
+  "checkedAt": "2026-10-26T19:34:44.687402+00:00",
+  "publisher": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40383933145",
+  "publisherGroupsPassed": 16,
+  "hardware": true,
+  "adapter": {
+    "vendor": "amd",
+    "architecture": "gcn-5",
+    "device": "",
+    "description": ""
+  },
+  "pythonFoundation": true,
+  "network": true,
+  "publicHTTPSFixture": true,
+  "peakBackgroundDownloads": 2,
+  "offlineReopen": true,
+  "nativeReadback": true,
+  "browserErrors": [],
+  "startupPythonErrors": [],
+  "runnerSourceSha256": "85d7896c6544f97519a0f1b380f444c2612223d11c6fd4620dfd7a6f85053741",
+  "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
+  "browserAcceptanceSha256": "5005c0633abb4d8989c5aab94edf3090859afe340e47709f46cbd94941b148f8",
+  "nativeVerificationSha256": "0ff8bf8b7e074ffe930529613f9143f613ccf1bc0b5defcf5028890282f58555",
+  "evidence": {
+    "url": "https://github.com/Shlok-Bhakta/blender-web/releases/download/web-native-8f28615dc99fd90616b7/python-foundation-live-evidence.tar.gz",
+    "bytes": 11686348,
+    "sha256": "8ff3114cf9501e617673c2e9b6b131df7f751abe4bc47555d7eda4a55e647469"
+  }
+}

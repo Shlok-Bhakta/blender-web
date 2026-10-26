@@ -280,6 +280,12 @@ python3 web/tools/native_python_verify.py build/native/python-foundation-evidenc
 python3 web/tools/native_python_recording.py
 ```
 
+For a deployed HTTPS site, expose the synthetic fixture server through a public
+HTTPS endpoint. Set `WEB_PYTHON_FIXTURE_PORT` to its local listening port and
+`WEB_PYTHON_NETWORK_URL` to that endpoint, alongside `WEB_TEST_URL` and
+`WEB_PYTHON_OUTPUT`. This avoids a public page requesting private localhost
+access. The browser's CORS and local-network protections remain enabled.
+
 These checks run through Blender's original console. They cover database
 transactions, FTS3/4/5, WAL read isolation and writer locks, LZMA/Zstandard file
 exchange, TLS 1.2/1.3 memory-BIO handshakes and certificate rejection, package

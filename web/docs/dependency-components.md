@@ -1,9 +1,11 @@
 # Dependency component audit
 
 This audit compares the pinned Blender 5.2.2 LTS sources and the installed native
-5.2.2 build with candidate browser bundle `8f28615dc99fd90616b7`. All 100 local
-validation stages passed; source CI and the Pages rollout are still pending.
-The published Pages bundle remains `087a1025b9389b80e57d`. This audit supplements the
+5.2.2 build with published browser bundle `8f28615dc99fd90616b7`. All 100 local
+validation stages, both source CI builds and sixteen deployment groups passed.
+A fresh hardware run on Pages also passed Python, public HTTPS downloads, offline
+reopening and independent native readback. See the
+[live verification](python-foundation-live.json). This audit supplements the
 [build flag report](dependency-status.json). Enabling a top-level library does
 not establish that its Python bindings, plugins, devices or every file format
 work. Full dependency parity has not been reached.
