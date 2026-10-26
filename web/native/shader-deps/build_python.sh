@@ -53,8 +53,8 @@ if [ ! -x "$NATIVE/python" ] || ! "$NATIVE/python" -c "import binascii, zlib" 2>
   mkdir -p "$NATIVE"; ( cd "$NATIVE"
     rm -f config.cache
     ZLIB_CFLAGS="-I$HOST_PREFIX/include" ZLIB_LIBS="$HOST_PREFIX/lib/libz.a" \
-      "$PYSRC/configure" >/dev/null
-    make -j"$NPROC" >/dev/null 2>&1 )
+      "$PYSRC/configure"
+    make -j"$NPROC" )
 fi
 BUILD_PY="$NATIVE/python"
 "$BUILD_PY" --version
