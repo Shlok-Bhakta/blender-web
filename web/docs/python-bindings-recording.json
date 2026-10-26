@@ -1,0 +1,41 @@
+{
+  "bundleVersion": "9d08b6bd9fd4bb9429db",
+  "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+  "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+  "durationSeconds": 71.04,
+  "chapters": [
+    {
+      "seconds": 0.001,
+      "title": "Start original Blender with the image, color, volume and material bindings"
+    },
+    {
+      "seconds": 12.155,
+      "title": "Run original Python APIs and export native-readable files"
+    },
+    {
+      "seconds": 19.605,
+      "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
+    },
+    {
+      "seconds": 37.087,
+      "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
+    },
+    {
+      "seconds": 47.358,
+      "title": "Inspect the results in the original Text Editor"
+    },
+    {
+      "seconds": 55.684,
+      "title": "Reopen the saved scene and volume after an offline reload"
+    }
+  ],
+  "captions": true,
+  "source": "Real hardware Chromium capture of original Blender, Python bindings, AVIF image export and offline reopening",
+  "path": "web/docs/python-bindings-walkthrough.mp4",
+  "bytes": 2464900,
+  "sha256": "cd85f8e2cbd511cddeb0d0c6da6162685cecc25ba7e081e56f3cebfcb6cb4961",
+  "screenshot": {
+    "path": "web/docs/python-bindings-browser.png",
+    "sha256": "04a43231079f32c389d1cb68c022a042f1b9b0f2f7ee67c9442dec3f22379cb7"
+  }
+}

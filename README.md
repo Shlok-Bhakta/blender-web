@@ -31,6 +31,8 @@ The `blender/` submodule pins the official stable release. Platform code lives i
 
 [Watch CPU denoising and path guiding](web/docs/render-libraries-walkthrough.mp4)
 
+[Watch Python image, color, volume and material bindings with AVIF](web/docs/python-bindings.md)
+
 [Watch the Python dependency candidate](web/docs/python-foundation-walkthrough.mp4) · [Checks and current release status](web/docs/python-foundation.md)
 
 [Watch audio stretching and AV1/HEVC exports](web/docs/media-walkthrough.mp4)
