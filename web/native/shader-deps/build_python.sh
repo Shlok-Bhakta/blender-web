@@ -51,6 +51,9 @@ NATIVE="$BLD/python-native"
 if [ ! -x "$NATIVE/python" ] || ! "$NATIVE/python" -c "import binascii, zlib" 2>/dev/null; then
   log "building native build-python 3.13.13 (full)"
   mkdir -p "$NATIVE"; ( cd "$NATIVE"
+    # Dependency recipes export the target pkg-config directory. The host
+    # generator must discover host libraries, never the installed Wasm archives.
+    unset PKG_CONFIG_LIBDIR PKG_CONFIG_PATH PKG_CONFIG_SYSROOT_DIR
     rm -f config.cache
     ZLIB_CFLAGS="-I$HOST_PREFIX/include" ZLIB_LIBS="$HOST_PREFIX/lib/libz.a" \
       "$PYSRC/configure"
