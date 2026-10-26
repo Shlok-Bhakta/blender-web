@@ -1,0 +1,22 @@
+--- a/src/emitterutils.cpp
++++ b/src/emitterutils.cpp
+@@ -173,11 +173,19 @@
+   }
+ 
+   // then check until something is disallowed
++#if defined(__EMSCRIPTEN__)
++  static const RegEx disallowed_flow =
++#else
+   static const RegEx& disallowed_flow =
++#endif
+       Exp::EndScalarInFlow() | (Exp::BlankOrBreak() + Exp::Comment()) |
+       Exp::NotPrintable() | Exp::Utf8_ByteOrderMark() | Exp::Break() |
+       Exp::Tab() | Exp::Ampersand();
++#if defined(__EMSCRIPTEN__)
++  static const RegEx disallowed_block =
++#else
+   static const RegEx& disallowed_block =
++#endif
+       Exp::EndScalar() | (Exp::BlankOrBreak() + Exp::Comment()) |
+       Exp::NotPrintable() | Exp::Utf8_ByteOrderMark() | Exp::Break() |
+       Exp::Tab() | Exp::Ampersand();

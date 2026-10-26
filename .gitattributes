@@ -2,3 +2,4 @@
 web/patches/*.patch whitespace=-blank-at-eol
 web/native/patches/*.patch whitespace=-blank-at-eol
 web/native/shader-deps/*.patch whitespace=-blank-at-eol
+web/native/python-bindings/*.patch whitespace=-blank-at-eol

@@ -58,6 +58,8 @@ def build(base, jobs, only=None):
             reports.append(build_python_extensions(base, jobs))
             from native_python_packages import build as build_python_packages
             reports.append(build_python_packages(base))
+            from native_bindings import build as build_python_bindings
+            reports.append(build_python_bindings(base, jobs))
     if only is not None:
         return reports
     (base / 'application-dependencies.json').write_text(json.dumps(reports, indent=2)+'\n')

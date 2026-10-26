@@ -38,6 +38,8 @@ def main():
     from native_python_acceptance import validate as validate_python
     python_proof = validate_python(base, manifest)
     foundation = python_proof['libraryChecks']['foundation']
+    from native_bindings_acceptance import validate as validate_bindings
+    bindings_proof = validate_bindings(base, manifest)
     native=desktop['options'];web=browser['buildOptions']
     assert set(native)==set(web),'Compare the same release API fields'
     missing=sorted(name for name,enabled in native.items() if enabled and not web[name])
@@ -70,9 +72,7 @@ def main():
         additionalLibraryGaps=[
             'CPython _ctypes/libffi, general multiprocessing and raw socket transport',
             'Cython native accelerators and arbitrary dynamic Wasm extension loading',
-            'OpenImageIO, OpenColorIO, OpenVDB and MaterialX Python bindings',
-            'MaterialX OSL/MDL shader generators and render utilities',
-            'libheif AVIF images through OpenImageIO',
+            'MaterialX OpenGL rendering and OSL rendering compiler/runtime integration',
             'USD OpenVDB support and the Hydra OpenImageIO image plugin',
             'OpenSubdiv GPU evaluation'],
         componentAudit='web/docs/dependency-components.md',
@@ -85,6 +85,14 @@ def main():
             originalConditionalDownloader=True, originalBackgroundDownloader=True,
             networkStreaming=False,
             evidence='web/docs/python-foundation.acceptance.json'),
+        pythonBindings=dict(
+            verifiedBundle=manifest['version'],
+            versions=bindings_proof['libraryChecks']['versions'], modules=11,
+            materialXGenerators=['GLSL', 'MSL', 'OSL', 'MDL'],
+            openVDBGridTypes=9, openVDBAX=False, avifDepths=[8,10,12],
+            browserVariants=len(bindings_proof['browserVariants']),
+            independentNativeReadbacks=len(bindings_proof['nativeReadback']),
+            evidence='web/docs/python-bindings.acceptance.json'),
         optimizationWork=['NumPy explicit Wasm SIMD kernels', 'OpenColorIO SIMD kernels'],
         separateEnhancements=['HarfBuzz/FriBidi integration into Blender font rendering'],
         baseLibraryRecipes=libraries,

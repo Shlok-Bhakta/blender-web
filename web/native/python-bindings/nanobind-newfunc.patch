@@ -1,0 +1,17 @@
+--- a/src/nb_type.cpp
++++ b/src/nb_type.cpp
+@@ -971,7 +971,14 @@
+         *s++ = { Py_tp_base, (void *) base };
+ 
+     *s++ = { Py_tp_init, (void *) inst_init };
++#ifdef __EMSCRIPTEN__
++    // CPython calls newfunc with three arguments. Wasm requires the exact ABI.
++    *s++ = { Py_tp_new, (void *) +[](PyTypeObject *tp, PyObject *, PyObject *) -> PyObject * {
++        return inst_new_int(tp);
++    } };
++#else
+     *s++ = { Py_tp_new, (void *) inst_new_int };
++#endif
+     *s++ = { Py_tp_dealloc, (void *) inst_dealloc };
+ 
+     if (has_doc)

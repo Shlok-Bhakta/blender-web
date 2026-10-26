@@ -149,3 +149,11 @@ if(WITH_CODEC_FFMPEG)
     -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
     -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)
 endif()
+
+add_executable(avif-check avif.cc)
+target_link_libraries(avif-check PRIVATE OpenImageIO::OpenImageIO heif Freetype::Freetype)
+target_compile_options(avif-check PRIVATE -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+target_link_options(avif-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+  -sENVIRONMENT=node -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=8 -sPTHREAD_POOL_SIZE_STRICT=0
+  -sEXIT_RUNTIME=1 -sSTACK_SIZE=8388608 -sDEFAULT_PTHREAD_STACK_SIZE=4194304
+  -sINITIAL_MEMORY=134217728 -sALLOW_MEMORY_GROWTH=1 -sNODERAWFS=1)

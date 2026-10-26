@@ -56,6 +56,7 @@ RECIPES = {
     "FFTW": ("", ["-DENABLE_THREADS=ON", "-DWITH_COMBINED_THREADS=OFF", "-DBUILD_TESTS=OFF"]),
     "RUBBERBAND": ("", ["-Dauto_features=disabled", "-Dfft=fftw", "-Dresampler=builtin"]),
     "AOM": ("", ["-DAOM_TARGET_CPU=generic", "-DENABLE_DOCS=OFF", "-DENABLE_EXAMPLES=OFF", "-DENABLE_TESTS=OFF", "-DENABLE_TOOLS=OFF", "-DCONFIG_RUNTIME_CPU_DETECT=OFF"]),
+    "LIBHEIF": ("", ["-DENABLE_PLUGIN_LOADING=OFF", "-DWITH_AOM_ENCODER=ON", "-DWITH_AOM_DECODER=ON", "-DWITH_DAV1D=OFF", "-DWITH_FFMPEG_DECODER=OFF", "-DWITH_JPEG_ENCODER=OFF", "-DWITH_KVAZAAR=OFF", "-DWITH_LIBDE265=OFF", "-DWITH_LIBSHARPYUV=OFF", "-DWITH_OPENJPH_ENCODER=OFF", "-DWITH_OpenH264_DECODER=OFF", "-DWITH_OpenJPEG_DECODER=OFF", "-DWITH_OpenJPEG_ENCODER=OFF", "-DWITH_RAV1E=OFF", "-DWITH_SvtEnc=OFF", "-DWITH_UVG266=OFF", "-DWITH_VVDEC=OFF", "-DWITH_VVENC=OFF", "-DWITH_X265=OFF", "-DWITH_EXAMPLES=OFF", "-DWITH_EXAMPLE_HEIF_VIEW=OFF", "-DWITH_GDK_PIXBUF=OFF"]),
     "X265": ("source", ["-DENABLE_SHARED=OFF", "-DENABLE_CLI=OFF", "-DENABLE_ASSEMBLY=OFF", "-DENABLE_LIBNUMA=OFF"]),
     "OGG": ("", ["-DBUILD_TESTING=OFF"]),
     "VORBIS": ("", []),
@@ -83,7 +84,7 @@ RECIPES = {
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
-CXX_PACKAGES = {"OIDN", "OPENPGL", "EMBREE", "RUBBERBAND", "AOM", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
+CXX_PACKAGES = {"OIDN", "OPENPGL", "EMBREE", "RUBBERBAND", "AOM", "LIBHEIF", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
                 "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
@@ -217,6 +218,14 @@ def build(args):
             if not dependency_stamp.is_file():
                 raise RuntimeError(f"Build TBB before {name}")
             signature['dependencyStamps'] = {'TBB': hashlib.sha256(dependency_stamp.read_bytes()).hexdigest()}
+        if name in {'LIBHEIF', 'OPENIMAGEIO'}:
+            dependency = 'aom' if name == 'LIBHEIF' else 'libheif'
+            dependency_stamp = base / dependency / 'installed.json'
+            if not dependency_stamp.is_file():
+                raise RuntimeError(f'Build {dependency} before {name}')
+            signature['dependencyStamps'] = {dependency: hashlib.sha256(dependency_stamp.read_bytes()).hexdigest()}
+            if name == 'LIBHEIF':
+                signature['libraryOnlyWasmAPI'] = 1
         if name == "OIDN":
             from native_oidn import INPUTS
             signature['compilerBridge'] = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
@@ -309,6 +318,15 @@ def build(args):
         log = directory / "build.log"
         subdir, options = RECIPES[name]
         options = list(options)
+        if name == 'LIBHEIF':
+            # Upstream's own standalone option selects its original C/C++ API,
+            # omitting the separate JavaScript embind application wrapper.
+            flags = C_FLAGS + ' -D__EMSCRIPTEN_STANDALONE_WASM__=1'
+            options += [f'-DCMAKE_C_FLAGS={flags}', f'-DCMAKE_CXX_FLAGS={flags}',
+                        f'-DAOM_INCLUDE_DIR={prefix / "include"}',
+                        f'-DAOM_LIBRARY={prefix / "lib/libaom.a"}']
+        if name == 'OPENIMAGEIO':
+            options += ['-DCMAKE_REQUIRE_FIND_PACKAGE_Libheif=ON', '-DUSE_Libheif=ON']
         if name == "OIDN":
             from native_oidn import configure as configure_oidn
             options += configure_oidn(base, download, prefix)

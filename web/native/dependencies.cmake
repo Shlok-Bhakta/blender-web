@@ -49,6 +49,7 @@ find_package(OpenColorIO CONFIG REQUIRED)
 # OpenImageIO embeds these codecs and exports their static target references.
 find_package(WebP CONFIG REQUIRED)
 find_package(OpenJPEG CONFIG REQUIRED)
+find_package(libheif CONFIG REQUIRED)
 find_package(OpenImageIO CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(TBB CONFIG REQUIRED)

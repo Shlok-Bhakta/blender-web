@@ -35,6 +35,7 @@ def check_dependencies(source, base, prefix, jobs):
                  'web/native/oidn/half.cpp', 'web/tools/native_oidn.py',
                  'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json'],
         'hevc': ['web/native/tests/hevc.cc', 'web/tools/native_media.py'],
+        'avif': ['web/native/tests/avif.cc'],
     }
     common_inputs = ['web/native/tests/CMakeLists.txt', 'web/native/dependencies.cmake',
                      'web/tools/native_deps.py', 'web/native/toolchain.cmake']
@@ -57,9 +58,11 @@ def check_dependencies(source, base, prefix, jobs):
                             text=True, stdout=subprocess.PIPE, timeout=120)
     print(result.stdout, end="", flush=True)
     (base / "dependency-check.json").write_text(json.dumps(json.loads(result.stdout), indent=2) + "\n")
-    for name in ("fftw", "alembic", "media", "tracking", "embree", "openpgl", "oidn", "hevc"):
+    for name in ("fftw", "alembic", "media", "tracking", "embree", "openpgl", "oidn", "hevc", "avif"):
         command = ["node", str(checks / f"{name}-check.js")]
-        if name in {'oidn', 'hevc'}:
+        if name == 'avif':
+            (base / 'avif-check').mkdir(exist_ok=True)
+        if name in {'oidn', 'hevc', 'avif'}:
             command.append(str(base / f'{name}-check'))
         output = subprocess.check_output(command, text=True, timeout=60)
         report = json.loads(output)
@@ -302,6 +305,33 @@ def check_expressions(base, source, prefix):
     print(output, end="", flush=True)
 
 
+def check_python_bindings(base, prefix):
+    from native_bindings import INPUTS
+    inputs = [*INPUTS, 'web/native/tests/python-bindings.cc',
+              'web/native/tests/python-bindings.py', 'web/native/python-bindings/check/CMakeLists.txt']
+    source_hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs}
+    work = base / 'python-bindings-check'
+    subprocess.run(['emcmake', 'cmake', '-G', 'Unix Makefiles',
+        '-S', str(ROOT / 'web/native/python-bindings/check'), '-B', str(work),
+        '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS=-O3 -pthread -msimd128 -fwasm-exceptions',
+        f'-DBLENDER_WEB_PREFIX={prefix}', f'-DBLENDER_WEB_ASSETS={base / "assets"}',
+        f'-DCMAKE_FIND_ROOT_PATH={prefix}', f'-DCMAKE_PREFIX_PATH={prefix}'], check=True)
+    subprocess.run(['cmake', '--build', str(work), '--parallel', '2'], check=True)
+    result = subprocess.run(['node', str(work / 'check.js')], cwd=work,
+                            text=True, capture_output=True, timeout=180, check=True)
+    if result.stderr.strip():
+        raise RuntimeError('Unexpected interpreter shutdown diagnostics:\n' + result.stderr)
+    report = json.loads(result.stdout)
+    if source_hashes != {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs}:
+        raise RuntimeError('Binding inputs changed during validation; rerun the check')
+    report['sourceHashes'] = source_hashes
+    report['bindingInstallationSha256'] = hashlib.sha256(
+        (base / 'deps/python-bindings/installed.json').read_bytes()).hexdigest()
+    report['cleanInterpreterShutdown'] = True
+    (base / 'python-bindings-check.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps(dict(versions=report['versions'], cleanInterpreterShutdown=True)), flush=True)
+
+
 def prepare_native(base, full_assets=False):
     source = prepare_source(base)
     patch = ROOT / "web/patches/native-web.patch"
@@ -388,6 +418,7 @@ def main():
         stage(base, source, prefix, shader_seed=not args.skip_shader_seed)
         if args.check_deps:
             check_python(base, prefix)
+            check_python_bindings(base, prefix)
             check_gltf(base, source, prefix)
             check_shader_translation(base, prefix)
             check_switch_lowering(base)

@@ -25,6 +25,8 @@ def main():
     version = manifest['version']
     from native_python_acceptance import validate as validate_python
     python_foundation = validate_python(base, manifest)
+    from native_bindings_acceptance import validate as validate_bindings
+    python_bindings = validate_bindings(base, manifest)
     from native_render_libraries_acceptance import validate as validate_render_libraries
     render_libraries = validate_render_libraries(base, manifest)
     embree_names=['embree-evidence','embree-evidence-ui','embree-evidence-hardware']
@@ -338,6 +340,7 @@ def main():
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,
               'renderLibraries':render_libraries,
               'pythonFoundation':python_foundation,
+              'pythonBindings':python_bindings,
               'nativeChecks':native, 'recording':recording, 'wasmBuild':wasm_build,
               'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
               'openvdbNanoVDB':{'browserVariants':volumes},
@@ -404,6 +407,8 @@ def main():
     report['deploymentArchive'] = {'name':archive.name, 'bytes':archive.stat().st_size,
                                     'sha256':hashlib.sha256(archive.read_bytes()).hexdigest()}
     write(docs / 'web-features.acceptance.json', report)
+    write(docs / 'python-foundation.acceptance.json', python_foundation)
+    write(docs / 'python-bindings.acceptance.json', python_bindings)
     write(docs / 'loading-cache.acceptance.json', {
         'render':loading[0], 'uiFallback':loading[1],
         'deployments':read(base / 'cache-evidence/acceptance.json'),

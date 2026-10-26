@@ -298,6 +298,36 @@ and metadata locks. This context only implements the downloader's operations.
 It does not provide general multiprocessing, raw sockets or subprocesses.
 Marketplace installation and cross-tab metadata locking remain unverified.
 
+The image, color, volume and material binding build statically registers the
+original OpenImageIO, PyOpenColorIO, OpenVDB and eight MaterialX extension modules.
+It preserves their Python package wrappers. MaterialX generates GLSL, MSL, OSL
+and MDL source and supplies its core image and mesh utilities. Its OpenGL renderer
+and OSL rendering compiler/runtime integration remain separate work.
+
+```sh
+python3 web/tools/native_bindings.py --jobs 4
+WEB_TEST_HARDWARE=1 node web/tests/python-bindings.cjs
+node web/tests/python-bindings.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/python-bindings.cjs
+python3 web/tools/native_bindings_verify.py build/native/python-bindings-evidence-hardware --blender /path/to/blender
+python3 web/tools/native_bindings_recording.py
+```
+
+These checks compare CPU color transforms, image pixels, all nine OpenVDB grid
+types and four generated shader texts with native Blender. Integer values beyond
+53 bits pass through JSON as decimal strings. AVIF checks use Blender's original
+image API at 8, 10 and 12 bits in grayscale, RGB and RGBA. The 37-pixel width
+exercises its byte-buffer padding workaround. Native Blender independently reads
+the exported files and saved scene. Expected truncated-input errors are consumed
+before checking decoder recovery.
+
+The combined interpreter check runs all eleven extensions in one process and
+requires clean Python finalization. The Wasm-only nanobind patch supplies the
+constructor callback's exact three-argument signature. Module-specific compiler
+definitions keep MaterialX's internal helper names distinct when statically
+linked. The guarded yaml-cpp value lifetime fix avoids an invalid shutdown
+callback signature without changing its native build.
+
 The dependency checks exercise actual oneTBB workers, exception propagation,
 PNG round trips and error recovery through OpenImageIO, OpenColorIO, and Blender's
 WOFF2 font through FreeType/Brotli. Application checks also run embedded Python
@@ -525,6 +555,6 @@ source-build workflow remains available and builds the application itself.
 
 Source CI builds and tests the application on pushes and publishes its artifacts.
 GitHub Pages publication goes through `publish-validated.yml`, which verifies the
-release archive's SHA-256 and runs sixteen browser validation groups before
+release archive's SHA-256 and runs seventeen browser validation groups before
 deployment. This keeps a later source rebuild from replacing the tested release
 with a separately packaged bundle.

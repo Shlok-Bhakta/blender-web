@@ -73,6 +73,12 @@ jobs:
             build/native/deps/prefix/lib/blender-web-numpy
             build/native/deps/prefix/lib/blender-web-python
             build/native/deps/prefix/include/blender-web-python.hh
+            build/native/deps/prefix/include/blender-web-python-bindings.hh
+            build/native/deps/prefix/lib/blender-web-bindings
+            build/native/deps/python-bindings/installed.json
+            build/native/deps/prefix/share/blender-web/licenses/pybind11
+            build/native/deps/prefix/share/blender-web/licenses/nanobind
+            build/native/deps/prefix/share/blender-web/licenses/materialx/render
             build/native/deps/python-extensions/installed.json
             build/native/deps/python-packages/installed.json
             build/native/deps/numpy/installed.json
@@ -82,7 +88,7 @@ jobs:
             build/native/deps/prefix/include/shaderc
             build/native/deps/prefix/lib/libshaderc_combined.a
             build/native/gpu-deps
-          key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_python_packages.py', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
+          key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_python_packages.py', 'web/tools/native_bindings.py', 'web/native/python-bindings/**', 'web/native/patches/yamlcpp.patch', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
           restore-keys: ${{ runner.os }}-native-app-deps-v2-
       - name: Build and validate native dependencies
         run: |
@@ -112,6 +118,12 @@ jobs:
             build/native/deps/prefix/lib/blender-web-numpy
             build/native/deps/prefix/lib/blender-web-python
             build/native/deps/prefix/include/blender-web-python.hh
+            build/native/deps/prefix/include/blender-web-python-bindings.hh
+            build/native/deps/prefix/lib/blender-web-bindings
+            build/native/deps/python-bindings/installed.json
+            build/native/deps/prefix/share/blender-web/licenses/pybind11
+            build/native/deps/prefix/share/blender-web/licenses/nanobind
+            build/native/deps/prefix/share/blender-web/licenses/materialx/render
             build/native/deps/python-extensions/installed.json
             build/native/deps/python-packages/installed.json
             build/native/deps/numpy/installed.json
@@ -143,6 +155,8 @@ jobs:
           node web/tests/cache.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/loading.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/loading.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-bindings.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-bindings.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-foundation.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-foundation.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/render-libraries.cjs
@@ -178,6 +192,8 @@ jobs:
             build/native/loading-evidence-ui
             build/native/render-libraries-evidence*
             build/native/python-foundation-evidence*
+            build/native/python-bindings-evidence*
+            build/native/python-bindings-check.json
             build/native/hevc-check-*.hevc
             build/native/embree-evidence*
             build/native/cache-evidence

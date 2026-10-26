@@ -65,6 +65,11 @@ def main():
         directory = 'build/native/python-foundation-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
         run(f'python-foundation-native-{suffix}', ['python3', 'web/tools/native_python_verify.py', directory, '--blender', args.blender])
     run('python-foundation-video', ['python3', 'web/tools/native_python_recording.py'])
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'python-bindings-{suffix}', ['node', 'web/tests/python-bindings.cjs'], **flags)
+        directory = 'build/native/python-bindings-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
+        run(f'python-bindings-native-{suffix}', ['python3', 'web/tools/native_bindings_verify.py', directory, '--blender', args.blender])
+    run('python-bindings-video', ['python3', 'web/tools/native_bindings_recording.py'])
     run('hevc-native', ['python3', 'web/tools/native_hevc_verify.py'])
     run('render-libraries-baseline', ['python3', 'web/tools/native_render_libraries_baseline.py', '--blender', args.blender])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
