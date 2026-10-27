@@ -11,7 +11,7 @@ from prepare import ROOT
 
 
 INPUTS = ['web/tools/native_usd_imaging.py', 'web/native/usd-imaging/CMakeLists.txt',
-          'web/native/toolchain.cmake', 'web/upstream.json']
+          'web/native/toolchain.cmake', 'web/native/patches/usd.patch', 'web/upstream.json']
 COMPONENTS = {'hioOpenVDB': 'pxr/imaging/hioOpenVDB',
               'hioOiio': 'pxr/imaging/plugin/hioOiio'}
 
@@ -44,9 +44,18 @@ def build(base, jobs):
     source = base / 'deps/usd/source'
     if not source.is_dir():
         # CI may restore installed USD archives without its generated source tree.
-        # The installed headers carry the checked core patch; CPU plugin sources
-        # are unchanged upstream files from the same verified archive.
         source = extract_source(usd['source'], base, work / 'source')
+    # Relative includes within upstream headers can bypass the installed prefix.
+    # Keep the full source tree on the same Wasm ABI patch as the USD monolith.
+    patch = ROOT / 'web/native/patches/usd.patch'
+    command = ['patch', '--silent', '--dry-run', '--forward', '-p1', '-i', str(patch)]
+    check = subprocess.run(command, cwd=source, capture_output=True)
+    if check.returncode == 0:
+        subprocess.run(['patch', '--silent', '--forward', '-p1', '-i', str(patch)],
+                       cwd=source, check=True)
+    elif subprocess.run(['patch', '--silent', '--dry-run', '--reverse', '-p1', '-i',
+                         str(patch)], cwd=source, capture_output=True).returncode:
+        raise RuntimeError('USD CPU plugin source does not match its checked Wasm ABI patch')
     dependencies = {name: digest(base / f'deps/{name}/installed.json')
                     for name in ('usd', 'openvdb', 'openimageio', 'tbb', 'libheif')}
     inputs = {name: digest(ROOT / name) for name in INPUTS}
