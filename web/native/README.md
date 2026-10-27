@@ -458,6 +458,26 @@ are copied into site-packages; schemas and MaterialX libraries join Blender's
 preloaded data package. MaterialX's bundled PugiXML uses private symbols so it
 can coexist with Blender's separate PugiXML build.
 
+`native_usd_imaging.py` builds the pinned USD `hioOpenVDB` and `hioOiio`
+translation units as static plugins. Upstream places these CPU readers behind
+the GPU build gate; this supplemental build keeps GPU support disabled. It uses
+USD's original plugin metadata with the static-library convention and links the
+factory registrations into Blender. Installed archive, header and metadata
+hashes guard cached builds, including CI restores without the USD source tree.
+
+With `--check-deps`, `usd-imaging-check` uses the original `HioImage` and
+`HioFieldTextureData` factories to check float TIFF read/write, float/double and
+three-component OpenVDB grids, exact voxel values, bounding boxes and transforms.
+A missing grid must fail without preventing a subsequent valid read. Independently
+read those exported files with the pinned native Blender:
+
+```sh
+python3 web/tools/native_usd_imaging_verify.py build/native/usd-imaging-check --blender /path/to/blender
+```
+
+The browser USD checks require both original plugin types to register and load
+in each runtime variant. These CPU plugins do not supply Hydra graphics rendering.
+
 `usd-exchange.cjs` compares native-authored USDA, USDC and USDZ scenes with the
 browser's original import/export operators, then repeats the checks offline.
 It checks animation, geometry, UVs, camera/light settings, decoded world

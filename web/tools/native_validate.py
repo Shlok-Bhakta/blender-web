@@ -118,6 +118,7 @@ def main():
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'usd-{suffix}', ['node', 'web/tests/usd-exchange.cjs'], **flags)
     run('desktop-usd', [args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', 'web/tests/usd_exchange.py', '--', 'native-crosscheck', 'build/native/usd-evidence-hardware'])
+    run('usd-imaging-native', ['python3', 'web/tools/native_usd_imaging_verify.py', 'build/native/usd-imaging-check', '--blender', args.blender])
     run('usd-video', ['python3', 'web/tools/native_usd_recording.py'])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'}), ('hardware-ui', {'WEB_TEST_HARDWARE': '1', 'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'image-vector-{suffix}', ['node', 'web/tests/image-vector.cjs'], **flags)

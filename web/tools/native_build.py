@@ -37,6 +37,8 @@ def check_dependencies(source, base, prefix, jobs):
         'hevc': ['web/native/tests/hevc.cc', 'web/tools/native_media.py'],
         'avif': ['web/native/tests/avif.cc', 'web/native/gltf.cmake',
                  'web/native/ghost/GHOST_WebDracoTypes.hh'],
+        'usd-imaging': ['web/native/tests/usd_imaging.cc',
+                        'web/native/usd-imaging/CMakeLists.txt', 'web/tools/native_usd_imaging.py'],
     }
     common_inputs = ['web/native/tests/CMakeLists.txt', 'web/native/dependencies.cmake',
                      'web/tools/native_deps.py', 'web/native/toolchain.cmake']
@@ -59,12 +61,16 @@ def check_dependencies(source, base, prefix, jobs):
                             text=True, stdout=subprocess.PIPE, timeout=120)
     print(result.stdout, end="", flush=True)
     (base / "dependency-check.json").write_text(json.dumps(json.loads(result.stdout), indent=2) + "\n")
-    for name in ("fftw", "alembic", "media", "tracking", "embree", "openpgl", "oidn", "hevc", "avif"):
+    for name in ("fftw", "alembic", "media", "tracking", "embree", "openpgl", "oidn", "hevc", "avif", "usd-imaging"):
         command = ["node", str(checks / f"{name}-check.js")]
         if name == 'avif':
             (base / 'avif-check').mkdir(exist_ok=True)
         if name in {'oidn', 'hevc', 'avif'}:
             command.append(str(base / f'{name}-check'))
+        if name == 'usd-imaging':
+            directory = base / 'usd-imaging-check'
+            directory.mkdir(exist_ok=True)
+            command.extend([str(directory), str(prefix)])
         output = subprocess.check_output(command, text=True, timeout=60)
         report = json.loads(output)
         if name == "media":
@@ -73,6 +79,10 @@ def check_dependencies(source, base, prefix, jobs):
             report['sourceHashes'] = embree_hashes
         if name in cpu_library_hashes:
             report['sourceHashes'] = cpu_library_hashes[name]
+        if name == 'usd-imaging':
+            report['installationSha256'] = hashlib.sha256(
+                (base / 'deps/usd-imaging/installed.json').read_bytes()).hexdigest()
+            (base / 'usd-imaging-check/unit-report.json').write_text(json.dumps(report, indent=2) + '\n')
         (base / f"{name}-check.json").write_text(json.dumps(report, indent=2) + "\n")
         print(output, end="", flush=True)
     subprocess.run(['python3', str(ROOT / 'web/tools/native_ispc_check.py'), '--base', str(base)], check=True)
@@ -412,6 +422,8 @@ def main():
     source = prepare_native(base, full_assets=args.app)
     if not args.skip_deps:
         build_dependencies(argparse.Namespace(build_dir=base / "deps", jobs=args.jobs, packages=[]))
+        from native_usd_imaging import build as build_usd_imaging
+        build_usd_imaging(base, args.jobs)
         if args.app:
             build_application_dependencies(base, args.jobs)
     prefix = base / "deps/prefix"

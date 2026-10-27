@@ -108,6 +108,29 @@ if(WITH_MATERIALX)
     "SHELL:--embed-file ${CMAKE_PREFIX_PATH}/libraries@/libraries")
 endif()
 
+if(WITH_USD)
+  add_executable(usd-imaging-check usd_imaging.cc)
+  target_include_directories(usd-imaging-check PRIVATE
+    "${CMAKE_PREFIX_PATH}/include" "${CMAKE_PREFIX_PATH}/include/python3.13")
+  target_compile_options(usd-imaging-check PRIVATE
+    -pthread -msimd128 -fwasm-exceptions -UNDEBUG)
+  # This host-file check exports fixtures for independent native readback.
+  # Link the same archives directly so USD's preload flags do not mix WasmFS
+  # paths with the Node host filesystem used by NODERAWFS.
+  target_link_libraries(usd-imaging-check PRIVATE
+    -Wl,--whole-archive ${BLENDER_WEB_USD_IMAGING_ARCHIVES} -Wl,--no-whole-archive
+    "${CMAKE_PREFIX_PATH}/lib/libusd_m.a"
+    OpenImageIO::OpenImageIO ${OPENVDB_LIBRARIES} Imath::Imath TBB::tbb
+    Freetype::Freetype "${CMAKE_PREFIX_PATH}/lib/libpython3.13.a"
+    "${CMAKE_PREFIX_PATH}/lib/libzstd.a" "${CMAKE_PREFIX_PATH}/lib/libz.a"
+    MaterialXFormat MaterialXCore ${BROTLI_LIBRARIES})
+  target_link_options(usd-imaging-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+    -sUSE_BZIP2=1 -sENVIRONMENT=node -sNODERAWFS=1 -sPROXY_TO_PTHREAD=1
+    -sPTHREAD_POOL_SIZE=8 -sPTHREAD_POOL_SIZE_STRICT=0 -sEXIT_RUNTIME=1
+    -sINITIAL_MEMORY=134217728 -sSTACK_SIZE=8388608
+    -sDEFAULT_PTHREAD_STACK_SIZE=8388608 -sALLOW_MEMORY_GROWTH=1)
+endif()
+
 if(WITH_CYCLES_EMBREE)
   add_executable(embree-check embree.cc)
   target_link_libraries(embree-check PRIVATE ${EMBREE_LIBRARIES} TBB::tbb)

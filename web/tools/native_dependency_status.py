@@ -40,6 +40,8 @@ def main():
     foundation = python_proof['libraryChecks']['foundation']
     from native_bindings_acceptance import validate as validate_bindings
     bindings_proof = validate_bindings(base, manifest)
+    from native_usd_imaging_acceptance import validate as validate_usd_imaging
+    usd_imaging = validate_usd_imaging(base, manifest)
     native=desktop['options'];web=browser['buildOptions']
     assert set(native)==set(web),'Compare the same release API fields'
     missing=sorted(name for name,enabled in native.items() if enabled and not web[name])
@@ -73,7 +75,7 @@ def main():
             'CPython _ctypes/libffi, general multiprocessing and raw socket transport',
             'Cython native accelerators and arbitrary dynamic Wasm extension loading',
             'MaterialX OpenGL rendering and OSL rendering compiler/runtime integration',
-            'USD OpenVDB support and the Hydra OpenImageIO image plugin',
+            'Hydra GPU rendering and browser graphics backends',
             'OpenSubdiv GPU evaluation'],
         componentAudit='web/docs/dependency-components.md',
         pythonFoundation=dict(
@@ -93,6 +95,11 @@ def main():
             browserVariants=len(bindings_proof['browserVariants']),
             independentNativeReadbacks=len(bindings_proof['nativeReadback']),
             evidence='web/docs/python-bindings.acceptance.json'),
+        usdCPUImaging=dict(verifiedBundle=manifest['version'],
+            plugins=usd_imaging['installation']['components'], volumeFormats=4,
+            standaloneOriginalAPIs=True, independentNativeReadback=True,
+            browserRegistries=len(usd_imaging['browserRegistries']), gpuRendering=False,
+            evidence='web/docs/usd-cpu-imaging.acceptance.json'),
         optimizationWork=['NumPy explicit Wasm SIMD kernels', 'OpenColorIO SIMD kernels'],
         separateEnhancements=['HarfBuzz/FriBidi integration into Blender font rendering'],
         baseLibraryRecipes=libraries,
