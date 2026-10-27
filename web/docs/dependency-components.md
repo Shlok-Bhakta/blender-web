@@ -1,27 +1,30 @@
 # Dependency component audit
 
-This audit compares the pinned Blender 5.2.2 LTS sources and the installed native
-5.2.2 build with published browser bundle `8f28615dc99fd90616b7`. All 100 local
-validation stages, both source CI builds and sixteen deployment groups passed.
-A fresh hardware run on Pages also passed Python, public HTTPS downloads, offline
-reopening and independent native readback. See the
-[live verification](python-foundation-live.json). This audit supplements the
-[build flag report](dependency-status.json). Enabling a top-level library does
-not establish that its Python bindings, plugins, devices or every file format
+This audit tracks the next release batch against the pinned Blender 5.2.2 LTS
+sources and installed native build. The Python bindings and AVIF candidate
+`9d08b6bd9fd4bb9429db` passed hardware WebGPU, software WebGPU, the fallback
+runtime, native readback, 97 local functional stages and both source CI builds.
+The additional USD CPU plugins passed standalone factories, native readback and
+an unoptimized hardware browser integration probe. The combined production build
+and full 108-stage validation are pending. Pages still serves
+`8f28615dc99fd90616b7`.
+
+This audit supplements the [build flag report](dependency-status.json). A top-level
+library flag does not prove its Python bindings, plugins, devices or every format
 work. Full dependency parity has not been reached.
 
 | Component | Browser status | Remaining work or evidence |
 | --- | --- | --- |
-| Base dependency recipes | 60 recipes | Original pinned sources and checksums; operation coverage is in [FEATURES.md](../native/FEATURES.md) |
+| Base dependency recipes | 61 recipes | Original pinned sources and checksums; operation coverage is in [FEATURES.md](../native/FEATURES.md) |
 | Embree, OpenPGL and OIDN CPU | Verified for tested cases | Original Cycles integration, compositor denoising, surface/volume guiding, standalone numerical checks and independent native readback |
 | CPython compression, XML, decimal and core hashes | Available | Existing embedded Python checks cover zlib, bz2, XML, decimal and SHA-256 |
 | CPython `_sqlite3`, `_lzma`, `_ssl`, `_hashlib` | Verified for tested cases | Original extensions in Blender; SQLite WAL/FTS/callbacks, LZMA files, TLS memory-BIO handshakes and certificate rejection, hash vectors and native file readback. Browser HTTP uses browser TLS; raw SSL sockets remain unavailable |
-| CPython `_ctypes` and libffi | Missing in this bundle | Isolated libffi checks pass scalar, struct, varargs and same-worker closures. A separate real dynamic-Wasm prototype propagates typed callbacks to existing/new workers, including 64-bit values above 53 bits. Integrating it with libffi needs closure lifetime and bounded-resource tests; it is not yet a ctypes port |
+| CPython `_ctypes` and libffi | Missing in this bundle | Isolated libffi checks pass scalar, struct, varargs and same-worker closures. A separate real dynamic-Wasm prototype propagates typed callbacks to existing/new workers, including 64-bit values above 53 bits. A further probe reuses one table slot across 1,000 signature changes and three modules, including one existing worker and new workers. Generic libffi integration still needs complete worker registration, in-flight lifetime handling and stress tests; it is not yet a ctypes port |
 | Native Python site packages | Verified for tested cases | NumPy and pxr bindings, sixteen pinned pure Python wheels, bundled pip, Python Zstandard and the original Cython compiler. Package versions match native Blender. Native Cython accelerators, subprocess build tools and general extension installation remain pending |
-| OpenImageIO, PyOpenColorIO, OpenVDB and MaterialX Python bindings | Missing in this bundle | All four import in native Blender. Their C++ libraries are present, but Python bindings remain a separate port. An isolated PyOpenColorIO prototype now passes its original package wrapper, CPU transforms, shader generation and process cleanup; it has not been integrated into the candidate |
-| libheif AVIF through OpenImageIO | Missing | The native recipe requires libheif 1.20.2 with AOM encoding and decoding. AOM is already ported. libde265, dav1d and the other optional libheif backends are disabled by the native recipe too |
-| USD OpenVDB and Hydra image support | Partial | Native USD enables OpenVDB and its OpenImageIO plugin. Browser USD disables these components. Existing exchange checks cover scene schemas and MaterialX graph export |
-| MaterialX generators and render utilities | Partial | Native MaterialX enables rendering utilities and ships OSL/MDL generators. The browser build disables those components; graphics renderers also need browser backends |
+| OpenImageIO, PyOpenColorIO, OpenVDB and MaterialX Python bindings | Verified for tested cases | Eleven original extensions, CPU color transforms, NumPy buffers, image operations, all nine grid types, exact large integers, four shader generators, threaded calls, offline persistence and native readback. See [the binding checks](python-bindings.md) |
+| libheif AVIF through OpenImageIO | Verified for tested cases | Original libheif 1.20.2 and AOM encode/decode. Nine Blender exports cover 8/10/12-bit BW/RGB/RGBA, invalid-input recovery and native pixel readback. The Draco bridge isolates its opaque types to avoid static destructor collisions. Other optional backends are disabled by the native recipe too |
+| USD OpenVDB and Hydra image support | Production validation pending | Both original CPU plugins now pass factories, four grid types, TIFF IO and exact native readback. Both also load in the original browser application, whose scene exchange and offline reopening passed. See [the integration probe](usd-cpu-imaging-checks.md). Combined production, software and fallback validation remains pending |
+| MaterialX generators and render utilities | Partial | Original GLSL/MSL/OSL/MDL generators, core image/mesh utilities and all eight Python extensions work for tested cases. Shader text matches native exactly. Graphics renderers and their compiler/runtime integration remain pending |
 | LLVM and Open Shading Language | Missing | Requires a Wasm-compatible compiler/runtime and the original Cycles integration. Native OSL Python bindings are also part of this dependency |
 | Hydra graphics and OpenSubdiv GPU evaluation | Missing | Native graphics APIs require WebGPU adapters and evaluator checks. CPU imaging adapters and CPU subdivision already work |
 | NumPy and OpenColorIO SIMD | Optimization work | The browser uses compiler vectorization but disables these libraries' explicit ISA dispatch. Their native SIMD implementations need Wasm equivalents and performance measurements |

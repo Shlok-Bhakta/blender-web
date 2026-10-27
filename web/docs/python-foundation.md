@@ -11,6 +11,12 @@ passed before publication. A fresh hardware run on the
 public HTTPS download and offline reopen checks, followed by independent native
 readback. See the [live verification](python-foundation-live.json).
 
+The recording has been refreshed from candidate `9d08b6bd9fd4bb9429db`, whose
+foundation checks also passed all three runtime variants and native readback.
+The next release combines the additional Python bindings, AVIF and USD CPU
+plugins. Its production build and full 108-stage validation are pending.
+
+
 | Added component | Verified operations |
 | --- | --- |
 | SQLite 3.51.3 | Transactions, rollback, Python callbacks, FTS3/4/5, RTREE, JSON, GEOPOLY, median, blobs, backup, serialization, WAL read isolation and writer locks |

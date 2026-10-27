@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "8f28615dc99fd90616b7",
+  "bundleVersion": "9d08b6bd9fd4bb9429db",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -159,15 +159,13 @@
   "additionalLibraryGaps": [
     "CPython _ctypes/libffi, general multiprocessing and raw socket transport",
     "Cython native accelerators and arbitrary dynamic Wasm extension loading",
-    "OpenImageIO, OpenColorIO, OpenVDB and MaterialX Python bindings",
-    "MaterialX OSL/MDL shader generators and render utilities",
-    "libheif AVIF images through OpenImageIO",
+    "MaterialX OpenGL rendering and OSL rendering compiler/runtime integration",
     "USD OpenVDB support and the Hydra OpenImageIO image plugin",
     "OpenSubdiv GPU evaluation"
   ],
   "componentAudit": "web/docs/dependency-components.md",
   "pythonFoundation": {
-    "verifiedBundle": "8f28615dc99fd90616b7",
+    "verifiedBundle": "9d08b6bd9fd4bb9429db",
     "modules": [
       "_sqlite3",
       "_lzma",
@@ -202,6 +200,31 @@
     "originalBackgroundDownloader": true,
     "networkStreaming": false,
     "evidence": "web/docs/python-foundation.acceptance.json"
+  },
+  "pythonBindings": {
+    "verifiedBundle": "9d08b6bd9fd4bb9429db",
+    "versions": {
+      "OpenImageIO": "3.1.13.1",
+      "PyOpenColorIO": "2.5.0",
+      "MaterialX": "1.39.4"
+    },
+    "modules": 11,
+    "materialXGenerators": [
+      "GLSL",
+      "MSL",
+      "OSL",
+      "MDL"
+    ],
+    "openVDBGridTypes": 9,
+    "openVDBAX": false,
+    "avifDepths": [
+      8,
+      10,
+      12
+    ],
+    "browserVariants": 3,
+    "independentNativeReadbacks": 3,
+    "evidence": "web/docs/python-bindings.acceptance.json"
   },
   "optimizationWork": [
     "NumPy explicit Wasm SIMD kernels",
@@ -469,6 +492,13 @@
       "archiveHash": "19e45a5a7192d690565229983dad900e76b513a02306c12053fb9a262cbeca7d",
       "hashType": "SHA256",
       "source": "https://storage.googleapis.com/aom-releases/libaom-3.13.1.tar.gz"
+    },
+    {
+      "name": "LIBHEIF",
+      "version": "1.20.2",
+      "archiveHash": "68ac9084243004e0ef3633f184eeae85d615fe7e4444373a0a21cebccae9d12a",
+      "hashType": "SHA256",
+      "source": "https://github.com/strukturag/libheif/releases/download/v1.20.2/libheif-1.20.2.tar.gz"
     },
     {
       "name": "X265",
