@@ -451,6 +451,20 @@ The runner inherits `PLAYWRIGHT_BROWSERS_PATH`. Each completed check updates
 `build/native/validation-status.json`; stage logs are saved beside it. The last
 check verifies the evidence and creates `blender-web-pages.tar.gz` for publishing.
 
+On a shared host, `--stop-before` leaves a successful prefix without reporting
+that the full validation passed. Unknown stage names fail before execution.
+For example, run the initial functional checks while other jobs are busy, then
+repeat the last browser stage and continue once the host is quiet:
+
+```sh
+python3 web/tools/native_validate.py --blender /path/to/blender --stop-before embree-native-hardware
+python3 web/tools/native_validate.py --blender /path/to/blender --resume-from embree-hardware
+```
+
+Resuming requires the identical packaged manifest and an unchanged successful
+prefix. The final acceptance and deployment archive are produced only after
+all remaining checks run.
+
 OpenUSD is built as a static C++ monolith, its shader-discovery plugins and
 original Python extension modules. `native_usd.py` generates the CPython inittab
 registration used by the GHOST bootstrap. The original `pxr` Python packages

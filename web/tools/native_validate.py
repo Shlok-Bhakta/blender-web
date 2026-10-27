@@ -7,6 +7,7 @@ import os
 import shlex
 import shutil
 import subprocess
+import sys
 import time
 from prepare import ROOT
 
@@ -17,7 +18,16 @@ def main():
     parser.add_argument('--control-url', default='http://127.0.0.1:8098/')
     parser.add_argument('--list', action='store_true', help='Print the checks without running them')
     parser.add_argument('--resume-from', help='Rerun a recorded stage and continue with the same packaged candidate')
+    parser.add_argument('--stop-before', help='Stop before a named stage, leaving validation incomplete for later resumption')
     args = parser.parse_args()
+    if args.stop_before and not args.list:
+        available = [line.split(':', 1)[0] for line in subprocess.check_output(
+            [sys.executable, __file__, '--list'], text=True).splitlines()]
+        if args.stop_before not in available:
+            parser.error(f'Unknown stop stage: {args.stop_before}')
+        if args.resume_from and (args.resume_from not in available or
+                available.index(args.stop_before) <= available.index(args.resume_from)):
+            parser.error('--stop-before must come after --resume-from')
     if not args.list and (not shutil.which(args.blender)):
         parser.error('Native Blender is required; provide --blender /path/to/blender')
     root = ROOT
@@ -46,6 +56,9 @@ def main():
         if args.list:
             print(name + ': ' + shlex.join(command))
             return
+        if args.stop_before == name:
+            print(f'Stopped before {name}; {len(status)} stages complete. Validation is incomplete.', flush=True)
+            raise SystemExit(0)
         if resume_from and name != resume_from:
             entry = previous[len(status)]
             assert entry['name'] == name and entry['exitCode'] == 0, 'Only a successful unchanged prefix may be reused'
