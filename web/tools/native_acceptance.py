@@ -27,6 +27,8 @@ def main():
     python_foundation = validate_python(base, manifest)
     from native_bindings_acceptance import validate as validate_bindings
     python_bindings = validate_bindings(base, manifest)
+    from native_usd_imaging_acceptance import validate as validate_usd_imaging
+    usd_imaging = validate_usd_imaging(base, manifest)
     from native_render_libraries_acceptance import validate as validate_render_libraries
     render_libraries = validate_render_libraries(base, manifest)
     embree_names=['embree-evidence','embree-evidence-ui','embree-evidence-hardware']
@@ -341,6 +343,7 @@ def main():
               'renderLibraries':render_libraries,
               'pythonFoundation':python_foundation,
               'pythonBindings':python_bindings,
+              'usdCPUImaging':usd_imaging,
               'nativeChecks':native, 'recording':recording, 'wasmBuild':wasm_build,
               'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
               'openvdbNanoVDB':{'browserVariants':volumes},
@@ -409,6 +412,7 @@ def main():
     write(docs / 'web-features.acceptance.json', report)
     write(docs / 'python-foundation.acceptance.json', python_foundation)
     write(docs / 'python-bindings.acceptance.json', python_bindings)
+    write(docs / 'usd-cpu-imaging.acceptance.json', usd_imaging)
     write(docs / 'loading-cache.acceptance.json', {
         'render':loading[0], 'uiFallback':loading[1],
         'deployments':read(base / 'cache-evidence/acceptance.json'),

@@ -139,6 +139,8 @@ if(WITH_USD)
   # monolith transitive so CMake emits it once, after its plugin consumers.
   set(USD_LIBRARIES "$<LINK_LIBRARY:WHOLE_ARCHIVE,usdShaders>"
                     "$<LINK_LIBRARY:WHOLE_ARCHIVE,sdrGlslfx>")
+  include("${CMAKE_PREFIX_PATH}/lib/blender-web-usd-imaging/libraries.cmake")
+  list(APPEND USD_LIBRARIES ${BLENDER_WEB_USD_IMAGING_LIBRARIES})
 endif()
 
 if(WITH_DRACO)

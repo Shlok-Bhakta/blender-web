@@ -247,7 +247,7 @@ def run(directory):
     exported = directory / 'export'
     exported.mkdir(exist_ok=True)
     reference = json.loads((directory / 'reference.json').read_text())
-    from pxr import Usd, UsdMtlx, Sdf, Gf, Vt
+    from pxr import Usd, UsdMtlx, Sdf, Gf, Vt, Plug, Tf
     import importlib
     import sys
     static_modules = sorted(name for name in sys.builtin_module_names if name.startswith('pxr.'))
@@ -259,6 +259,15 @@ def run(directory):
               'staticPythonModules': static_modules,
               'buildOptions': {n: getattr(bpy.app.build_options, n) for n in dir(bpy.app.build_options)
                                if not n.startswith('_') and isinstance(getattr(bpy.app.build_options, n), bool)}}
+    report['cpuImagingPlugins'] = {}
+    for name, typename in (('hioOiio', 'HioOIIO_Image'),
+                           ('hioOpenVDB', 'HioOpenVDB_TextureData')):
+        plugin = Plug.Registry().GetPluginWithName(name)
+        assert plugin and plugin.Load() and plugin.isLoaded, name
+        kind = Tf.Type.FindByName(typename)
+        assert kind and Plug.Registry().GetPluginForType(kind) == plugin, typename
+        report['cpuImagingPlugins'][name] = dict(loaded=True, type=typename,
+                                               staticLibrary=not plugin.path)
     primitives = primitive_snapshot(directory / 'primitives.usda')
     primitive_error = compare(primitives, reference['primitives'])
     report['primitives'] = {'objects': sorted(primitives),
