@@ -113,5 +113,175 @@
     "warmHit": true,
     "restoredSourceRebuildPassed": true,
     "restoredSourceHit": true
+  },
+  "browserProbePassed": true,
+  "applicationProbe": {
+    "provenance": {
+      "baseRuntimeSourceCommit": "89179a7fc59926032d3f665bccd538bad67d77b9",
+      "componentRuntimeSourceCommit": "8e6d2ff6cb448c8494e7a4885eb1d7caae58688d",
+      "sourceLinkSha256": "e4d0ef80b39735cb60303bb61704f1b0b77e49d1fe36fc30099cd8ad815db68c",
+      "componentArchives": {
+        "libhioOpenVDB.a": "d2f5998955b6b48d473b44424c879191f9d2843e083932c8eb484fcd0f3c59ad",
+        "libhioOiio.a": "8ac3c100037e6e89cd07d516ceb9df187e8ff277c4ff5e02524da79e3aa8fad7"
+      },
+      "optimized": false,
+      "performanceEvidence": false,
+      "method": "Reuse unchanged release-compiled Blender objects; whole-archive the original USD CPU plugins and preload their original static metadata. Final Wasm link uses O0 and one linker/Binaryen worker.",
+      "bundleVersion": "5dc8b61cc273500d5a3d"
+    },
+    "hardware": true,
+    "adapter": {
+      "vendor": "amd",
+      "architecture": "gcn-5",
+      "device": "",
+      "description": "",
+      "features": [
+        "depth32float-stencil8",
+        "rg11b10ufloat-renderable",
+        "bgra8unorm-storage",
+        "texture-formats-tier1",
+        "chromium-experimental-multi-draw-indirect",
+        "texture-compression-bc",
+        "dual-source-blending",
+        "core-features-and-limits",
+        "chromium-experimental-timestamp-query-inside-passes",
+        "float32-filterable",
+        "indirect-first-instance",
+        "float32-blendable",
+        "texture-compression-etc2",
+        "depth-clip-control",
+        "texture-compression-bc-sliced-3d",
+        "clip-distances",
+        "timestamp-query",
+        "texture-formats-tier2",
+        "shader-f16",
+        "primitive-index",
+        "texture-component-swizzle",
+        "subgroups"
+      ]
+    },
+    "offlineReopen": true,
+    "cpuImagingPlugins": {
+      "hioOiio": {
+        "loaded": true,
+        "type": "HioOIIO_Image",
+        "staticLibrary": true
+      },
+      "hioOpenVDB": {
+        "loaded": true,
+        "type": "HioOpenVDB_TextureData",
+        "staticLibrary": true
+      }
+    },
+    "browserErrors": [],
+    "sourceSha256": "e0beb3f7d17bbd25abdc7c1b5f13aa65f6cfaad13f4bd2e2501896edb2abb7ba",
+    "reportSha256": "a19ab3bdde4607b3d5363bc9b04c871066a68ea679369f8f050f847ec7fe5d4f",
+    "nativeCrosscheck": {
+      "usda": {
+        "maximumBrowserSceneError": 0,
+        "maximumBrowserMaterialXInputError": 0.0,
+        "stage": {
+          "prims": 19,
+          "shaderIdentifiers": [
+            "ND_normal_vector3",
+            "ND_normalize_vector3",
+            "ND_normalize_vector3",
+            "ND_normalize_vector3",
+            "ND_open_pbr_surface_surfaceshader",
+            "ND_rotate3d_vector3",
+            "ND_tangent_vector3",
+            "UsdPreviewSurface"
+          ],
+          "hookMetadata": "original-python-hook",
+          "materialXSurfaceInputs": {
+            "base_color": [
+              0.03999999910593033,
+              0.30000001192092896,
+              0.800000011920929
+            ],
+            "base_metalness": 0.15000000596046448,
+            "specular_roughness": 0.3199999928474426
+          },
+          "startTime": 1.0,
+          "endTime": 10.0,
+          "assets": [
+            {
+              "attribute": "/root/env_light.inputs:texture:file",
+              "bytes": 465
+            }
+          ]
+        }
+      },
+      "usdc": {
+        "maximumBrowserSceneError": 0,
+        "maximumBrowserMaterialXInputError": 0.0,
+        "stage": {
+          "prims": 19,
+          "shaderIdentifiers": [
+            "ND_normal_vector3",
+            "ND_normalize_vector3",
+            "ND_normalize_vector3",
+            "ND_normalize_vector3",
+            "ND_open_pbr_surface_surfaceshader",
+            "ND_rotate3d_vector3",
+            "ND_tangent_vector3",
+            "UsdPreviewSurface"
+          ],
+          "hookMetadata": "original-python-hook",
+          "materialXSurfaceInputs": {
+            "base_color": [
+              0.03999999910593033,
+              0.30000001192092896,
+              0.800000011920929
+            ],
+            "base_metalness": 0.15000000596046448,
+            "specular_roughness": 0.3199999928474426
+          },
+          "startTime": 1.0,
+          "endTime": 10.0,
+          "assets": [
+            {
+              "attribute": "/root/env_light.inputs:texture:file",
+              "bytes": 465
+            }
+          ]
+        }
+      },
+      "usdz": {
+        "maximumBrowserSceneError": 0,
+        "maximumBrowserMaterialXInputError": 0.0,
+        "stage": {
+          "prims": 19,
+          "shaderIdentifiers": [
+            "ND_normal_vector3",
+            "ND_normalize_vector3",
+            "ND_normalize_vector3",
+            "ND_normalize_vector3",
+            "ND_open_pbr_surface_surfaceshader",
+            "ND_rotate3d_vector3",
+            "ND_tangent_vector3",
+            "UsdPreviewSurface"
+          ],
+          "hookMetadata": "original-python-hook",
+          "materialXSurfaceInputs": {
+            "base_color": [
+              0.03999999910593033,
+              0.30000001192092896,
+              0.800000011920929
+            ],
+            "base_metalness": 0.15000000596046448,
+            "specular_roughness": 0.3199999928474426
+          },
+          "startTime": 1.0,
+          "endTime": 10.0,
+          "assets": [
+            {
+              "attribute": "/root/env_light.inputs:texture:file",
+              "bytes": 465
+            }
+          ]
+        }
+      }
+    }
   }
 }
