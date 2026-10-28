@@ -1,0 +1,27 @@
+{
+  "bundleVersion": "5dc8b61cc273500d5a3d",
+  "hardware": true,
+  "optimized": false,
+  "performanceEvidence": false,
+  "sourceVideoSha256": "cb1943cc1452b85b9bbe4e3651f39ed272130046dbdde3d513e1314146a9d19d",
+  "sourceDurationSeconds": 370.48,
+  "segments": [
+    {
+      "sourceStartSeconds": 185,
+      "sourceEndSeconds": 197
+    },
+    {
+      "sourceStartSeconds": 218,
+      "sourceEndSeconds": 229
+    },
+    {
+      "sourceStartSeconds": 350.48,
+      "sourceEndSeconds": 370.48
+    }
+  ],
+  "method": "Actual hardware Chromium recording of original Blender. Cuts remove loading waits; the caption identifies the unoptimized integration probe. No performance claim.",
+  "durationSeconds": 43.0,
+  "sha256": "6667e74e5e975f169bf1d3309a8565dae280cc1eab56555287834b1f146645d8",
+  "bytes": 831560,
+  "path": "web/docs/usd-cpu-imaging-probe.mp4"
+}

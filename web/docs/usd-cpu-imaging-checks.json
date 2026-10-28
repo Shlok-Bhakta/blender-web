@@ -283,5 +283,11 @@
         }
       }
     }
+  },
+  "combinedSourceCI": {
+    "runtimeSourceCommit": "f37bb839cf7398e63cc7617dc9e9ecb324a8140b",
+    "application": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40447613806",
+    "editor": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40447613782",
+    "conclusion": "success"
   }
 }

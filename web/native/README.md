@@ -434,7 +434,7 @@ on software WebGPU. `native_dependency_recording.py` captions the hardware
 image/vector and Freestyle recordings. `native_dependency_status.py --blender
 /path/to/blender` compares the desktop and browser's actual build flags.
 
-`native_validate.py` runs the full 65-stage local acceptance sequence, including
+`native_validate.py` runs the full 108-stage local acceptance sequence, including
 desktop readback, recordings and native/browser benchmarks. Serve the candidate
 site on port 8093 and an unseeded control build of the same Blender release on
 port 8098, or pass `--candidate-url` and `--control-url`. The build helper's

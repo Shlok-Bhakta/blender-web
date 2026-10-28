@@ -5,7 +5,7 @@ The integration branch builds OpenUSD 26.03's original `hioOiio` and
 checks and independent native Blender 5.2.2 LTS readback passed. A real hardware
 browser probe also passed both original plugin registrations, USDA/USDC/USDZ
 exchange and offline reopening. Native Blender independently read all three
-exported scenes. Editor CI passed. The combined production build, software and
+exported scenes. Both combined source CI builds passed. The combined production build, software and
 fallback checks, and the full 108-stage validation are pending. These plugins
 are not yet part of the published Pages bundle.
 
@@ -13,6 +13,12 @@ The browser probe reuses unchanged Blender objects from runtime commit `89179a7`
 links the original CPU plugin archives from `8e6d2ff`, and preloads their static
 metadata. Its final Wasm link uses `-O0`. It provides integration evidence; it is
 not a performance measurement or the production release binary.
+
+Watch the [43-second hardware browser clip](usd-cpu-imaging-probe.mp4). It shows
+the imported cube, Blender's original USD export menu and offline interchange.
+Loading waits are cut, and the caption identifies the unoptimized probe.
+[Recording metadata](usd-cpu-imaging-probe-recording.json) lists the source hash
+and exact cuts.
 
 | Original API | Tested operations |
 | --- | --- |
