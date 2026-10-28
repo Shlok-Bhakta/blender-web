@@ -49,6 +49,9 @@ def main():
             previous = json.loads((base / 'validation-status.json').read_text())
             assert resume_from in {entry['name'] for entry in previous}, 'Resume must start at a previously recorded stage'
         else:
+            # Invalidate old results before binding the checkpoint to a new
+            # candidate, even when stopped before the first stage.
+            (base / 'validation-status.json').write_text('[]\n')
             checkpoint.write_text(json.dumps(manifest, indent=2) + '\n')
 
     def run(name, command, **extra):
