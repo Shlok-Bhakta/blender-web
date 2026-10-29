@@ -1,0 +1,154 @@
+{
+  "checkedAt": "2026-10-29T00:30:58.793541+00:00",
+  "scope": "Isolated Node pthread Wasm prototype and independent native Blender readback",
+  "productionIntegrated": false,
+  "browserVerified": false,
+  "sourceArchive": {
+    "name": "libffi-3.5.2.tar.gz",
+    "sha256": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc"
+  },
+  "wasm": {
+    "originalLibffi": "3.5.2",
+    "existingWorkers": 8,
+    "newWorkers": 250,
+    "signatureReuseIterations": 1000,
+    "signatureKinds": 4,
+    "calls": 9332,
+    "tableSize": 87,
+    "serialTableSize": 84,
+    "registeredThreads": 266,
+    "concurrentPublishers": 4,
+    "concurrentClosures": 80,
+    "inFlightFree": true,
+    "nestedCreationDuringRetirement": true,
+    "pthreadExitCleanup": true,
+    "pollingMilliseconds": 2,
+    "genericCIF": true,
+    "libffiIntegrated": false
+  },
+  "native": {
+    "originalLibffi": "3.5.2",
+    "calls": 720,
+    "signatureKinds": 4,
+    "workerCalls": 640,
+    "exactValues": true,
+    "blenderVersion": "5.2.2 LTS",
+    "blenderRevision": "d13f752e3b9c",
+    "originalBlenderFFI": true,
+    "nativeModuleSha256": "909f694f6cf495c8b6c5c202667dd582c3d098022f122240cb31dbbd16850bfc",
+    "driverSha256": "08fe6f021ba0a06254e4f69f031ef6580f2d766349bb9950b148d11c88be17d1",
+    "librarySha256": "3c34ce1879052365d0ceffaf6ca13ee09422212885122247980b97eb575f656b"
+  },
+  "negativeControl": {
+    "lockHeldDuringRetirement": true,
+    "observedFailure": "Nested callback creation cannot acquire registry lock while freeing caller waits for completion",
+    "timeoutSeconds": 15,
+    "timeoutObserved": true
+  },
+  "files": [
+    {
+      "name": "build.sh",
+      "bytes": 1291,
+      "sha256": "07b6d460aff51fc71b16f530d0cea8d41430289d1e47148d994ab09181d70df3"
+    },
+    {
+      "name": "check.cc",
+      "bytes": 14516,
+      "sha256": "fef29e68fc1835580573095d2aa35f3d93b8064a0d277193fdc530440f89251f"
+    },
+    {
+      "name": "ffi.c",
+      "bytes": 29398,
+      "sha256": "c0d41cb68314ebb999fc1879713e4853ab92dfeb130eb5552cae1c0f0651f160"
+    },
+    {
+      "name": "ffi-wasm-threads.patch",
+      "bytes": 2286,
+      "sha256": "bcfc4000759624ba17b85add78e5e2e6916954793aa479f4215285cac8e88cfb"
+    },
+    {
+      "name": "retirement.patch",
+      "bytes": 3793,
+      "sha256": "00e412e3cad812e086ba7df638d867dc3a32e079ffe7a4a97ac6e8397f22c682"
+    },
+    {
+      "name": "check.js",
+      "bytes": 76548,
+      "sha256": "6e218144764d59b81562f778ba6fc3bc41922405eac385632aac86612a8833da"
+    },
+    {
+      "name": "check.wasm",
+      "bytes": 61316,
+      "sha256": "878687ea3d389dfa084d4b6647fa276f6c36796cc6eb7294811d6e8424a083d7"
+    },
+    {
+      "name": "libffi.a",
+      "bytes": 21862,
+      "sha256": "b492cfda866191f31991a355e893b8199de72d7c483e4a7db200f24ba03bd930"
+    },
+    {
+      "name": "stress-fixed.log",
+      "bytes": 1841,
+      "sha256": "b589849bb7b64f65fcb4ed144b42a19bd4d70245601ee2bf9ead2ef559921d98"
+    },
+    {
+      "name": "stress-fixed.json",
+      "bytes": 73,
+      "sha256": "c7d6587dbe9481f390364d4d9850d30ef9d8d33a156521f532c1d62b7f165f32"
+    },
+    {
+      "name": "locked-free-control.log",
+      "bytes": 53,
+      "sha256": "068df3011971348009c99e3a0c3358803d3c6a72b6f44eb346581a56d25d5507"
+    },
+    {
+      "name": "results.json",
+      "bytes": 144,
+      "sha256": "60a092a5e07fd2de2a4e28f1bc0255d860f55fdedf27868db3383b105257a571"
+    },
+    {
+      "name": "native-check.cc",
+      "bytes": 3357,
+      "sha256": "08fe6f021ba0a06254e4f69f031ef6580f2d766349bb9950b148d11c88be17d1"
+    },
+    {
+      "name": "native-verify.py",
+      "bytes": 1032,
+      "sha256": "b3b06ea93ea3c1255019cb17ca45ca86b8cd6d539f6e7ee5b865ea8b06cb6f8f"
+    },
+    {
+      "name": "native-verification.json",
+      "bytes": 481,
+      "sha256": "f3af1b0b74062a9ec85dcba19701ed7626faeeb51503c33405182f47e9ce3fda"
+    },
+    {
+      "name": "native-readback.log",
+      "bytes": 535,
+      "sha256": "f42c4469d51946298211f5cdcfc1b629650f5e2f035108d9aaa45c3991a67e33"
+    },
+    {
+      "name": "native-check.so",
+      "bytes": 16664,
+      "sha256": "3c34ce1879052365d0ceffaf6ca13ee09422212885122247980b97eb575f656b"
+    }
+  ],
+  "limitations": [
+    "Two-millisecond futex polling needs replacement before production integration",
+    "Forced worker termination and cancellation are unverified",
+    "Self-free and callbacks called after free are unsupported",
+    "Application ctypes and browser integration are pending",
+    "Bounded table size does not establish bounded compiled-module or garbage-collector memory",
+    "Additional variadic layouts and long-double ABI coverage are pending",
+    "Reentrant lifecycle proof covers nested creation during retirement; more overlapping lifecycle and termination cases remain"
+  ],
+  "stressRun": {
+    "exitCode": 0,
+    "timeout": false,
+    "seconds": 30.802695809397846
+  },
+  "evidenceArchive": {
+    "path": "web/docs/libffi-worker-probe-evidence.tar.gz",
+    "bytes": 81704,
+    "sha256": "c454cc71b38fd4aea17fb75c2b72c6f184164977177c387120790d04c732d09a"
+  }
+}
