@@ -4,8 +4,8 @@ This audit compares candidate `81aa3ca51ec1b21db65c` with the pinned Blender
 5.2.2 LTS sources and installed native build. All 118 local stages passed,
 including the integrated original ctypes module, Python bindings, AVIF and
 USD CPU image and volume plugins. Hardware, software and fallback runtimes,
-offline reopening and independent native readback passed. The editor source CI
-passed; the full application source CI and publication checks are pending.
+offline reopening and independent native readback passed. Both source CI builds
+passed. Publication checks are pending.
 The public Pages release remains `f5bc7678d055b2921075`.
 
 See [the ctypes integration and recording](ctypes-integration.md),
