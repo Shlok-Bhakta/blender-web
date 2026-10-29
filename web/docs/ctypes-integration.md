@@ -1,12 +1,13 @@
 # Original ctypes integration
 
-Candidate `81aa3ca51ec1b21db65c` builds CPython 3.13.13's original `_ctypes`
-sources against Blender's pinned libffi 3.5.2. Its ctypes checks pass in hardware,
-software and fallback Chromium, including offline repeats and three independent
-native Blender comparisons. The public Pages release remains
-`f5bc7678d055b2921075` while the candidate awaits publication checks.
-Both source CI builds passed.
-All 118 local validation stages passed.
+Published bundle `81aa3ca51ec1b21db65c` builds CPython 3.13.13's original
+`_ctypes` sources against Blender's pinned libffi 3.5.2. All 118 local stages,
+both source CI builds and all 18 publication groups passed. Its ctypes checks
+pass in hardware, software and fallback Chromium, including offline repeats
+and three independent native Blender comparisons. Fresh live hardware checks
+also pass in both application variants, with offline repeat and native readback.
+See [the live proof](ctypes-live.json) and
+[the validation record](ctypes-validation.json).
 
 [Watch the original Blender recording](python-ctypes-walkthrough.mp4),
 [inspect the screenshot](python-ctypes-browser.png), or read the

@@ -1,0 +1,74 @@
+{
+  "llvmVersion": "20.1.8",
+  "compiledModules": 3,
+  "invalidIRRejected": true,
+  "invalidLinkRecovered": true,
+  "generated": [
+    {
+      "integerCases": 4096,
+      "wideIntegerCases": 4096,
+      "shaderValues": 4096,
+      "simdValues": 4096,
+      "emptyLoop": true,
+      "hostFunctionImport": true,
+      "constantFold": true,
+      "bytes": 584
+    },
+    {
+      "integerCases": 4096,
+      "wideIntegerCases": 4096,
+      "shaderValues": 4096,
+      "simdValues": 4096,
+      "emptyLoop": true,
+      "hostFunctionImport": true,
+      "constantFold": true,
+      "bytes": 584
+    },
+    {
+      "integerCases": 4096,
+      "wideIntegerCases": 4096,
+      "shaderValues": 4096,
+      "simdValues": 4096,
+      "emptyLoop": true,
+      "hostFunctionImport": true,
+      "constantFold": true,
+      "bytes": 584
+    }
+  ],
+  "diagnostics": [
+    "wasm-ld: error: cannot open /missing-object.o: No such file or directory"
+  ],
+  "compileSeconds": 1.668789999961853,
+  "compiledAndExecutedOffline": true,
+  "navigatorOnlineAtCompilation": false,
+  "crossOriginIsolated": true,
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+  "browserVersion": "145.0.7632.6",
+  "browserErrors": [],
+  "compilerWasm": {
+    "bytes": 27980873,
+    "sha256": "7c355cde5dc644a595b3966e2826e62b3ac0cd72decebef71aa0e2990c9c8490"
+  },
+  "source": {
+    "FILE": "llvm-project-20.1.8.src.tar.xz",
+    "HASH": "915e251a657450a2ba8e4c106e4f9555",
+    "HASH_TYPE": "MD5",
+    "URI": "https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.8/llvm-project-20.1.8.src.tar.xz",
+    "VERSION": "20.1.8"
+  },
+  "emscriptenVersion": "4.0.23",
+  "applicationIntegrated": false,
+  "nodeVerified": true,
+  "generatedSIMDInstructionsVerified": true,
+  "sourceHashes": {
+    "web/native/tests/llvm-compiler.cc": "14761ec5ceacb9711c8adacc8ac3324caebaaac695032feb59b3ed78067188bf",
+    "web/native/llvm-probe/CMakeLists.txt": "4d8212a8c39669f21394be2c026ca00552271f12bc3a750296b4e6f1dde05a60",
+    "web/tests/llvm-generated.cjs": "09b9cfe49bf5f3afcea21a633ccd1aead0928c8d3463d5916a2fd080008fac24",
+    "web/tests/llvm-compiler.cjs": "046192c87e8a9811e9a57354e7e3b34afa00049df0fcbfc8abf4d1c3cd4cfae4",
+    "web/tools/native_llvm_probe.py": "04c721ea0f9a2e2520336d29d840d6b8708a7605070493be665b29221edcb282"
+  },
+  "compilerJavaScript": {
+    "bytes": 86562,
+    "sha256": "0330a790023f7d94760a102e89bbaab6056c34ce006c22f977209115a9fc8bd8"
+  }
+}

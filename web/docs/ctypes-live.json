@@ -1,0 +1,109 @@
+{
+  "bundleVersion": "81aa3ca51ec1b21db65c",
+  "url": "https://shlok-bhakta.github.io/blender-web/",
+  "checkedAt": "2026-10-29T10:27:38.670566+00:00",
+  "publisher": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40855663992",
+  "publisherGroupsPassed": 18,
+  "publisherCommit": "73d9ae09c13d2728cdec1ab283592539ad184ea4",
+  "manifestSha256": "a0b2ffd5cd1903999d5728ef2f7c793ea98975003cb9336f842d7d9a60284ccd",
+  "checks": {
+    "ctypes": {
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "offlineReopen": true,
+      "nativeReadback": true,
+      "browserErrors": [],
+      "browserAcceptanceSha256": "6969f4c7ac33b353f267df93b6cf9d980991047eb408118e4eac73552b4c5599",
+      "nativeVerificationSha256": "f626fff68d05135dc2365d001b301e322cb6c99b79aaccc3a037b786cf985913"
+    },
+    "ctypes-ui": {
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "offlineReopen": true,
+      "nativeReadback": true,
+      "browserErrors": [],
+      "browserAcceptanceSha256": "cc931925f933297c9d808b8508d8c0a400c611f390c052f632cc76502b9566c8",
+      "nativeVerificationSha256": "56ad12def5df0743bde4ca59be10de62645a7a64cb1ef676e1e50f36d4323adf"
+    },
+    "bindings": {
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "offlineReopen": true,
+      "nativeReadback": true,
+      "browserErrors": [],
+      "browserAcceptanceSha256": "c3279f55789dfa4019bd085a6975e6c8e5a22e121ea6faf84165f65d09ed1e75",
+      "nativeVerificationSha256": "93032ba0f43a7356af5a673135c78200b64f2bdfb1d8efbcc55938be4ae327e7"
+    },
+    "usd": {
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": "",
+        "features": [
+          "depth32float-stencil8",
+          "rg11b10ufloat-renderable",
+          "texture-formats-tier1",
+          "bgra8unorm-storage",
+          "chromium-experimental-multi-draw-indirect",
+          "texture-compression-bc",
+          "dual-source-blending",
+          "core-features-and-limits",
+          "chromium-experimental-timestamp-query-inside-passes",
+          "float32-filterable",
+          "indirect-first-instance",
+          "float32-blendable",
+          "texture-compression-etc2",
+          "depth-clip-control",
+          "texture-compression-bc-sliced-3d",
+          "clip-distances",
+          "shader-f16",
+          "timestamp-query",
+          "texture-formats-tier2",
+          "primitive-index",
+          "texture-component-swizzle",
+          "subgroups"
+        ]
+      },
+      "offlineReopen": true,
+      "nativeReadback": true,
+      "browserErrors": [],
+      "browserAcceptanceSha256": "866785b5b2398cda96262ff7873ffaf2e7425a6994d04a1cfc2aeb026edfa487",
+      "nativeVerificationSha256": "f24e8612236f476968e8daf8f066ca8943c05bd4e0ff2d39cb025b1f497e93d1",
+      "cpuImagingPlugins": {
+        "hioOiio": {
+          "loaded": true,
+          "type": "HioOIIO_Image",
+          "staticLibrary": true
+        },
+        "hioOpenVDB": {
+          "loaded": true,
+          "type": "HioOpenVDB_TextureData",
+          "staticLibrary": true
+        }
+      }
+    }
+  },
+  "evidence": {
+    "name": "ctypes-live-evidence.tar.gz",
+    "bytes": 41082632,
+    "sha256": "73d732a71bfde802157edcad9b29757b35113ed7dccaecd58c2bd19cf9572e5a"
+  },
+  "runnerSourceSha256": "3300467d5203f3a5feccae2316cfdc831deae71c41402f162ee96640bc50a642"
+}

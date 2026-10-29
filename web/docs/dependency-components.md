@@ -1,15 +1,14 @@
 # Dependency component audit
 
-This audit compares candidate `81aa3ca51ec1b21db65c` with the pinned Blender
-5.2.2 LTS sources and installed native build. All 118 local stages passed,
-including the integrated original ctypes module, Python bindings, AVIF and
-USD CPU image and volume plugins. Hardware, software and fallback runtimes,
-offline reopening and independent native readback passed. Both source CI builds
-passed. Publication checks are pending.
-The public Pages release remains `f5bc7678d055b2921075`.
+This audit compares published bundle `81aa3ca51ec1b21db65c` with the pinned
+Blender 5.2.2 LTS sources and installed native build. All 118 local stages,
+both source CI builds and all 18 publication groups passed. Fresh live hardware
+checks passed for ctypes in both application variants, Python bindings and USD
+CPU imaging, including offline reopening and independent native readback.
 
-See [the ctypes integration and recording](ctypes-integration.md),
-[its acceptance evidence](python-ctypes.acceptance.json),
+See [the validation record](ctypes-validation.json),
+[live proof](ctypes-live.json),
+[the ctypes recording](ctypes-integration.md),
 [render comparisons](render-optimization.md), and
 [recorded background load](ctypes-host-load.json).
 This audit supplements the [build flag report](dependency-status.json). A top-level
@@ -28,7 +27,7 @@ work. Full dependency parity has not been reached.
 | libheif AVIF through OpenImageIO | Verified for tested cases | Original libheif 1.20.2 and AOM encode/decode. Nine Blender exports cover 8/10/12-bit BW/RGB/RGBA, invalid-input recovery and native pixel readback. The Draco bridge isolates its opaque types to avoid static destructor collisions. Other optional backends are disabled by the native recipe too |
 | USD CPU image and volume plugins | Verified for tested cases | Original hioOiio and hioOpenVDB factory operations, four grid types, TIFF IO and exact native readback. Both load in the optimized original application on hardware, software and fallback runtimes, with scene exchange and offline reopening. See [the checks](usd-cpu-imaging-checks.md) |
 | MaterialX generators and render utilities | Partial | Original GLSL/MSL/OSL/MDL generators, core image/mesh utilities and all eight Python extensions work for tested cases. Shader text matches native exactly. Graphics renderers and their compiler/runtime integration remain pending |
-| LLVM and Open Shading Language | Missing | Requires a Wasm-compatible compiler/runtime and the original Cycles integration. Native OSL Python bindings are also part of this dependency |
+| LLVM and Open Shading Language | Missing in application; compiler proof passes | Original LLVM 20.1.8 and LLD compile and execute IR in Node and offline Chromium, including SIMD and failed-input recovery. Original OSL compilation, its Python query bindings and the Cycles runtime adapter remain pending. See [the separate compiler proof](llvm-compiler-probe.md) |
 | Hydra graphics and OpenSubdiv GPU evaluation | Missing | Native graphics APIs require WebGPU adapters and evaluator checks. CPU imaging adapters and CPU subdivision already work |
 | NumPy and OpenColorIO SIMD | Optimization work | The browser uses compiler vectorization but disables these libraries' explicit ISA dispatch. Their native SIMD implementations need Wasm equivalents and performance measurements |
 | Browser platform services | Partial | Audaspace output, persistent OPFS and buffered browser HTTP work. Original conditional and background downloads pass, including overlapping requests, CORS/timeout recovery and shutdown. General multiprocessing, marketplace installation, raw sockets, microphone/multichannel input, device files, additional windows, NDOF and XR remain pending |
