@@ -1,0 +1,100 @@
+--- a/src/liboslexec/llvm_instance.cpp
++++ b/src/liboslexec/llvm_instance.cpp
+@@ -20,6 +20,10 @@
+ 
+ #include "oslexec_pvt.h"
+ #include "backendllvm.h"
++
++#if defined(__EMSCRIPTEN__)
++#    include "GHOST_WebOSL.hh"
++#endif
+ 
+ #if OSL_USE_OPTIX
+ #    include <llvm/Linker/Linker.h>
+@@ -340,13 +344,20 @@
+                 fmtformat("userdata{}_{}_", i, names[i]));
+             // Alignment
+             int align = type.basesize();
++#if defined(__EMSCRIPTEN__)
++            align = GHOST_web_osl_hash_storage_size(align, type.basetype == TypeDesc::STRING);
++#endif
+             offset    = OIIO::round_to_multiple_of_pow2(offset, align);
+             if (llvm_debug() >= 2)
+                 std::cout << "  userdata " << names[i] << ' ' << type
+                           << ", field " << order << ", offset " << offset
+                           << "\n";
+             offsets[i] = offset;
++#if defined(__EMSCRIPTEN__)
++            offset += GHOST_web_osl_hash_storage_size(type.size(), type.basetype == TypeDesc::STRING);
++#else
+             offset += int(type.size());
++#endif
+             ++order;
+         }
+     }
+@@ -388,6 +399,9 @@
+             size_t align = sym.typespec().is_closure_based()
+                                ? sizeof(void*)
+                                : sym.typespec().simpletype().basesize();
++#if defined(__EMSCRIPTEN__)
++            align = GHOST_web_osl_hash_storage_size(align, sym.typespec().is_string_based());
++#endif
+             if (offset & (align - 1))
+                 offset += align - (offset & (align - 1));
+             if (llvm_debug() >= 2)
+@@ -398,7 +412,11 @@
+                       sym.interactive() ? " (interactive)" : "");
+             sym.dataoffset((int)offset);
+             // TODO(arenas): sym.set_dataoffset(SymArena::Heap, offset);
++#if defined(__EMSCRIPTEN__)
++            offset += derivSize * GHOST_web_osl_hash_storage_size(sym.size(), sym.typespec().is_string_based());
++#else
+             offset += derivSize * sym.size();
++#endif
+             m_param_order_map[&sym] = order;
+             ++order;
+         }
+@@ -888,6 +906,9 @@
+                     2 + userdata_index);
+                 llvm::Value* symbol_data = llvm_void_ptr(sym);
+                 int symbol_data_size     = sym.derivsize();
++#if defined(__EMSCRIPTEN__)
++                symbol_data_size = GHOST_web_osl_hash_storage_size(symbol_data_size, sym.typespec().is_string_based());
++#endif
+                 // char status = *userdata_initialized;
+                 llvm::Value* userdata_initializedPtr = userdata_initialized_ref(
+                     userdata_index);
+@@ -952,7 +973,11 @@
+                 groupdata_field_ptr(2 + userdata_index),  // userdata data ptr
+                 ll.constant((int)sym.has_derivs()),
+                 llvm_void_ptr(sym),
++#if defined(__EMSCRIPTEN__)
++                ll.constant(int(GHOST_web_osl_hash_storage_size(sym.derivsize(), sym.typespec().is_string_based()))),
++#else
+                 ll.constant(sym.derivsize()),
++#endif
+                 ll.void_ptr(userdata_initialized_ref(userdata_index)),
+                 ll.constant(userdata_index),
+             };
+--- a/src/liboslexec/shadingsys.cpp
++++ b/src/liboslexec/shadingsys.cpp
+@@ -13,6 +13,9 @@
+ #include <OSL/fmt_util.h>
+ #include <OSL/genclosure.h>
+ #include "backendllvm.h"
++#if defined(__EMSCRIPTEN__)
++#    include "GHOST_WebOSL.hh"
++#endif
+ #if OSL_USE_BATCHED
+ #    include "batched_backendllvm.h"
+ #    include <OSL/wide.h>
+@@ -4805,6 +4808,9 @@
+     }
+     if (status == 2) {
+         int udata_size = (userdata_has_derivs ? 3 : 1) * TYPEDESC(type).size();
++#if defined(__EMSCRIPTEN__)
++        udata_size = GHOST_web_osl_hash_storage_size(udata_size, TYPEDESC(type).basetype == TypeDesc::STRING);
++#endif
+         // If userdata was present, copy it to the shader variable
+         if (TYPEDESC(type) == TypeDesc::STRING) {
+             const ustringhash* uh_userdata

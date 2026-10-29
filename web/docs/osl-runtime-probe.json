@@ -1,0 +1,145 @@
+{
+  "node": {
+    "varyingOSLExecution": true,
+    "points": 768,
+    "rendererCallbacks": 1536,
+    "existingWorkers": 4,
+    "newWorkers": 1,
+    "stringOperations": true,
+    "reclamationVerified": false
+  },
+  "browser": {
+    "result": {
+      "varyingOSLExecution": true,
+      "points": 768,
+      "rendererCallbacks": 1536,
+      "existingWorkers": 4,
+      "newWorkers": 1,
+      "stringOperations": true,
+      "reclamationVerified": false
+    },
+    "bytecode": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/web_execute.oso\nshader web_execute\nparam\tfloat\tgain\t1.25\t\t%read{0,7} %write{2147483647,-1}\nparam\tstring\ttag\t\"browser\"\t\t%read{8,15} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{5,5}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\noparam\tint\tmatches\t0\t\t%read{2147483647,-1} %write{14,14}\noparam\tstring\techoed\t\"\"\t\t%read{2147483647,-1} %write{15,15}\nglobal\tpoint\tP\t%read{6,6} %write{2147483647,-1}\nglobal\tfloat\tu\t%read{0,2} %write{2147483647,-1}\nglobal\tfloat\tv\t%read{1,3} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{5,5} %write{0,0}\ntemp\tfloat\t$tmp2\t%read{5,5} %write{1,1}\ntemp\tfloat\t$tmp3\t%read{4,4} %write{2,2}\ntemp\tfloat\t$tmp4\t%read{4,4} %write{3,3}\ntemp\tfloat\t$tmp5\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\nconst\tstring\t$const1\t\"browser\"\t\t%read{8,8} %write{2147483647,-1}\ntemp\tint\t$tmp7\t%read{11,11} %write{8,8}\ntemp\tint\t$tmp8\t%read{10,10} %write{9,9}\nconst\tstring\t$const2\t\"brow\"\t\t%read{9,9} %write{2147483647,-1}\nconst\tint\t$const3\t2\t\t%read{10,10} %write{2147483647,-1}\ntemp\tint\t$tmp9\t%read{11,11} %write{10,10}\ntemp\tint\t$tmp10\t%read{14,14} %write{11,11}\ntemp\tint\t$tmp11\t%read{13,13} %write{12,12}\nconst\tint\t$const4\t4\t\t%read{13,13} %write{2147483647,-1}\ntemp\tint\t$tmp12\t%read{14,14} %write{13,13}\ncode ___main___\n# fixtures/web_execute.osl:10\n#     energy = dot(P, P) + gain;\n\tmul\t\t$tmp1 u gain \t%filename{\"fixtures/web_execute.osl\"} %line{10} %argrw{\"wrr\"}\n\tadd\t\t$tmp2 v gain \t%argrw{\"wrr\"}\n\tsin\t\t$tmp3 u \t%argrw{\"wr\"}\n\tcos\t\t$tmp4 v \t%argrw{\"wr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tcolor\t\tresult $tmp1 $tmp2 $tmp5 \t%argrw{\"wrrr\"}\n# fixtures/web_execute.osl:11\n#     matches = (tag == \"browser\") + startswith(tag, \"brow\") * 2 + strlen(tag) * 4;\n\tdot\t\t$tmp6 P P \t%line{11} %argrw{\"wrr\"}\n\tadd\t\tenergy $tmp6 gain \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:12\n#     echoed = tag;\n\teq\t\t$tmp7 tag $const1 \t%line{12} %argrw{\"wrr\"}\n\tstartswith\t$tmp8 tag $const2 \t%argrw{\"wrr\"}\n\tmul\t\t$tmp9 $tmp8 $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp10 $tmp7 $tmp9 \t%argrw{\"wrr\"}\n\tstrlen\t\t$tmp11 tag \t%argrw{\"wr\"}\n\tmul\t\t$tmp12 $tmp11 $const4 \t%argrw{\"wrr\"}\n\tadd\t\tmatches $tmp10 $tmp12 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:13\n# }\n\tassign\t\techoed tag \t%line{13} %argrw{\"wr\"}\n\tend\n",
+    "diagnostics": [
+      "warning: unsupported syscall: __syscall_prlimit64",
+      "Blocking on the main thread is very dangerous, see https://emscripten.org/docs/porting/pthreads.html#blocking-on-the-main-browser-thread",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch."
+    ],
+    "crossOriginIsolated": true,
+    "offline": true
+  },
+  "nodeDiagnostics": [
+    "warning: unsupported syscall: __syscall_prlimit64",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch."
+  ],
+  "browserErrors": [],
+  "browserVersion": "145.0.7632.6",
+  "applicationIntegrated": false,
+  "browserShaderExecutionVerified": true,
+  "source": {
+    "source": {
+      "FILE": "OpenShadingLanguage-1.15.3.0.tar.gz",
+      "HASH": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
+      "VERSION": "1.15.3.0"
+    },
+    "patches": {
+      "osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+      "osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a"
+    }
+  },
+  "emscriptenVersion": "4.0.23",
+  "llvmVersion": "20.1.8",
+  "native": {
+    "native": {
+      "varyingOSLExecution": true,
+      "points": 768,
+      "rendererCallbacks": 1536,
+      "existingWorkers": 4,
+      "newWorkers": 1,
+      "stringOperations": true,
+      "reclamationVerified": false
+    },
+    "node": {
+      "varyingOSLExecution": true,
+      "points": 768,
+      "rendererCallbacks": 1536,
+      "existingWorkers": 4,
+      "newWorkers": 1,
+      "stringOperations": true,
+      "reclamationVerified": false
+    },
+    "browser": {
+      "varyingOSLExecution": true,
+      "points": 768,
+      "rendererCallbacks": 1536,
+      "existingWorkers": 4,
+      "newWorkers": 1,
+      "stringOperations": true,
+      "reclamationVerified": false
+    }
+  },
+  "nativeLibraries": {
+    "liboslexec.so.1.15.3": "5497e7bb936d51dcc6e2eadcbc777f01ef3ff5e24c48cf518853b7a5ad69728a",
+    "libOpenImageIO.so.3.1.13": "207b70b9d3d1ae48f6013dbad654ad0306a10ae35c8c0e546dab189a761d6efb",
+    "libOpenImageIO_Util.so.3.1.13": "e52439d9788a61ec3f7ad8a1af82970e06655512fd9842de92b421868a93c080"
+  },
+  "rendererHelperCount": 418,
+  "nativeCompiler": {
+    "blenderRevision": "d13f752e3b9c",
+    "oslVersion": "1.15.3.0"
+  },
+  "artifacts": {
+    "runtime/osl-runtime.js": {
+      "bytes": 414219,
+      "sha256": "d47321765e3c1e9131aa415112a3612b84d07debfe3f1ac9d0de3e3e2f7e3a3a"
+    },
+    "runtime/osl-runtime.wasm": {
+      "bytes": 78296162,
+      "sha256": "1d6356e12ea5863fd7b5617fa6e945b6077b97e1959c24db991281fb9bc17008"
+    },
+    "osl-native": {
+      "bytes": 49704,
+      "sha256": "fdeff6323ea5e164ba216222dd77ab94f3a8f50abde1bd3e9ac36eef272c8804"
+    },
+    "osl-wasm/lib/liboslexec.a": {
+      "bytes": 7770172,
+      "sha256": "df685d2971e901941210c88d9a1cf48cc181bb75286d805dd0eb9bac46d4967c"
+    },
+    "evidence/osl-runtime.png": {
+      "bytes": 98569,
+      "sha256": "de2c4cd4fea7c47305484d5794d572df2840ecc9a25fc905334f973b8bda650a"
+    },
+    "evidence/osl-runtime.webm": {
+      "bytes": 436804,
+      "sha256": "7a0a19b41a8c86d90d4ff973daaed139548f6a98a0f8e015fc2c175163c40711"
+    },
+    "evidence/browser-fixtures/web_execute.oso": {
+      "bytes": 2315,
+      "sha256": "a57b49c9599ba7441e598432f7435a885eb3d2889043965d850e91114485bc47"
+    },
+    "evidence/native-fixtures/web_execute.oso": {
+      "bytes": 2614,
+      "sha256": "d2a05f65aa11fac8e283e1d1b169b19d0bc6cae73619f94b1c5532580ffd3526"
+    },
+    "evidence/node-fixtures/web_execute.oso": {
+      "bytes": 2315,
+      "sha256": "a57b49c9599ba7441e598432f7435a885eb3d2889043965d850e91114485bc47"
+    }
+  },
+  "sourceHashes": {
+    "web/tools/native_osl_runtime_probe.py": "af3ed3dddb24e02b301e2855f02566337c81a482093826fb1f771ebc49802826",
+    "web/tools/native_osl_bitcode.py": "70f8b0a7e53af18718b49ceaa2ad22e7c7f7e275d89b293ab849137c94e97f15",
+    "web/native/ghost/GHOST_WebOSL.hh": "4d64ce557c021955157e8bf77e4fb4dee70f929655cbec0750cf16e34fa5bab8",
+    "web/native/ghost/GHOST_WebOSLProbe.cc": "6477ec1b165cce144d577c491fee3b29e642cd44e5ce6b5afd22d7ab74179d97",
+    "web/native/patches/osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+    "web/native/patches/osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a",
+    "web/native/osl-runtime-probe/CMakeLists.txt": "bbe4492b36da119d2cb479442fad72b7962b7ad03357e4afb0c6d5a79680bcc7",
+    "web/native/tests/osl-runtime.cc": "7e0b3e58f7db461a9b0d9b8e2be3cd6b1e6cb41419176ff599f166bb1975df30",
+    "web/native/tests/osl-runtime-native.py": "1985f7db1790c725da2683256024674fdb34eb2469ef776494846c617794221b",
+    "web/tests/osl-runtime.cjs": "2fe351bcdddafb0398a680b7bc6caf898f4cc90bea0fae83cefd3e9aed5ddfaf",
+    "web/native/tests/fixtures/osl-runtime/web_execute.osl": "96b38f6e1ec4cc884cd92982c71322044af51da20d36df483e947595fcecab03",
+    "web/native/osl-query-probe/cmake/FindLLVM.cmake": "0f2637da53758493d8a4e36815ef84b2bfa0a93dbf0ec26034c497531ac37138",
+    "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d"
+  }
+}

@@ -1,0 +1,13 @@
+shader web_execute(
+    float gain = 1.25,
+    string tag = "browser",
+    output color result = 0,
+    output float energy = 0,
+    output int matches = 0,
+    output string echoed = "")
+{
+    result = color(u * gain, v + gain, sin(u) + cos(v));
+    energy = dot(P, P) + gain;
+    matches = (tag == "browser") + startswith(tag, "brow") * 2 + strlen(tag) * 4;
+    echoed = tag;
+}

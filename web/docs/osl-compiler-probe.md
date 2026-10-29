@@ -21,8 +21,9 @@ strength. The native-authored and browser-authored shaders produce identical
 16 by 16 floating-point EXR images, including center pixel `[2.5, 5, 7.5, 1]`.
 
 This verifies browser shader compilation and native execution of its output.
-Browser shader execution, Cycles integration, worker lifetime management and
-Python OSL query bindings remain separate work. The published application is
+Browser shader execution is covered by the [separate runtime proof](osl-runtime-probe.md).
+Cycles integration, worker lifetime management and Python OSL query bindings
+remain pending. The published application is
 still `81aa3ca51ec1b21db65c`, with 62 production dependency recipes.
 
 First build the [LLVM compiler proof](llvm-compiler-probe.md) and the production

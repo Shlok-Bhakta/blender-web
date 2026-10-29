@@ -25,9 +25,10 @@ shaders into the same object.
 
 This metadata proof builds only
 `oslquery`, with Python bindings and LLVM shader bitcode disabled. Production
-Blender integration, browser shader execution and the Python query module
-remain pending. The [separate compiler proof](osl-compiler-probe.md) now checks
+Blender integration and the Python query module remain pending.
+The [separate compiler proof](osl-compiler-probe.md) now checks
 original OSL compilation and native Cycles rendering of its output.
+The [runtime proof](osl-runtime-probe.md) checks original browser shader execution.
 The published application remains
 `81aa3ca51ec1b21db65c`, with 62 production dependency recipes.
 
