@@ -1,0 +1,119 @@
+{
+  "node": {
+    "results": {
+      "file": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/file.oso\nshader web_query\t%meta{string,help,\"Browser query fixture\"} \nparam\tfloat\tgain\t1.25\t\t%meta{string,label,\"Gain\"} %meta{float,min,0} %meta{float,max,4}  %read{0,0} %write{2147483647,-1}\nparam\tint\tsteps\t7\t\t%read{6,6} %write{2147483647,-1}\nparam\tstring\tlabel\t\"browser\"\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tcolor\ttint\t0.25 0.5 0.75\t\t%read{0,0} %write{2147483647,-1}\nparam\tvector\taxis\t1 2 3\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tfloat[3]\tweights\t0.125 0.25 0.625\t\t%read{1,4} %write{2147483647,-1}\nparam\tmatrix\tbasis\t1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1\t\t%read{2147483647,-1} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{0,0}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\nconst\tint\t$const1\t0\t\t%read{1,1} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{3,3} %write{1,1}\nconst\tint\t$const2\t1\t\t%read{2,2} %write{2147483647,-1}\ntemp\tfloat\t$tmp2\t%read{3,3} %write{2,2}\ntemp\tfloat\t$tmp3\t%read{5,5} %write{3,3}\nconst\tint\t$const3\t2\t\t%read{4,4} %write{2147483647,-1}\ntemp\tfloat\t$tmp4\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp5\t%read{7,7} %write{5,5}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\ncode ___main___\n# fixtures/web_query.osl:14\n#     energy = weights[0] + weights[1] + weights[2] + steps;\n\tmul\t\tresult tint gain \t%filename{\"fixtures/web_query.osl\"} %line{14} %argrw{\"wrr\"}\n# fixtures/web_query.osl:15\n# }\n\taref\t\t$tmp1 weights $const1 \t%line{15} %argrw{\"wrr\"}\n\taref\t\t$tmp2 weights $const2 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp3 $tmp1 $tmp2 \t%argrw{\"wrr\"}\n\taref\t\t$tmp4 weights $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tassign\t\t$tmp6 steps \t%argrw{\"wr\"}\n\tadd\t\tenergy $tmp5 $tmp6 \t%argrw{\"wrr\"}\n\tend\n",
+      "memory": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/memory.oso\nshader web_query\t%meta{string,help,\"Browser query fixture\"} \nparam\tfloat\tgain\t1.25\t\t%meta{string,label,\"Gain\"} %meta{float,min,0} %meta{float,max,4}  %read{0,0} %write{2147483647,-1}\nparam\tint\tsteps\t7\t\t%read{6,6} %write{2147483647,-1}\nparam\tstring\tlabel\t\"browser\"\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tcolor\ttint\t0.25 0.5 0.75\t\t%read{0,0} %write{2147483647,-1}\nparam\tvector\taxis\t1 2 3\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tfloat[3]\tweights\t0.125 0.25 0.625\t\t%read{1,4} %write{2147483647,-1}\nparam\tmatrix\tbasis\t1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1\t\t%read{2147483647,-1} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{0,0}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\nconst\tint\t$const1\t0\t\t%read{1,1} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{3,3} %write{1,1}\nconst\tint\t$const2\t1\t\t%read{2,2} %write{2147483647,-1}\ntemp\tfloat\t$tmp2\t%read{3,3} %write{2,2}\ntemp\tfloat\t$tmp3\t%read{5,5} %write{3,3}\nconst\tint\t$const3\t2\t\t%read{4,4} %write{2147483647,-1}\ntemp\tfloat\t$tmp4\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp5\t%read{7,7} %write{5,5}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\ncode ___main___\n# fixtures/web_query.osl:14\n#     energy = weights[0] + weights[1] + weights[2] + steps;\n\tmul\t\tresult tint gain \t%filename{\"fixtures/web_query.osl\"} %line{14} %argrw{\"wrr\"}\n# fixtures/web_query.osl:15\n# }\n\taref\t\t$tmp1 weights $const1 \t%line{15} %argrw{\"wrr\"}\n\taref\t\t$tmp2 weights $const2 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp3 $tmp1 $tmp2 \t%argrw{\"wrr\"}\n\taref\t\t$tmp4 weights $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tassign\t\t$tmp6 steps \t%argrw{\"wr\"}\n\tadd\t\tenergy $tmp5 $tmp6 \t%argrw{\"wrr\"}\n\tend\n",
+      "recovered": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/recovered.oso\nshader web_query\t%meta{string,help,\"Browser query fixture\"} \nparam\tfloat\tgain\t1.25\t\t%meta{string,label,\"Gain\"} %meta{float,min,0} %meta{float,max,4}  %read{0,0} %write{2147483647,-1}\nparam\tint\tsteps\t7\t\t%read{6,6} %write{2147483647,-1}\nparam\tstring\tlabel\t\"browser\"\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tcolor\ttint\t0.25 0.5 0.75\t\t%read{0,0} %write{2147483647,-1}\nparam\tvector\taxis\t1 2 3\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tfloat[3]\tweights\t0.125 0.25 0.625\t\t%read{1,4} %write{2147483647,-1}\nparam\tmatrix\tbasis\t1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1\t\t%read{2147483647,-1} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{0,0}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\nconst\tint\t$const1\t0\t\t%read{1,1} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{3,3} %write{1,1}\nconst\tint\t$const2\t1\t\t%read{2,2} %write{2147483647,-1}\ntemp\tfloat\t$tmp2\t%read{3,3} %write{2,2}\ntemp\tfloat\t$tmp3\t%read{5,5} %write{3,3}\nconst\tint\t$const3\t2\t\t%read{4,4} %write{2147483647,-1}\ntemp\tfloat\t$tmp4\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp5\t%read{7,7} %write{5,5}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\ncode ___main___\n# fixtures/web_query.osl:14\n#     energy = weights[0] + weights[1] + weights[2] + steps;\n\tmul\t\tresult tint gain \t%filename{\"fixtures/web_query.osl\"} %line{14} %argrw{\"wrr\"}\n# fixtures/web_query.osl:15\n# }\n\taref\t\t$tmp1 weights $const1 \t%line{15} %argrw{\"wrr\"}\n\taref\t\t$tmp2 weights $const2 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp3 $tmp1 $tmp2 \t%argrw{\"wrr\"}\n\taref\t\t$tmp4 weights $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tassign\t\t$tmp6 steps \t%argrw{\"wr\"}\n\tadd\t\tenergy $tmp5 $tmp6 \t%argrw{\"wrr\"}\n\tend\n"
+    },
+    "invalidRejected": true,
+    "recovered": true
+  },
+  "browser": {
+    "results": {
+      "file": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/file.oso\nshader web_query\t%meta{string,help,\"Browser query fixture\"} \nparam\tfloat\tgain\t1.25\t\t%meta{string,label,\"Gain\"} %meta{float,min,0} %meta{float,max,4}  %read{0,0} %write{2147483647,-1}\nparam\tint\tsteps\t7\t\t%read{6,6} %write{2147483647,-1}\nparam\tstring\tlabel\t\"browser\"\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tcolor\ttint\t0.25 0.5 0.75\t\t%read{0,0} %write{2147483647,-1}\nparam\tvector\taxis\t1 2 3\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tfloat[3]\tweights\t0.125 0.25 0.625\t\t%read{1,4} %write{2147483647,-1}\nparam\tmatrix\tbasis\t1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1\t\t%read{2147483647,-1} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{0,0}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\nconst\tint\t$const1\t0\t\t%read{1,1} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{3,3} %write{1,1}\nconst\tint\t$const2\t1\t\t%read{2,2} %write{2147483647,-1}\ntemp\tfloat\t$tmp2\t%read{3,3} %write{2,2}\ntemp\tfloat\t$tmp3\t%read{5,5} %write{3,3}\nconst\tint\t$const3\t2\t\t%read{4,4} %write{2147483647,-1}\ntemp\tfloat\t$tmp4\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp5\t%read{7,7} %write{5,5}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\ncode ___main___\n# fixtures/web_query.osl:14\n#     energy = weights[0] + weights[1] + weights[2] + steps;\n\tmul\t\tresult tint gain \t%filename{\"fixtures/web_query.osl\"} %line{14} %argrw{\"wrr\"}\n# fixtures/web_query.osl:15\n# }\n\taref\t\t$tmp1 weights $const1 \t%line{15} %argrw{\"wrr\"}\n\taref\t\t$tmp2 weights $const2 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp3 $tmp1 $tmp2 \t%argrw{\"wrr\"}\n\taref\t\t$tmp4 weights $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tassign\t\t$tmp6 steps \t%argrw{\"wr\"}\n\tadd\t\tenergy $tmp5 $tmp6 \t%argrw{\"wrr\"}\n\tend\n",
+      "memory": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/memory.oso\nshader web_query\t%meta{string,help,\"Browser query fixture\"} \nparam\tfloat\tgain\t1.25\t\t%meta{string,label,\"Gain\"} %meta{float,min,0} %meta{float,max,4}  %read{0,0} %write{2147483647,-1}\nparam\tint\tsteps\t7\t\t%read{6,6} %write{2147483647,-1}\nparam\tstring\tlabel\t\"browser\"\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tcolor\ttint\t0.25 0.5 0.75\t\t%read{0,0} %write{2147483647,-1}\nparam\tvector\taxis\t1 2 3\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tfloat[3]\tweights\t0.125 0.25 0.625\t\t%read{1,4} %write{2147483647,-1}\nparam\tmatrix\tbasis\t1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1\t\t%read{2147483647,-1} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{0,0}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\nconst\tint\t$const1\t0\t\t%read{1,1} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{3,3} %write{1,1}\nconst\tint\t$const2\t1\t\t%read{2,2} %write{2147483647,-1}\ntemp\tfloat\t$tmp2\t%read{3,3} %write{2,2}\ntemp\tfloat\t$tmp3\t%read{5,5} %write{3,3}\nconst\tint\t$const3\t2\t\t%read{4,4} %write{2147483647,-1}\ntemp\tfloat\t$tmp4\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp5\t%read{7,7} %write{5,5}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\ncode ___main___\n# fixtures/web_query.osl:14\n#     energy = weights[0] + weights[1] + weights[2] + steps;\n\tmul\t\tresult tint gain \t%filename{\"fixtures/web_query.osl\"} %line{14} %argrw{\"wrr\"}\n# fixtures/web_query.osl:15\n# }\n\taref\t\t$tmp1 weights $const1 \t%line{15} %argrw{\"wrr\"}\n\taref\t\t$tmp2 weights $const2 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp3 $tmp1 $tmp2 \t%argrw{\"wrr\"}\n\taref\t\t$tmp4 weights $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tassign\t\t$tmp6 steps \t%argrw{\"wr\"}\n\tadd\t\tenergy $tmp5 $tmp6 \t%argrw{\"wrr\"}\n\tend\n",
+      "recovered": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/recovered.oso\nshader web_query\t%meta{string,help,\"Browser query fixture\"} \nparam\tfloat\tgain\t1.25\t\t%meta{string,label,\"Gain\"} %meta{float,min,0} %meta{float,max,4}  %read{0,0} %write{2147483647,-1}\nparam\tint\tsteps\t7\t\t%read{6,6} %write{2147483647,-1}\nparam\tstring\tlabel\t\"browser\"\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tcolor\ttint\t0.25 0.5 0.75\t\t%read{0,0} %write{2147483647,-1}\nparam\tvector\taxis\t1 2 3\t\t%read{2147483647,-1} %write{2147483647,-1}\nparam\tfloat[3]\tweights\t0.125 0.25 0.625\t\t%read{1,4} %write{2147483647,-1}\nparam\tmatrix\tbasis\t1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1\t\t%read{2147483647,-1} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{0,0}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\nconst\tint\t$const1\t0\t\t%read{1,1} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{3,3} %write{1,1}\nconst\tint\t$const2\t1\t\t%read{2,2} %write{2147483647,-1}\ntemp\tfloat\t$tmp2\t%read{3,3} %write{2,2}\ntemp\tfloat\t$tmp3\t%read{5,5} %write{3,3}\nconst\tint\t$const3\t2\t\t%read{4,4} %write{2147483647,-1}\ntemp\tfloat\t$tmp4\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp5\t%read{7,7} %write{5,5}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\ncode ___main___\n# fixtures/web_query.osl:14\n#     energy = weights[0] + weights[1] + weights[2] + steps;\n\tmul\t\tresult tint gain \t%filename{\"fixtures/web_query.osl\"} %line{14} %argrw{\"wrr\"}\n# fixtures/web_query.osl:15\n# }\n\taref\t\t$tmp1 weights $const1 \t%line{15} %argrw{\"wrr\"}\n\taref\t\t$tmp2 weights $const2 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp3 $tmp1 $tmp2 \t%argrw{\"wrr\"}\n\taref\t\t$tmp4 weights $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tassign\t\t$tmp6 steps \t%argrw{\"wr\"}\n\tadd\t\tenergy $tmp5 $tmp6 \t%argrw{\"wrr\"}\n\tend\n"
+    },
+    "invalidRejected": true,
+    "recovered": true,
+    "diagnostics": [
+      "fixtures/bad.osl:2: error: 'not_declared' was not declared in this scope"
+    ],
+    "crossOriginIsolated": true,
+    "offline": true
+  },
+  "diagnostics": [
+    "fixtures/bad.osl:2: error: 'not_declared' was not declared in this scope"
+  ],
+  "browserErrors": [],
+  "browserVersion": "145.0.7632.6",
+  "applicationIntegrated": false,
+  "shaderExecutionVerified": false,
+  "native": {
+    "compilerVersion": "1.15.3.0",
+    "blenderRevision": "d13f752e3b9c",
+    "nativeMetadataExact": [
+      "browser-file.oso",
+      "browser-memory.oso",
+      "browser-recovered.oso",
+      "node-file.oso",
+      "node-memory.oso",
+      "node-recovered.oso"
+    ],
+    "nativeCyclesPixelExact": true,
+    "centerPixel": [
+      2.5,
+      5.0,
+      7.5,
+      1.0
+    ],
+    "reports": [],
+    "browserShaderExecutionVerified": false
+  },
+  "source": {
+    "FILE": "OpenShadingLanguage-1.15.3.0.tar.gz",
+    "HASH": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+    "HASH_TYPE": "SHA256",
+    "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
+    "VERSION": "1.15.3.0"
+  },
+  "emscriptenVersion": "4.0.23",
+  "llvmVersion": "20.1.8",
+  "patchSha256": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+  "artifacts": {
+    "osl-wasm/bin/oslc.js": {
+      "bytes": 89747,
+      "sha256": "85dcce68fb13c0ac4d954fc4b5b928a84cf4d0b4e26da0dc8a02f082a0e3616f"
+    },
+    "osl-wasm/bin/oslc.wasm": {
+      "bytes": 23682306,
+      "sha256": "20d6bd8a7016028a299b130d11c52338e01cc36a7a94b7f8fad7794a83ea418f"
+    },
+    "osl-wasm/lib/liboslcomp.a": {
+      "bytes": 2010070,
+      "sha256": "2d32925565990bf0583d99edaba8b53477637815cafc5caacacb00ba0f46dc9e"
+    },
+    "oslc-evidence/native-render.exr": {
+      "bytes": 968,
+      "sha256": "78770a64969cb0a188921efb60147ac6356669a1b74f34da7b69d39070ae9775"
+    },
+    "oslc-evidence/browser-render.exr": {
+      "bytes": 968,
+      "sha256": "d3d35662700f820e88c7851e6fcbee7e2ccb7ab85ab0777f6d7e9e124a1c6791"
+    },
+    "oslc-evidence/browser-file.oso": {
+      "bytes": 1753,
+      "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+    },
+    "oslc-evidence/browser-memory.oso": {
+      "bytes": 1755,
+      "sha256": "65bb64bf86d0850763e3496f8376efa8afcf8a1b1769184711ed462cfbc3dff6"
+    },
+    "oslc-evidence/browser-recovered.oso": {
+      "bytes": 1758,
+      "sha256": "090e631f3fea13b48f42e94d639110877f0dd9471c2d846885910e2dd11f66b9"
+    },
+    "oslc-evidence/node-file.oso": {
+      "bytes": 1753,
+      "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+    },
+    "oslc-evidence/node-memory.oso": {
+      "bytes": 1755,
+      "sha256": "65bb64bf86d0850763e3496f8376efa8afcf8a1b1769184711ed462cfbc3dff6"
+    },
+    "oslc-evidence/node-recovered.oso": {
+      "bytes": 1758,
+      "sha256": "090e631f3fea13b48f42e94d639110877f0dd9471c2d846885910e2dd11f66b9"
+    }
+  },
+  "sourceHashes": {
+    "web/tools/native_osl_compiler_probe.py": "911c2d2b9b6a1310951835865a94758630eae455e1c25f5783ae83ea1b1d15d7",
+    "web/tools/native_osl_query_probe.py": "6c3f6df06df892bee8ffa7b0f8e7409e6fbe9050778a1c07466d93ff25185e1b",
+    "web/native/tests/osl-compiler-native.py": "94f75a591d4d70c3b4dd713d33edc5de6b616cc3f572c627f034944956781d26",
+    "web/tests/osl-compiler.cjs": "efe26c15c935a4c1884f41e4a65ad3e41ea1293333a974f2666a9c07700a00d5",
+    "web/native/tests/fixtures/osl-query/web_query.osl": "ec5faba004325e74d10a7517ce717f3f533137e18460764a087eb6ef223d3abc",
+    "web/native/patches/osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+    "web/native/osl-query-probe/cmake/FindLLVM.cmake": "0f2637da53758493d8a4e36815ef84b2bfa0a93dbf0ec26034c497531ac37138",
+    "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d"
+  }
+}

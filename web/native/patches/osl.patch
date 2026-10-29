@@ -25,3 +25,37 @@
  
  /// ustring_pod is the type we use to pass string data in llvm function calls.
  using ustring_pod = const char*;
+--- a/src/include/OSL/encodedtypes.h
++++ b/src/include/OSL/encodedtypes.h
+@@ -151,6 +151,12 @@
+     static DataType Encode(const uint32_t val) { return val; }
+ };
+ 
++// wasm32 keeps long distinct from int even though both have 32 bits.
++#if defined(__EMSCRIPTEN__) && __SIZEOF_LONG__ == 4
++template<> struct TypeEncoder<long> : TypeEncoder<int32_t> {};
++template<> struct TypeEncoder<unsigned long> : TypeEncoder<uint32_t> {};
++#endif
++
+ template<typename T> struct TypeEncoder<T*> {
+     // fmtlib only supports const void *, all other pointers must be
+     // converted with a cast or helper like fmt::ptr(p)
+--- a/src/liboslexec/llvm_instance.cpp
++++ b/src/liboslexec/llvm_instance.cpp
+@@ -711,12 +711,16 @@
+                 const_element = ll.constant(sym.get_int(linear_index));
+             }
+             if (sym.typespec().is_string_based()) {
++#if defined(__EMSCRIPTEN__)
++                const_element = ll.constant64(ustring(sym.get_string(linear_index)).hash());
++#else
+                 // TODO:  right now stored as char *, but change to int64 when we can
+                 const_element = reinterpret_cast<llvm::Constant*>(
+                     ll.constant_ptr(
+                         OSL::bitcast<char*>(
+                             ustring(sym.get_string(linear_index)).hash()),
+                         ll.type_char_ptr()));
++#endif
+             }
+             OSL_ASSERT(const_element && "unhandled type");
+             elements.push_back(const_element);

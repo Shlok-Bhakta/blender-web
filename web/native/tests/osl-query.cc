@@ -80,6 +80,13 @@ int main()
   auto string_hash = OSL::pvt::TypeEncoder<OSL::ustring>::Encode(text);
   require(string_hash == text.hash() && string_hash > UINT32_MAX, "string hash high bits preserved");
 
+  static_assert(OSL::pvt::TypeEncoder<long>::value == OSL::EncodedType::kInt32);
+  static_assert(OSL::pvt::TypeEncoder<unsigned long>::value == OSL::EncodedType::kUInt32);
+  require(OSL::pvt::TypeEncoder<long>::Encode(-2147483647L - 1) == INT32_MIN,
+          "signed long diagnostic value preserved");
+  require(OSL::pvt::TypeEncoder<unsigned long>::Encode(4294967295UL) == UINT32_MAX,
+          "unsigned long diagnostic value preserved");
+
   std::atomic<unsigned> errors{0};
   std::vector<std::thread> workers;
   for (unsigned worker = 0; worker < 4; ++worker) workers.emplace_back([&] {

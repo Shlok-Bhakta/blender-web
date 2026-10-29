@@ -1,0 +1,62 @@
+{
+  "node": {
+    "llvmVersion": "20.1.8",
+    "compiledModules": 3,
+    "existingWorkers": 4,
+    "newWorkers": 3,
+    "atomicUpdates": 15360,
+    "sharedMemoryExecution": true,
+    "simdExecution": true,
+    "tableBefore": 20558,
+    "tableAfter": 20576,
+    "reclamationVerified": false
+  },
+  "browser": {
+    "result": {
+      "llvmVersion": "20.1.8",
+      "compiledModules": 3,
+      "existingWorkers": 4,
+      "newWorkers": 3,
+      "atomicUpdates": 15360,
+      "sharedMemoryExecution": true,
+      "simdExecution": true,
+      "tableBefore": 20558,
+      "tableAfter": 20576,
+      "reclamationVerified": false
+    },
+    "diagnostics": [
+      "wasm-ld: error: cannot open /missing-object.o: No such file or directory"
+    ],
+    "crossOriginIsolated": true,
+    "offline": true
+  },
+  "browserErrors": [],
+  "browserVersion": "145.0.7632.6",
+  "applicationIntegrated": false,
+  "source": {
+    "FILE": "llvm-project-20.1.8.src.tar.xz",
+    "HASH": "915e251a657450a2ba8e4c106e4f9555",
+    "HASH_TYPE": "MD5",
+    "URI": "https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.8/llvm-project-20.1.8.src.tar.xz",
+    "VERSION": "20.1.8"
+  },
+  "emscriptenVersion": "4.0.23",
+  "sdkStartupObjectSha256": "281b53fa7bd2756a74270ee6586eab38e83482c4f75edeb0b2192c60b504d2fd",
+  "sourceHashes": {
+    "web/tools/native_llvm_shared_probe.py": "fb4d7ba2f2c32a7b70172c0e44b16f7390e066965bd0c8db4b1fd4659414bea0",
+    "web/native/llvm-shared-probe/CMakeLists.txt": "2ccb8c9035dbad4ef3773017783a7d23f3482726bb6ff7c9c38313231d40c26a",
+    "web/native/tests/llvm-shared.cc": "a10d1b1dada5df54e7fe07f05fb01ba2d8cb4fb2373cf1d2d92c57575994b940",
+    "web/native/tests/llvm-shared-check.hh": "cfd3e398e09311e95ecf3af349fb63fe9ced7d219e86deb3c7fa23ad1e048e1a",
+    "web/tests/llvm-shared.cjs": "51c0bbde27d2cc912cf396d2943777038f71e8caf6c5114059c8cdc365fb46ec"
+  },
+  "artifacts": {
+    "llvm-compiler.js": {
+      "bytes": 113709,
+      "sha256": "3293dde505c1966b218b7afd83a29dbf98cdc37990e9661dc6d554579bb58b58"
+    },
+    "llvm-compiler.wasm": {
+      "bytes": 28003992,
+      "sha256": "a0eeec0107c0fe58cd80379525ed1f21cbb685f6020a2150989abe3afa02dcb8"
+    }
+  }
+}

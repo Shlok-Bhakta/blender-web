@@ -41,7 +41,7 @@
     "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
     "VERSION": "1.15.3.0"
   },
-  "patchSha256": "87bb3402a0883e40838ca559047cbbddad0b366b6bf24dd6247e7a05a47ea63f",
+  "patchSha256": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
   "nativeReference": {
     "version": "1.15.3.0",
     "blenderRevision": "d13f752e3b9c",
@@ -79,12 +79,12 @@
     }
   },
   "sourceHashes": {
-    "web/tools/native_osl_query_probe.py": "923ae59523e729a01520413b090657c52659ed4816e5b135e90c474e8b9098ef",
-    "web/native/patches/osl.patch": "87bb3402a0883e40838ca559047cbbddad0b366b6bf24dd6247e7a05a47ea63f",
+    "web/tools/native_osl_query_probe.py": "6c3f6df06df892bee8ffa7b0f8e7409e6fbe9050778a1c07466d93ff25185e1b",
+    "web/native/patches/osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
     "web/native/osl-query-probe/CMakeLists.txt": "906c26e96866daa15e183987e6e548ccd7d4ba42533e287a6ca0f4073b403326",
     "web/native/osl-query-probe/cmake/FindLLVM.cmake": "0f2637da53758493d8a4e36815ef84b2bfa0a93dbf0ec26034c497531ac37138",
     "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d",
-    "web/native/tests/osl-query.cc": "563259da480e7063cea04916a9706adffd932c38982d0729e26406c3d33cc15b",
+    "web/native/tests/osl-query.cc": "8f8fb5b2cd44f9d1f89ac4e9e24a0c6eec629665a2bf7ee3e0d09f3385094f25",
     "web/native/tests/osl-query-native.py": "2985b26663d36222d89fa6d3650919b2a89ee9580f3793a408377c5efd51b486",
     "web/native/tests/fixtures/osl-query/web_query.osl": "ec5faba004325e74d10a7517ce717f3f533137e18460764a087eb6ef223d3abc",
     "web/tests/osl-query.cjs": "ea2fc2d2b8f104073c49e3dcc857e41a249f47c5514dfc97378ab83c97b87437"

@@ -87,11 +87,19 @@ def main():
              '-DCLANG_ENABLE_ARCMT=OFF', '-DCLANG_ENABLE_OBJC_REWRITER=OFF'], log, env=env)
     adapter = ROOT / 'web/native/osl-query-probe'
     flags = '-pthread -msimd128 -fwasm-exceptions'
+    # Configure the original CLI once even when this command builds only the
+    # query library. The compiler proof can then reuse this project without
+    # toggling link flags and needlessly relinking Clang on every invocation.
+    executable_flags = ('-pthread -fwasm-exceptions -sALLOW_MEMORY_GROWTH=1 '
+                        '-sINITIAL_MEMORY=134217728 -sMAXIMUM_MEMORY=2147483648 -sSTACK_SIZE=8388608 '
+                        '-sMODULARIZE=1 -sEXPORT_NAME=createOSLCompilerProbe '
+                        "-sEXPORTED_RUNTIME_METHODS=['FS','callMain','PThread'] "
+                        '-sEXIT_RUNTIME=0 -sINVOKE_RUN=0 -sPTHREAD_POOL_SIZE=8')
     run(['emcmake', 'cmake', '-S', source, '-B', base / 'osl-wasm',
          f'-DCMAKE_PROJECT_OSL_INCLUDE={adapter / "cmake/OSLDependencies.cmake"}',
          '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_STANDARD=17', '-DBUILD_SHARED_LIBS=OFF',
          f'-DCMAKE_C_FLAGS={flags}', f'-DCMAKE_CXX_FLAGS={flags}',
-         '-DCMAKE_EXE_LINKER_FLAGS=-pthread -fwasm-exceptions', f'-DCMAKE_PREFIX_PATH={prefix}',
+         f'-DCMAKE_EXE_LINKER_FLAGS={executable_flags}', f'-DCMAKE_PREFIX_PATH={prefix}',
          f'-DCMAKE_FIND_ROOT_PATH={prefix};{llvm / "wasm"}', '-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY',
          f'-DCMAKE_MODULE_PATH={adapter / "cmake"}', f'-DCMAKE_INSTALL_PREFIX={base / "osl-prefix"}',
          f'-DLLVM_DIR={llvm / "wasm/lib/cmake/llvm"}', f'-DClang_DIR={llvm / "wasm/lib/cmake/clang"}',

@@ -23,10 +23,12 @@ native behaviors and uses separate objects for successful file and memory
 loads. Original OSLQuery appends parameters when repeatedly loading successful
 shaders into the same object.
 
-The standalone test Wasm is 407,268 bytes. This metadata proof builds only
+This metadata proof builds only
 `oslquery`, with Python bindings and LLVM shader bitcode disabled. Production
-Blender integration, original OSL compilation, shader execution and the Python
-query module remain pending. The published application remains
+Blender integration, browser shader execution and the Python query module
+remain pending. The [separate compiler proof](osl-compiler-probe.md) now checks
+original OSL compilation and native Cycles rendering of its output.
+The published application remains
 `81aa3ca51ec1b21db65c`, with 62 production dependency recipes.
 
 With the pinned SDK, the production Wasm dependency prefix, native Blender,
