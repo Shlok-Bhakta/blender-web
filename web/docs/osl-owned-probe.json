@@ -4,11 +4,13 @@
     "nativeOwnerRetirement": true,
     "tableReused": true,
     "automaticPublication": true,
-    "mixedFFICallbacks": 6144,
+    "mixedFFICallbacks": 7296,
     "workerCompilation": true,
     "busyWorkerPublication": true,
-    "shadingPoints": 6144,
-    "rendererCallbacks": 12288
+    "shadingPoints": 7296,
+    "rendererCallbacks": 14592,
+    "concurrentCompilation": true,
+    "cooperativeCancellation": true
   },
   "browser": {
     "result": {
@@ -16,16 +18,26 @@
       "nativeOwnerRetirement": true,
       "tableReused": true,
       "automaticPublication": true,
-      "mixedFFICallbacks": 6144,
+      "mixedFFICallbacks": 7296,
       "workerCompilation": true,
       "busyWorkerPublication": true,
-      "shadingPoints": 6144,
-      "rendererCallbacks": 12288
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "concurrentCompilation": true,
+      "cooperativeCancellation": true
     },
     "bytecode": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/web_execute.oso\nshader web_execute\nparam\tfloat\tgain\t1.25\t\t%read{0,7} %write{2147483647,-1}\nparam\tstring\ttag\t\"browser\"\t\t%read{8,15} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{5,5}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\noparam\tint\tmatches\t0\t\t%read{2147483647,-1} %write{14,14}\noparam\tstring\techoed\t\"\"\t\t%read{2147483647,-1} %write{15,15}\nglobal\tpoint\tP\t%read{6,6} %write{2147483647,-1}\nglobal\tfloat\tu\t%read{0,2} %write{2147483647,-1}\nglobal\tfloat\tv\t%read{1,3} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{5,5} %write{0,0}\ntemp\tfloat\t$tmp2\t%read{5,5} %write{1,1}\ntemp\tfloat\t$tmp3\t%read{4,4} %write{2,2}\ntemp\tfloat\t$tmp4\t%read{4,4} %write{3,3}\ntemp\tfloat\t$tmp5\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\nconst\tstring\t$const1\t\"browser\"\t\t%read{8,8} %write{2147483647,-1}\ntemp\tint\t$tmp7\t%read{11,11} %write{8,8}\ntemp\tint\t$tmp8\t%read{10,10} %write{9,9}\nconst\tstring\t$const2\t\"brow\"\t\t%read{9,9} %write{2147483647,-1}\nconst\tint\t$const3\t2\t\t%read{10,10} %write{2147483647,-1}\ntemp\tint\t$tmp9\t%read{11,11} %write{10,10}\ntemp\tint\t$tmp10\t%read{14,14} %write{11,11}\ntemp\tint\t$tmp11\t%read{13,13} %write{12,12}\nconst\tint\t$const4\t4\t\t%read{13,13} %write{2147483647,-1}\ntemp\tint\t$tmp12\t%read{14,14} %write{13,13}\ncode ___main___\n# fixtures/web_execute.osl:10\n#     energy = dot(P, P) + gain;\n\tmul\t\t$tmp1 u gain \t%filename{\"fixtures/web_execute.osl\"} %line{10} %argrw{\"wrr\"}\n\tadd\t\t$tmp2 v gain \t%argrw{\"wrr\"}\n\tsin\t\t$tmp3 u \t%argrw{\"wr\"}\n\tcos\t\t$tmp4 v \t%argrw{\"wr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tcolor\t\tresult $tmp1 $tmp2 $tmp5 \t%argrw{\"wrrr\"}\n# fixtures/web_execute.osl:11\n#     matches = (tag == \"browser\") + startswith(tag, \"brow\") * 2 + strlen(tag) * 4;\n\tdot\t\t$tmp6 P P \t%line{11} %argrw{\"wrr\"}\n\tadd\t\tenergy $tmp6 gain \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:12\n#     echoed = tag;\n\teq\t\t$tmp7 tag $const1 \t%line{12} %argrw{\"wrr\"}\n\tstartswith\t$tmp8 tag $const2 \t%argrw{\"wrr\"}\n\tmul\t\t$tmp9 $tmp8 $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp10 $tmp7 $tmp9 \t%argrw{\"wrr\"}\n\tstrlen\t\t$tmp11 tag \t%argrw{\"wr\"}\n\tmul\t\t$tmp12 $tmp11 $const4 \t%argrw{\"wrr\"}\n\tadd\t\tmatches $tmp10 $tmp12 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:13\n# }\n\tassign\t\techoed tag \t%line{13} %argrw{\"wr\"}\n\tend\n",
     "diagnostics": [
       "warning: unsupported syscall: __syscall_prlimit64",
       "Blocking on the main thread is very dangerous, see https://emscripten.org/docs/porting/pthreads.html#blocking-on-the-main-browser-thread",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
       "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
       "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
       "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
@@ -40,14 +52,62 @@
   },
   "nodeDiagnostics": [
     "warning: unsupported syscall: __syscall_prlimit64",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
-    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch."
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9"
   ],
   "browserErrors": [],
   "browserVersion": "145.0.7632.6",
@@ -111,11 +171,11 @@
   "artifacts": {
     "runtime/osl-runtime.js": {
       "bytes": 372731,
-      "sha256": "9dee4cdada726f2ee93bfc7d5c515a63f9ee7bfdc3e8a24fc47d8de4613f1bdf"
+      "sha256": "1794d3ed2852bccd796c7dda0b5553321e5bd790cab25f0f040ceeedeffe3e77"
     },
     "runtime/osl-runtime.wasm": {
-      "bytes": 78470027,
-      "sha256": "3706ecec9b8b159baa7233d6107ab6a57dbee50d2f1ec2b8ea3fc39e93d13b3a"
+      "bytes": 78474064,
+      "sha256": "f17f8d7d57b374713bea419254aa45b67f9cf7fd8eedd4ed362b2cbb1dd424a6"
     },
     "osl-native": {
       "bytes": 49704,
@@ -126,12 +186,12 @@
       "sha256": "c7b20dd89576f9ca8ea0fd4203e19dceeb77abac49e110ecbd943b5888d6b2ba"
     },
     "evidence/osl-runtime.png": {
-      "bytes": 120647,
-      "sha256": "e2ce75ab36ea929f97518af408704bb678b63e6f5612bea0af44ed8580908d7e"
+      "bytes": 128901,
+      "sha256": "c5e5be8cf59e97843edd113dc0c96526768dabfe712b2c869f5577960e60c47f"
     },
     "evidence/osl-runtime.webm": {
-      "bytes": 599818,
-      "sha256": "1c288001f04724380bbb7822c174d7cd1b80244b19eea980df0c74fdfff8d9de"
+      "bytes": 641126,
+      "sha256": "220de151d951a108eecbde94d1897b95c76684b1e692bb57a0c347fca939a2eb"
     },
     "evidence/browser-fixtures/web_execute.oso": {
       "bytes": 2315,
@@ -161,10 +221,10 @@
     "web/native/patches/osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a",
     "web/native/patches/osl-owned.patch": "6cfbde8dba6628485990a5a7da499bf9bed8eea91cfb5161d73bb73b540e2d2f",
     "web/native/osl-owned-probe/CMakeLists.txt": "32f58eaefb8f6e7456d504101d5c3339abbc778bb6d9588d5fcac9ab88bc4971",
-    "web/native/tests/osl-owned.cc": "21417f3992c3ebac4812e83d3b880ece92aacbdfa1b4fd06ad17c8c15bc2338e",
+    "web/native/tests/osl-owned.cc": "5c8a493d9b64e1c5e0e92aaab7bc0788a3b450b0241a78ab759683176296252f",
     "web/native/tests/osl-runtime.cc": "7e0b3e58f7db461a9b0d9b8e2be3cd6b1e6cb41419176ff599f166bb1975df30",
     "web/native/tests/osl-runtime-native.py": "1985f7db1790c725da2683256024674fdb34eb2469ef776494846c617794221b",
-    "web/tests/osl-owned.cjs": "296b207d3aca3e85cd06495dd6a582df818ad627af2e7662eca4fd0cf8433a72",
+    "web/tests/osl-owned.cjs": "0f3cef81e7d73a77ed24bcf5664574edec62ca283ac64f8ade1c87f2dcb97b78",
     "web/native/tests/fixtures/osl-runtime/web_execute.osl": "96b38f6e1ec4cc884cd92982c71322044af51da20d36df483e947595fcecab03",
     "web/native/osl-query-probe/cmake/FindLLVM.cmake": "0f2637da53758493d8a4e36815ef84b2bfa0a93dbf0ec26034c497531ac37138",
     "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d"

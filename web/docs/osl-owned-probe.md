@@ -32,11 +32,16 @@ contract and use a separate epoch, so shader updates do not reinstall callbacks.
 
 Each Node and offline Chromium run recreates eight original shading systems.
 The original compiler produces fresh bytecode in each environment. Across the
-eight cycles, the checks cover 6,144 shading points, 12,288 renderer calls and
-6,144 calls through genuine libffi closures. Compilation occurs on a C++ worker
-while an unrelated worker remains busy. Four workers already exist before
+eight cycles, the checks cover 7,296 shading points, 14,592 renderer calls and
+7,296 calls through genuine libffi closures. Two C++ workers request compilation together while an unrelated worker remains
+busy. OSL optimization runs on its calling workers; the adapter serializes
+LLVM object emission and LLD, whose linker state is shared. Both programs remain
+live together. Four workers already exist before
 compilation; another starts afterward. A live callback is replaced while the
-compiled shader remains alive. Varying numeric outputs match independent
+compiled shaders remain alive. A separate worker shades sixteen points, observes
+a cooperative cancellation request, releases its context and joins before native
+owner retirement. This checks cancellation between shader calls; it does not
+interrupt LLVM or a shader already executing. Varying numeric outputs match independent
 expressions within `1e-6`; full string hashes match exactly.
 
 After each native owner is destroyed, program records and owned static-data
@@ -54,8 +59,8 @@ above 2 GiB; it is not a large Blender scene benchmark.
 The ownership executable uses a 128 MiB initial heap, a 4 GiB Wasm32 ceiling,
 twelve worker slots and an unoptimized debug link. Artifact size and run time
 are not production performance results. External side-module dependencies and
-TLS definitions are rejected. Texture/closure coverage, concurrent compilation,
-cancellation, variable-size module reuse, Python query bindings and the full
+TLS definitions are rejected. Texture/closure coverage, cancellation during compilation, variable-size module
+reuse, Python query bindings and the full
 Cycles adapter still require qualification. Full dependency parity is pending.
 
 Reproduce the [compiler proof](osl-compiler-probe.md) first. With the pinned SDK,

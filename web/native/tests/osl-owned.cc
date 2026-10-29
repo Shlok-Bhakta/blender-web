@@ -105,21 +105,33 @@ int run_system(int argc, char **argv)
                                   OSL::ustring("matches"),
                                   OSL::ustring("echoed")};
   system.attribute("renderer_outputs", OSL::TypeDesc(OSL::TypeDesc::STRING, 4), outputs);
-  auto group = system.ShaderGroupBegin("browser");
-  require(system.Parameter(*group, "gain", 1.25f, false), "varying gain parameter");
-  require(system.Parameter(*group, "tag", OSL::ustring("browser"), false),
-          "varying string parameter");
-  require(system.Shader(*group, "surface", "web_execute", "layer"), "load shader");
-  require(system.ShaderGroupEnd(*group), "finish group");
-  auto shade = [&] {
+  auto make_group = [&](const char *name) {
+    auto group = system.ShaderGroupBegin(name);
+    require(system.Parameter(*group, "gain", 1.25f, false), "varying gain parameter");
+    require(system.Parameter(*group, "tag", OSL::ustring("browser"), false),
+            "varying string parameter");
+    require(system.Shader(*group, "surface", "web_execute", "layer"), "load shader");
+    require(system.ShaderGroupEnd(*group), "finish group");
+    return group;
+  };
+  auto group = make_group("browser-a"), second = make_group("browser-b");
+  std::atomic<bool> cancelled{false}, cancellation_ready{false};
+  auto shade = [&](OSL::ShaderGroupRef target, bool cancel = false) {
     auto *thread = system.create_thread_info();
     auto *context = system.get_context(thread);
     OSL::ShaderGlobals globals{};
     for (unsigned i = 0; i < 128; ++i) {
+      if (cancel && i == 16) {
+        cancellation_ready.store(true, std::memory_order_release);
+        while (!cancelled.load(std::memory_order_acquire)) {
+        }
+      }
+      if (cancel && cancelled.load(std::memory_order_acquire))
+        break;
       globals.u = float(i) / 127;
       globals.v = float(127 - i) / 127;
       globals.P = OSL::Vec3(globals.u, globals.v, .5f);
-      require(system.execute(context, *group, globals), "execute original OSL shader");
+      require(system.execute(context, *target, globals), "execute original OSL shader");
       OSL::TypeDesc type;
       const float *color = static_cast<const float *>(
           system.get_symbol(*context, OSL::ustring("result"), type));
@@ -148,14 +160,14 @@ int run_system(int argc, char **argv)
   bool execute = false;
   std::vector<std::thread> workers;
   for (unsigned i = 0; i < 4; ++i) {
-    workers.emplace_back([&] {
+    workers.emplace_back([&, i] {
       {
         std::unique_lock<std::mutex> lock(mutex);
         ++ready;
         condition.notify_all();
         condition.wait(lock, [&] { return execute; });
       }
-      shade();
+      shade(i % 2 ? group : second);
     });
   }
   {
@@ -170,11 +182,21 @@ int run_system(int argc, char **argv)
   });
   while (!busy_ready.load()) {
   }
-  std::thread compiler([&] { shade(); });
+  std::atomic<unsigned> compile_ready{0};
+  auto compile = [&](OSL::ShaderGroupRef target) {
+    compile_ready.fetch_add(1);
+    while (compile_ready.load() < 2) {
+    }
+    shade(target);
+  };
+  std::thread compiler([&] { compile(group); });
+  std::thread other_compiler([&] { compile(second); });
   compiler.join();
+  other_compiler.join();
+  require(GHOST_web_osl_live_programs() == 2, "two concurrently requested programs remain live");
   stop_busy.store(true, std::memory_order_release);
   unrelated.join();
-  require(callback.calls == 128, "callback before replacement");
+  require(callback.calls == 256, "callback before replacement");
   callback.reset();
   callback.create();
   {
@@ -185,10 +207,17 @@ int run_system(int argc, char **argv)
   for (auto &worker : workers) {
     worker.join();
   }
-  std::thread fresh([&] { shade(); });
+  std::thread fresh([&] { shade(group); });
   fresh.join();
-  require(callback.calls == 768, "JIT renderer invokes original libffi callbacks across workers");
-  require(renderer.calls == 1536, "renderer callbacks on all threads");
+  std::thread cancel_worker([&] { shade(second, true); });
+  while (!cancellation_ready.load(std::memory_order_acquire)) {
+  }
+  cancelled.store(true, std::memory_order_release);
+  cancel_worker.join();
+  require(GHOST_web_osl_live_programs() == 2,
+          "cancellation preserves native owner until all users join");
+  require(callback.calls == 912, "JIT renderer invokes original libffi callbacks across workers");
+  require(renderer.calls == 1824, "renderer callbacks on all threads");
   return 0;
 }
 
@@ -209,7 +238,8 @@ int main(int argc, char **argv)
   }
   std::puts(
       "{\"ownedOSLSystems\":8,\"nativeOwnerRetirement\":true,\"tableReused\":"
-      "true,\"automaticPublication\":true,\"mixedFFICallbacks\":6144,"
-      "\"workerCompilation\":true,\"busyWorkerPublication\":true,\"shadingPoints\":6144,"
-      "\"rendererCallbacks\":12288}");
+      "true,\"automaticPublication\":true,\"mixedFFICallbacks\":7296,"
+      "\"workerCompilation\":true,\"busyWorkerPublication\":true,\"shadingPoints\":7296,"
+      "\"rendererCallbacks\":14592,\"concurrentCompilation\":true,\"cooperativeCancellation\":"
+      "true}");
 }

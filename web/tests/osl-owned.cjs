@@ -37,9 +37,13 @@ function verify(report) {
   assert.equal(report.nativeOwnerRetirement, true);
   assert.equal(report.tableReused, true);
   assert.equal(report.automaticPublication, true);
-  assert.equal(report.mixedFFICallbacks, 6144);
+  assert.equal(report.mixedFFICallbacks, 7296);
   assert.equal(report.workerCompilation, true);
   assert.equal(report.busyWorkerPublication, true);
+  assert.equal(report.concurrentCompilation, true);
+  assert.equal(report.cooperativeCancellation, true);
+  assert.equal(report.shadingPoints, 7296);
+  assert.equal(report.rendererCallbacks, 14592);
 }
 
 (async () => {
@@ -106,7 +110,7 @@ Production Cycles integration remains pending.</pre></main>
       const result = execute(runtime, bytecode, lines);
       document.querySelector('#status').textContent = 'OFFLINE · original OSL shader compiled and executed';
       document.querySelector('#result').textContent = JSON.stringify(result, null, 2)
-        + '\n\nAll eight owners retired. Function table capacity reused.\n6,144 original libffi callbacks verified.\nNumeric values match the independent reference.\nFull string hashes match exactly.\nNative library readback follows this recording.';
+        + '\n\nAll eight owners retired. Function table capacity reused.\n7,296 original libffi callbacks verified.\nNumeric values match the independent reference.\nFull string hashes match exactly.\nNative library readback follows this recording.';
       await new Promise(resolve => setTimeout(resolve, 0));
       runtime.PThread.terminateAllThreads();
       return {result, bytecode, diagnostics, crossOriginIsolated, offline: !navigator.onLine};
