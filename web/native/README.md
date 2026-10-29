@@ -184,7 +184,9 @@ GHOST. It keeps Blender's original C++ codec bridges and Python import/export
 logic. The adapter passes Python buffers instead of integer memory addresses,
 retains their lifetime during each call, and returns immutable Draco output
 bytes. This is specific to these codecs and does not enable arbitrary shared
-libraries or general ctypes support.
+libraries. The separate [original ctypes integration](../docs/ctypes-integration.md)
+adds registered process symbols and worker callbacks; its release validation
+is tracked there.
 
 The adapter also corrects the pinned add-on's COLOR decoder dispatch and its
 sampled-object quaternion export stride. New compressed buffer views match

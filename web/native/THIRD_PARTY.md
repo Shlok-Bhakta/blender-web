@@ -101,8 +101,15 @@ Draco 1.5.7 and meshoptimizer 1.1 use the pinned release's ZIP archives and
 checksums. They link statically with Blender's original compression bridges.
 Draco retains its Apache-2.0 notices and meshoptimizer its MIT notices in
 `licenses/dependencies/`. The glTF Python adapter lives in the GHOST overlay
-and calls only these compiled functions. It does not provide dynamic loading
-or a general-purpose ctypes module.
+and calls only these compiled functions. It does not provide dynamic loading.
+
+The separate ctypes integration builds CPython's original extension sources
+and Blender's pinned libffi 3.5.2. libffi's MIT license and build-tool notices
+are retained in `licenses/dependencies/ffi/`. Its Wasm backend patch corrects
+variadic layout and high-address access and supports worker-local trampoline
+installation. GHOST owns the worker synchronization and static symbol lookup.
+See the [integration status](../docs/ctypes-integration.md) for release evidence
+and the limits of static process symbols.
 
 Rubber Band 4.0.0 uses Blender's pinned source archive and its FFTW backend.
 It retains GPL-2.0-or-later notices. libaom 3.13.1 retains its BSD-2-Clause
