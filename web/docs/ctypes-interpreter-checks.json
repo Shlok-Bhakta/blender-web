@@ -1,0 +1,389 @@
+{
+  "checkedAt": "2026-10-29T02:04:51.151322+00:00",
+  "productionIntegrated": false,
+  "originalCPython": "3.13.13",
+  "originalLibffi": "3.5.2",
+  "emscriptenVersion": "4.0.23",
+  "browserVerified": true,
+  "cleanPythonFinalization": true,
+  "staticNamespaceOnly": true,
+  "staticNamespaceScope": "The isolated loader exposes only its listed process symbols; it rejects named dynamic libraries",
+  "node": {
+    "originalCtypes": true,
+    "numpyCtypesInterop": true,
+    "numpyVersion": "2.3.4",
+    "noncontiguousArrayRejected": true,
+    "pythonVersion": "3.13.13",
+    "pointerBytes": 4,
+    "longBytes": 4,
+    "wideIntegersExact": true,
+    "aggregateArgumentsAndReturn": true,
+    "longDouble": true,
+    "mixedVarargs": true,
+    "memoryOperations": true,
+    "pythonAPI": true,
+    "pythonAPIErrorRecovery": true,
+    "pythonReferenceCounts": true,
+    "processNamespace": true,
+    "missingSymbolRejected": true,
+    "errno": true,
+    "existingForeignWorkers": 4,
+    "foreignWorkerCallbacks": 240,
+    "pythonThreadCallbacks": 8,
+    "signatureReuseIterations": 60,
+    "unraisableErrors": []
+  },
+  "browser": {
+    "originalCtypes": true,
+    "numpyCtypesInterop": true,
+    "numpyVersion": "2.3.4",
+    "noncontiguousArrayRejected": true,
+    "pythonVersion": "3.13.13",
+    "pointerBytes": 4,
+    "longBytes": 4,
+    "wideIntegersExact": true,
+    "aggregateArgumentsAndReturn": true,
+    "longDouble": true,
+    "mixedVarargs": true,
+    "memoryOperations": true,
+    "pythonAPI": true,
+    "pythonAPIErrorRecovery": true,
+    "pythonReferenceCounts": true,
+    "processNamespace": true,
+    "missingSymbolRejected": true,
+    "errno": true,
+    "existingForeignWorkers": 4,
+    "foreignWorkerCallbacks": 240,
+    "pythonThreadCallbacks": 8,
+    "signatureReuseIterations": 60,
+    "unraisableErrors": [],
+    "browserVersion": "145.0.7632.6",
+    "crossOriginIsolated": true,
+    "browserErrors": [],
+    "exitCode": 0
+  },
+  "native": {
+    "blenderVersion": "5.2.2 LTS",
+    "blenderRevision": "d13f752e3b9c",
+    "originalBlenderLibffi": "3.5.2",
+    "samePythonChecks": true,
+    "exactValues": true,
+    "architectureDifferences": [
+      "pointerBytes",
+      "longBytes"
+    ],
+    "report": {
+      "originalCtypes": true,
+      "numpyCtypesInterop": true,
+      "numpyVersion": "2.3.4",
+      "noncontiguousArrayRejected": true,
+      "pythonVersion": "3.13.13",
+      "pointerBytes": 8,
+      "longBytes": 8,
+      "wideIntegersExact": true,
+      "aggregateArgumentsAndReturn": true,
+      "longDouble": true,
+      "mixedVarargs": true,
+      "memoryOperations": true,
+      "pythonAPI": true,
+      "pythonAPIErrorRecovery": true,
+      "pythonReferenceCounts": true,
+      "processNamespace": true,
+      "missingSymbolRejected": true,
+      "errno": true,
+      "existingForeignWorkers": 4,
+      "foreignWorkerCallbacks": 240,
+      "pythonThreadCallbacks": 8,
+      "signatureReuseIterations": 60,
+      "unraisableErrors": []
+    },
+    "nativeModuleSha256": "909f694f6cf495c8b6c5c202667dd582c3d098022f122240cb31dbbd16850bfc",
+    "fixtureSourceSha256": "6f716f21c37de0b9ffd477619561dbde47e63e59665227ba0bfdc06917788307",
+    "fixtureBinarySha256": "45cb8aefe6b7e3cffc2bb8eb3ed58cc34214b9c97ba3eb471954f2d53009553e",
+    "pythonSourceSha256": "5038fb7db2ec3e43dd260913971ef05933f27ed727a5d7653d62c234d6dfd966"
+  },
+  "threadExitDuringCallback": true,
+  "callbackExitNegativeControl": {
+    "exitCode": null,
+    "timeout": true
+  },
+  "sourceFiles": [
+    {
+      "name": "ctypes-original/driver.cc",
+      "bytes": 897,
+      "sha256": "5f04023b20e0d74ecd87acb7b5d1faf0c827ea12d8f8c41d84cc60bfd1877a91"
+    },
+    {
+      "name": "ctypes-original/loader.cc",
+      "bytes": 1115,
+      "sha256": "e7fbf9843ae0ca37132ae8157f095baee89383d5347fc5ca70ffbb75df2d6bb8"
+    },
+    {
+      "name": "ctypes-original/fixture.cc",
+      "bytes": 3883,
+      "sha256": "6f716f21c37de0b9ffd477619561dbde47e63e59665227ba0bfdc06917788307"
+    },
+    {
+      "name": "ctypes-original/check.py",
+      "bytes": 5328,
+      "sha256": "5038fb7db2ec3e43dd260913971ef05933f27ed727a5d7653d62c234d6dfd966"
+    },
+    {
+      "name": "ctypes-original/build.sh",
+      "bytes": 1971,
+      "sha256": "502cabe21bd898d0927eb33c58efa2a16f277c54cfec1ef799ce332f014759ec"
+    },
+    {
+      "name": "ctypes-original/build-browser.sh",
+      "bytes": 1979,
+      "sha256": "87bb9eaec79f69bf26044014d25d72d318bea8ae74d6620a5a101a09d7aef13f"
+    },
+    {
+      "name": "ctypes-original/browser.cjs",
+      "bytes": 1563,
+      "sha256": "663f36203202c19af3108285cfe0b90da6ba7c078c308f21298010214a62f808"
+    },
+    {
+      "name": "ctypes-original/index.html",
+      "bytes": 615,
+      "sha256": "a163b5669fd1b5b4e198c498b3d62350f15064a19b70c4cc55282330b59bd3cb"
+    },
+    {
+      "name": "ctypes-original/manifest.json",
+      "bytes": 77,
+      "sha256": "a705ee9adc17a5be7a0d956307daafd3bf76eb20465f798e5d4f4d973ca450c7"
+    },
+    {
+      "name": "ctypes-original/native-verify.py",
+      "bytes": 1579,
+      "sha256": "a9745cc8d541d7d921d1c3b664dd596876ecc4e0dbeb5b51b1b9f8516012e9e7"
+    },
+    {
+      "name": "ctypes-original/expanded.log",
+      "bytes": 607,
+      "sha256": "0fb52ab416a0902f384947ecc211042fc79f60d8a3d2c95e0471a03ec33699fa"
+    },
+    {
+      "name": "ctypes-original/expanded-result.json",
+      "bytes": 40,
+      "sha256": "d2aa36f00ec47bf35ec11d81c4f7544ae3089844509dcc94d55d0df6b1d4365b"
+    },
+    {
+      "name": "ctypes-original/browser-run.log",
+      "bytes": 653,
+      "sha256": "43bdba9562edd874f48539c30c67b133f24d6ccc35f82211e33088a01f6a8d1c"
+    },
+    {
+      "name": "ctypes-original/browser-verification.json",
+      "bytes": 762,
+      "sha256": "076433fda53719d3a14368a4509fd627c27a00743d0255de107c26a2dd3f62c3"
+    },
+    {
+      "name": "ctypes-original/browser-raw.json",
+      "bytes": 1430,
+      "sha256": "eeb4b17e9404f2afa4fba9584adce2d53fe13b4ff852fb010ea6ebd064a17ae6"
+    },
+    {
+      "name": "ctypes-original/native-readback.log",
+      "bytes": 1264,
+      "sha256": "1098f4469fe4b00718c26ac068cf504a407f5cf402f956d0763310bc7d39e12e"
+    },
+    {
+      "name": "ctypes-original/native-verification.json",
+      "bytes": 1318,
+      "sha256": "c5c69bd625e3bea48858a7a2ba7b5edbf52635cf5cac664f4ffcb4118795e025"
+    },
+    {
+      "name": "ctypes-original/native-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "ffi-events-exit/bridge.cc",
+      "bytes": 9058,
+      "sha256": "a6ed958ae6b3526ee9e2c1dd41c4181af4f5f62594030bbc344a41360b80b664"
+    },
+    {
+      "name": "ffi-events-exit/ffi.c",
+      "bytes": 28024,
+      "sha256": "65cebb8ec87c71e24e373c77ecac54ec259121cfcb1261cd87ce6305a730ffaa"
+    },
+    {
+      "name": "ffi-events-exit/test-tail.cc",
+      "bytes": 11382,
+      "sha256": "01df4c720e32039f9a9950a3ac82f0848c7ad96a756d87ab220874242a8f1584"
+    },
+    {
+      "name": "ffi-events-exit/check.cc",
+      "bytes": 45,
+      "sha256": "5ecb3ce932e8b44101ac5b56fb048508c7619c44b6c294706ade4f5e39e14b52"
+    },
+    {
+      "name": "ffi-events-exit/build.sh",
+      "bytes": 1307,
+      "sha256": "46da46f3694f9b6602151ec0db1edb43d10f58619e767e695032e609316712bd"
+    },
+    {
+      "name": "ffi-events-exit/build-browser.sh",
+      "bytes": 1315,
+      "sha256": "03c0b3b8edb7b0ab243fa2f2323fc6b7f94a6a9036c2fb26fbcbcddd67730643"
+    },
+    {
+      "name": "ffi-events-exit/build-browser-abi.sh",
+      "bytes": 1323,
+      "sha256": "04eb119a4be22818d4b52d9441518d00d86a7a674ca4e09e6e0083a96a634af1"
+    },
+    {
+      "name": "ffi-events-exit/build-abi.sh",
+      "bytes": 1315,
+      "sha256": "df11d2374b1c683aab36485cf60b2fbce6f7f091a905710c5c4a0da7c637f901"
+    },
+    {
+      "name": "ffi-events-exit/abi-check.cc",
+      "bytes": 5576,
+      "sha256": "a051b0bc0c951fefa40442cb369722414f0ac5c6c26d6d6fd9f1acaf85238851"
+    },
+    {
+      "name": "ffi-events-exit/browser.cjs",
+      "bytes": 2032,
+      "sha256": "b06e38cf9f32518fea7ecff537beaea66a23124b1b84ffdc3eec962df6caad01"
+    },
+    {
+      "name": "ffi-events-exit/index.html",
+      "bytes": 680,
+      "sha256": "1dca0ba756e290e30c29a17d41b34ac845e4f3fe06336215ef646fbe3d8aa72c"
+    },
+    {
+      "name": "ffi-events-exit/manifest.json",
+      "bytes": 75,
+      "sha256": "ed6cff7cedc27cdf81b6e4e1582bcaab2d28f11ea47cca75655ee89913a28ff9"
+    },
+    {
+      "name": "ffi-events-exit/stress.log",
+      "bytes": 2387,
+      "sha256": "fc15d76e648c9f461814c6ca24d1618046179c44eb6492c099d873f80c0e5574"
+    },
+    {
+      "name": "ffi-events-exit/stress-result.json",
+      "bytes": 53,
+      "sha256": "c88743afbf89bb30493a3ed8c16b92a7ff9c8b2f16d3c0e74ae2776779b14fa5"
+    },
+    {
+      "name": "ffi-events-exit/results.json",
+      "bytes": 144,
+      "sha256": "b225dd658d567125e876b20f9f3a56701b97e4dd6ca51122d134101ab4c21a00"
+    },
+    {
+      "name": "ffi-events-exit/exit-positive.log",
+      "bytes": 1187,
+      "sha256": "090bfb9948c8f6830f9bbb7e45ff197e779e1de7b7e4e479cdfb2c07901a3f07"
+    },
+    {
+      "name": "ffi-events-exit/exit-counter-control.log",
+      "bytes": 482,
+      "sha256": "15265333fa0be957cb1154cab48ea69244027bfc00da13da01eb67b77682241d"
+    },
+    {
+      "name": "ffi-events-exit/browser-run.log",
+      "bytes": 655,
+      "sha256": "447c30ef926bfd5a84147416b61cd79a087c88ef89f831203d70626300729c45"
+    },
+    {
+      "name": "ffi-events-exit/browser-abi-run.log",
+      "bytes": 273,
+      "sha256": "39f10bf0b7481e26108d16597e9151fb6724a3487386ba6ba067aa9b28e271bf"
+    },
+    {
+      "name": "ffi-events-exit/browser-verification.json",
+      "bytes": 764,
+      "sha256": "b16b45bde1a2a6f3cf25856b01f9d495ba6dc1f2fc7f95b1cc0dadab77599a4f"
+    },
+    {
+      "name": "ffi-events-exit/browser-abi-verification.json",
+      "bytes": 318,
+      "sha256": "67abda11a683fa5f2d10187f172262c7d4e09e7a2f712b8cd0e88f4040eed6a2"
+    }
+  ],
+  "originalSourceHashes": {
+    "build/native/deps/python-extensions/python/Modules/_ctypes/_ctypes.c": "95c402c2ca2be9887b294fd30aec2c58fe82257a517007b0af48294caec09932",
+    "build/native/deps/python-extensions/python/Modules/_ctypes/callbacks.c": "53c1cc13df9c293aaedde1952073f8a7676ef87fb29c4200c95ca7955cf82ab8",
+    "build/native/deps/python-extensions/python/Modules/_ctypes/callproc.c": "0517b9365c6eff87781ebb3fa3da099cb9ed8cccb50f2aad4c82dd47e0020090",
+    "build/native/deps/python-extensions/python/Modules/_ctypes/cfield.c": "15f9873a7fae591b225cf8333b0856f3bca065fd2d91d4222bc3d30ee5a757f8",
+    "build/native/deps/python-extensions/python/Modules/_ctypes/stgdict.c": "42737e02db0c29c8b4f82a82d80877e1b46027a5fb3da94d873f21f4993be127",
+    "build/native/deps/python-extensions/python/Modules/_ctypes/ctypes.h": "b3fa772c82de1ad2556bb2513aebef3279eba8efa0be5856a6e7cb9e80f9554b"
+  },
+  "inputArtifacts": {
+    "build/native/deps/prefix/lib/libpython3.13.a": "ce7446f9558b392560b96a39736409b20cc462ac8e42b329c7cf78deba1e2a26",
+    "build/native/deps/prefix/include/python3.13/pyconfig.h": "a085ca8bee5b86cec9226535cafdd113d16b3e41f44d8ccbcbe950d6f6a6d2dc",
+    "build/native/parity-probes/cpython/prefix/include/ffi.h": "828bd5189add05bcfaf58b0931423e2720a3395d97c990af66909a18764cea54",
+    "build/native/parity-probes/ffi-events-exit/libffi.a": "b33cdce72bb022a8355d04e751fb51f8b28d0f77133efb6eaab5977fc4deb984"
+  },
+  "limitations": [
+    "The actual Blender application has not integrated ctypes yet",
+    "Only the listed process symbols are available; arbitrary native or dynamic Wasm library loading remains unsupported",
+    "Full application worker startup registration, cancellation and other lifecycle cases need validation",
+    "The worker registry mutex needs application performance measurements",
+    "The production application still uses wasm32 and its 4 GiB linear-memory ceiling"
+  ],
+  "binaries": [
+    {
+      "name": "check.js",
+      "bytes": 607675,
+      "sha256": "0c94080cd23fcb5e2e6b20bb39f244c0886b4fb608a16092623f8634d4d36f2d"
+    },
+    {
+      "name": "check.wasm",
+      "bytes": 12607335,
+      "sha256": "5ab11bd188a77792e4afa92409a2d00880cc58008f36f03a4ffb7f44dfd86417"
+    },
+    {
+      "name": "check.data",
+      "bytes": 35344110,
+      "sha256": "2eb087494fef37169fcc4f835bf188b0651fc0e11f2cd3f46f47516710a6adfc"
+    },
+    {
+      "name": "web-check.js",
+      "bytes": 608153,
+      "sha256": "38b8604f0a214cbaa8bd7454e9a499a921d19105f7fca100c0d31ff6e8e97e53"
+    },
+    {
+      "name": "web-check.wasm",
+      "bytes": 12607335,
+      "sha256": "5ab11bd188a77792e4afa92409a2d00880cc58008f36f03a4ffb7f44dfd86417"
+    },
+    {
+      "name": "web-check.data",
+      "bytes": 35344110,
+      "sha256": "2eb087494fef37169fcc4f835bf188b0651fc0e11f2cd3f46f47516710a6adfc"
+    },
+    {
+      "name": "native-fixture.so",
+      "bytes": 18392,
+      "sha256": "45cb8aefe6b7e3cffc2bb8eb3ed58cc34214b9c97ba3eb471954f2d53009553e"
+    }
+  ],
+  "sourceArchive": {
+    "path": "web/docs/ctypes-interpreter-source.tar.gz",
+    "bytes": 30828,
+    "sha256": "c697bc1ae9c4a0f21d0e2df6f5d77a4e466547b936a6a04a454c8e610958714b"
+  },
+  "binaryArchive": {
+    "url": "https://github.com/Shlok-Bhakta/blender-web/releases/download/web-native-f5bc7678d055b2921075/ctypes-interpreter-binaries.tar.gz",
+    "bytes": 24054700,
+    "sha256": "2d5c277e3c2a79987e4cbcd98c7c0a21282d5c7d36541b1afb9e331d4e1bbc94"
+  },
+  "upstreamSources": {
+    "python": {
+      "FILE": "Python-3.13.13.tar.xz",
+      "HASH": "3a19dd420883dd599728c9dd07c141e7",
+      "HASH_TYPE": "MD5",
+      "URI": "https://www.python.org/ftp/python/3.13.13/Python-3.13.13.tar.xz",
+      "VERSION": "3.13.13",
+      "sha256": "2ab91ff401783ccca64f75d10c882e957bdfd60e2bf5a72f8421793729b78a71"
+    },
+    "ffi": {
+      "version": "3.5.2",
+      "sha256": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc"
+    }
+  }
+}

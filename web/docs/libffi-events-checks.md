@@ -11,3 +11,5 @@ The extended ABI suite also passes 72 callback calls and nine calls to a compile
 The Node stress run completed in 3.78 seconds on this host. That is a functional test duration, not an application render benchmark. The registry mutex surrounds wait transitions, so application performance still needs measurement. Full worker registration, cancellation, thread exit during a callback, self-free, stale calls and resource lifetime remain unresolved or unverified. Bounded table reuse does not prove bounded compiled-module memory.
 
 See the [source and result hashes](libffi-events-checks.json), [complete evidence and reproduction instructions](libffi-events-probe-evidence.tar.gz), and [earlier argument checks](libffi-varargs-checks.md).
+
+The [original ctypes interpreter checks](ctypes-interpreter-checks.md) also cover the subsequent callback-exit cleanup fix and the real Python module in Chromium, including NumPy interoperability and native Blender comparison.
