@@ -81,11 +81,13 @@ RECIPES = {
     "USD": ("", ["-DPXR_BUILD_MONOLITHIC=ON", "-DPXR_ENABLE_PYTHON_SUPPORT=ON", "-DPXR_BUILD_IMAGING=ON", "-DPXR_BUILD_USD_IMAGING=ON", "-DPXR_BUILD_GPU_SUPPORT=OFF", "-DPXR_BUILD_USDVIEW=OFF", "-DPXR_BUILD_USD_TOOLS=OFF", "-DPXR_BUILD_TESTS=OFF", "-DPXR_BUILD_EXAMPLES=OFF", "-DPXR_BUILD_TUTORIALS=OFF", "-DPXR_ENABLE_MATERIALX_SUPPORT=ON", "-DPXR_ENABLE_OPENVDB_SUPPORT=OFF", "-DPXR_ENABLE_GL_SUPPORT=OFF", "-DPXR_ENABLE_VULKAN_SUPPORT=OFF", "-DPXR_ENABLE_OSL_SUPPORT=OFF", "-DPXR_ENABLE_PTEX_SUPPORT=OFF", "-DPXR_BUILD_OPENIMAGEIO_PLUGIN=OFF", "-DPXR_BUILD_OPENCOLORIO_PLUGIN=OFF", "-DPXR_SET_INTERNAL_NAMESPACE=pxrBlender_v26_03"]),
     "TIFF": ("", ["-Dtiff-tools=OFF", "-Dtiff-tests=OFF", "-Dtiff-contrib=OFF", "-Dtiff-docs=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djbig=OFF"]),
     "OPENIMAGEIO": ("", ["-DOIIO_BUILD_TOOLS=OFF", "-DOIIO_BUILD_TESTS=OFF", "-DOIIO_BUILD_DOCS=OFF", "-DOpenImageIO_BUILD_MISSING_DEPS=OFF", "-DEMBEDPLUGINS=ON", "-DUSE_PYTHON=OFF", "-DUSE_QT=OFF", "-DUSE_FFMPEG=OFF", "-DUSE_OPENCV=OFF", "-DUSE_OPENVDB=OFF", "-DUSE_TBB=OFF", "-DUSE_SIMD=0", "-DUSE_WEBP=ON", "-DUSE_OPENJPEG=ON"]),
+    "LLVM": ("", []),
+    "OSL": ("", []),
 }
 
 C_FLAGS = "-pthread -msimd128 -fwasm-exceptions"
 CXX_FLAGS = C_FLAGS
-CXX_PACKAGES = {"OIDN", "OPENPGL", "EMBREE", "RUBBERBAND", "AOM", "LIBHEIF", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
+CXX_PACKAGES = {"OSL", "LLVM", "OIDN", "OPENPGL", "EMBREE", "RUBBERBAND", "AOM", "LIBHEIF", "X265", "DRACO", "MESHOPTIMIZER", "ABSEIL", "CERES", "HARFBUZZ", "FMT", "EIGEN", "IMATH", "OPENJPH", "OPENEXR", "YAMLCPP", "PYSTRING",
                 "OPENCOLORIO", "TBB", "OPENSUBDIV", "MANIFOLD", "ALEMBIC", "OPENVDB", "PUGIXML", "MATERIALX", "USD", "OPENIMAGEIO", "TIFF"}
 
 
@@ -197,6 +199,14 @@ def build(args):
         if name == 'SSL':
             signature['opensslTarget'] = hashlib.sha256(
                 (ROOT / 'web/native/openssl-wasm.conf').read_bytes()).hexdigest()
+        if name == 'OSL':
+            from native_osl import PATCHES, HEADERS, ADAPTERS
+            signature['runtimeInputs'] = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                for name in ['web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', *PATCHES, *HEADERS, *ADAPTERS]}
+            signature['dependencyStamps'] = {name: hashlib.sha256((base / name.lower() / 'installed.json').read_bytes()).hexdigest()
+                for name in ['LLVM', 'OPENIMAGEIO']}
+        if name == 'LLVM':
+            signature['compilerBuilder'] = hashlib.sha256((ROOT / 'web/tools/native_llvm.py').read_bytes()).hexdigest()
         if name == 'FFI':
             signature['ffiBuilder'] = hashlib.sha256(
                 (ROOT / 'web/tools/native_ffi.py').read_bytes()).hexdigest()
@@ -283,6 +293,10 @@ def build(args):
             shutil.rmtree(directory / "build", ignore_errors=True)
         # These are generated dependency trees. A changed patch must start from
         # the pinned archive, rather than layering incompatible patch revisions.
+        if name == 'OSL' and source.is_dir() and stamp.is_file():
+            previous_runtime = json.loads(stamp.read_text()).get('runtimeInputs', {})
+            if any(previous_runtime.get(name) != signature['runtimeInputs'][name] for name in PATCHES):
+                shutil.rmtree(source)
         if source.is_dir() and stamp.is_file():
             installed_patch = json.loads(stamp.read_text()).get('patch')
             if installed_patch != signature.get('patch'):
@@ -352,6 +366,16 @@ def build(args):
             from native_python import build_library
             build_library(name, source, directory / 'build', prefix, options,
                           args.jobs, log, run, C_FLAGS)
+            stamp.write_text(json.dumps(signature, indent=2) + '\n')
+            continue
+        if name == 'OSL':
+            from native_osl import build_library
+            build_library(source, directory / 'build', prefix, options, args.jobs, log, run, C_FLAGS)
+            stamp.write_text(json.dumps(signature, indent=2) + '\n')
+            continue
+        if name == 'LLVM':
+            from native_llvm import build_library
+            build_library(source, directory / 'build', prefix, options, args.jobs, log, run, C_FLAGS)
             stamp.write_text(json.dumps(signature, indent=2) + '\n')
             continue
         if name == 'FFI':

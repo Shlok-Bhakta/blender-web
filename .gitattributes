@@ -3,3 +3,5 @@ web/patches/*.patch whitespace=-blank-at-eol
 web/native/patches/*.patch whitespace=-blank-at-eol
 web/native/shader-deps/*.patch whitespace=-blank-at-eol
 web/native/python-bindings/*.patch whitespace=-blank-at-eol
+# Preserve the original compiler's bytecode, including trailing metadata spaces.
+web/native/tests/fixtures/**/*.oso whitespace=-blank-at-eol

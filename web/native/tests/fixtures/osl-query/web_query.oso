@@ -1,0 +1,36 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.15.3.0
+# options: -q -I/osl/include -o /fixtures/file.oso
+shader web_query	%meta{string,help,"Browser query fixture"} 
+param	float	gain	1.25		%meta{string,label,"Gain"} %meta{float,min,0} %meta{float,max,4}  %read{0,0} %write{2147483647,-1}
+param	int	steps	7		%read{6,6} %write{2147483647,-1}
+param	string	label	"browser"		%read{2147483647,-1} %write{2147483647,-1}
+param	color	tint	0.25 0.5 0.75		%read{0,0} %write{2147483647,-1}
+param	vector	axis	1 2 3		%read{2147483647,-1} %write{2147483647,-1}
+param	float[3]	weights	0.125 0.25 0.625		%read{1,4} %write{2147483647,-1}
+param	matrix	basis	1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1		%read{2147483647,-1} %write{2147483647,-1}
+oparam	color	result	0 0 0		%read{2147483647,-1} %write{0,0}
+oparam	float	energy	0		%read{2147483647,-1} %write{7,7}
+const	int	$const1	0		%read{1,1} %write{2147483647,-1}
+temp	float	$tmp1	%read{3,3} %write{1,1}
+const	int	$const2	1		%read{2,2} %write{2147483647,-1}
+temp	float	$tmp2	%read{3,3} %write{2,2}
+temp	float	$tmp3	%read{5,5} %write{3,3}
+const	int	$const3	2		%read{4,4} %write{2147483647,-1}
+temp	float	$tmp4	%read{5,5} %write{4,4}
+temp	float	$tmp5	%read{7,7} %write{5,5}
+temp	float	$tmp6	%read{7,7} %write{6,6}
+code ___main___
+# fixtures/web_query.osl:14
+#     energy = weights[0] + weights[1] + weights[2] + steps;
+	mul		result tint gain 	%filename{"fixtures/web_query.osl"} %line{14} %argrw{"wrr"}
+# fixtures/web_query.osl:15
+# }
+	aref		$tmp1 weights $const1 	%line{15} %argrw{"wrr"}
+	aref		$tmp2 weights $const2 	%argrw{"wrr"}
+	add		$tmp3 $tmp1 $tmp2 	%argrw{"wrr"}
+	aref		$tmp4 weights $const3 	%argrw{"wrr"}
+	add		$tmp5 $tmp3 $tmp4 	%argrw{"wrr"}
+	assign		$tmp6 steps 	%argrw{"wr"}
+	add		energy $tmp5 $tmp6 	%argrw{"wrr"}
+	end

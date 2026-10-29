@@ -1,0 +1,172 @@
+{
+  "name": "web_query",
+  "type": "shader",
+  "parameters": [
+    {
+      "name": "gain",
+      "type": "float",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": 1.25,
+      "metadata": [
+        {
+          "name": "label",
+          "type": "string",
+          "output": false,
+          "variableArray": false,
+          "structure": false,
+          "closure": false,
+          "value": "Gain",
+          "metadata": []
+        },
+        {
+          "name": "min",
+          "type": "float",
+          "output": false,
+          "variableArray": false,
+          "structure": false,
+          "closure": false,
+          "value": 0.0,
+          "metadata": []
+        },
+        {
+          "name": "max",
+          "type": "float",
+          "output": false,
+          "variableArray": false,
+          "structure": false,
+          "closure": false,
+          "value": 4.0,
+          "metadata": []
+        }
+      ]
+    },
+    {
+      "name": "steps",
+      "type": "int",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": 7,
+      "metadata": []
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": "browser",
+      "metadata": []
+    },
+    {
+      "name": "tint",
+      "type": "color",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "metadata": []
+    },
+    {
+      "name": "axis",
+      "type": "vector",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "metadata": []
+    },
+    {
+      "name": "weights",
+      "type": "float[3]",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": [
+        0.125,
+        0.25,
+        0.625
+      ],
+      "metadata": []
+    },
+    {
+      "name": "basis",
+      "type": "matrix",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "metadata": []
+    },
+    {
+      "name": "result",
+      "type": "color",
+      "output": true,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "metadata": []
+    },
+    {
+      "name": "energy",
+      "type": "float",
+      "output": true,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": 0.0,
+      "metadata": []
+    }
+  ],
+  "metadata": [
+    {
+      "name": "help",
+      "type": "string",
+      "output": false,
+      "variableArray": false,
+      "structure": false,
+      "closure": false,
+      "value": "Browser query fixture",
+      "metadata": []
+    }
+  ]
+}
