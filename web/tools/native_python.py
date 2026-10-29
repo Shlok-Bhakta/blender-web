@@ -99,6 +99,7 @@ def build(base, jobs):
               ROOT / 'web/native/shader-deps/build_python.sh', ROOT / 'web/upstream.json']
     inputs += [ROOT / 'web/tools/native_ffi.py',
                ROOT / 'web/native/ghost/GHOST_WebNetwork.cc',
+               ROOT / 'web/native/ghost/GHOST_WebWorkerResources.hh',
                *sorted((ROOT / 'web/native/ghost').glob('GHOST_WebFFI.*')),
                *sorted((ROOT / 'web/native/ghost').glob('GHOST_WebCTypes.*'))]
     dependency_stamps = {}

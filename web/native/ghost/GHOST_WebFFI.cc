@@ -1,9 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 #include "GHOST_WebFFI.hh"
-#include <emscripten.h>
-#include <emscripten/proxying.h>
-#include <emscripten/threading.h>
-#include <ffi.h>
+#include "GHOST_WebWorkerResources.hh"
 #include <algorithm>
 #include <atomic>
 #include <cerrno>
@@ -11,6 +8,10 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <emscripten.h>
+#include <emscripten/proxying.h>
+#include <emscripten/threading.h>
+#include <ffi.h>
 #include <memory>
 #include <mutex>
 #include <vector>
@@ -42,7 +43,8 @@ struct Registry {
   std::mutex mutex;
   std::vector<std::shared_ptr<Worker>> workers;
   std::vector<Closure *> closures;
-  unsigned epoch = 0;
+  unsigned epoch = 0, closure_epoch = 0;
+  std::vector<GHOST_WebWorkerResource> resources;
   std::atomic<unsigned> progress{0};
   em_proxying_queue *queue = em_proxying_queue_create();
 };
@@ -56,7 +58,8 @@ Registry &registry()
 thread_local std::shared_ptr<Worker> self;
 thread_local std::vector<uintptr_t> installed;
 thread_local std::vector<Closure *> invocations;
-thread_local unsigned local_epoch = UINT_MAX, guard = 0, queue_depth = 0;
+thread_local unsigned local_epoch = UINT_MAX, local_closure_epoch = UINT_MAX, guard = 0,
+                      queue_depth = 0;
 
 void require(bool condition, const char *message)
 {
@@ -66,8 +69,14 @@ void require(bool condition, const char *message)
   }
 }
 struct Guard {
-  Guard() { ++guard; }
-  ~Guard() { --guard; }
+  Guard()
+  {
+    ++guard;
+  }
+  ~Guard()
+  {
+    --guard;
+  }
 };
 extern "C" void *__real_ffi_closure_alloc(size_t, void **);
 extern "C" void __real_ffi_closure_free(void *);
@@ -75,11 +84,14 @@ extern "C" ffi_status __real_ffi_prep_closure_loc(
     ffi_closure *, ffi_cif *, Callback, void *, void *);
 extern "C" ffi_status ffi_web_install_closure(ffi_closure *, ffi_cif *, void *, void *, void *);
 extern "C" int __real_emscripten_futex_wait(volatile void *, uint32_t, double);
-extern "C" int __real_pthread_create(
-    pthread_t *, const pthread_attr_t *, void *(*)(void *), void *);
+extern "C" int __real_pthread_create(pthread_t *,
+                                     const pthread_attr_t *,
+                                     void *(*)(void *),
+                                     void *);
 EM_JS_DEPS(ghost_ffi, "$setWasmTableEntry");
 EM_JS(void, ensure_table, (uintptr_t index), {
-  if (wasmTable.length <= index) wasmTable.grow(index + 1 - wasmTable.length);
+  if (wasmTable.length <= index)
+    wasmTable.grow(index + 1 - wasmTable.length);
 });
 EM_JS(void, clear_table, (uintptr_t index), { setWasmTableEntry(index, null); });
 
@@ -100,22 +112,34 @@ void dispatch(ffi_cif *cif, void *result, void **arguments, void *data)
   closure->active.fetch_sub(1);
   changed();
 }
-// The registry mutex keeps CIFs and closure descriptors alive during installation.
-void apply_locked()
+// The registry mutex keeps CIFs and closure descriptors alive during
+// installation.
+void apply_locked(bool force = false)
 {
   auto &state = registry();
-  if (local_epoch == state.epoch) return;
-  for (auto index : installed) clear_table(index);
-  installed.clear();
-  for (auto *closure : state.closures) {
-    ensure_table(reinterpret_cast<uintptr_t>(closure->code));
-    require(ffi_web_install_closure(closure->memory, closure->cif,
-                reinterpret_cast<void *>(dispatch), closure, closure->code) == FFI_OK,
-            "Could not install a worker callback");
-    installed.push_back(reinterpret_cast<uintptr_t>(closure->code));
+  if (local_epoch == state.epoch && !force)
+    return;
+  if (local_closure_epoch != state.closure_epoch) {
+    for (auto index : installed)
+      clear_table(index);
+    installed.clear();
+    for (auto *closure : state.closures) {
+      ensure_table(reinterpret_cast<uintptr_t>(closure->code));
+      require(ffi_web_install_closure(closure->memory,
+                                      closure->cif,
+                                      reinterpret_cast<void *>(dispatch),
+                                      closure,
+                                      closure->code) == FFI_OK,
+              "Could not install a worker callback");
+      installed.push_back(reinterpret_cast<uintptr_t>(closure->code));
+    }
+    local_closure_epoch = state.closure_epoch;
   }
+  for (const auto &resource : state.resources)
+    resource.apply(resource.data);
   local_epoch = state.epoch;
-  if (self) self->epoch = state.epoch;
+  if (self)
+    self->epoch = state.epoch;
   changed();
 }
 void reconcile(void *)
@@ -128,19 +152,22 @@ void notice(void *)
 {
   Guard protect;
   std::lock_guard lock(registry().mutex);
-  if (self) self->notice = false;
+  if (self)
+    self->notice = false;
   apply_locked();
 }
 void drain()
 {
-  if (guard || queue_depth) return;
+  if (guard || queue_depth)
+    return;
   ++queue_depth;
   emscripten_proxy_execute_queue(registry().queue);
   --queue_depth;
 }
 void sync(pthread_t thread, void (*function)(void *), void *data)
 {
-  if (pthread_equal(thread, pthread_self())) function(data);
+  if (pthread_equal(thread, pthread_self()))
+    function(data);
   else {
     ++queue_depth;
     bool ok = emscripten_proxy_sync(registry().queue, thread, function, data);
@@ -151,7 +178,8 @@ void sync(pthread_t thread, void (*function)(void *), void *data)
 }
 void register_worker()
 {
-  if (self) return;
+  if (self)
+    return;
   Guard protect;
   auto &state = registry();
   require(state.queue, "Could not create the callback proxy queue");
@@ -168,11 +196,15 @@ void unregister_worker(void *)
   std::lock_guard lock(state.mutex);
   // pthread_exit can abandon a callback before dispatch returns. Release every
   // active count so a different thread can finish retiring that closure.
-  for (auto *closure : invocations) closure->active.fetch_sub(1);
+  for (auto *closure : invocations)
+    closure->active.fetch_sub(1);
   invocations.clear();
-  for (auto index : installed) clear_table(index);
+  for (auto index : installed)
+    clear_table(index);
   installed.clear();
-  local_epoch = UINT_MAX;
+  for (const auto &resource : state.resources)
+    resource.detach(resource.data);
+  local_epoch = local_closure_epoch = UINT_MAX;
   self->alive = false;
   auto entry = std::find(state.workers.begin(), state.workers.end(), self);
   require(entry != state.workers.end(), "Unregistered worker exited");
@@ -195,30 +227,38 @@ void *start_worker(void *argument)
   pthread_cleanup_pop(1);
   return result;
 }
-void publish(unsigned requested, const std::vector<std::shared_ptr<Worker>> &targets);
+void publish(unsigned requested,
+             const std::vector<std::shared_ptr<Worker>> &targets,
+             bool wait = true);
 }  // namespace
 
 extern "C" void GHOST_web_initialize_ffi()
 {
   register_worker();
 }
-extern "C" int __wrap_pthread_create(
-    pthread_t *thread, const pthread_attr_t *attributes, void *(*function)(void *), void *data)
+extern "C" int __wrap_pthread_create(pthread_t *thread,
+                                     const pthread_attr_t *attributes,
+                                     void *(*function)(void *),
+                                     void *data)
 {
   // Always register new workers, including those created before Python starts.
   auto *start = new (std::nothrow) Start{function, data};
-  if (!start) return EAGAIN;
+  if (!start)
+    return EAGAIN;
   int result = __real_pthread_create(thread, attributes, start_worker, start);
-  if (result) delete start;
+  if (result)
+    delete start;
   return result;
 }
 extern "C" int __wrap_emscripten_futex_wait(volatile void *address, uint32_t value, double timeout)
 {
   // This path must not initialize the registry: malloc and C++ static guards
   // themselves may wait on a futex during registry construction.
-  if (!self || guard || queue_depth) return __real_emscripten_futex_wait(address, value, timeout);
+  if (!self || guard || queue_depth)
+    return __real_emscripten_futex_wait(address, value, timeout);
   const double deadline = (timeout < 0 || !std::isfinite(timeout)) ?
-                              INFINITY : emscripten_get_now() + timeout;
+                              INFINITY :
+                              emscripten_get_now() + timeout;
   drain();
   {
     Guard protect;
@@ -228,7 +268,8 @@ extern "C" int __wrap_emscripten_futex_wait(volatile void *address, uint32_t val
     changed();
   }
   const double remaining = std::isfinite(deadline) ?
-                               std::max(0., deadline - emscripten_get_now()) : INFINITY;
+                               std::max(0., deadline - emscripten_get_now()) :
+                               INFINITY;
   int result = __real_emscripten_futex_wait(address, value, remaining);
   {
     Guard protect;
@@ -241,13 +282,15 @@ extern "C" int __wrap_emscripten_futex_wait(volatile void *address, uint32_t val
   return result;
 }
 namespace {
-void publish(unsigned requested, const std::vector<std::shared_ptr<Worker>> &targets)
+void publish(unsigned requested, const std::vector<std::shared_ptr<Worker>> &targets, bool wait)
 {
   auto &state = registry();
-  reconcile(nullptr);
+  if (self)
+    reconcile(nullptr);
   sync(emscripten_main_runtime_thread_id(), reconcile, nullptr);
   for (const auto &worker : targets) {
-    if (pthread_equal(worker->id, pthread_self())) continue;
+    if (pthread_equal(worker->id, pthread_self()))
+      continue;
     bool send = false;
     {
       Guard protect;
@@ -268,6 +311,8 @@ void publish(unsigned requested, const std::vector<std::shared_ptr<Worker>> &tar
       }
     }
   }
+  if (!wait)
+    return;
   for (;;) {
     bool done = true;
     unsigned observed;
@@ -275,11 +320,13 @@ void publish(unsigned requested, const std::vector<std::shared_ptr<Worker>> &tar
       Guard protect;
       std::lock_guard lock(state.mutex);
       for (const auto &worker : targets) {
-        if (worker->alive && !worker->sleeping && worker->epoch < requested) done = false;
+        if (worker->alive && !worker->sleeping && worker->epoch < requested)
+          done = false;
       }
       observed = state.progress.load();
     }
-    if (done) break;
+    if (done)
+      break;
     __wrap_emscripten_futex_wait(&state.progress, observed, INFINITY);
   }
 }
@@ -315,13 +362,15 @@ extern "C" ffi_status __wrap_ffi_prep_closure_loc(
   {
     Guard protect;
     std::lock_guard lock(state.mutex);
-    require(std::none_of(state.closures.begin(), state.closures.end(),
-                        [&](auto *entry) { return entry->memory == memory; }),
+    require(std::none_of(state.closures.begin(),
+                         state.closures.end(),
+                         [&](auto *entry) { return entry->memory == memory; }),
             "Closure was prepared twice");
     ensure_table(reinterpret_cast<uintptr_t>(code));
     status = __real_ffi_prep_closure_loc(memory, cif, dispatch, closure, code);
     if (status == FFI_OK) {
       state.closures.push_back(closure);
+      ++state.closure_epoch;
       requested = ++state.epoch;
       targets = state.workers;
     }
@@ -342,13 +391,15 @@ extern "C" void __wrap_ffi_closure_free(void *memory)
   {
     Guard protect;
     std::lock_guard lock(state.mutex);
-    auto entry = std::find_if(state.closures.begin(), state.closures.end(),
-                             [&](auto *item) { return item->memory == memory; });
+    auto entry = std::find_if(state.closures.begin(), state.closures.end(), [&](auto *item) {
+      return item->memory == memory;
+    });
     if (entry != state.closures.end()) {
       closure = *entry;
       require(std::find(invocations.begin(), invocations.end(), closure) == invocations.end(),
               "A callback cannot free itself");
       state.closures.erase(entry);
+      ++state.closure_epoch;
       requested = ++state.epoch;
       targets = state.workers;
     }
@@ -357,9 +408,69 @@ extern "C" void __wrap_ffi_closure_free(void *memory)
     publish(requested, targets);
     while (closure->active.load()) {
       unsigned observed = state.progress.load();
-      if (closure->active.load()) __wrap_emscripten_futex_wait(&state.progress, observed, INFINITY);
+      if (closure->active.load())
+        __wrap_emscripten_futex_wait(&state.progress, observed, INFINITY);
     }
     delete closure;
   }
   sync(emscripten_main_runtime_thread_id(), release, memory);
+}
+
+extern "C" void GHOST_web_register_worker_resource(GHOST_WebWorkerResource resource)
+{
+  GHOST_web_initialize_ffi();
+  require(resource.apply && resource.detach, "Invalid worker resource callbacks");
+  auto &state = registry();
+  unsigned requested;
+  std::vector<std::shared_ptr<Worker>> targets;
+  {
+    Guard protect;
+    std::lock_guard lock(state.mutex);
+    require(std::none_of(state.resources.begin(),
+                         state.resources.end(),
+                         [&](const auto &old) {
+                           return old.apply == resource.apply && old.data == resource.data;
+                         }),
+            "Duplicate worker resource");
+    state.resources.push_back(resource);
+    requested = ++state.epoch;
+    targets = state.workers;
+  }
+  publish(requested, targets, false);
+}
+extern "C" void GHOST_web_publish_worker_resources()
+{
+  auto &state = registry();
+  unsigned requested;
+  std::vector<std::shared_ptr<Worker>> targets;
+  {
+    Guard protect;
+    std::lock_guard lock(state.mutex);
+    requested = ++state.epoch;
+    targets = state.workers;
+  }
+  publish(requested, targets, false);
+}
+extern "C" void GHOST_web_invoke_runtime_thread(void (*function)(void *), void *data)
+{
+  struct Call {
+    void (*function)(void *);
+    void *data;
+  } call{function, data};
+  sync(
+      emscripten_main_runtime_thread_id(),
+      [](void *value) {
+        Guard protect;
+        const auto &call = *static_cast<Call *>(value);
+        call.function(call.data);
+      },
+      &call);
+}
+extern "C" void GHOST_web_refresh_worker_resources()
+{
+  if (!self)
+    register_worker();
+  Guard protect;
+  std::lock_guard lock(registry().mutex);
+  apply_locked(true);
 }

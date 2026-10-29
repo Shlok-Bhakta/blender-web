@@ -1,0 +1,68 @@
+{
+  "measuredAt": "2026-10-29T17:06:06.960Z",
+  "browserVersion": "145.0.7632.6",
+  "crossOriginIsolated": true,
+  "results": {
+    "ffi-workers-check": {
+      "result": {
+        "calls": 9341,
+        "signatureReuseIterations": 1000,
+        "signatureKinds": 4,
+        "existingWorkers": 8,
+        "sleepingPublications": 200,
+        "concurrentClosures": 80,
+        "nestedRetirement": true,
+        "threadExitDuringCallback": true,
+        "zeroExtraVariadicArguments": true,
+        "boundedSerialTable": true,
+        "releaseAssertionsDisabled": true
+      },
+      "browserErrors": [],
+      "wasmSha256": "d55400a75979986693dcb7b87e853248d9dcaf4daae8503a29fd4a9058bf01c5",
+      "jsSha256": "10b4bd342f43656017264bebae6309cad39972fd641f777f0d74a6a4b836878d"
+    },
+    "ffi-high-address-check": {
+      "result": {
+        "heapBytes": 2418016256,
+        "highMetadata": true,
+        "highStack": true,
+        "aggregateCallbacks": true,
+        "highClosureAllocation": true,
+        "sparseAllocation": true
+      },
+      "browserErrors": [],
+      "wasmSha256": "ef126811c1d6903fd911141fa5188754a1cb7394f0ded9ee1ad93312ee1253e0",
+      "jsSha256": "312e9eedfd2b585ce7b769da07bd81e8c8d5dc20a15501d687cc96b9f0b4ad81"
+    }
+  },
+  "node": {
+    "workers": {
+      "calls": 9341,
+      "signatureReuseIterations": 1000,
+      "signatureKinds": 4,
+      "existingWorkers": 8,
+      "sleepingPublications": 200,
+      "concurrentClosures": 80,
+      "nestedRetirement": true,
+      "threadExitDuringCallback": true,
+      "zeroExtraVariadicArguments": true,
+      "boundedSerialTable": true,
+      "releaseAssertionsDisabled": true
+    },
+    "high": {
+      "heapBytes": 2418016256,
+      "highMetadata": true,
+      "highStack": true,
+      "aggregateCallbacks": true,
+      "highClosureAllocation": true,
+      "sparseAllocation": true
+    }
+  },
+  "sourceHashes": {
+    "web/native/ghost/GHOST_WebFFI.cc": "b6424a21da4d097534a8e2fda711275dfe691bb4ababd0d0fda60c8b2527049a",
+    "web/native/ghost/GHOST_WebWorkerResources.hh": "58049886eb2b543ebe347fedacdcdcdcc425c7b24c6cef877e70232a1c1bd89b",
+    "web/native/tests/ffi-workers.cc": "b4d38fcb0631ee9ff6da984d3a10086720708fe122fbfbe05773fbcb1588da30",
+    "web/native/tests/ffi-high-address.cc": "6015a16f7e2c519898deee276522fee16425b9651497a3589ef83fbdde1f6cf7",
+    "web/tests/ffi-workers.cjs": "34d64cbd8461657eb3cf596a9ac0f61142af7585a8068ca53dc5d9b95ab01916"
+  }
+}

@@ -40,10 +40,10 @@ def check_dependencies(source, base, prefix, jobs):
         'usd-imaging': ['web/native/tests/usd_imaging.cc',
                         'web/native/usd-imaging/CMakeLists.txt', 'web/tools/native_usd_imaging.py'],
         'ffi-workers': ['web/native/tests/ffi-workers.cc', 'web/native/ghost/GHOST_WebFFI.cc',
-                        'web/native/ghost/GHOST_WebFFI.hh', 'web/tools/native_ffi.py',
+                        'web/native/ghost/GHOST_WebFFI.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/tools/native_ffi.py',
                         'web/native/patches/ffi.patch'],
         'ffi-high-address': ['web/native/tests/ffi-high-address.cc',
-                             'web/native/ghost/GHOST_WebFFI.cc', 'web/native/ghost/GHOST_WebFFI.hh',
+                             'web/native/ghost/GHOST_WebFFI.cc', 'web/native/ghost/GHOST_WebFFI.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh',
                              'web/tools/native_ffi.py', 'web/native/patches/ffi.patch'],
     }
     common_inputs = ['web/native/tests/CMakeLists.txt', 'web/native/dependencies.cmake',
@@ -254,7 +254,7 @@ def check_python(base, prefix):
               'web/native/ghost/GHOST_WebDownload.py', 'web/patches/native-python-download.patch',
               'web/native/patches/urllib3.patch', 'web/tools/native_deps.py',
               'web/tools/native_ffi.py', 'web/native/patches/ffi.patch',
-              'web/native/ghost/GHOST_WebFFI.cc', 'web/native/ghost/GHOST_WebFFI.hh',
+              'web/native/ghost/GHOST_WebFFI.cc', 'web/native/ghost/GHOST_WebFFI.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh',
               'web/native/ghost/GHOST_WebCTypes.cc', 'web/native/ghost/GHOST_WebCTypes.hh']
     source_hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs}
     executable = base / "python-check.js"

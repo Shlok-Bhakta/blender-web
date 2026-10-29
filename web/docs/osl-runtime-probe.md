@@ -42,6 +42,9 @@ Wasm C++ headers. Feeding the SDK compiler's LLVM 22 bitcode to the LLVM 20
 runtime is not a compatible replacement. The build uses no fabricated compiler
 version or ABI macros.
 
+The later [ownership test](osl-owned-probe.md) covers native-owner retirement,
+automatic worker installation and mixed libffi callbacks with a separate loader.
+
 This finite experiment retains generated modules. The SDK's `dlclose` does not
 unload them, so the report explicitly says `reclamationVerified: false`.
 Production integration still needs module memory and table ownership, retirement,
