@@ -608,5 +608,8 @@ source-build workflow remains available and builds the application itself.
 Source CI builds and tests the application on pushes and publishes its artifacts.
 GitHub Pages publication goes through `publish-validated.yml`, which verifies the
 release archive's SHA-256 and runs seventeen browser validation groups before
-deployment. This keeps a later source rebuild from replacing the tested release
+deployment. The repository's `github-pages` environment permits the `main`
+branch. Dispatch this workflow with `--ref main` at the commit containing the
+matching acceptance evidence. A release may retain its separate frozen branch;
+dispatching from that branch will fail the deployment environment check. This keeps a later source rebuild from replacing the tested release
 with a separately packaged bundle.
