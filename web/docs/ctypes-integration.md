@@ -4,7 +4,8 @@ Candidate `81aa3ca51ec1b21db65c` builds CPython 3.13.13's original `_ctypes`
 sources against Blender's pinned libffi 3.5.2. Its ctypes checks pass in hardware,
 software and fallback Chromium, including offline repeats and three independent
 native Blender comparisons. The public Pages release remains
-`f5bc7678d055b2921075` while the candidate completes the full 118-stage validation.
+`f5bc7678d055b2921075` while the candidate awaits the full application source CI and publication checks.
+All 118 local validation stages passed.
 
 [Watch the original Blender recording](python-ctypes-walkthrough.mp4),
 [inspect the screenshot](python-ctypes-browser.png), or read the
@@ -70,3 +71,11 @@ python3 web/tools/native_ctypes_verify.py build/native/python-ctypes-evidence-ha
 The full validator includes hardware, software and fallback browser variants,
 native comparisons, offline repeats and the hardware recording. The Pages
 publisher includes a separate ctypes group for both application variants.
+
+The selected runtime totals 428.34 MiB, an increase of 0.21 MiB over the
+published build. Three alternating fresh browser sessions per build gave median
+first-frame handler times of 4.35 seconds for this candidate and 4.48 seconds
+for the published build. Warm medians were 3.09 and 3.06 seconds. These small
+differences do not establish a speed change. Tests used the same factory scene
+and render settings. See [the measurements](render-optimization.json) and
+[background CPU sampling](ctypes-host-load.json).

@@ -1,34 +1,34 @@
 {
-  "bundleVersion": "f5bc7678d055b2921075",
+  "bundleVersion": "81aa3ca51ec1b21db65c",
   "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
-  "durationSeconds": 96.08,
+  "durationSeconds": 59.8,
   "chapters": [
     {
-      "seconds": 0.001,
+      "seconds": 0,
       "title": "Start original Blender with the embedded Python dependencies"
     },
     {
-      "seconds": 21.262,
+      "seconds": 11.992,
       "title": "Check SQLite, compression, TLS, packages and Cython in Blender"
     },
     {
-      "seconds": 31.519,
+      "seconds": 18.961,
       "title": "Exercise browser HTTP, binary transfers, timeout and CORS rejection"
     },
     {
-      "seconds": 60.182,
+      "seconds": 37.279,
       "title": "Inspect the dependency results in the original Text Editor"
     },
     {
-      "seconds": 69.955,
+      "seconds": 45.54,
       "title": "Reopen saved database and compressed files after an offline reload"
     }
   ],
   "captions": true,
   "source": "Real hardware Chromium capture of original Blender, Python libraries, HTTP downloads and offline reopening",
   "path": "web/docs/python-foundation-walkthrough.mp4",
-  "bytes": 2384589,
-  "sha256": "733969ab17d5b96c6194383f2788f6d4e9afcacb59d7ed4b4a02df04fff4511d",
+  "bytes": 1831395,
+  "sha256": "5ba41053704148aa985819f8879bffa461c588ebd2602822622bd5021516b482",
   "screenshot": {
     "path": "web/docs/python-foundation-browser.png",
     "sha256": "c568199db3bbcffadb5092d79524ac8e7f851f1abfbf7ef663e7b1b8a04877ab"

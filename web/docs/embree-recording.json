@@ -1,25 +1,25 @@
 {
-  "bundleVersion": "f5bc7678d055b2921075",
+  "bundleVersion": "81aa3ca51ec1b21db65c",
   "sourceSha256": "e14018222f3c8ab46334cc26ab61ddd3a1a0d219bf52cdc5a2b2bd4c8fa665c0",
   "path": "web/docs/embree-walkthrough.mp4",
-  "bytes": 1223460,
-  "sha256": "c0b9a2e82954b9d09e1f274bedb0a4d7b2197e45805c1d217932635ab3011c51",
-  "durationSeconds": 47.64,
+  "bytes": 1232202,
+  "sha256": "5a3ff5c7ef6381e10492eb750b2d414850b1039ecd511132ccb3ff02d999af4e",
+  "durationSeconds": 49.0,
   "chapters": [
     {
       "seconds": 0.001,
       "title": "Start Blender with the Embree Wasm SIMD ray tracer"
     },
     {
-      "seconds": 12.086,
+      "seconds": 12.62,
       "title": "Render linked instances, curves, points, transparency and motion blur"
     },
     {
-      "seconds": 24.359,
+      "seconds": 24.831,
       "title": "Inspect the completed Cycles render in the original Image Editor"
     },
     {
-      "seconds": 33.294,
+      "seconds": 33.931,
       "title": "Reload offline and reopen the saved animated scene"
     }
   ],

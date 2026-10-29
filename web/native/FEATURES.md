@@ -19,6 +19,7 @@ batches. The static site's
 | NumPy and FBX Python exporter | Enabled | Static NumPy extensions, linear algebra, FFT, both random APIs, RNA array transfer and FBX export/native import round trip |
 | SQLite, LZMA, OpenSSL and Python Zstandard | Implemented, tested | Original CPython extensions, database callbacks/WAL/FTS, three LZMA formats, multithreaded Zstandard, TLS 1.2/1.3 memory-BIO handshakes and certificate rejection |
 | Image, color, volume and material Python APIs | Implemented, tested | Eleven original extensions, NumPy image/color buffers, nine OpenVDB grid types, four MaterialX shader generators, threaded calls and native file readback. Nine AVIF exports cover 8/10/12-bit BW/RGB/RGBA and invalid-input recovery |
+| Original ctypes and libffi | Implemented, tested | Python API/data symbols, structs, variadic calls, NumPy views, 240 callbacks on four existing workers, eight new Python threads, offline repeat and native readback. External libraries and arbitrary dynamic Wasm extensions remain unsupported. See [the recording and checks](../docs/ctypes-integration.md) |
 | Native Python site packages and Cython | Implemented, tested | Pinned pure Python runtime packages and pip; original Cython compiler generates C source. Compiling and loading arbitrary generated extensions remains pending |
 | Python HTTP and Blender background downloader | Implemented, tested | Dedicated worker transport, binary transfers, timeout/CORS errors, gzip and conditional 304 downloads, two background download workers and shutdown |
 | Process-dependent add-ons and extension marketplace | Deferred | The downloader uses thread workers and copied channels. Native subprocesses, general multiprocessing, dynamic extensions and complete marketplace installation remain unavailable |
@@ -136,7 +137,9 @@ textures and the original Python USD hooks, in both directions for USDA, USDC
 and USDZ. Each browser variant repeats the exchange offline from OPFS.
 MaterialX verification covers an exported OpenPBR graph and its base-color,
 metalness and roughness inputs. The importer reads USD Preview Surface materials;
-Hydra rendering and MaterialX's separate Python bindings remain disabled.
+Hydra GPU rendering remains deferred. MaterialX's eight Python extensions and
+USD's original CPU image and volume plugins have separate
+[verified checks](../docs/dependency-components.md).
 
 [Watch the USD and MaterialX browser recording](../docs/usd-materialx-walkthrough.mp4).
 It shows the original UI, scene exchange, Blender's export menu and an offline
@@ -199,8 +202,8 @@ variants reopen VDB fixtures from OPFS after an offline reload.
 | --- | --- |
 | 0:00 | Start Blender with OpenVDB and NanoVDB |
 | 0:15 | Compare VDB import and volume modifiers with desktop Blender |
-| 0:19 | Mesh to Volume and Volume to Mesh in the original viewport |
-| 0:25 | Replay the four-frame Mantaflow gas simulation in Blender |
+| 0:18 | Mesh to Volume and Volume to Mesh in the original viewport |
+| 0:24 | Replay the four-frame Mantaflow gas simulation in Blender |
 | 0:34 | Reload offline and reopen the VDB files from browser storage |
 <!-- /VOLUME_RECORDING_CHAPTERS -->
 

@@ -1,38 +1,38 @@
 {
-  "bundleVersion": "f5bc7678d055b2921075",
+  "bundleVersion": "81aa3ca51ec1b21db65c",
   "sourceSha256": "5474b61a1616e4d2705758aca395ade1ec4afe1855ebafb168df6957ce3a6f96",
-  "durationSeconds": 126.72,
+  "durationSeconds": 81.16,
   "chapters": [
     {
-      "seconds": 0.001,
+      "seconds": 0,
       "title": "Start Blender with OpenPGL and Open Image Denoise"
     },
     {
-      "seconds": 21.105,
+      "seconds": 12.02,
       "title": "Render Cycles denoising, surface guiding, volume guiding and compositor denoising"
     },
     {
-      "seconds": 58.147,
+      "seconds": 37.899,
       "title": "Inspect the noisy Cycles render"
     },
     {
-      "seconds": 71.432,
+      "seconds": 47.482,
       "title": "Inspect Cycles CPU denoising"
     },
     {
-      "seconds": 85.059,
+      "seconds": 57.188,
       "title": "Inspect volume guiding with denoising"
     },
     {
-      "seconds": 98.723,
+      "seconds": 66.62,
       "title": "Reload offline and reopen the saved Blender scene"
     }
   ],
   "captions": true,
   "source": "Real hardware Chromium capture, including original Blender renders and offline reopening",
   "path": "web/docs/render-libraries-walkthrough.mp4",
-  "bytes": 3088385,
-  "sha256": "013b434e79d303d9a9e3a0bd0aa610eaf0b65e3583a9f2a9b8f02c71b81918bb",
+  "bytes": 2676543,
+  "sha256": "61566aab322ab6840606eb72740e80edbf6d5d7454ef0a59677735d7766e8fce",
   "screenshot": {
     "path": "web/docs/render-libraries-browser.png",
     "sha256": "a60d56cc61707e71a73526c0db1d24b258678d0d069b711e45a4d6c29d5c56d9"

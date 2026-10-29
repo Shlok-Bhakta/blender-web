@@ -1,23 +1,28 @@
 # Dependency component audit
 
-This audit compares published bundle `f5bc7678d055b2921075` with the pinned Blender 5.2.2 LTS
-sources and installed native build. All 108 local stages, both source CI builds
-and all 17 deployment groups passed, including the combined Python bindings,
-AVIF and original USD CPU image and volume plugins. Fresh live hardware checks,
-offline reopening and independent native readback also passed. See the
-[validation record](combined-dependencies-validation.json) and [live proof](combined-dependencies-live.json).
+This audit compares candidate `81aa3ca51ec1b21db65c` with the pinned Blender
+5.2.2 LTS sources and installed native build. All 118 local stages passed,
+including the integrated original ctypes module, Python bindings, AVIF and
+USD CPU image and volume plugins. Hardware, software and fallback runtimes,
+offline reopening and independent native readback passed. The editor source CI
+passed; the full application source CI and publication checks are pending.
+The public Pages release remains `f5bc7678d055b2921075`.
 
+See [the ctypes integration and recording](ctypes-integration.md),
+[its acceptance evidence](python-ctypes.acceptance.json),
+[render comparisons](render-optimization.md), and
+[recorded background load](ctypes-host-load.json).
 This audit supplements the [build flag report](dependency-status.json). A top-level
 library flag does not prove its Python bindings, plugins, devices or every format
 work. Full dependency parity has not been reached.
 
 | Component | Browser status | Remaining work or evidence |
 | --- | --- | --- |
-| Base dependency recipes | 61 recipes | Original pinned sources and checksums; operation coverage is in [FEATURES.md](../native/FEATURES.md) |
+| Base dependency recipes | 62 recipes | Original pinned sources and checksums; operation coverage is in [FEATURES.md](../native/FEATURES.md) |
 | Embree, OpenPGL and OIDN CPU | Verified for tested cases | Original Cycles integration, compositor denoising, surface/volume guiding, standalone numerical checks and independent native readback |
 | CPython compression, XML, decimal and core hashes | Available | Existing embedded Python checks cover zlib, bz2, XML, decimal and SHA-256 |
 | CPython `_sqlite3`, `_lzma`, `_ssl`, `_hashlib` | Verified for tested cases | Original extensions in Blender; SQLite WAL/FTS/callbacks, LZMA files, TLS memory-BIO handshakes and certificate rejection, hash vectors and native file readback. Browser HTTP uses browser TLS; raw SSL sockets remain unavailable |
-| CPython `_ctypes` and libffi | Missing in this bundle | Original ctypes now passes isolated Node/Chromium interpreter checks and the same Python tests in native Blender, including NumPy, 240 callbacks on four existing C++ workers, eight Python-thread callbacks and Python API error/refcount handling. The bridge adds no periodic polling and handles thread exit during callbacks. Application integration, startup registration, cancellation, dynamic loading and resource measurements remain pending. See [the interpreter checks](ctypes-interpreter-checks.md) |
+| CPython `_ctypes` and libffi | Verified for tested cases | Original module integrated in both Blender application variants. Python API and data symbols, struct arguments and returns, variadic formatting, NumPy views, 240 callbacks across four existing workers, eight newly created Python threads, offline reopening and three native comparisons pass. GHOST owns the static process namespace and worker callback bridge. Named external libraries, arbitrary dynamic Wasm extensions and general package installation remain unsupported. See [the integration checks](ctypes-integration.md) |
 | Native Python site packages | Verified for tested cases | NumPy and pxr bindings, sixteen pinned pure Python wheels, bundled pip, Python Zstandard and the original Cython compiler. Package versions match native Blender. Native Cython accelerators, subprocess build tools and general extension installation remain pending |
 | OpenImageIO, PyOpenColorIO, OpenVDB and MaterialX Python bindings | Verified for tested cases | Eleven original extensions, CPU color transforms, NumPy buffers, image operations, all nine grid types, exact large integers, four shader generators, threaded calls, offline persistence and native readback. See [the binding checks](python-bindings.md) |
 | libheif AVIF through OpenImageIO | Verified for tested cases | Original libheif 1.20.2 and AOM encode/decode. Nine Blender exports cover 8/10/12-bit BW/RGB/RGBA, invalid-input recovery and native pixel readback. The Draco bridge isolates its opaque types to avoid static destructor collisions. Other optional backends are disabled by the native recipe too |

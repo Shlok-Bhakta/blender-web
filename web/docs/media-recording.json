@@ -1,30 +1,30 @@
 {
-  "bundleVersion": "f5bc7678d055b2921075",
+  "bundleVersion": "81aa3ca51ec1b21db65c",
   "chapters": [
     {
-      "seconds": 0.001,
+      "seconds": 0,
       "title": "Open original Blender with FFmpeg and Audaspace"
     },
     {
-      "seconds": 18.625,
+      "seconds": 18.99,
       "title": "Stretch audio without changing pitch; export H264, VP9, AV1 and HEVC"
     },
     {
-      "seconds": 44.542,
+      "seconds": 44.29,
       "title": "Play the original Video Sequencer with browser audio"
     },
     {
-      "seconds": 74.899,
+      "seconds": 75.293,
       "title": "Reopen cached Blender offline and repeat media decoding"
     }
   ],
-  "durationSeconds": 96.56,
-  "bytes": 3349970,
+  "durationSeconds": 96.64,
+  "bytes": 3473400,
   "captions": true,
   "source": "Hardware Chromium recording with captured Web Audio output",
   "path": "web/docs/media-walkthrough.mp4",
-  "sha256": "716ee2e62c94cff7c282ea663b6c3cf90e3e0d90e23c1a8ca59233af21aaec50",
-  "audioCaptureOffsetSeconds": 71.12,
+  "sha256": "199dfbca0a828c667631b7fa757b12f2ca487f43cfb49e56cfcee21b1e7cdbb8",
+  "audioCaptureOffsetSeconds": 71.392,
   "screenshot": {
     "path": "web/docs/media-sequencer.png",
     "sha256": "6d8678e3f9f535037ac8af609b761f59695ae69a29d0e2681690a601017a91f4"

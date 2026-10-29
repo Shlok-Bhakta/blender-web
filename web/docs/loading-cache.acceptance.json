@@ -4,38 +4,38 @@
       {
         "mode": "cold",
         "networkRequests": 4,
-        "totalBytes": 448928330,
-        "cacheBytes": 1166694,
-        "progressUpdates": 93,
+        "totalBytes": 449144563,
+        "cacheBytes": 1186713,
+        "progressUpdates": 92,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 448928330,
-        "cacheBytes": 448928330,
+        "totalBytes": 449144563,
+        "cacheBytes": 449144563,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 448928330,
-        "cacheBytes": 448928330,
+        "totalBytes": 449144563,
+        "cacheBytes": 449144563,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       },
       {
         "mode": "restarted-offline",
         "networkRequests": 0,
-        "totalBytes": 448928330,
-        "cacheBytes": 448928330,
+        "totalBytes": 449144563,
+        "cacheBytes": 449144563,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       }
     ],
     "browserErrors": []
@@ -45,38 +45,38 @@
       {
         "mode": "cold",
         "networkRequests": 4,
-        "totalBytes": 448924006,
-        "cacheBytes": 1162370,
-        "progressUpdates": 92,
+        "totalBytes": 449140050,
+        "cacheBytes": 1182200,
+        "progressUpdates": 94,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       },
       {
         "mode": "warm",
         "networkRequests": 0,
-        "totalBytes": 448924006,
-        "cacheBytes": 448924006,
-        "progressUpdates": 24,
+        "totalBytes": 449140050,
+        "cacheBytes": 449140050,
+        "progressUpdates": 21,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       },
       {
         "mode": "offline",
         "networkRequests": 0,
-        "totalBytes": 448924006,
-        "cacheBytes": 448924006,
+        "totalBytes": 449140050,
+        "cacheBytes": 449140050,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       },
       {
         "mode": "restarted-offline",
         "networkRequests": 0,
-        "totalBytes": 448924006,
-        "cacheBytes": 448924006,
+        "totalBytes": 449140050,
+        "cacheBytes": 449140050,
         "progressUpdates": 24,
         "canvasOnly": true,
-        "bundleVersion": "f5bc7678d055b2921075"
+        "bundleVersion": "81aa3ca51ec1b21db65c"
       }
     ],
     "browserErrors": []
@@ -98,14 +98,14 @@
       "description": ""
     },
     "browserVersion": "145.0.7632.6",
-    "bundleVersion": "f5bc7678d055b2921075",
-    "measuredAt": "2026-10-29T00:22:19.973Z",
+    "bundleVersion": "81aa3ca51ec1b21db65c",
+    "measuredAt": "2026-10-29T07:04:31.716Z",
     "originalUI": true,
     "startupCube": true,
     "webgpu": true,
     "isolated": true,
     "workers": 19,
-    "colors": 838,
+    "colors": 845,
     "resize": true,
     "resizeChecks": [
       {
@@ -134,7 +134,7 @@
         ],
         "scale": 1,
         "pixels": "960x640",
-        "colors": 438,
+        "colors": 432,
         "cubePixels": 443,
         "window": [
           960,
@@ -153,7 +153,7 @@
         ],
         "scale": 1,
         "pixels": "1040x720",
-        "colors": 384,
+        "colors": 385,
         "cubePixels": 480,
         "window": [
           1040,
@@ -172,8 +172,8 @@
         ],
         "scale": 2,
         "pixels": "2080x1440",
-        "colors": 1231,
-        "cubePixels": 1629,
+        "colors": 531,
+        "cubePixels": 2492,
         "window": [
           1040,
           720
@@ -191,8 +191,8 @@
         ],
         "scale": 1.25,
         "pixels": "1300x900",
-        "colors": 544,
-        "cubePixels": 609,
+        "colors": 539,
+        "cubePixels": 607,
         "window": [
           1040,
           720
@@ -210,7 +210,7 @@
         ],
         "scale": 1,
         "pixels": "1040x720",
-        "colors": 384,
+        "colors": 383,
         "cubePixels": 480,
         "window": [
           1040,

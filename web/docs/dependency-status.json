@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "f5bc7678d055b2921075",
+  "bundleVersion": "81aa3ca51ec1b21db65c",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -157,7 +157,7 @@
     "WITH_HYDRA": "Hydra rendering integration"
   },
   "additionalLibraryGaps": [
-    "CPython _ctypes/libffi, general multiprocessing and raw socket transport",
+    "External ctypes libraries, general multiprocessing and raw socket transport",
     "Cython native accelerators and arbitrary dynamic Wasm extension loading",
     "MaterialX OpenGL rendering and OSL rendering compiler/runtime integration",
     "Hydra GPU rendering and browser graphics backends",
@@ -165,7 +165,7 @@
   ],
   "componentAudit": "web/docs/dependency-components.md",
   "pythonFoundation": {
-    "verifiedBundle": "f5bc7678d055b2921075",
+    "verifiedBundle": "81aa3ca51ec1b21db65c",
     "modules": [
       "_sqlite3",
       "_lzma",
@@ -202,7 +202,7 @@
     "evidence": "web/docs/python-foundation.acceptance.json"
   },
   "pythonBindings": {
-    "verifiedBundle": "f5bc7678d055b2921075",
+    "verifiedBundle": "81aa3ca51ec1b21db65c",
     "versions": {
       "OpenImageIO": "3.1.13.1",
       "PyOpenColorIO": "2.5.0",
@@ -226,8 +226,19 @@
     "independentNativeReadbacks": 3,
     "evidence": "web/docs/python-bindings.acceptance.json"
   },
+  "pythonCtypes": {
+    "verifiedBundle": "81aa3ca51ec1b21db65c",
+    "libffiVersion": "3.5.2",
+    "originalModule": true,
+    "pythonNamespaceSymbols": 1260,
+    "browserVariants": 3,
+    "independentNativeReadbacks": 3,
+    "externalDynamicLibraries": false,
+    "sparseHighAddressCheck": true,
+    "evidence": "web/docs/python-ctypes.acceptance.json"
+  },
   "usdCPUImaging": {
-    "verifiedBundle": "f5bc7678d055b2921075",
+    "verifiedBundle": "81aa3ca51ec1b21db65c",
     "plugins": [
       "hioOpenVDB",
       "hioOiio"
@@ -274,6 +285,13 @@
       "archiveHash": "deae7c80cba99c4b4f940ecadb3c3338b13cb77418409238e57d7f31f2a3b736",
       "hashType": "SHA256",
       "source": "https://www.openssl.org/source/openssl-3.5.6.tar.gz"
+    },
+    {
+      "name": "FFI",
+      "version": "3.5.2",
+      "archiveHash": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc",
+      "hashType": "SHA256",
+      "source": "https://github.com/libffi/libffi/releases/download/v3.5.2/libffi-3.5.2.tar.gz"
     },
     {
       "name": "JPEG",
