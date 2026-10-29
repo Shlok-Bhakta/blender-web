@@ -1,10 +1,14 @@
 # Original ctypes integration
 
-The working source builds CPython 3.13.13's original `_ctypes` sources against
-Blender's pinned libffi 3.5.2. The first integrated Blender build passed in
-hardware Chromium, repeated its checks after an offline reload, and matched
-native Blender 5.2.2 LTS. The public Pages release remains
-`f5bc7678d055b2921075` while the new candidate completes validation.
+Candidate `81aa3ca51ec1b21db65c` builds CPython 3.13.13's original `_ctypes`
+sources against Blender's pinned libffi 3.5.2. Its ctypes checks pass in hardware,
+software and fallback Chromium, including offline repeats and three independent
+native Blender comparisons. The public Pages release remains
+`f5bc7678d055b2921075` while the candidate completes the full 118-stage validation.
+
+[Watch the original Blender recording](python-ctypes-walkthrough.mp4),
+[inspect the screenshot](python-ctypes-browser.png), or read the
+[acceptance evidence](python-ctypes.acceptance.json).
 
 The module can call 1,260 Python symbols and nine explicitly registered libc
 symbols through the static process namespace. It supports Python API calls,

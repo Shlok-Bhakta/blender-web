@@ -1,0 +1,32 @@
+{
+  "bundleVersion": "81aa3ca51ec1b21db65c",
+  "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+  "durationSeconds": 53.791667,
+  "chapters": [
+    {
+      "seconds": 0,
+      "title": "Start original Blender with the original ctypes module"
+    },
+    {
+      "seconds": 12.278,
+      "title": "Test Python APIs, variadic calls, NumPy and 248 worker callbacks"
+    },
+    {
+      "seconds": 26.829,
+      "title": "Inspect the result in the original Blender Text Editor"
+    },
+    {
+      "seconds": 34.982,
+      "title": "Reopen the saved result offline and repeat callback checks"
+    }
+  ],
+  "captions": false,
+  "source": "Actual hardware Chromium capture of original Blender, ctypes and offline repeated checks",
+  "path": "web/docs/python-ctypes-walkthrough.mp4",
+  "bytes": 1436988,
+  "sha256": "76e06c2d72470535827b3cb761d0cf9a87951fe0b895afaacd6cf9f4995b4f9f",
+  "screenshot": {
+    "path": "web/docs/python-ctypes-browser.png",
+    "sha256": "06d7546f2f565ad8942b031991befda5665ba78c557752b5d9090ed98efa1fc5"
+  }
+}

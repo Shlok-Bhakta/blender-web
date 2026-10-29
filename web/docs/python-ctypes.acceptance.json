@@ -1,0 +1,479 @@
+{
+  "libraryChecks": {
+    "originalCtypes": true,
+    "pythonVersion": "3.13.13",
+    "numpyVersion": "2.3.4",
+    "pointerBytes": 4,
+    "longBytes": 4,
+    "processNamespace": true,
+    "processDataSymbol": true,
+    "pythonAPI": true,
+    "pythonReferenceCounts": true,
+    "pythonAPIErrorRecovery": true,
+    "complexStructABI": true,
+    "mixedVarargs": true,
+    "longDoubleFormatting": true,
+    "numpyCtypesInterop": true,
+    "noncontiguousArrayRejected": true,
+    "libcQsortCallback": true,
+    "memoryOperations": true,
+    "wideIntegersExact": true,
+    "existingWorkers": 4,
+    "reusedWorkerCallbacks": 240,
+    "pythonThreadCallbacks": 8,
+    "signatureReuseIterations": 60,
+    "unraisableErrors": []
+  },
+  "originalSourceHashes": {
+    "_ctypes.c": "95c402c2ca2be9887b294fd30aec2c58fe82257a517007b0af48294caec09932",
+    "callbacks.c": "53c1cc13df9c293aaedde1952073f8a7676ef87fb29c4200c95ca7955cf82ab8",
+    "callproc.c": "0517b9365c6eff87781ebb3fa3da099cb9ed8cccb50f2aad4c82dd47e0020090",
+    "cfield.c": "15f9873a7fae591b225cf8333b0856f3bca065fd2d91d4222bc3d30ee5a757f8",
+    "stgdict.c": "42737e02db0c29c8b4f82a82d80877e1b46027a5fb3da94d873f21f4993be127",
+    "ctypes.h": "b3fa772c82de1ad2556bb2513aebef3279eba8efa0be5856a6e7cb9e80f9554b"
+  },
+  "pythonNamespaceSymbols": 1260,
+  "libffi": {
+    "source": {
+      "FILE": "libffi-3.5.2.tar.gz",
+      "HASH": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/libffi/libffi/releases/download/v3.5.2/libffi-3.5.2.tar.gz",
+      "VERSION": "3.5.2"
+    },
+    "recipe": [
+      "",
+      [
+        "--host=wasm32-unknown-emscripten",
+        "--disable-shared",
+        "--enable-static",
+        "--disable-dependency-tracking",
+        "--disable-builddir",
+        "--disable-multi-os-directory",
+        "--disable-raw-api",
+        "--disable-docs"
+      ]
+    ],
+    "threads": true,
+    "cFlags": "-pthread -msimd128 -fwasm-exceptions",
+    "toolchain": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3",
+    "sdk": "4.0.23",
+    "ffiBuilder": "6763966a1117dae82413acf2f9282724a524a198353069f128d11aea26c3fda1",
+    "patch": "c4d97f07840b36470cb6a63a5ab7cb12e4b308ee38ab06a2f06c2e9017bc33af"
+  },
+  "workerBrowserChecks": {
+    "measuredAt": "2026-10-29T06:06:32.493Z",
+    "browserVersion": "145.0.7632.6",
+    "crossOriginIsolated": true,
+    "results": {
+      "ffi-workers-check": {
+        "result": {
+          "calls": 9341,
+          "signatureReuseIterations": 1000,
+          "signatureKinds": 4,
+          "existingWorkers": 8,
+          "sleepingPublications": 200,
+          "concurrentClosures": 80,
+          "nestedRetirement": true,
+          "threadExitDuringCallback": true,
+          "zeroExtraVariadicArguments": true,
+          "boundedSerialTable": true,
+          "releaseAssertionsDisabled": true
+        },
+        "browserErrors": [],
+        "wasmSha256": "1e160650ecee338472e8e6972524e43c4952efdd64b1874048b4f0937868dfbd",
+        "jsSha256": "10b4bd342f43656017264bebae6309cad39972fd641f777f0d74a6a4b836878d"
+      },
+      "ffi-high-address-check": {
+        "result": {
+          "heapBytes": 2418016256,
+          "highMetadata": true,
+          "highStack": true,
+          "aggregateCallbacks": true,
+          "highClosureAllocation": true,
+          "sparseAllocation": true
+        },
+        "browserErrors": [],
+        "wasmSha256": "d4ec16af893063fb358f7db949ef614622b87f09937375de3e5035b3e8fabd17",
+        "jsSha256": "312e9eedfd2b585ce7b769da07bd81e8c8d5dc20a15501d687cc96b9f0b4ad81"
+      }
+    }
+  },
+  "browserVariants": [
+    {
+      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+      "runnerSourceSha256": "ba967082269cd7fd0f601a25f73e008f4b3a4e2408754f18e2e32e64191e34b4",
+      "hardware": false,
+      "fallback": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-29T06:08:43.866Z",
+      "report": {
+        "originalCtypes": true,
+        "pythonVersion": "3.13.13",
+        "numpyVersion": "2.3.4",
+        "pointerBytes": 4,
+        "longBytes": 4,
+        "processNamespace": true,
+        "processDataSymbol": true,
+        "pythonAPI": true,
+        "pythonReferenceCounts": true,
+        "pythonAPIErrorRecovery": true,
+        "complexStructABI": true,
+        "mixedVarargs": true,
+        "longDoubleFormatting": true,
+        "numpyCtypesInterop": true,
+        "noncontiguousArrayRejected": true,
+        "libcQsortCallback": true,
+        "memoryOperations": true,
+        "wideIntegersExact": true,
+        "existingWorkers": 4,
+        "reusedWorkerCallbacks": 240,
+        "pythonThreadCallbacks": 8,
+        "signatureReuseIterations": 60,
+        "unraisableErrors": []
+      },
+      "blend": {
+        "bytes": 98238,
+        "sha256": "9b9b1adec1784241de6de66e6baa807b6a6c9d0fe5475252c8a52d7483a210b7"
+      },
+      "offlineReopen": true,
+      "offlineRepeatedChecks": true,
+      "browserErrors": [],
+      "startupPythonErrors": [],
+      "chapters": [
+        {
+          "seconds": 0.001,
+          "title": "Start original Blender with the original ctypes module"
+        },
+        {
+          "seconds": 16.603,
+          "title": "Test Python APIs, variadic calls, NumPy and 248 worker callbacks"
+        },
+        {
+          "seconds": 37.845,
+          "title": "Inspect the result in the original Blender Text Editor"
+        },
+        {
+          "seconds": 48.069,
+          "title": "Reopen the saved result offline and repeat callback checks"
+        }
+      ],
+      "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-ctypes-evidence/python-ctypes.webm"
+    },
+    {
+      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+      "runnerSourceSha256": "ba967082269cd7fd0f601a25f73e008f4b3a4e2408754f18e2e32e64191e34b4",
+      "hardware": false,
+      "fallback": true,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-29T06:09:59.995Z",
+      "report": {
+        "originalCtypes": true,
+        "pythonVersion": "3.13.13",
+        "numpyVersion": "2.3.4",
+        "pointerBytes": 4,
+        "longBytes": 4,
+        "processNamespace": true,
+        "processDataSymbol": true,
+        "pythonAPI": true,
+        "pythonReferenceCounts": true,
+        "pythonAPIErrorRecovery": true,
+        "complexStructABI": true,
+        "mixedVarargs": true,
+        "longDoubleFormatting": true,
+        "numpyCtypesInterop": true,
+        "noncontiguousArrayRejected": true,
+        "libcQsortCallback": true,
+        "memoryOperations": true,
+        "wideIntegersExact": true,
+        "existingWorkers": 4,
+        "reusedWorkerCallbacks": 240,
+        "pythonThreadCallbacks": 8,
+        "signatureReuseIterations": 60,
+        "unraisableErrors": []
+      },
+      "blend": {
+        "bytes": 98239,
+        "sha256": "68e06514d42ed45ddb2f45e66ac89ae6cc6127c74bea39fa162a423fa88655f9"
+      },
+      "offlineReopen": true,
+      "offlineRepeatedChecks": true,
+      "browserErrors": [],
+      "startupPythonErrors": [],
+      "chapters": [
+        {
+          "seconds": 0.001,
+          "title": "Start original Blender with the original ctypes module"
+        },
+        {
+          "seconds": 16.866,
+          "title": "Test Python APIs, variadic calls, NumPy and 248 worker callbacks"
+        },
+        {
+          "seconds": 36.253,
+          "title": "Inspect the result in the original Blender Text Editor"
+        },
+        {
+          "seconds": 46.479,
+          "title": "Reopen the saved result offline and repeat callback checks"
+        }
+      ],
+      "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-ctypes-evidence-ui/python-ctypes.webm"
+    },
+    {
+      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+      "runnerSourceSha256": "ba967082269cd7fd0f601a25f73e008f4b3a4e2408754f18e2e32e64191e34b4",
+      "hardware": true,
+      "fallback": false,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-29T06:07:27.034Z",
+      "report": {
+        "originalCtypes": true,
+        "pythonVersion": "3.13.13",
+        "numpyVersion": "2.3.4",
+        "pointerBytes": 4,
+        "longBytes": 4,
+        "processNamespace": true,
+        "processDataSymbol": true,
+        "pythonAPI": true,
+        "pythonReferenceCounts": true,
+        "pythonAPIErrorRecovery": true,
+        "complexStructABI": true,
+        "mixedVarargs": true,
+        "longDoubleFormatting": true,
+        "numpyCtypesInterop": true,
+        "noncontiguousArrayRejected": true,
+        "libcQsortCallback": true,
+        "memoryOperations": true,
+        "wideIntegersExact": true,
+        "existingWorkers": 4,
+        "reusedWorkerCallbacks": 240,
+        "pythonThreadCallbacks": 8,
+        "signatureReuseIterations": 60,
+        "unraisableErrors": []
+      },
+      "blend": {
+        "bytes": 98234,
+        "sha256": "9c3bc2a6e512788e0b33a925a343a385c7ec733eb62d7e259c218f347d3e6494"
+      },
+      "offlineReopen": true,
+      "offlineRepeatedChecks": true,
+      "browserErrors": [],
+      "startupPythonErrors": [],
+      "chapters": [
+        {
+          "seconds": 0,
+          "title": "Start original Blender with the original ctypes module"
+        },
+        {
+          "seconds": 12.278,
+          "title": "Test Python APIs, variadic calls, NumPy and 248 worker callbacks"
+        },
+        {
+          "seconds": 26.829,
+          "title": "Inspect the result in the original Blender Text Editor"
+        },
+        {
+          "seconds": 34.982,
+          "title": "Reopen the saved result offline and repeat callback checks"
+        }
+      ],
+      "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-ctypes-evidence-hardware/python-ctypes.webm"
+    }
+  ],
+  "nativeReadback": [
+    {
+      "savedBlendVerified": true,
+      "originalNativeModule": true,
+      "exactFunctionalResults": true,
+      "nativeReport": {
+        "originalCtypes": true,
+        "pythonVersion": "3.13.13",
+        "numpyVersion": "2.3.4",
+        "pointerBytes": 8,
+        "longBytes": 8,
+        "processNamespace": true,
+        "processDataSymbol": true,
+        "pythonAPI": true,
+        "pythonReferenceCounts": true,
+        "pythonAPIErrorRecovery": true,
+        "complexStructABI": true,
+        "mixedVarargs": true,
+        "longDoubleFormatting": true,
+        "numpyCtypesInterop": true,
+        "noncontiguousArrayRejected": true,
+        "libcQsortCallback": true,
+        "memoryOperations": true,
+        "wideIntegersExact": true,
+        "existingWorkers": 4,
+        "reusedWorkerCallbacks": 240,
+        "pythonThreadCallbacks": 8,
+        "signatureReuseIterations": 60,
+        "unraisableErrors": []
+      },
+      "architectureDifferences": [
+        "longBytes",
+        "pointerBytes"
+      ],
+      "blenderVersion": "5.2.2 LTS",
+      "blenderRevision": "d13f752e3b9c",
+      "libffiVersion": "3.5.2",
+      "nativeModuleSha256": "909f694f6cf495c8b6c5c202667dd582c3d098022f122240cb31dbbd16850bfc",
+      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+      "blend": {
+        "bytes": 98238,
+        "sha256": "9b9b1adec1784241de6de66e6baa807b6a6c9d0fe5475252c8a52d7483a210b7"
+      },
+      "verifierSourceSha256": "1e92b07514228a91f50bf9e8a36d43f3c6e469ca7be1b28d5e3ee4a7c74de7de"
+    },
+    {
+      "savedBlendVerified": true,
+      "originalNativeModule": true,
+      "exactFunctionalResults": true,
+      "nativeReport": {
+        "originalCtypes": true,
+        "pythonVersion": "3.13.13",
+        "numpyVersion": "2.3.4",
+        "pointerBytes": 8,
+        "longBytes": 8,
+        "processNamespace": true,
+        "processDataSymbol": true,
+        "pythonAPI": true,
+        "pythonReferenceCounts": true,
+        "pythonAPIErrorRecovery": true,
+        "complexStructABI": true,
+        "mixedVarargs": true,
+        "longDoubleFormatting": true,
+        "numpyCtypesInterop": true,
+        "noncontiguousArrayRejected": true,
+        "libcQsortCallback": true,
+        "memoryOperations": true,
+        "wideIntegersExact": true,
+        "existingWorkers": 4,
+        "reusedWorkerCallbacks": 240,
+        "pythonThreadCallbacks": 8,
+        "signatureReuseIterations": 60,
+        "unraisableErrors": []
+      },
+      "architectureDifferences": [
+        "longBytes",
+        "pointerBytes"
+      ],
+      "blenderVersion": "5.2.2 LTS",
+      "blenderRevision": "d13f752e3b9c",
+      "libffiVersion": "3.5.2",
+      "nativeModuleSha256": "909f694f6cf495c8b6c5c202667dd582c3d098022f122240cb31dbbd16850bfc",
+      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+      "blend": {
+        "bytes": 98239,
+        "sha256": "68e06514d42ed45ddb2f45e66ac89ae6cc6127c74bea39fa162a423fa88655f9"
+      },
+      "verifierSourceSha256": "1e92b07514228a91f50bf9e8a36d43f3c6e469ca7be1b28d5e3ee4a7c74de7de"
+    },
+    {
+      "savedBlendVerified": true,
+      "originalNativeModule": true,
+      "exactFunctionalResults": true,
+      "nativeReport": {
+        "originalCtypes": true,
+        "pythonVersion": "3.13.13",
+        "numpyVersion": "2.3.4",
+        "pointerBytes": 8,
+        "longBytes": 8,
+        "processNamespace": true,
+        "processDataSymbol": true,
+        "pythonAPI": true,
+        "pythonReferenceCounts": true,
+        "pythonAPIErrorRecovery": true,
+        "complexStructABI": true,
+        "mixedVarargs": true,
+        "longDoubleFormatting": true,
+        "numpyCtypesInterop": true,
+        "noncontiguousArrayRejected": true,
+        "libcQsortCallback": true,
+        "memoryOperations": true,
+        "wideIntegersExact": true,
+        "existingWorkers": 4,
+        "reusedWorkerCallbacks": 240,
+        "pythonThreadCallbacks": 8,
+        "signatureReuseIterations": 60,
+        "unraisableErrors": []
+      },
+      "architectureDifferences": [
+        "longBytes",
+        "pointerBytes"
+      ],
+      "blenderVersion": "5.2.2 LTS",
+      "blenderRevision": "d13f752e3b9c",
+      "libffiVersion": "3.5.2",
+      "nativeModuleSha256": "909f694f6cf495c8b6c5c202667dd582c3d098022f122240cb31dbbd16850bfc",
+      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+      "blend": {
+        "bytes": 98234,
+        "sha256": "9c3bc2a6e512788e0b33a925a343a385c7ec733eb62d7e259c218f347d3e6494"
+      },
+      "verifierSourceSha256": "1e92b07514228a91f50bf9e8a36d43f3c6e469ca7be1b28d5e3ee4a7c74de7de"
+    }
+  ],
+  "recording": {
+    "bundleVersion": "81aa3ca51ec1b21db65c",
+    "sourceSha256": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
+    "durationSeconds": 53.791667,
+    "chapters": [
+      {
+        "seconds": 0,
+        "title": "Start original Blender with the original ctypes module"
+      },
+      {
+        "seconds": 12.278,
+        "title": "Test Python APIs, variadic calls, NumPy and 248 worker callbacks"
+      },
+      {
+        "seconds": 26.829,
+        "title": "Inspect the result in the original Blender Text Editor"
+      },
+      {
+        "seconds": 34.982,
+        "title": "Reopen the saved result offline and repeat callback checks"
+      }
+    ],
+    "captions": false,
+    "source": "Actual hardware Chromium capture of original Blender, ctypes and offline repeated checks",
+    "path": "web/docs/python-ctypes-walkthrough.mp4",
+    "bytes": 1436988,
+    "sha256": "76e06c2d72470535827b3cb761d0cf9a87951fe0b895afaacd6cf9f4995b4f9f",
+    "screenshot": {
+      "path": "web/docs/python-ctypes-browser.png",
+      "sha256": "06d7546f2f565ad8942b031991befda5665ba78c557752b5d9090ed98efa1fc5"
+    }
+  },
+  "limitations": [
+    "External dynamic libraries and arbitrary dynamic Wasm extensions are unsupported.",
+    "The sparse high-address test does not establish multi-gigabyte scene capacity.",
+    "The application remains wasm32 with a 4 GiB heap limit."
+  ]
+}
