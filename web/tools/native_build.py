@@ -39,6 +39,12 @@ def check_dependencies(source, base, prefix, jobs):
                  'web/native/ghost/GHOST_WebDracoTypes.hh'],
         'usd-imaging': ['web/native/tests/usd_imaging.cc',
                         'web/native/usd-imaging/CMakeLists.txt', 'web/tools/native_usd_imaging.py'],
+        'ffi-workers': ['web/native/tests/ffi-workers.cc', 'web/native/ghost/GHOST_WebFFI.cc',
+                        'web/native/ghost/GHOST_WebFFI.hh', 'web/tools/native_ffi.py',
+                        'web/native/patches/ffi.patch'],
+        'ffi-high-address': ['web/native/tests/ffi-high-address.cc',
+                             'web/native/ghost/GHOST_WebFFI.cc', 'web/native/ghost/GHOST_WebFFI.hh',
+                             'web/tools/native_ffi.py', 'web/native/patches/ffi.patch'],
     }
     common_inputs = ['web/native/tests/CMakeLists.txt', 'web/native/dependencies.cmake',
                      'web/tools/native_deps.py', 'web/native/toolchain.cmake']
@@ -61,7 +67,7 @@ def check_dependencies(source, base, prefix, jobs):
                             text=True, stdout=subprocess.PIPE, timeout=120)
     print(result.stdout, end="", flush=True)
     (base / "dependency-check.json").write_text(json.dumps(json.loads(result.stdout), indent=2) + "\n")
-    for name in ("fftw", "alembic", "media", "tracking", "embree", "openpgl", "oidn", "hevc", "avif", "usd-imaging"):
+    for name in ("fftw", "alembic", "media", "tracking", "embree", "openpgl", "oidn", "hevc", "avif", "usd-imaging", "ffi-workers", "ffi-high-address"):
         command = ["node", str(checks / f"{name}-check.js")]
         if name == 'avif':
             (base / 'avif-check').mkdir(exist_ok=True)
@@ -238,27 +244,33 @@ def check_shader_translation(base, prefix):
 
 
 def check_python(base, prefix):
+    from native_ffi import LINK_OPTIONS
     inputs = ['web/native/tests/python.cc', 'web/native/tests/python-foundation.py',
+              'web/native/tests/python-ctypes.py',
               'web/native/tests/python-tls-fixture.hh', 'web/tools/native_build.py',
               'web/tools/native_python.py', 'web/tools/native_python_packages.py',
               'web/native/python-packages.json', 'web/native/openssl-wasm.conf',
               'web/native/ghost/GHOST_WebNetwork.cc', 'web/native/ghost/GHOST_WebNetwork.py',
               'web/native/ghost/GHOST_WebDownload.py', 'web/patches/native-python-download.patch',
-              'web/native/patches/urllib3.patch', 'web/tools/native_deps.py']
+              'web/native/patches/urllib3.patch', 'web/tools/native_deps.py',
+              'web/tools/native_ffi.py', 'web/native/patches/ffi.patch',
+              'web/native/ghost/GHOST_WebFFI.cc', 'web/native/ghost/GHOST_WebFFI.hh',
+              'web/native/ghost/GHOST_WebCTypes.cc', 'web/native/ghost/GHOST_WebCTypes.hh']
     source_hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs}
     executable = base / "python-check.js"
     subprocess.run(["em++", "-O2", "-pthread", "-msimd128", "-fwasm-exceptions",
         f"-I{prefix / 'include/python3.13'}", f"-I{prefix / 'include'}", str(ROOT / "web/native/tests/python.cc"),
         "-Wl,--start-group", *map(str, sorted((prefix / "lib/blender-web-numpy").glob("*.a"))),
         str(prefix / 'lib/blender-web-python/extensions.a'),
-        *[str(prefix / 'lib' / ('lib' + name + '.a')) for name in ('sqlite3', 'lzma', 'ssl', 'crypto', 'zstd')],
+        *[str(prefix / 'lib' / ('lib' + name + '.a')) for name in ('sqlite3', 'lzma', 'ssl', 'crypto', 'zstd', 'ffi')],
         str(prefix / "lib/libpython3.13.a"), str(prefix / "lib/libexpat.a"),
         str(prefix / "lib/libz.a"), "-Wl,--end-group", "-sUSE_BZIP2=1",
-        "-sENVIRONMENT=node", "-sPROXY_TO_PTHREAD=1", "-sPTHREAD_POOL_SIZE=8", "-sEXIT_RUNTIME=1", "-sALLOW_MEMORY_GROWTH=1",
+        *LINK_OPTIONS, "-sENVIRONMENT=node", "-sPROXY_TO_PTHREAD=1", "-sPTHREAD_POOL_SIZE=8", "-sEXIT_RUNTIME=1", "-sALLOW_MEMORY_GROWTH=1",
         "-sINITIAL_MEMORY=134217728", "-sDEFAULT_PTHREAD_STACK_SIZE=8388608", "-UNDEBUG",
         "-sSTACK_SIZE=8388608", "-sWASMFS=1", "-sFORCE_FILESYSTEM=1", "--preload-file",
         f"{base / 'assets/python3.13'}@/python/lib/python3.13", "--preload-file",
-        f"{ROOT / 'web/native/tests/python-foundation.py'}@/python-foundation.py", "-o", str(executable)], check=True)
+        f"{ROOT / 'web/native/tests/python-foundation.py'}@/python-foundation.py", "--preload-file",
+        f"{ROOT / 'web/native/tests/python-ctypes.py'}@/python-ctypes.py", "-o", str(executable)], check=True)
     output = subprocess.check_output(["node", str(executable)], cwd=base, text=True, timeout=120)
     report = json.loads(output)
     if source_hashes != {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs}:

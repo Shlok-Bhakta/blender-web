@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        group: [startup, ui, features, ocean, volume, cycles, image-vector, freestyle, usd, media, text, tracking, gltf, embree, render-libraries, python-foundation, python-bindings]
+        group: [startup, ui, features, ocean, volume, cycles, image-vector, freestyle, usd, media, text, tracking, gltf, embree, render-libraries, python-foundation, python-bindings, python-ctypes]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -130,6 +130,10 @@ jobs:
               node web/tests/python-foundation.cjs
               WEB_TEST_UI_FALLBACK=1 node web/tests/python-foundation.cjs
               ;;
+            python-ctypes)
+              node web/tests/python-ctypes.cjs
+              WEB_TEST_UI_FALLBACK=1 node web/tests/python-ctypes.cjs
+              ;;
             render-libraries)
               node web/tests/render-libraries.cjs
               WEB_TEST_UI_FALLBACK=1 node web/tests/render-libraries.cjs
@@ -174,6 +178,7 @@ jobs:
             build/native/render-libraries-evidence*
             build/native/python-foundation-evidence*
             build/native/python-bindings-evidence*
+            build/native/python-ctypes-evidence*
             build/native/embree-evidence*
             build/native/media-evidence*
             build/native/text-evidence*

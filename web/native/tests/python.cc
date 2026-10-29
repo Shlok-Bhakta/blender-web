@@ -36,6 +36,7 @@ int main()
     "assert np.random.RandomState(42).multinomial(10, [.2,.3,.5], size=4).sum() == 40\n"
     "import runpy\n"
     "foundation=runpy.run_path('/python-foundation.py')['run']('/tmp/python-foundation')\n"
-    "print(json.dumps({'pythonVersion': sys.version.split()[0], 'embeddedModules': True, 'numpyVersion': np.__version__, 'numpyCompiledModules': True, 'foundation':foundation}))\n");
+    "ctypes=runpy.run_path('/python-ctypes.py')['run']()\n"
+    "print(json.dumps({'pythonVersion': sys.version.split()[0], 'embeddedModules': True, 'numpyVersion': np.__version__, 'numpyCompiledModules': True, 'foundation':foundation, 'ctypes':ctypes}))\n");
   return result || Py_FinalizeEx();
 }

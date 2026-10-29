@@ -76,6 +76,14 @@ def main():
         (base / 'validation-status.json').write_text(json.dumps(status, indent=2) + '\n')
         if result.returncode:
             raise SystemExit(f'{name} failed: see validate-{name}.log')
+    run('ffi-workers-node', ['node', 'build/native/checks/ffi-workers-check.js'])
+    run('ffi-high-address-node', ['node', 'build/native/checks/ffi-high-address-check.js'])
+    run('ffi-browser', ['node', 'web/tests/ffi-workers.cjs'])
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'python-ctypes-{suffix}', ['node', 'web/tests/python-ctypes.cjs'], **flags)
+        directory = 'build/native/python-ctypes-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
+        run(f'python-ctypes-native-{suffix}', ['python3', 'web/tools/native_ctypes_verify.py', directory, '--blender', args.blender])
+    run('python-ctypes-video', ['python3', 'web/tools/native_ctypes_recording.py'])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
         run(f'python-foundation-{suffix}', ['node', 'web/tests/python-foundation.cjs'], **flags)
         directory = 'build/native/python-foundation-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')

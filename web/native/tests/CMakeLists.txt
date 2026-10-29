@@ -4,6 +4,26 @@ project(blender_web_native_checks LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 list(APPEND CMAKE_MODULE_PATH "${BLENDER_SOURCE}/build_files/cmake/Modules")
 include("${CMAKE_CURRENT_LIST_DIR}/../dependencies.cmake")
+if(EXISTS "${CMAKE_PREFIX_PATH}/lib/libffi.a")
+  include("${CMAKE_PREFIX_PATH}/lib/blender-web-ffi.cmake")
+  add_executable(ffi-high-address-check ffi-high-address.cc ../ghost/GHOST_WebFFI.cc)
+  target_include_directories(ffi-high-address-check PRIVATE "${CMAKE_PREFIX_PATH}/include")
+  target_link_libraries(ffi-high-address-check PRIVATE "${CMAKE_PREFIX_PATH}/lib/libffi.a")
+  target_compile_options(ffi-high-address-check PRIVATE -O2 -DNDEBUG -pthread -msimd128 -fwasm-exceptions)
+  target_link_options(ffi-high-address-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+    ${BLENDER_WEB_FFI_LINK_OPTIONS} -sENVIRONMENT=node,web,worker
+    -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=4 -sPTHREAD_POOL_SIZE_STRICT=0
+    -sEXIT_RUNTIME=1 -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4294967296
+    -sINITIAL_MEMORY=33554432)
+  add_executable(ffi-workers-check ffi-workers.cc ../ghost/GHOST_WebFFI.cc)
+  target_include_directories(ffi-workers-check PRIVATE "${CMAKE_PREFIX_PATH}/include")
+  target_link_libraries(ffi-workers-check PRIVATE "${CMAKE_PREFIX_PATH}/lib/libffi.a")
+  target_compile_options(ffi-workers-check PRIVATE -O2 -DNDEBUG -pthread -msimd128 -fwasm-exceptions)
+  target_link_options(ffi-workers-check PRIVATE -O2 -pthread -msimd128 -fwasm-exceptions
+    ${BLENDER_WEB_FFI_LINK_OPTIONS} -sENVIRONMENT=node,web,worker
+    -sPROXY_TO_PTHREAD=1 -sPTHREAD_POOL_SIZE=4 -sPTHREAD_POOL_SIZE_STRICT=0
+    -sEXIT_RUNTIME=1 -sALLOW_MEMORY_GROWTH=1)
+endif()
 if(WITH_LIBMV)
   add_executable(tracking-check tracking.cc)
   target_link_libraries(tracking-check PRIVATE Ceres::ceres)

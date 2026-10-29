@@ -37,6 +37,8 @@ def main():
     assert manifest['blenderRevision'].startswith(desktop['revision'])
     from native_python_acceptance import validate as validate_python
     python_proof = validate_python(base, manifest)
+    from native_ctypes_acceptance import validate as validate_ctypes
+    ctypes_proof = validate_ctypes(base, manifest)
     foundation = python_proof['libraryChecks']['foundation']
     from native_bindings_acceptance import validate as validate_bindings
     bindings_proof = validate_bindings(base, manifest)
@@ -72,7 +74,7 @@ def main():
             'WITH_HYDRA':'Hydra rendering integration',
         }.items() if not manifest['buildOptions'].get(name,False)},
         additionalLibraryGaps=[
-            'CPython _ctypes/libffi, general multiprocessing and raw socket transport',
+            'External ctypes libraries, general multiprocessing and raw socket transport',
             'Cython native accelerators and arbitrary dynamic Wasm extension loading',
             'MaterialX OpenGL rendering and OSL rendering compiler/runtime integration',
             'Hydra GPU rendering and browser graphics backends',
@@ -95,6 +97,12 @@ def main():
             browserVariants=len(bindings_proof['browserVariants']),
             independentNativeReadbacks=len(bindings_proof['nativeReadback']),
             evidence='web/docs/python-bindings.acceptance.json'),
+        pythonCtypes=dict(verifiedBundle=manifest['version'], libffiVersion='3.5.2',
+            originalModule=True, pythonNamespaceSymbols=ctypes_proof['pythonNamespaceSymbols'],
+            browserVariants=len(ctypes_proof['browserVariants']),
+            independentNativeReadbacks=len(ctypes_proof['nativeReadback']),
+            externalDynamicLibraries=False, sparseHighAddressCheck=True,
+            evidence='web/docs/python-ctypes.acceptance.json'),
         usdCPUImaging=dict(verifiedBundle=manifest['version'],
             plugins=usd_imaging['installation']['components'], volumeFormats=4,
             standaloneOriginalAPIs=True, independentNativeReadback=True,

@@ -97,19 +97,25 @@ def build(base, jobs):
     sources = json.loads(lock.read_text())
     inputs = [Path(__file__), ROOT / 'web/tools/native_deps.py',
               ROOT / 'web/native/shader-deps/build_python.sh', ROOT / 'web/upstream.json']
-    inputs += [ROOT / 'web/native/ghost/GHOST_WebNetwork.cc']
+    inputs += [ROOT / 'web/tools/native_ffi.py',
+               ROOT / 'web/native/ghost/GHOST_WebNetwork.cc',
+               *sorted((ROOT / 'web/native/ghost').glob('GHOST_WebFFI.*')),
+               *sorted((ROOT / 'web/native/ghost').glob('GHOST_WebCTypes.*'))]
     dependency_stamps = {}
-    for name in ('sqlite', 'lzma', 'ssl', 'zstd'):
+    for name in ('sqlite', 'lzma', 'ssl', 'zstd', 'ffi'):
         stamp = base / f'deps/{name}/installed.json'
         if not stamp.is_file():
             raise RuntimeError(f'Build {name} before the Python extension modules')
         dependency_stamps[name] = hashlib.sha256(stamp.read_bytes()).hexdigest()
+    dependency_stamps['libpython'] = hashlib.sha256(
+        (prefix / 'lib/libpython3.13.a').read_bytes()).hexdigest()
     signature = hashlib.sha256(b''.join(path.read_bytes() for path in inputs) +
         json.dumps([sources, dependency_stamps], sort_keys=True).encode()).hexdigest()
     destination = prefix / 'lib/blender-web-python'
     header = prefix / 'include/blender-web-python.hh'
     stamp = work / 'installed.json'
     artifacts = [header, destination / 'libraries.cmake', destination / 'extensions.a',
+                 prefix / 'include/blender-web-ctypes-exports.inc',
                  prefix / 'lib/python3.13/site-packages/zstandard/__init__.py']
     if (stamp.exists() and json.loads(stamp.read_text()).get('signature') == signature
             and all(path.is_file() for path in artifacts)):
@@ -125,7 +131,14 @@ def build(base, jobs):
                       python / 'Modules/_lzmamodule.c', python / 'Modules/_ssl.c',
                       python / 'Modules/_hashopenssl.c',
                       extracted['ZSTANDARD'] / 'c-ext/backend_c.c',
-                      ROOT / 'web/native/ghost/GHOST_WebNetwork.cc']
+                      ROOT / 'web/native/ghost/GHOST_WebNetwork.cc',
+                      ROOT / 'web/native/ghost/GHOST_WebFFI.cc',
+                      ROOT / 'web/native/ghost/GHOST_WebCTypes.cc']
+    ctypes_sources = [python / f'Modules/_ctypes/{name}.c'
+                      for name in ('_ctypes', 'callbacks', 'callproc', 'cfield', 'stgdict')]
+    module_sources += ctypes_sources
+    from native_ffi import LINK_OPTIONS, generate_namespace
+    namespace = generate_namespace(prefix, prefix / 'include/blender-web-ctypes-exports.inc')
     objects = work / 'objects'
     objects.mkdir(exist_ok=True)
     log = work / 'build.log'
@@ -137,26 +150,35 @@ def build(base, jobs):
     compiled = []
     for source in module_sources:
         target = objects / (source.stem + '.o')
-        run(['emcc', *flags, '-c', source, '-o', target], log)
+        extra = []
+        if source in ctypes_sources:
+            extra = ['-DHAVE_FFI_CLOSURE_ALLOC=1', '-DHAVE_FFI_PREP_CIF_VAR=1',
+                     '-DHAVE_FFI_PREP_CLOSURE_LOC=1', '-include',
+                     ROOT / 'web/native/ghost/GHOST_WebCTypes.hh']
+        run(['emcc', *flags, *extra, '-c', source, '-o', target], log)
         compiled.append(target)
     destination.mkdir(exist_ok=True)
     library = destination / 'extensions.a'
     library.unlink(missing_ok=True)
     run(['emar', 'rcs', library, *compiled], log)
-    modules = [('_sqlite3', 'PyInit__sqlite3'), ('_lzma', 'PyInit__lzma'),
+    modules = [('_ctypes', 'PyInit__ctypes'), ('_sqlite3', 'PyInit__sqlite3'), ('_lzma', 'PyInit__lzma'),
                ('_ssl', 'PyInit__ssl'), ('_hashlib', 'PyInit__hashlib'),
                ('zstandard.backend_c', 'PyInit_backend_c'),
                ('_bpy_ghost_web_http', 'PyInit__bpy_ghost_web_http')]
     header.write_text('/* SPDX-License-Identifier: GPL-2.0-or-later */\n#pragma once\n'
-        '#include <Python.h>\n#include <cstdlib>\n' +
+        '#include <Python.h>\n#include <cstdlib>\n'
+        'extern "C" void GHOST_web_initialize_ffi();\n' +
         '\n'.join(f'extern "C" PyObject *{init}();' for _, init in modules) +
         '\ninline void GHOST_web_register_python_extensions()\n{\n' +
+        '  GHOST_web_initialize_ffi();\n' +
         '\n'.join(f'  if (PyImport_AppendInittab("{name}", {init}) < 0) std::abort();'
                   for name, init in modules) + '\n}\n')
     (destination / 'libraries.cmake').write_text('set(BLENDER_WEB_PYTHON_EXTENSION_LIBRARIES\n'
         '  "${CMAKE_CURRENT_LIST_DIR}/extensions.a"\n' +
         '\n'.join(f'  "${{CMAKE_CURRENT_LIST_DIR}}/../lib{name}.a"'
-                  for name in ('sqlite3', 'lzma', 'ssl', 'crypto', 'zstd')) + '\n)\n')
+                  for name in ('sqlite3', 'lzma', 'ssl', 'crypto', 'zstd', 'ffi')) + '\n)\n'
+        'set(BLENDER_WEB_FFI_LINK_OPTIONS\n' +
+        ''.join(f'  {option}\n' for option in LINK_OPTIONS) + ')\n')
     shutil.copytree(extracted['ZSTANDARD'] / 'zstandard',
         prefix / 'lib/python3.13/site-packages/zstandard', dirs_exist_ok=True,
         ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
@@ -165,9 +187,12 @@ def build(base, jobs):
         dirs_exist_ok=True)
     report = dict(signature=signature, sources=sources, dependencyStamps=dependency_stamps,
                   modules=[name for name, _ in modules], staticBytes=library.stat().st_size,
+                  ctypesPythonSymbols=len(namespace), ctypesLibcSymbols=9,
+                  ctypesSourceHashes={path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+                                      for path in [*ctypes_sources, python / 'Modules/_ctypes/ctypes.h']},
                   limitations=['Raw socket networking needs a browser transport adapter.',
                                'SQLite loadable Wasm extensions need dynamic linking integration.',
-                               'ctypes and foreign-worker libffi closures are not integrated.'])
+                               'ctypes supports registered process symbols, not external dynamic libraries.'])
     stamp.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report), flush=True)
     return report

@@ -1,0 +1,296 @@
+--- a/src/wasm/ffi.c
++++ b/src/wasm/ffi.c
+@@ -45,14 +45,14 @@
+ 
+ #define DEREF_U8(addr, offset) HEAPU8[addr + offset]
+ #define DEREF_S8(addr, offset) HEAP8[addr + offset]
+-#define DEREF_U16(addr, offset) HEAPU16[(addr >> 1) + offset]
+-#define DEREF_S16(addr, offset) HEAP16[(addr >> 1) + offset]
+-#define DEREF_U32(addr, offset) HEAPU32[(addr >> 2) + offset]
+-#define DEREF_S32(addr, offset) HEAP32[(addr >> 2) + offset]
+-
+-#define DEREF_F32(addr, offset) HEAPF32[(addr >> 2) + offset]
+-#define DEREF_F64(addr, offset) HEAPF64[(addr >> 3) + offset]
+-#define DEREF_U64(addr, offset) HEAPU64[(addr >> 3) + offset]
++#define DEREF_U16(addr, offset) HEAPU16[Math.floor((addr) / 2) + offset]
++#define DEREF_S16(addr, offset) HEAP16[Math.floor((addr) / 2) + offset]
++#define DEREF_U32(addr, offset) HEAPU32[Math.floor((addr) / 4) + offset]
++#define DEREF_S32(addr, offset) HEAP32[Math.floor((addr) / 4) + offset]
++
++#define DEREF_F32(addr, offset) HEAPF32[Math.floor((addr) / 4) + offset]
++#define DEREF_F64(addr, offset) HEAPF64[Math.floor((addr) / 8) + offset]
++#define DEREF_U64(addr, offset) HEAPU64[Math.floor((addr) / 8) + offset]
+ 
+ #define CHECK_FIELD_OFFSET(struct, field, offset)                                  \
+   _Static_assert(                                                                  \
+@@ -64,7 +64,8 @@
+ #define FFI_EMSCRIPTEN_ABI FFI_WASM32_EMSCRIPTEN
+ #define PTR_SIG 'i'
+ 
+-#define DEC_PTR(p) p
++#define DEC_PTR(p) ((p) >>> 0)
++#define STACK_ADDRESS(p) ((p) >>> 0)
+ #define ENC_PTR(p) p
+ 
+ #define DEREF_PTR(addr, offset) DEREF_U32(addr, offset)
+@@ -103,6 +104,7 @@
+ // This should be used for a pointer that is expected to be within the i53 range. If the pointer
+ // value is outside the Number's range, the value will become NaN.
+ #define DEC_PTR(p) bigintToI53Checked(p)
++#define STACK_ADDRESS(p) p
+ // ENC_PTR casts a pointer value represented as Number to BigInt (i64)
+ #define ENC_PTR(p) BigInt(p)
+ 
+@@ -137,7 +139,7 @@
+ #error "Unknown pointer size"
+ #endif
+ 
+-#define ALIGN_ADDRESS(addr, align) (addr &= (~((align) - 1)))
++#define ALIGN_ADDRESS(addr, align) (addr = Math.floor((addr) / (align)) * (align))
+ #define STACK_ALLOC(stack, size, align) ((stack -= (size)), ALIGN_ADDRESS(stack, align))
+ 
+ // Most wasm runtimes support at most 1000 Js trampoline args.
+@@ -247,7 +249,7 @@
+   var rtype_unboxed = unbox_small_structs(CIF__RTYPE(cif));
+   var rtype_ptr = rtype_unboxed[0];
+   var rtype_id = rtype_unboxed[1];
+-  var orig_stack_ptr = stackSave();
++  var orig_stack_ptr = STACK_ADDRESS(stackSave());
+   var cur_stack_ptr = orig_stack_ptr;
+ 
+   var args = [];
+@@ -340,80 +342,46 @@
+   // Wasm functions can't directly manipulate the callstack, so varargs
+   // arguments have to go on a separate stack. A varags function takes one extra
+   // argument which is a pointer to where on the separate stack the args are
+-  // located. Because stacks are allocated backwards, we have to loop over the
+-  // varargs backwards.
+-  //
+-  // We don't have any way of knowing how many args were actually passed, so we
+-  // just always copy extra nonsense past the end. The ownwards call will know
+-  // not to look at it.
++  // located. Reserve one buffer using the ABI's forward argument offsets.
+   if (flags & VARARGS_FLAG) {
+-    var struct_arg_info = [];
+-    for (var i = nargs - 1;  i >= nfixedargs; i--) {
++    // Compute the ABI's forward layout before reserving the downward-growing
++    // stack. Allocating each argument backwards introduces padding after an
++    // argument instead of before the next aligned argument.
++    var slots = [];
++    var buffer_size = 0;
++    var buffer_align = 1;
++    for (var i = nfixedargs; i < nargs; i++) {
+       var arg_ptr = DEREF_PTR_NUMBER(avalue, i);
+-      var arg_unboxed = unbox_small_structs(DEREF_PTR(arg_types_ptr, i));
+-      var arg_type_ptr = arg_unboxed[0];
+-      var arg_type_id = arg_unboxed[1];
+-      switch (arg_type_id) {
+-      case FFI_TYPE_UINT8:
+-      case FFI_TYPE_SINT8:
+-        STACK_ALLOC(cur_stack_ptr, 1, 1);
+-        DEREF_U8(cur_stack_ptr, 0) = DEREF_U8(arg_ptr, 0);
+-        break;
+-      case FFI_TYPE_UINT16:
+-      case FFI_TYPE_SINT16:
+-        STACK_ALLOC(cur_stack_ptr, 2, 2);
+-        DEREF_U16(cur_stack_ptr, 0) = DEREF_U16(arg_ptr, 0);
+-        break;
+-      case FFI_TYPE_INT:
+-      case FFI_TYPE_UINT32:
+-      case FFI_TYPE_SINT32:
+-      case FFI_TYPE_FLOAT:
+-        STACK_ALLOC(cur_stack_ptr, 4, 4);
+-        DEREF_U32(cur_stack_ptr, 0) = DEREF_U32(arg_ptr, 0);
+-        break;
+-      case FFI_TYPE_DOUBLE:
+-      case FFI_TYPE_UINT64:
+-      case FFI_TYPE_SINT64:
+-        STACK_ALLOC(cur_stack_ptr, 8, 8);
+-        DEREF_U32(cur_stack_ptr, 0) = DEREF_U32(arg_ptr, 0);
+-        DEREF_U32(cur_stack_ptr, 1) = DEREF_U32(arg_ptr, 1);
+-        break;
+-      case FFI_TYPE_LONGDOUBLE:
+-        STACK_ALLOC(cur_stack_ptr, 16, 8);
+-        DEREF_U32(cur_stack_ptr, 0) = DEREF_U32(arg_ptr, 0);
+-        DEREF_U32(cur_stack_ptr, 1) = DEREF_U32(arg_ptr, 1);
+-        DEREF_U32(cur_stack_ptr, 2) = DEREF_U32(arg_ptr, 2);
+-        DEREF_U32(cur_stack_ptr, 3) = DEREF_U32(arg_ptr, 3);
+-        break;
+-      case FFI_TYPE_STRUCT:
+-        // Again, struct must be passed by pointer.
+-        // But ABI is by value, so have to copy struct onto stack.
+-        // Currently arguments are going onto stack so we can't put it there now. Come back for this.
+-        STACK_ALLOC(cur_stack_ptr, __SIZEOF_POINTER__, __SIZEOF_POINTER__);
+-        struct_arg_info.push([cur_stack_ptr, arg_ptr, DEC_PTR(FFI_TYPE__SIZE(arg_type_ptr)), FFI_TYPE__ALIGN(arg_type_ptr)]);
+-        break;
+-      case FFI_TYPE_POINTER:
+-        STACK_ALLOC(cur_stack_ptr, __SIZEOF_POINTER__, __SIZEOF_POINTER__);
+-        DEREF_PTR(cur_stack_ptr, 0) = DEREF_PTR(arg_ptr, 0);
+-        break;
+-      case FFI_TYPE_COMPLEX:
++      var unboxed = unbox_small_structs(DEREF_PTR(arg_types_ptr, i));
++      var type_ptr = unboxed[0];
++      var type_id = unboxed[1];
++      if (type_id === FFI_TYPE_COMPLEX) {
+         throw new Error('complex arg marshalling nyi');
+-      default:
+-        throw new Error('Unexpected argtype ' + arg_type_id);
+       }
+-    }
+-    // extra normal argument which is the pointer to the varargs.
+-    args.push(ENC_PTR(cur_stack_ptr));
+-    // Now allocate variable struct args on stack too.
+-    for (var i = 0; i < struct_arg_info.length; i++) {
+-      var struct_info = struct_arg_info[i];
+-      var arg_target = struct_info[0];
+-      var arg_ptr = struct_info[1];
+-      var size = struct_info[2];
+-      var align = struct_info[3];
+-      STACK_ALLOC(cur_stack_ptr, size, align);
+-      HEAP8.subarray(cur_stack_ptr, cur_stack_ptr+size).set(HEAP8.subarray(arg_ptr, arg_ptr + size));
+-      DEREF_PTR(arg_target, 0) = ENC_PTR(cur_stack_ptr);
++      var indirect = type_id === FFI_TYPE_STRUCT;
++      var size = indirect ? __SIZEOF_POINTER__ : DEC_PTR(FFI_TYPE__SIZE(type_ptr));
++      var align = indirect ? __SIZEOF_POINTER__ : FFI_TYPE__ALIGN(type_ptr);
++      buffer_size = Math.ceil(buffer_size / align) * align;
++      slots.push([buffer_size, arg_ptr, type_ptr, indirect, size]);
++      buffer_size += size;
++      buffer_align = Math.max(buffer_align, align);
++    }
++    STACK_ALLOC(cur_stack_ptr, buffer_size, buffer_align);
++    var buffer = cur_stack_ptr;
++    args.push(ENC_PTR(buffer));
++    for (var i = 0; i < slots.length; i++) {
++      var slot = slots[i];
++      var target = buffer + slot[0];
++      var source = slot[1];
++      if (slot[3]) {
++        var size = DEC_PTR(FFI_TYPE__SIZE(slot[2]));
++        var align = FFI_TYPE__ALIGN(slot[2]);
++        STACK_ALLOC(cur_stack_ptr, size, align);
++        HEAP8.subarray(cur_stack_ptr, cur_stack_ptr + size).set(HEAP8.subarray(source, source + size));
++        DEREF_PTR(target, 0) = ENC_PTR(cur_stack_ptr);
++      } else {
++        HEAP8.subarray(target, target + slot[4]).set(HEAP8.subarray(source, source + slot[4]));
++      }
+     }
+   }
+   stackRestore(cur_stack_ptr);
+@@ -500,10 +468,14 @@
+ #error "Unknown pointer size"
+ #endif
+ 
++// Keep the allocator visible to the JS closure backend even in a minimal link.
++EMSCRIPTEN_KEEPALIVE void *ffi_web_malloc(size_t size) { return malloc(size); }
++EMSCRIPTEN_KEEPALIVE void ffi_web_free(void *pointer) { free(pointer); }
++
+ EM_JS_MACROS(void *, ffi_closure_alloc_js, (size_t size, void **code), {
+   size = DEC_PTR(size);
+   code = DEC_PTR(code);
+-  var closure = _malloc(size);
++  var closure = _ffi_web_malloc(size);
+   var index = getEmptyTableSlot();
+   DEREF_PTR(code, 0) = ENC_PTR(index);
+   CLOSURE__wrapper(closure) = ENC_PTR(index);
+@@ -519,7 +491,7 @@
+   closure = DEC_PTR(closure);
+   var index = DEC_PTR(CLOSURE__wrapper(closure));
+   freeTableIndexes.push(index);
+-  _free(closure);
++  _ffi_web_free(closure);
+ })
+ 
+ void __attribute__ ((visibility ("default")))
+@@ -530,7 +502,7 @@
+ EM_JS_MACROS(
+ ffi_status,
+ ffi_prep_closure_loc_js,
+-(ffi_closure *closure, ffi_cif *cif, void *fun, void *user_data, void *codeloc),
++(ffi_closure *closure, ffi_cif *cif, void *fun, void *user_data, void *codeloc, int publish),
+ {
+   closure = DEC_PTR(closure);
+   cif = DEC_PTR(cif);
+@@ -540,6 +512,7 @@
+   var abi = CIF__ABI(cif);
+   var nargs = CIF__NARGS(cif);
+   var nfixedargs = CIF__NFIXEDARGS(cif);
++  var flags = CIF__FLAGS(cif);
+   var arg_types_ptr = DEC_PTR(CIF__ARGTYPES(cif));
+   var rtype_unboxed = unbox_small_structs(CIF__RTYPE(cif));
+   var rtype_ptr = rtype_unboxed[0];
+@@ -629,7 +602,7 @@
+       throw new Error('Unexpected argtype ' + arg_type_id);
+     }
+   }
+-  if (nfixedargs < nargs) {
++  if (flags & VARARGS_FLAG) {
+     // extra pointer to varargs stack
+     sig += PTR_SIG;
+   }
+@@ -637,7 +610,7 @@
+   function trampoline() {
+     var args = Array.prototype.slice.call(arguments);
+     var size = 0;
+-    var orig_stack_ptr = stackSave();
++    var orig_stack_ptr = STACK_ADDRESS(stackSave());
+     var cur_ptr = orig_stack_ptr;
+     var ret_ptr;
+     var jsarg_idx = 0;
+@@ -726,7 +699,7 @@
+       }
+     }
+     // If its a varargs call, last js argument is a pointer to the varargs.
+-    var varargs = DEC_PTR(args[args.length - 1]);
++    var varargs = (flags & VARARGS_FLAG) ? DEC_PTR(args[args.length - 1]) : 0;
+     // We have no way of knowing how many varargs were actually provided, this
+     // fills the rest of the stack space allocated with nonsense. The onward
+     // call will know to ignore the nonsense.
+@@ -739,6 +712,10 @@
+       var arg_type_info = unboxed_arg_type_info_list[carg_idx];
+       var arg_size = arg_type_info[0];
+       var arg_align = arg_type_info[1];
++      var indirect = arg_type_id === FFI_TYPE_STRUCT;
++      var slot_align = indirect ? __SIZEOF_POINTER__ : arg_align;
++      var slot_size = indirect ? __SIZEOF_POINTER__ : arg_size;
++      varargs = Math.ceil(varargs / slot_align) * slot_align;
+       if (arg_type_id === FFI_TYPE_STRUCT) {
+         // In this case varargs is a pointer to pointer to struct so we need to
+         // deref once
+@@ -749,7 +726,7 @@
+       } else {
+         DEREF_PTR(args_ptr, carg_idx) = ENC_PTR(varargs);
+       }
+-      varargs += __SIZEOF_POINTER__;
++      varargs += slot_size;
+     }
+     stackRestore(cur_ptr);
+     stackAlloc(0); // stackAlloc enforces alignment invariants on the stack pointer
+@@ -780,9 +757,11 @@
+     return FFI_BAD_TYPEDEF_MACRO;
+   }
+   setWasmTableEntry(codeloc, wasm_trampoline);
+-  CLOSURE__cif(closure) = ENC_PTR(cif);
+-  CLOSURE__fun(closure) = ENC_PTR(fun);
+-  CLOSURE__user_data(closure) = ENC_PTR(user_data);
++  if (publish) {
++    CLOSURE__cif(closure) = ENC_PTR(cif);
++    CLOSURE__fun(closure) = ENC_PTR(fun);
++    CLOSURE__user_data(closure) = ENC_PTR(user_data);
++  }
+   return FFI_OK_MACRO;
+ })
+ 
+@@ -794,5 +773,12 @@
+   if (cif->abi != FFI_EMSCRIPTEN_ABI)
+     return FFI_BAD_ABI;
+   return ffi_prep_closure_loc_js(closure, cif, (void *)fun, user_data,
+-                                     codeloc);
++                                     codeloc, 1);
+ }
++
++// Install the original typed trampoline without rewriting
++// the shared closure metadata while other threads may be invoking it.
++ffi_status ffi_web_install_closure(ffi_closure *closure, ffi_cif *cif,
++                                 void *fun, void *user_data, void *codeloc) {
++  return ffi_prep_closure_loc_js(closure,cif,fun,user_data,codeloc,0);
++}

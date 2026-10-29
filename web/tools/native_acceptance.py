@@ -25,6 +25,8 @@ def main():
     version = manifest['version']
     from native_python_acceptance import validate as validate_python
     python_foundation = validate_python(base, manifest)
+    from native_ctypes_acceptance import validate as validate_ctypes
+    python_ctypes = validate_ctypes(base, manifest)
     from native_bindings_acceptance import validate as validate_bindings
     python_bindings = validate_bindings(base, manifest)
     from native_usd_imaging_acceptance import validate as validate_usd_imaging
@@ -342,6 +344,7 @@ def main():
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,
               'renderLibraries':render_libraries,
               'pythonFoundation':python_foundation,
+              'pythonCtypes':python_ctypes,
               'pythonBindings':python_bindings,
               'usdCPUImaging':usd_imaging,
               'nativeChecks':native, 'recording':recording, 'wasmBuild':wasm_build,
@@ -411,6 +414,7 @@ def main():
                                     'sha256':hashlib.sha256(archive.read_bytes()).hexdigest()}
     write(docs / 'web-features.acceptance.json', report)
     write(docs / 'python-foundation.acceptance.json', python_foundation)
+    write(docs / 'python-ctypes.acceptance.json', python_ctypes)
     write(docs / 'python-bindings.acceptance.json', python_bindings)
     write(docs / 'usd-cpu-imaging.acceptance.json', usd_imaging)
     write(docs / 'loading-cache.acceptance.json', {
