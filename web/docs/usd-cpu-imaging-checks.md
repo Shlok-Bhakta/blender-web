@@ -1,15 +1,17 @@
 # USD CPU image and volume plugins
 
-The integration branch builds OpenUSD 26.03's original `hioOiio` and
-`hioOpenVDB` plugins without enabling its GPU backends. Standalone Wasm factory
-checks and independent native Blender 5.2.2 LTS readback passed. A real hardware
-browser probe also passed both original plugin registrations, USDA/USDC/USDZ
-exchange and offline reopening. Native Blender independently read all three
-exported scenes. Both combined source CI builds passed. The combined production build, software and
-fallback checks, and the full 108-stage validation are pending. These plugins
-are not yet part of the published Pages bundle.
+Candidate `f5bc7678d055b2921075` includes OpenUSD 26.03's original `hioOiio` and
+`hioOpenVDB` CPU plugins. Both original factories passed standalone Wasm tests and
+independent native Blender readback. The optimized application passed hardware
+WebGPU, software WebGPU and fallback checks, USD scene exchange and offline
+reopening. All 108 local stages and both source CI builds passed. Pages
+publication is pending. See the [validation record](combined-dependencies-validation.json).
 
-The browser probe reuses unchanged Blender objects from runtime commit `89179a7`,
+Watch the [optimized production recording](usd-materialx-walkthrough.mp4) and
+[its metadata](usd-recording.json). The shorter clip below records the earlier
+unoptimized integration probe.
+
+The earlier browser probe reuses unchanged Blender objects from runtime commit `89179a7`,
 links the original CPU plugin archives from `8e6d2ff`, and preloads their static
 metadata. Its final Wasm link uses `-O0`. It provides integration evidence; it is
 not a performance measurement or the production release binary.

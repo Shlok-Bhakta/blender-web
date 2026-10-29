@@ -1,0 +1,2533 @@
+{
+  "libraryChecks": {
+    "versions": {
+      "OpenImageIO": "3.1.13.1",
+      "PyOpenColorIO": "2.5.0",
+      "MaterialX": "1.39.4"
+    },
+    "originalPackageWrappers": true,
+    "color": {
+      "numpyTransform": [
+        [
+          0.3499999940395355,
+          0.949999988079071,
+          2.299999952316284
+        ],
+        [
+          2.0999999046325684,
+          1.7000000476837158,
+          1.2999999523162842
+        ]
+      ],
+      "parallelCalls": 9,
+      "serialization": true,
+      "shaderGeneration": true,
+      "invalidColorSpaceRejected": true
+    },
+    "images": {
+      "numpyRoundtrip": true,
+      "files": [
+        {
+          "format": "exr",
+          "maxError": 0.0
+        },
+        {
+          "format": "tif",
+          "maxError": 7.62939453125e-06
+        },
+        {
+          "format": "png",
+          "maxError": 7.62939453125e-06
+        }
+      ],
+      "resize": true,
+      "pixelStatistics": true,
+      "parallelCalls": 9
+    },
+    "volume": {
+      "gridTypes": [
+        {
+          "name": "FloatGrid",
+          "value": 1.25
+        },
+        {
+          "name": "DoubleGrid",
+          "value": 1.25
+        },
+        {
+          "name": "BoolGrid",
+          "value": true
+        },
+        {
+          "name": "Int32Grid",
+          "value": 1234
+        },
+        {
+          "name": "Int64Grid",
+          "value": "18014398509481991"
+        },
+        {
+          "name": "Vec3SGrid",
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "Vec3IGrid",
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "Vec3DGrid",
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "PointDataGrid",
+          "value": 1234
+        }
+      ],
+      "numpyRoundtrip": true,
+      "fileRoundtrip": true,
+      "transform": true,
+      "metadata": true,
+      "missingGridRejected": true,
+      "parallelCalls": 12,
+      "axDisabled": true
+    },
+    "material": {
+      "documentRoundtrip": true,
+      "shaders": [
+        {
+          "target": "genglsl",
+          "bytes": 1160,
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54"
+        },
+        {
+          "target": "genmsl",
+          "bytes": 8035,
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144"
+        },
+        {
+          "target": "genosl",
+          "bytes": 742,
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f"
+        },
+        {
+          "target": "genmdl",
+          "bytes": 738,
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975"
+        }
+      ],
+      "renderImage": true,
+      "imageDownsample": true,
+      "mesh": true,
+      "xmlRejection": true,
+      "parallelCalls": 9
+    },
+    "sourceHashes": {
+      "web/tools/native_bindings.py": "639d62002c1b909e449d552d001e45e71707c6bb89280c16d091e0a5add203ac",
+      "web/native/python-bindings/CMakeLists.txt": "4142643f424fa4fb39767cd09dfe9673b722d51b186c0fa6b6728903fff60579",
+      "web/native/python-bindings/nanobind-newfunc.patch": "5ee5757e540533915a3c673420f2f7638ae131f067b73be88eca1f983ab4e5ae",
+      "web/native/patches/yamlcpp.patch": "d50b6a94401d89e22eabde8fc61f58f76959d8e2680dc7b01893849dc7429c57",
+      "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3",
+      "web/upstream.json": "ca65785635428e0de5a6d07f43848522534cc055d4a32bdbd4121d5e73131723",
+      "web/native/tests/python-bindings.cc": "0d72852a72df647bdde3f80d4848b3f400fd542231efb4b6ae397ed72c72e88d",
+      "web/native/tests/python-bindings.py": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "web/native/python-bindings/check/CMakeLists.txt": "1ff161a5021328de85ffc83df567ba112f0ef9b7fe91a96800d0041488482580"
+    },
+    "bindingInstallationSha256": "5812d68a38994de8cd8c249ad72e9ddbf48dc6154dc0735d7c007f0d2147b2b3",
+    "cleanInterpreterShutdown": true
+  },
+  "standaloneAVIF": {
+    "cases": [
+      {
+        "bits": 8,
+        "channels": 1,
+        "maxError": 6e-08,
+        "meanError": 2e-08
+      },
+      {
+        "bits": 8,
+        "channels": 3,
+        "maxError": 6e-08,
+        "meanError": 2e-08
+      },
+      {
+        "bits": 8,
+        "channels": 4,
+        "maxError": 6e-08,
+        "meanError": 1.5e-08
+      },
+      {
+        "bits": 10,
+        "channels": 1,
+        "maxError": 0.000732437,
+        "meanError": 0.000285293
+      },
+      {
+        "bits": 10,
+        "channels": 3,
+        "maxError": 0.000732437,
+        "meanError": 0.000285252
+      },
+      {
+        "bits": 10,
+        "channels": 4,
+        "maxError": 0.000732437,
+        "meanError": 0.000213939
+      },
+      {
+        "bits": 12,
+        "channels": 1,
+        "maxError": 0.000228886,
+        "meanError": 8.1117e-05
+      },
+      {
+        "bits": 12,
+        "channels": 3,
+        "maxError": 0.000228886,
+        "meanError": 8.1093e-05
+      },
+      {
+        "bits": 12,
+        "channels": 4,
+        "maxError": 0.000228886,
+        "meanError": 6.082e-05
+      }
+    ],
+    "libheifVersion": "1.20.2",
+    "originalOIIOPlugin": true,
+    "dracoBridgeCoexistence": true,
+    "oddDimensions": [
+      37,
+      23
+    ],
+    "invalidInputRejected": true,
+    "decoderRecovery": true,
+    "sourceHashes": {
+      "web/native/tests/avif.cc": "4266c6392f2fbb2c0a157cd2c16471625e898aafbd2046b24a00cf740fe399a8",
+      "web/native/gltf.cmake": "c1e8cae2217f5d2e7091224cbef0ee2c7d4006d0c920e694a067e4bba5941b36",
+      "web/native/ghost/GHOST_WebDracoTypes.hh": "e86241ba0f77207172cc4082a8449a20d0b889622ff4c188424f68f6065c8d22",
+      "web/native/tests/CMakeLists.txt": "26c91f5650271081d5fbaee1868d42bb8598b943eaa39e355ef9a147d20d37f5",
+      "web/native/dependencies.cmake": "9ce282302be6d1c5ec8190a93823c63b3bd51e5babd3f7586f84372e1487febf",
+      "web/tools/native_deps.py": "ad33655af25e25b51bc986aa8c689ab9d6df7b8864601079126a7ee63eca92dd",
+      "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3"
+    }
+  },
+  "browserVariants": [
+    {
+      "bundleVersion": "f5bc7678d055b2921075",
+      "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+      "runnerSourceSha256": "8cb767e1f64f15ff5d0664d4d9b1741a86244e64bcaa7f824f03cdf0d90f0eda",
+      "hardware": false,
+      "fallback": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-28T07:18:33.414Z",
+      "report": {
+        "versions": {
+          "OpenImageIO": "3.1.13.1",
+          "PyOpenColorIO": "2.5.0",
+          "MaterialX": "1.39.4"
+        },
+        "originalPackageWrappers": true,
+        "color": {
+          "numpyTransform": [
+            [
+              0.3499999940395355,
+              0.949999988079071,
+              2.299999952316284
+            ],
+            [
+              2.0999999046325684,
+              1.7000000476837158,
+              1.2999999523162842
+            ]
+          ],
+          "parallelCalls": 9,
+          "serialization": true,
+          "shaderGeneration": true,
+          "invalidColorSpaceRejected": true
+        },
+        "images": {
+          "numpyRoundtrip": true,
+          "files": [
+            {
+              "format": "exr",
+              "maxError": 0
+            },
+            {
+              "format": "tif",
+              "maxError": 7.62939453125e-06
+            },
+            {
+              "format": "png",
+              "maxError": 7.62939453125e-06
+            }
+          ],
+          "resize": true,
+          "pixelStatistics": true,
+          "parallelCalls": 9
+        },
+        "volume": {
+          "gridTypes": [
+            {
+              "name": "FloatGrid",
+              "value": 1.25
+            },
+            {
+              "name": "DoubleGrid",
+              "value": 1.25
+            },
+            {
+              "name": "BoolGrid",
+              "value": true
+            },
+            {
+              "name": "Int32Grid",
+              "value": 1234
+            },
+            {
+              "name": "Int64Grid",
+              "value": "18014398509481991"
+            },
+            {
+              "name": "Vec3SGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "Vec3IGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "Vec3DGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "PointDataGrid",
+              "value": 1234
+            }
+          ],
+          "numpyRoundtrip": true,
+          "fileRoundtrip": true,
+          "transform": true,
+          "metadata": true,
+          "missingGridRejected": true,
+          "parallelCalls": 12,
+          "axDisabled": true
+        },
+        "material": {
+          "documentRoundtrip": true,
+          "shaders": [
+            {
+              "target": "genglsl",
+              "bytes": 1160,
+              "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54"
+            },
+            {
+              "target": "genmsl",
+              "bytes": 8035,
+              "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144"
+            },
+            {
+              "target": "genosl",
+              "bytes": 742,
+              "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f"
+            },
+            {
+              "target": "genmdl",
+              "bytes": 738,
+              "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975"
+            }
+          ],
+          "renderImage": true,
+          "imageDownsample": true,
+          "mesh": true,
+          "xmlRejection": true,
+          "parallelCalls": 9
+        }
+      },
+      "avif": {
+        "originalBlenderAVIF": true,
+        "oddWidth": 37,
+        "height": 23,
+        "cases": [
+          {
+            "name": "avif-8-BW.avif",
+            "bits": 8,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1195,
+            "byteInput": true
+          },
+          {
+            "name": "avif-8-RGB.avif",
+            "bits": 8,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 1574,
+            "byteInput": true
+          },
+          {
+            "name": "avif-8-RGBA.avif",
+            "bits": 8,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 1557,
+            "byteInput": true
+          },
+          {
+            "name": "avif-10-BW.avif",
+            "bits": 10,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1349,
+            "byteInput": false
+          },
+          {
+            "name": "avif-10-RGB.avif",
+            "bits": 10,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 1912,
+            "byteInput": false
+          },
+          {
+            "name": "avif-10-RGBA.avif",
+            "bits": 10,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 2437,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-BW.avif",
+            "bits": 12,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1724,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-RGB.avif",
+            "bits": 12,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 2538,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-RGBA.avif",
+            "bits": 12,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 3096,
+            "byteInput": false
+          }
+        ],
+        "truncatedInputRejected": true,
+        "decoderRecovery": true
+      },
+      "files": {
+        "config.ocio": {
+          "sha256": "a4368a2c30954d7caef01e620463fbe73c7a59eccccd12b13888dff3cc1e5f30",
+          "bytes": 522
+        },
+        "color-transform.glsl": {
+          "sha256": "7c9303a8828ccc609edb258e9e7a735b041138e9ec19cd27f4e6a1c63eaba077",
+          "bytes": 438
+        },
+        "image.exr": {
+          "sha256": "873ae879e50fbd4ef64a57c756a12e4be30fd251153f21b7e9341fe308dab15a",
+          "bytes": 2851
+        },
+        "image.tif": {
+          "sha256": "ba5416365fea01854191ad52e3df62d6de0f706df730d12c2fdb95ec2e9835e5",
+          "bytes": 506
+        },
+        "image.png": {
+          "sha256": "a3e35c06e19d24e052091d2f431deec9361819c7556390ce77d44738c6b7e09b",
+          "bytes": 1334
+        },
+        "volume.vdb": {
+          "sha256": "d345a08ad5c632702efaaaef283bece5ff807ebbc2482a0949e89f5cde226194",
+          "bytes": 100572
+        },
+        "material.mtlx": {
+          "sha256": "fe507f46b0f3c1019d716ca4eba3bbe58c6f487f3eb5121cff17185075922be7",
+          "bytes": 263
+        },
+        "shader-genglsl.txt": {
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54",
+          "bytes": 1160
+        },
+        "shader-genmsl.txt": {
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144",
+          "bytes": 8035
+        },
+        "shader-genosl.txt": {
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f",
+          "bytes": 742
+        },
+        "shader-genmdl.txt": {
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975",
+          "bytes": 738
+        },
+        "python-bindings.json": {
+          "sha256": "4def77ad01733a4b909cb18505ccf5a7a6dfc791f248ad170c95b1928e7a8dfe",
+          "bytes": 2675
+        },
+        "python-bindings.blend": {
+          "sha256": "7524511e0a7e5a1ca18fb104c546a5401860a2521bf073d16d2c103c258f6881",
+          "bytes": 101400
+        },
+        "avif.json": {
+          "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
+          "bytes": 1081
+        },
+        "avif-8-BW.avif": {
+          "sha256": "ab271d13befa66d85b2e1589047332aee6447270790f8d58336b5f3ee0e384c3",
+          "bytes": 1195
+        },
+        "avif-8-BW.avif.f32": {
+          "sha256": "5947234f04eca52dd0505674a3de050b1ff11b041f21e4131f2e19d2651181c1",
+          "bytes": 3404
+        },
+        "avif-8-BW.avif.blender.f32": {
+          "sha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed",
+          "bytes": 13616
+        },
+        "avif-8-RGB.avif": {
+          "sha256": "92ee3d34e916cba6a3c70e1f0718869436be04931e1224a2dd3b7e9c3ab743fd",
+          "bytes": 1574
+        },
+        "avif-8-RGB.avif.f32": {
+          "sha256": "d863a4cfa7dc495087f01f8830821ce378e7ca89fa8950e82c6c61adf6d9a05a",
+          "bytes": 10212
+        },
+        "avif-8-RGB.avif.blender.f32": {
+          "sha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif": {
+          "sha256": "2ff1aac6ca559b42168f376409476a75716f9488f781d064fb1f07bd81071aab",
+          "bytes": 1557
+        },
+        "avif-8-RGBA.avif.f32": {
+          "sha256": "e84cbd63248c24b1d04e731344b62522e574988f4ff0076376381f5c63b85d74",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif.blender.f32": {
+          "sha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e",
+          "bytes": 13616
+        },
+        "avif-10-BW.avif": {
+          "sha256": "bbc9b2369cd8f2ee2e2f5fd7676707fcc220bdf75830b8ca060a4d56c9078d8b",
+          "bytes": 1349
+        },
+        "avif-10-BW.avif.f32": {
+          "sha256": "6ad8af243966678e76a6d6dea97a8434342657150cab2965ebdba9d5a71ce5b5",
+          "bytes": 3404
+        },
+        "avif-10-BW.avif.blender.f32": {
+          "sha256": "f5c74fd593cf17763b7a00360944ea1ea08663ec8300dbd4bec1dc033eff589c",
+          "bytes": 13616
+        },
+        "avif-10-RGB.avif": {
+          "sha256": "149037d79bf0e059a4448383735e28dec9f21b8a014a172b0a04db666652a23b",
+          "bytes": 1912
+        },
+        "avif-10-RGB.avif.f32": {
+          "sha256": "c8348cd3d76d5fc7a3f66970a631c2aabf3f04bbe55f87a1f9cadd5494a7a9e0",
+          "bytes": 10212
+        },
+        "avif-10-RGB.avif.blender.f32": {
+          "sha256": "ada366ca743255e814a99322b520ce75a93fb99b99400237cd9cc699b372b276",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif": {
+          "sha256": "53d0a4a3eae2dc5c929ed6aae7b20a2eb07178886599e64faea0570eb0b067e5",
+          "bytes": 2437
+        },
+        "avif-10-RGBA.avif.f32": {
+          "sha256": "44e9744d809dddd3df86dd00bce3dc724ffc973c52cda48ec2ab664d59279e6e",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif.blender.f32": {
+          "sha256": "9ee6c7e9a717fc3f1d3ad928404b04db7171835e8a6fed1a67f023d15c626af5",
+          "bytes": 13616
+        },
+        "avif-12-BW.avif": {
+          "sha256": "aa0ff8e4ed6cea5fb561842f2b62a867a4e1466dbbeb9b69a75f8388d529c01e",
+          "bytes": 1724
+        },
+        "avif-12-BW.avif.f32": {
+          "sha256": "f70054ea40f2e581b484a9fc2ada1ea173a1e11491c92261369fed3884b8968c",
+          "bytes": 3404
+        },
+        "avif-12-BW.avif.blender.f32": {
+          "sha256": "b8fda730d5db9b38d32536d2f60bc9bef8cc8be99c8f7e43ccb0dbdf681f04e3",
+          "bytes": 13616
+        },
+        "avif-12-RGB.avif": {
+          "sha256": "a4a4846f260f1325840ad0686d1bc80493a32410469dbfd603d364a3a1c34786",
+          "bytes": 2538
+        },
+        "avif-12-RGB.avif.f32": {
+          "sha256": "9e8a238d6d1110829c6b216de570b2cf321ca145f003c3009b144a49d00be9ee",
+          "bytes": 10212
+        },
+        "avif-12-RGB.avif.blender.f32": {
+          "sha256": "f5b98b4b5f17a6c3e483826d86a3432c604ef205f8ad588dc636a07971b7039a",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif": {
+          "sha256": "72be65ec5bdbb28bafb7f68f70b7e1411aefda129f0ec6f7fa11afd47dbea611",
+          "bytes": 3096
+        },
+        "avif-12-RGBA.avif.f32": {
+          "sha256": "bef79cbeb91935fc8e54c4d6db922908dea02c286ddf4ce9bea230fb02a8555b",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif.blender.f32": {
+          "sha256": "7e20de2ee9d6cb0b873dedf89537a8950d22bd69aa604a64a2cd5b32ea7a2358",
+          "bytes": 13616
+        }
+      },
+      "offlineReopen": true,
+      "startupPythonErrors": [],
+      "browserErrors": [],
+      "chapters": [
+        {
+          "seconds": 0.001,
+          "title": "Start original Blender with the image, color, volume and material bindings"
+        },
+        {
+          "seconds": 28.016,
+          "title": "Run original Python APIs and export native-readable files"
+        },
+        {
+          "seconds": 41.165,
+          "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
+        },
+        {
+          "seconds": 69.552,
+          "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
+        },
+        {
+          "seconds": 87.545,
+          "title": "Inspect the results in the original Text Editor"
+        },
+        {
+          "seconds": 96.626,
+          "title": "Reopen the saved scene and volume after an offline reload"
+        }
+      ],
+      "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-bindings-evidence/python-bindings.webm"
+    },
+    {
+      "bundleVersion": "f5bc7678d055b2921075",
+      "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+      "runnerSourceSha256": "8cb767e1f64f15ff5d0664d4d9b1741a86244e64bcaa7f824f03cdf0d90f0eda",
+      "hardware": false,
+      "fallback": true,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-28T07:20:48.788Z",
+      "report": {
+        "versions": {
+          "OpenImageIO": "3.1.13.1",
+          "PyOpenColorIO": "2.5.0",
+          "MaterialX": "1.39.4"
+        },
+        "originalPackageWrappers": true,
+        "color": {
+          "numpyTransform": [
+            [
+              0.3499999940395355,
+              0.949999988079071,
+              2.299999952316284
+            ],
+            [
+              2.0999999046325684,
+              1.7000000476837158,
+              1.2999999523162842
+            ]
+          ],
+          "parallelCalls": 9,
+          "serialization": true,
+          "shaderGeneration": true,
+          "invalidColorSpaceRejected": true
+        },
+        "images": {
+          "numpyRoundtrip": true,
+          "files": [
+            {
+              "format": "exr",
+              "maxError": 0
+            },
+            {
+              "format": "tif",
+              "maxError": 7.62939453125e-06
+            },
+            {
+              "format": "png",
+              "maxError": 7.62939453125e-06
+            }
+          ],
+          "resize": true,
+          "pixelStatistics": true,
+          "parallelCalls": 9
+        },
+        "volume": {
+          "gridTypes": [
+            {
+              "name": "FloatGrid",
+              "value": 1.25
+            },
+            {
+              "name": "DoubleGrid",
+              "value": 1.25
+            },
+            {
+              "name": "BoolGrid",
+              "value": true
+            },
+            {
+              "name": "Int32Grid",
+              "value": 1234
+            },
+            {
+              "name": "Int64Grid",
+              "value": "18014398509481991"
+            },
+            {
+              "name": "Vec3SGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "Vec3IGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "Vec3DGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "PointDataGrid",
+              "value": 1234
+            }
+          ],
+          "numpyRoundtrip": true,
+          "fileRoundtrip": true,
+          "transform": true,
+          "metadata": true,
+          "missingGridRejected": true,
+          "parallelCalls": 12,
+          "axDisabled": true
+        },
+        "material": {
+          "documentRoundtrip": true,
+          "shaders": [
+            {
+              "target": "genglsl",
+              "bytes": 1160,
+              "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54"
+            },
+            {
+              "target": "genmsl",
+              "bytes": 8035,
+              "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144"
+            },
+            {
+              "target": "genosl",
+              "bytes": 742,
+              "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f"
+            },
+            {
+              "target": "genmdl",
+              "bytes": 738,
+              "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975"
+            }
+          ],
+          "renderImage": true,
+          "imageDownsample": true,
+          "mesh": true,
+          "xmlRejection": true,
+          "parallelCalls": 9
+        }
+      },
+      "avif": {
+        "originalBlenderAVIF": true,
+        "oddWidth": 37,
+        "height": 23,
+        "cases": [
+          {
+            "name": "avif-8-BW.avif",
+            "bits": 8,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1195,
+            "byteInput": true
+          },
+          {
+            "name": "avif-8-RGB.avif",
+            "bits": 8,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 1574,
+            "byteInput": true
+          },
+          {
+            "name": "avif-8-RGBA.avif",
+            "bits": 8,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 1557,
+            "byteInput": true
+          },
+          {
+            "name": "avif-10-BW.avif",
+            "bits": 10,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1349,
+            "byteInput": false
+          },
+          {
+            "name": "avif-10-RGB.avif",
+            "bits": 10,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 1912,
+            "byteInput": false
+          },
+          {
+            "name": "avif-10-RGBA.avif",
+            "bits": 10,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 2437,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-BW.avif",
+            "bits": 12,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1724,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-RGB.avif",
+            "bits": 12,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 2538,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-RGBA.avif",
+            "bits": 12,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 3096,
+            "byteInput": false
+          }
+        ],
+        "truncatedInputRejected": true,
+        "decoderRecovery": true
+      },
+      "files": {
+        "config.ocio": {
+          "sha256": "a4368a2c30954d7caef01e620463fbe73c7a59eccccd12b13888dff3cc1e5f30",
+          "bytes": 522
+        },
+        "color-transform.glsl": {
+          "sha256": "7c9303a8828ccc609edb258e9e7a735b041138e9ec19cd27f4e6a1c63eaba077",
+          "bytes": 438
+        },
+        "image.exr": {
+          "sha256": "557ba6634603854b59c5648bb67d3f699ff939758096c9280caf427a27ee8cb4",
+          "bytes": 2851
+        },
+        "image.tif": {
+          "sha256": "8b2c02d8e5f1e1a5255265238c97cf913a5cca45cc56024ed42d0b751a71ac55",
+          "bytes": 506
+        },
+        "image.png": {
+          "sha256": "a3e35c06e19d24e052091d2f431deec9361819c7556390ce77d44738c6b7e09b",
+          "bytes": 1334
+        },
+        "volume.vdb": {
+          "sha256": "d9c83d003416fe6278a1d1153b87a2c1d7a333653770a2f120ab7d86b625af46",
+          "bytes": 100572
+        },
+        "material.mtlx": {
+          "sha256": "fe507f46b0f3c1019d716ca4eba3bbe58c6f487f3eb5121cff17185075922be7",
+          "bytes": 263
+        },
+        "shader-genglsl.txt": {
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54",
+          "bytes": 1160
+        },
+        "shader-genmsl.txt": {
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144",
+          "bytes": 8035
+        },
+        "shader-genosl.txt": {
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f",
+          "bytes": 742
+        },
+        "shader-genmdl.txt": {
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975",
+          "bytes": 738
+        },
+        "python-bindings.json": {
+          "sha256": "4def77ad01733a4b909cb18505ccf5a7a6dfc791f248ad170c95b1928e7a8dfe",
+          "bytes": 2675
+        },
+        "python-bindings.blend": {
+          "sha256": "3798ca7342e44e1f10faa2a796fc5d6e7ce7cd7f623b26e5dbc3aaeefad0e68c",
+          "bytes": 101412
+        },
+        "avif.json": {
+          "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
+          "bytes": 1081
+        },
+        "avif-8-BW.avif": {
+          "sha256": "ab271d13befa66d85b2e1589047332aee6447270790f8d58336b5f3ee0e384c3",
+          "bytes": 1195
+        },
+        "avif-8-BW.avif.f32": {
+          "sha256": "5947234f04eca52dd0505674a3de050b1ff11b041f21e4131f2e19d2651181c1",
+          "bytes": 3404
+        },
+        "avif-8-BW.avif.blender.f32": {
+          "sha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed",
+          "bytes": 13616
+        },
+        "avif-8-RGB.avif": {
+          "sha256": "92ee3d34e916cba6a3c70e1f0718869436be04931e1224a2dd3b7e9c3ab743fd",
+          "bytes": 1574
+        },
+        "avif-8-RGB.avif.f32": {
+          "sha256": "d863a4cfa7dc495087f01f8830821ce378e7ca89fa8950e82c6c61adf6d9a05a",
+          "bytes": 10212
+        },
+        "avif-8-RGB.avif.blender.f32": {
+          "sha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif": {
+          "sha256": "2ff1aac6ca559b42168f376409476a75716f9488f781d064fb1f07bd81071aab",
+          "bytes": 1557
+        },
+        "avif-8-RGBA.avif.f32": {
+          "sha256": "e84cbd63248c24b1d04e731344b62522e574988f4ff0076376381f5c63b85d74",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif.blender.f32": {
+          "sha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e",
+          "bytes": 13616
+        },
+        "avif-10-BW.avif": {
+          "sha256": "bbc9b2369cd8f2ee2e2f5fd7676707fcc220bdf75830b8ca060a4d56c9078d8b",
+          "bytes": 1349
+        },
+        "avif-10-BW.avif.f32": {
+          "sha256": "6ad8af243966678e76a6d6dea97a8434342657150cab2965ebdba9d5a71ce5b5",
+          "bytes": 3404
+        },
+        "avif-10-BW.avif.blender.f32": {
+          "sha256": "f5c74fd593cf17763b7a00360944ea1ea08663ec8300dbd4bec1dc033eff589c",
+          "bytes": 13616
+        },
+        "avif-10-RGB.avif": {
+          "sha256": "149037d79bf0e059a4448383735e28dec9f21b8a014a172b0a04db666652a23b",
+          "bytes": 1912
+        },
+        "avif-10-RGB.avif.f32": {
+          "sha256": "c8348cd3d76d5fc7a3f66970a631c2aabf3f04bbe55f87a1f9cadd5494a7a9e0",
+          "bytes": 10212
+        },
+        "avif-10-RGB.avif.blender.f32": {
+          "sha256": "ada366ca743255e814a99322b520ce75a93fb99b99400237cd9cc699b372b276",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif": {
+          "sha256": "53d0a4a3eae2dc5c929ed6aae7b20a2eb07178886599e64faea0570eb0b067e5",
+          "bytes": 2437
+        },
+        "avif-10-RGBA.avif.f32": {
+          "sha256": "44e9744d809dddd3df86dd00bce3dc724ffc973c52cda48ec2ab664d59279e6e",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif.blender.f32": {
+          "sha256": "9ee6c7e9a717fc3f1d3ad928404b04db7171835e8a6fed1a67f023d15c626af5",
+          "bytes": 13616
+        },
+        "avif-12-BW.avif": {
+          "sha256": "aa0ff8e4ed6cea5fb561842f2b62a867a4e1466dbbeb9b69a75f8388d529c01e",
+          "bytes": 1724
+        },
+        "avif-12-BW.avif.f32": {
+          "sha256": "f70054ea40f2e581b484a9fc2ada1ea173a1e11491c92261369fed3884b8968c",
+          "bytes": 3404
+        },
+        "avif-12-BW.avif.blender.f32": {
+          "sha256": "b8fda730d5db9b38d32536d2f60bc9bef8cc8be99c8f7e43ccb0dbdf681f04e3",
+          "bytes": 13616
+        },
+        "avif-12-RGB.avif": {
+          "sha256": "a4a4846f260f1325840ad0686d1bc80493a32410469dbfd603d364a3a1c34786",
+          "bytes": 2538
+        },
+        "avif-12-RGB.avif.f32": {
+          "sha256": "9e8a238d6d1110829c6b216de570b2cf321ca145f003c3009b144a49d00be9ee",
+          "bytes": 10212
+        },
+        "avif-12-RGB.avif.blender.f32": {
+          "sha256": "f5b98b4b5f17a6c3e483826d86a3432c604ef205f8ad588dc636a07971b7039a",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif": {
+          "sha256": "72be65ec5bdbb28bafb7f68f70b7e1411aefda129f0ec6f7fa11afd47dbea611",
+          "bytes": 3096
+        },
+        "avif-12-RGBA.avif.f32": {
+          "sha256": "bef79cbeb91935fc8e54c4d6db922908dea02c286ddf4ce9bea230fb02a8555b",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif.blender.f32": {
+          "sha256": "7e20de2ee9d6cb0b873dedf89537a8950d22bd69aa604a64a2cd5b32ea7a2358",
+          "bytes": 13616
+        }
+      },
+      "offlineReopen": true,
+      "startupPythonErrors": [],
+      "browserErrors": [],
+      "chapters": [
+        {
+          "seconds": 0.001,
+          "title": "Start original Blender with the image, color, volume and material bindings"
+        },
+        {
+          "seconds": 27.777,
+          "title": "Run original Python APIs and export native-readable files"
+        },
+        {
+          "seconds": 40.327,
+          "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
+        },
+        {
+          "seconds": 69.007,
+          "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
+        },
+        {
+          "seconds": 85.412,
+          "title": "Inspect the results in the original Text Editor"
+        },
+        {
+          "seconds": 94.698,
+          "title": "Reopen the saved scene and volume after an offline reload"
+        }
+      ],
+      "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-bindings-evidence-ui/python-bindings.webm"
+    },
+    {
+      "bundleVersion": "f5bc7678d055b2921075",
+      "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+      "runnerSourceSha256": "8cb767e1f64f15ff5d0664d4d9b1741a86244e64bcaa7f824f03cdf0d90f0eda",
+      "hardware": true,
+      "fallback": false,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-28T07:16:16.549Z",
+      "report": {
+        "versions": {
+          "OpenImageIO": "3.1.13.1",
+          "PyOpenColorIO": "2.5.0",
+          "MaterialX": "1.39.4"
+        },
+        "originalPackageWrappers": true,
+        "color": {
+          "numpyTransform": [
+            [
+              0.3499999940395355,
+              0.949999988079071,
+              2.299999952316284
+            ],
+            [
+              2.0999999046325684,
+              1.7000000476837158,
+              1.2999999523162842
+            ]
+          ],
+          "parallelCalls": 9,
+          "serialization": true,
+          "shaderGeneration": true,
+          "invalidColorSpaceRejected": true
+        },
+        "images": {
+          "numpyRoundtrip": true,
+          "files": [
+            {
+              "format": "exr",
+              "maxError": 0
+            },
+            {
+              "format": "tif",
+              "maxError": 7.62939453125e-06
+            },
+            {
+              "format": "png",
+              "maxError": 7.62939453125e-06
+            }
+          ],
+          "resize": true,
+          "pixelStatistics": true,
+          "parallelCalls": 9
+        },
+        "volume": {
+          "gridTypes": [
+            {
+              "name": "FloatGrid",
+              "value": 1.25
+            },
+            {
+              "name": "DoubleGrid",
+              "value": 1.25
+            },
+            {
+              "name": "BoolGrid",
+              "value": true
+            },
+            {
+              "name": "Int32Grid",
+              "value": 1234
+            },
+            {
+              "name": "Int64Grid",
+              "value": "18014398509481991"
+            },
+            {
+              "name": "Vec3SGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "Vec3IGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "Vec3DGrid",
+              "value": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "name": "PointDataGrid",
+              "value": 1234
+            }
+          ],
+          "numpyRoundtrip": true,
+          "fileRoundtrip": true,
+          "transform": true,
+          "metadata": true,
+          "missingGridRejected": true,
+          "parallelCalls": 12,
+          "axDisabled": true
+        },
+        "material": {
+          "documentRoundtrip": true,
+          "shaders": [
+            {
+              "target": "genglsl",
+              "bytes": 1160,
+              "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54"
+            },
+            {
+              "target": "genmsl",
+              "bytes": 8035,
+              "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144"
+            },
+            {
+              "target": "genosl",
+              "bytes": 742,
+              "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f"
+            },
+            {
+              "target": "genmdl",
+              "bytes": 738,
+              "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975"
+            }
+          ],
+          "renderImage": true,
+          "imageDownsample": true,
+          "mesh": true,
+          "xmlRejection": true,
+          "parallelCalls": 9
+        }
+      },
+      "avif": {
+        "originalBlenderAVIF": true,
+        "oddWidth": 37,
+        "height": 23,
+        "cases": [
+          {
+            "name": "avif-8-BW.avif",
+            "bits": 8,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1195,
+            "byteInput": true
+          },
+          {
+            "name": "avif-8-RGB.avif",
+            "bits": 8,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 1574,
+            "byteInput": true
+          },
+          {
+            "name": "avif-8-RGBA.avif",
+            "bits": 8,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 1557,
+            "byteInput": true
+          },
+          {
+            "name": "avif-10-BW.avif",
+            "bits": 10,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1349,
+            "byteInput": false
+          },
+          {
+            "name": "avif-10-RGB.avif",
+            "bits": 10,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 1912,
+            "byteInput": false
+          },
+          {
+            "name": "avif-10-RGBA.avif",
+            "bits": 10,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 2437,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-BW.avif",
+            "bits": 12,
+            "mode": "BW",
+            "channels": 1,
+            "bytes": 1724,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-RGB.avif",
+            "bits": 12,
+            "mode": "RGB",
+            "channels": 3,
+            "bytes": 2538,
+            "byteInput": false
+          },
+          {
+            "name": "avif-12-RGBA.avif",
+            "bits": 12,
+            "mode": "RGBA",
+            "channels": 4,
+            "bytes": 3096,
+            "byteInput": false
+          }
+        ],
+        "truncatedInputRejected": true,
+        "decoderRecovery": true
+      },
+      "files": {
+        "config.ocio": {
+          "sha256": "a4368a2c30954d7caef01e620463fbe73c7a59eccccd12b13888dff3cc1e5f30",
+          "bytes": 522
+        },
+        "color-transform.glsl": {
+          "sha256": "7c9303a8828ccc609edb258e9e7a735b041138e9ec19cd27f4e6a1c63eaba077",
+          "bytes": 438
+        },
+        "image.exr": {
+          "sha256": "800e342424cb6d07680554deda8a14a1a51efc074058497ef71af070fc699423",
+          "bytes": 2851
+        },
+        "image.tif": {
+          "sha256": "afbc7331eb5a1daacc3df5a119ab0472d660f9a017d31879235c5abf16d680cb",
+          "bytes": 506
+        },
+        "image.png": {
+          "sha256": "a3e35c06e19d24e052091d2f431deec9361819c7556390ce77d44738c6b7e09b",
+          "bytes": 1334
+        },
+        "volume.vdb": {
+          "sha256": "8a37b7bc05512c7582d02fcebbd36d6d02aa7cd59e7f5cf871d3068855236e08",
+          "bytes": 100572
+        },
+        "material.mtlx": {
+          "sha256": "fe507f46b0f3c1019d716ca4eba3bbe58c6f487f3eb5121cff17185075922be7",
+          "bytes": 263
+        },
+        "shader-genglsl.txt": {
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54",
+          "bytes": 1160
+        },
+        "shader-genmsl.txt": {
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144",
+          "bytes": 8035
+        },
+        "shader-genosl.txt": {
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f",
+          "bytes": 742
+        },
+        "shader-genmdl.txt": {
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975",
+          "bytes": 738
+        },
+        "python-bindings.json": {
+          "sha256": "4def77ad01733a4b909cb18505ccf5a7a6dfc791f248ad170c95b1928e7a8dfe",
+          "bytes": 2675
+        },
+        "python-bindings.blend": {
+          "sha256": "8b06a24d6653df1170420ae0c511d8cb1a176c8d902500adc3b266f1b563f7de",
+          "bytes": 101400
+        },
+        "avif.json": {
+          "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
+          "bytes": 1081
+        },
+        "avif-8-BW.avif": {
+          "sha256": "ab271d13befa66d85b2e1589047332aee6447270790f8d58336b5f3ee0e384c3",
+          "bytes": 1195
+        },
+        "avif-8-BW.avif.f32": {
+          "sha256": "5947234f04eca52dd0505674a3de050b1ff11b041f21e4131f2e19d2651181c1",
+          "bytes": 3404
+        },
+        "avif-8-BW.avif.blender.f32": {
+          "sha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed",
+          "bytes": 13616
+        },
+        "avif-8-RGB.avif": {
+          "sha256": "92ee3d34e916cba6a3c70e1f0718869436be04931e1224a2dd3b7e9c3ab743fd",
+          "bytes": 1574
+        },
+        "avif-8-RGB.avif.f32": {
+          "sha256": "d863a4cfa7dc495087f01f8830821ce378e7ca89fa8950e82c6c61adf6d9a05a",
+          "bytes": 10212
+        },
+        "avif-8-RGB.avif.blender.f32": {
+          "sha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif": {
+          "sha256": "2ff1aac6ca559b42168f376409476a75716f9488f781d064fb1f07bd81071aab",
+          "bytes": 1557
+        },
+        "avif-8-RGBA.avif.f32": {
+          "sha256": "e84cbd63248c24b1d04e731344b62522e574988f4ff0076376381f5c63b85d74",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif.blender.f32": {
+          "sha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e",
+          "bytes": 13616
+        },
+        "avif-10-BW.avif": {
+          "sha256": "bbc9b2369cd8f2ee2e2f5fd7676707fcc220bdf75830b8ca060a4d56c9078d8b",
+          "bytes": 1349
+        },
+        "avif-10-BW.avif.f32": {
+          "sha256": "6ad8af243966678e76a6d6dea97a8434342657150cab2965ebdba9d5a71ce5b5",
+          "bytes": 3404
+        },
+        "avif-10-BW.avif.blender.f32": {
+          "sha256": "f5c74fd593cf17763b7a00360944ea1ea08663ec8300dbd4bec1dc033eff589c",
+          "bytes": 13616
+        },
+        "avif-10-RGB.avif": {
+          "sha256": "149037d79bf0e059a4448383735e28dec9f21b8a014a172b0a04db666652a23b",
+          "bytes": 1912
+        },
+        "avif-10-RGB.avif.f32": {
+          "sha256": "c8348cd3d76d5fc7a3f66970a631c2aabf3f04bbe55f87a1f9cadd5494a7a9e0",
+          "bytes": 10212
+        },
+        "avif-10-RGB.avif.blender.f32": {
+          "sha256": "ada366ca743255e814a99322b520ce75a93fb99b99400237cd9cc699b372b276",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif": {
+          "sha256": "53d0a4a3eae2dc5c929ed6aae7b20a2eb07178886599e64faea0570eb0b067e5",
+          "bytes": 2437
+        },
+        "avif-10-RGBA.avif.f32": {
+          "sha256": "44e9744d809dddd3df86dd00bce3dc724ffc973c52cda48ec2ab664d59279e6e",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif.blender.f32": {
+          "sha256": "9ee6c7e9a717fc3f1d3ad928404b04db7171835e8a6fed1a67f023d15c626af5",
+          "bytes": 13616
+        },
+        "avif-12-BW.avif": {
+          "sha256": "aa0ff8e4ed6cea5fb561842f2b62a867a4e1466dbbeb9b69a75f8388d529c01e",
+          "bytes": 1724
+        },
+        "avif-12-BW.avif.f32": {
+          "sha256": "f70054ea40f2e581b484a9fc2ada1ea173a1e11491c92261369fed3884b8968c",
+          "bytes": 3404
+        },
+        "avif-12-BW.avif.blender.f32": {
+          "sha256": "b8fda730d5db9b38d32536d2f60bc9bef8cc8be99c8f7e43ccb0dbdf681f04e3",
+          "bytes": 13616
+        },
+        "avif-12-RGB.avif": {
+          "sha256": "a4a4846f260f1325840ad0686d1bc80493a32410469dbfd603d364a3a1c34786",
+          "bytes": 2538
+        },
+        "avif-12-RGB.avif.f32": {
+          "sha256": "9e8a238d6d1110829c6b216de570b2cf321ca145f003c3009b144a49d00be9ee",
+          "bytes": 10212
+        },
+        "avif-12-RGB.avif.blender.f32": {
+          "sha256": "f5b98b4b5f17a6c3e483826d86a3432c604ef205f8ad588dc636a07971b7039a",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif": {
+          "sha256": "72be65ec5bdbb28bafb7f68f70b7e1411aefda129f0ec6f7fa11afd47dbea611",
+          "bytes": 3096
+        },
+        "avif-12-RGBA.avif.f32": {
+          "sha256": "bef79cbeb91935fc8e54c4d6db922908dea02c286ddf4ce9bea230fb02a8555b",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif.blender.f32": {
+          "sha256": "7e20de2ee9d6cb0b873dedf89537a8950d22bd69aa604a64a2cd5b32ea7a2358",
+          "bytes": 13616
+        }
+      },
+      "offlineReopen": true,
+      "startupPythonErrors": [],
+      "browserErrors": [],
+      "chapters": [
+        {
+          "seconds": 0,
+          "title": "Start original Blender with the image, color, volume and material bindings"
+        },
+        {
+          "seconds": 17.354,
+          "title": "Run original Python APIs and export native-readable files"
+        },
+        {
+          "seconds": 25.056,
+          "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
+        },
+        {
+          "seconds": 43.53,
+          "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
+        },
+        {
+          "seconds": 56.775,
+          "title": "Inspect the results in the original Text Editor"
+        },
+        {
+          "seconds": 66.678,
+          "title": "Reopen the saved scene and volume after an offline reload"
+        }
+      ],
+      "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-bindings-evidence-hardware/python-bindings.webm"
+    }
+  ],
+  "nativeReadback": [
+    {
+      "nativeAPIsEqual": true,
+      "images": [
+        {
+          "format": "exr",
+          "nativeDecodedPixelsExact": true
+        },
+        {
+          "format": "tif",
+          "nativeDecodedPixelsExact": true
+        },
+        {
+          "format": "png",
+          "nativeDecodedPixelsExact": true
+        }
+      ],
+      "volumeGridTypes": 9,
+      "volumeNumpyExact": true,
+      "int64Exact": true,
+      "volumeMetadata": true,
+      "volumeTransform": true,
+      "colorConfig": true,
+      "materialDocument": true,
+      "shaderTextExactlyMatchesNative": true,
+      "savedBlendVerified": true,
+      "originalBlenderAVIF": true,
+      "avif": [
+        {
+          "name": "avif-8-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-8-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-8-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-10-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0009765625,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 1.4901161193847656e-05
+        },
+        {
+          "name": "avif-10-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0019531846046447754,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-10-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-12-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.000244140625,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 1.5497207641601562e-05
+        },
+        {
+          "name": "avif-12-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.00048828125,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-12-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.00048828125,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        }
+      ],
+      "nativeDefaultOptimizationFlags": 263995331,
+      "nativeScalarOptimizationFlags": 196886467,
+      "scalarColorReference": {
+        "nativeScalarColorReference": true,
+        "disabledOptimization": "OPTIMIZATION_FAST_LOG_EXP_POW",
+        "defaultFlags": 263995331,
+        "scalarFlags": 196886467,
+        "cases": [
+          {
+            "name": "avif-8-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed"
+          },
+          {
+            "name": "avif-8-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d"
+          },
+          {
+            "name": "avif-8-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e"
+          },
+          {
+            "name": "avif-10-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 1.4901161193847656e-05,
+            "nativeDefaultPixelsSha256": "1038971fc992f9daf923c972a196cf4f76ffc3459bcbd2d47e227f465fc4d0bb"
+          },
+          {
+            "name": "avif-10-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "bbd9a8497ad08586ad14d3c9a784b0c665529de6f17e3b1a6d6e38e18d5a8b01"
+          },
+          {
+            "name": "avif-10-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "81e4268393cb7ae6068d7e949fa0f7149c871beb9f679a369c8f77a14b1e0b85"
+          },
+          {
+            "name": "avif-12-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 1.5497207641601562e-05,
+            "nativeDefaultPixelsSha256": "513f4ef1d72babe78762f221a83ddd996125ac0a148f4e71b4d000130502baeb"
+          },
+          {
+            "name": "avif-12-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "89fd5aeb1b1d5cd2fc3f3a271da479e3aeb737cdf4cdac8afd7f387a3b6e384c"
+          },
+          {
+            "name": "avif-12-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "8f6777dfb17487dfa7c12e35affb8209ec0a3caa1c8952b76345980541a3d7ec"
+          }
+        ]
+      },
+      "bundleVersion": "f5bc7678d055b2921075",
+      "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+      "verifierSourceSha256": "36295afabbf4678d5d61a57879e254f71eeb0f8a6ae2b4ea690423f682d7038a",
+      "files": {
+        "config.ocio": {
+          "sha256": "a4368a2c30954d7caef01e620463fbe73c7a59eccccd12b13888dff3cc1e5f30",
+          "bytes": 522
+        },
+        "color-transform.glsl": {
+          "sha256": "7c9303a8828ccc609edb258e9e7a735b041138e9ec19cd27f4e6a1c63eaba077",
+          "bytes": 438
+        },
+        "image.exr": {
+          "sha256": "873ae879e50fbd4ef64a57c756a12e4be30fd251153f21b7e9341fe308dab15a",
+          "bytes": 2851
+        },
+        "image.tif": {
+          "sha256": "ba5416365fea01854191ad52e3df62d6de0f706df730d12c2fdb95ec2e9835e5",
+          "bytes": 506
+        },
+        "image.png": {
+          "sha256": "a3e35c06e19d24e052091d2f431deec9361819c7556390ce77d44738c6b7e09b",
+          "bytes": 1334
+        },
+        "volume.vdb": {
+          "sha256": "d345a08ad5c632702efaaaef283bece5ff807ebbc2482a0949e89f5cde226194",
+          "bytes": 100572
+        },
+        "material.mtlx": {
+          "sha256": "fe507f46b0f3c1019d716ca4eba3bbe58c6f487f3eb5121cff17185075922be7",
+          "bytes": 263
+        },
+        "shader-genglsl.txt": {
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54",
+          "bytes": 1160
+        },
+        "shader-genmsl.txt": {
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144",
+          "bytes": 8035
+        },
+        "shader-genosl.txt": {
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f",
+          "bytes": 742
+        },
+        "shader-genmdl.txt": {
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975",
+          "bytes": 738
+        },
+        "python-bindings.json": {
+          "sha256": "4def77ad01733a4b909cb18505ccf5a7a6dfc791f248ad170c95b1928e7a8dfe",
+          "bytes": 2675
+        },
+        "python-bindings.blend": {
+          "sha256": "7524511e0a7e5a1ca18fb104c546a5401860a2521bf073d16d2c103c258f6881",
+          "bytes": 101400
+        },
+        "avif.json": {
+          "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
+          "bytes": 1081
+        },
+        "avif-8-BW.avif": {
+          "sha256": "ab271d13befa66d85b2e1589047332aee6447270790f8d58336b5f3ee0e384c3",
+          "bytes": 1195
+        },
+        "avif-8-BW.avif.f32": {
+          "sha256": "5947234f04eca52dd0505674a3de050b1ff11b041f21e4131f2e19d2651181c1",
+          "bytes": 3404
+        },
+        "avif-8-BW.avif.blender.f32": {
+          "sha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed",
+          "bytes": 13616
+        },
+        "avif-8-RGB.avif": {
+          "sha256": "92ee3d34e916cba6a3c70e1f0718869436be04931e1224a2dd3b7e9c3ab743fd",
+          "bytes": 1574
+        },
+        "avif-8-RGB.avif.f32": {
+          "sha256": "d863a4cfa7dc495087f01f8830821ce378e7ca89fa8950e82c6c61adf6d9a05a",
+          "bytes": 10212
+        },
+        "avif-8-RGB.avif.blender.f32": {
+          "sha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif": {
+          "sha256": "2ff1aac6ca559b42168f376409476a75716f9488f781d064fb1f07bd81071aab",
+          "bytes": 1557
+        },
+        "avif-8-RGBA.avif.f32": {
+          "sha256": "e84cbd63248c24b1d04e731344b62522e574988f4ff0076376381f5c63b85d74",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif.blender.f32": {
+          "sha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e",
+          "bytes": 13616
+        },
+        "avif-10-BW.avif": {
+          "sha256": "bbc9b2369cd8f2ee2e2f5fd7676707fcc220bdf75830b8ca060a4d56c9078d8b",
+          "bytes": 1349
+        },
+        "avif-10-BW.avif.f32": {
+          "sha256": "6ad8af243966678e76a6d6dea97a8434342657150cab2965ebdba9d5a71ce5b5",
+          "bytes": 3404
+        },
+        "avif-10-BW.avif.blender.f32": {
+          "sha256": "f5c74fd593cf17763b7a00360944ea1ea08663ec8300dbd4bec1dc033eff589c",
+          "bytes": 13616
+        },
+        "avif-10-RGB.avif": {
+          "sha256": "149037d79bf0e059a4448383735e28dec9f21b8a014a172b0a04db666652a23b",
+          "bytes": 1912
+        },
+        "avif-10-RGB.avif.f32": {
+          "sha256": "c8348cd3d76d5fc7a3f66970a631c2aabf3f04bbe55f87a1f9cadd5494a7a9e0",
+          "bytes": 10212
+        },
+        "avif-10-RGB.avif.blender.f32": {
+          "sha256": "ada366ca743255e814a99322b520ce75a93fb99b99400237cd9cc699b372b276",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif": {
+          "sha256": "53d0a4a3eae2dc5c929ed6aae7b20a2eb07178886599e64faea0570eb0b067e5",
+          "bytes": 2437
+        },
+        "avif-10-RGBA.avif.f32": {
+          "sha256": "44e9744d809dddd3df86dd00bce3dc724ffc973c52cda48ec2ab664d59279e6e",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif.blender.f32": {
+          "sha256": "9ee6c7e9a717fc3f1d3ad928404b04db7171835e8a6fed1a67f023d15c626af5",
+          "bytes": 13616
+        },
+        "avif-12-BW.avif": {
+          "sha256": "aa0ff8e4ed6cea5fb561842f2b62a867a4e1466dbbeb9b69a75f8388d529c01e",
+          "bytes": 1724
+        },
+        "avif-12-BW.avif.f32": {
+          "sha256": "f70054ea40f2e581b484a9fc2ada1ea173a1e11491c92261369fed3884b8968c",
+          "bytes": 3404
+        },
+        "avif-12-BW.avif.blender.f32": {
+          "sha256": "b8fda730d5db9b38d32536d2f60bc9bef8cc8be99c8f7e43ccb0dbdf681f04e3",
+          "bytes": 13616
+        },
+        "avif-12-RGB.avif": {
+          "sha256": "a4a4846f260f1325840ad0686d1bc80493a32410469dbfd603d364a3a1c34786",
+          "bytes": 2538
+        },
+        "avif-12-RGB.avif.f32": {
+          "sha256": "9e8a238d6d1110829c6b216de570b2cf321ca145f003c3009b144a49d00be9ee",
+          "bytes": 10212
+        },
+        "avif-12-RGB.avif.blender.f32": {
+          "sha256": "f5b98b4b5f17a6c3e483826d86a3432c604ef205f8ad588dc636a07971b7039a",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif": {
+          "sha256": "72be65ec5bdbb28bafb7f68f70b7e1411aefda129f0ec6f7fa11afd47dbea611",
+          "bytes": 3096
+        },
+        "avif-12-RGBA.avif.f32": {
+          "sha256": "bef79cbeb91935fc8e54c4d6db922908dea02c286ddf4ce9bea230fb02a8555b",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif.blender.f32": {
+          "sha256": "7e20de2ee9d6cb0b873dedf89537a8950d22bd69aa604a64a2cd5b32ea7a2358",
+          "bytes": 13616
+        }
+      }
+    },
+    {
+      "nativeAPIsEqual": true,
+      "images": [
+        {
+          "format": "exr",
+          "nativeDecodedPixelsExact": true
+        },
+        {
+          "format": "tif",
+          "nativeDecodedPixelsExact": true
+        },
+        {
+          "format": "png",
+          "nativeDecodedPixelsExact": true
+        }
+      ],
+      "volumeGridTypes": 9,
+      "volumeNumpyExact": true,
+      "int64Exact": true,
+      "volumeMetadata": true,
+      "volumeTransform": true,
+      "colorConfig": true,
+      "materialDocument": true,
+      "shaderTextExactlyMatchesNative": true,
+      "savedBlendVerified": true,
+      "originalBlenderAVIF": true,
+      "avif": [
+        {
+          "name": "avif-8-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-8-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-8-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-10-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0009765625,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 1.4901161193847656e-05
+        },
+        {
+          "name": "avif-10-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0019531846046447754,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-10-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-12-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.000244140625,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 1.5497207641601562e-05
+        },
+        {
+          "name": "avif-12-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.00048828125,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-12-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.00048828125,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        }
+      ],
+      "nativeDefaultOptimizationFlags": 263995331,
+      "nativeScalarOptimizationFlags": 196886467,
+      "scalarColorReference": {
+        "nativeScalarColorReference": true,
+        "disabledOptimization": "OPTIMIZATION_FAST_LOG_EXP_POW",
+        "defaultFlags": 263995331,
+        "scalarFlags": 196886467,
+        "cases": [
+          {
+            "name": "avif-8-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed"
+          },
+          {
+            "name": "avif-8-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d"
+          },
+          {
+            "name": "avif-8-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e"
+          },
+          {
+            "name": "avif-10-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 1.4901161193847656e-05,
+            "nativeDefaultPixelsSha256": "1038971fc992f9daf923c972a196cf4f76ffc3459bcbd2d47e227f465fc4d0bb"
+          },
+          {
+            "name": "avif-10-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "bbd9a8497ad08586ad14d3c9a784b0c665529de6f17e3b1a6d6e38e18d5a8b01"
+          },
+          {
+            "name": "avif-10-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "81e4268393cb7ae6068d7e949fa0f7149c871beb9f679a369c8f77a14b1e0b85"
+          },
+          {
+            "name": "avif-12-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 1.5497207641601562e-05,
+            "nativeDefaultPixelsSha256": "513f4ef1d72babe78762f221a83ddd996125ac0a148f4e71b4d000130502baeb"
+          },
+          {
+            "name": "avif-12-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "89fd5aeb1b1d5cd2fc3f3a271da479e3aeb737cdf4cdac8afd7f387a3b6e384c"
+          },
+          {
+            "name": "avif-12-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "8f6777dfb17487dfa7c12e35affb8209ec0a3caa1c8952b76345980541a3d7ec"
+          }
+        ]
+      },
+      "bundleVersion": "f5bc7678d055b2921075",
+      "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+      "verifierSourceSha256": "36295afabbf4678d5d61a57879e254f71eeb0f8a6ae2b4ea690423f682d7038a",
+      "files": {
+        "config.ocio": {
+          "sha256": "a4368a2c30954d7caef01e620463fbe73c7a59eccccd12b13888dff3cc1e5f30",
+          "bytes": 522
+        },
+        "color-transform.glsl": {
+          "sha256": "7c9303a8828ccc609edb258e9e7a735b041138e9ec19cd27f4e6a1c63eaba077",
+          "bytes": 438
+        },
+        "image.exr": {
+          "sha256": "557ba6634603854b59c5648bb67d3f699ff939758096c9280caf427a27ee8cb4",
+          "bytes": 2851
+        },
+        "image.tif": {
+          "sha256": "8b2c02d8e5f1e1a5255265238c97cf913a5cca45cc56024ed42d0b751a71ac55",
+          "bytes": 506
+        },
+        "image.png": {
+          "sha256": "a3e35c06e19d24e052091d2f431deec9361819c7556390ce77d44738c6b7e09b",
+          "bytes": 1334
+        },
+        "volume.vdb": {
+          "sha256": "d9c83d003416fe6278a1d1153b87a2c1d7a333653770a2f120ab7d86b625af46",
+          "bytes": 100572
+        },
+        "material.mtlx": {
+          "sha256": "fe507f46b0f3c1019d716ca4eba3bbe58c6f487f3eb5121cff17185075922be7",
+          "bytes": 263
+        },
+        "shader-genglsl.txt": {
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54",
+          "bytes": 1160
+        },
+        "shader-genmsl.txt": {
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144",
+          "bytes": 8035
+        },
+        "shader-genosl.txt": {
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f",
+          "bytes": 742
+        },
+        "shader-genmdl.txt": {
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975",
+          "bytes": 738
+        },
+        "python-bindings.json": {
+          "sha256": "4def77ad01733a4b909cb18505ccf5a7a6dfc791f248ad170c95b1928e7a8dfe",
+          "bytes": 2675
+        },
+        "python-bindings.blend": {
+          "sha256": "3798ca7342e44e1f10faa2a796fc5d6e7ce7cd7f623b26e5dbc3aaeefad0e68c",
+          "bytes": 101412
+        },
+        "avif.json": {
+          "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
+          "bytes": 1081
+        },
+        "avif-8-BW.avif": {
+          "sha256": "ab271d13befa66d85b2e1589047332aee6447270790f8d58336b5f3ee0e384c3",
+          "bytes": 1195
+        },
+        "avif-8-BW.avif.f32": {
+          "sha256": "5947234f04eca52dd0505674a3de050b1ff11b041f21e4131f2e19d2651181c1",
+          "bytes": 3404
+        },
+        "avif-8-BW.avif.blender.f32": {
+          "sha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed",
+          "bytes": 13616
+        },
+        "avif-8-RGB.avif": {
+          "sha256": "92ee3d34e916cba6a3c70e1f0718869436be04931e1224a2dd3b7e9c3ab743fd",
+          "bytes": 1574
+        },
+        "avif-8-RGB.avif.f32": {
+          "sha256": "d863a4cfa7dc495087f01f8830821ce378e7ca89fa8950e82c6c61adf6d9a05a",
+          "bytes": 10212
+        },
+        "avif-8-RGB.avif.blender.f32": {
+          "sha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif": {
+          "sha256": "2ff1aac6ca559b42168f376409476a75716f9488f781d064fb1f07bd81071aab",
+          "bytes": 1557
+        },
+        "avif-8-RGBA.avif.f32": {
+          "sha256": "e84cbd63248c24b1d04e731344b62522e574988f4ff0076376381f5c63b85d74",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif.blender.f32": {
+          "sha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e",
+          "bytes": 13616
+        },
+        "avif-10-BW.avif": {
+          "sha256": "bbc9b2369cd8f2ee2e2f5fd7676707fcc220bdf75830b8ca060a4d56c9078d8b",
+          "bytes": 1349
+        },
+        "avif-10-BW.avif.f32": {
+          "sha256": "6ad8af243966678e76a6d6dea97a8434342657150cab2965ebdba9d5a71ce5b5",
+          "bytes": 3404
+        },
+        "avif-10-BW.avif.blender.f32": {
+          "sha256": "f5c74fd593cf17763b7a00360944ea1ea08663ec8300dbd4bec1dc033eff589c",
+          "bytes": 13616
+        },
+        "avif-10-RGB.avif": {
+          "sha256": "149037d79bf0e059a4448383735e28dec9f21b8a014a172b0a04db666652a23b",
+          "bytes": 1912
+        },
+        "avif-10-RGB.avif.f32": {
+          "sha256": "c8348cd3d76d5fc7a3f66970a631c2aabf3f04bbe55f87a1f9cadd5494a7a9e0",
+          "bytes": 10212
+        },
+        "avif-10-RGB.avif.blender.f32": {
+          "sha256": "ada366ca743255e814a99322b520ce75a93fb99b99400237cd9cc699b372b276",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif": {
+          "sha256": "53d0a4a3eae2dc5c929ed6aae7b20a2eb07178886599e64faea0570eb0b067e5",
+          "bytes": 2437
+        },
+        "avif-10-RGBA.avif.f32": {
+          "sha256": "44e9744d809dddd3df86dd00bce3dc724ffc973c52cda48ec2ab664d59279e6e",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif.blender.f32": {
+          "sha256": "9ee6c7e9a717fc3f1d3ad928404b04db7171835e8a6fed1a67f023d15c626af5",
+          "bytes": 13616
+        },
+        "avif-12-BW.avif": {
+          "sha256": "aa0ff8e4ed6cea5fb561842f2b62a867a4e1466dbbeb9b69a75f8388d529c01e",
+          "bytes": 1724
+        },
+        "avif-12-BW.avif.f32": {
+          "sha256": "f70054ea40f2e581b484a9fc2ada1ea173a1e11491c92261369fed3884b8968c",
+          "bytes": 3404
+        },
+        "avif-12-BW.avif.blender.f32": {
+          "sha256": "b8fda730d5db9b38d32536d2f60bc9bef8cc8be99c8f7e43ccb0dbdf681f04e3",
+          "bytes": 13616
+        },
+        "avif-12-RGB.avif": {
+          "sha256": "a4a4846f260f1325840ad0686d1bc80493a32410469dbfd603d364a3a1c34786",
+          "bytes": 2538
+        },
+        "avif-12-RGB.avif.f32": {
+          "sha256": "9e8a238d6d1110829c6b216de570b2cf321ca145f003c3009b144a49d00be9ee",
+          "bytes": 10212
+        },
+        "avif-12-RGB.avif.blender.f32": {
+          "sha256": "f5b98b4b5f17a6c3e483826d86a3432c604ef205f8ad588dc636a07971b7039a",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif": {
+          "sha256": "72be65ec5bdbb28bafb7f68f70b7e1411aefda129f0ec6f7fa11afd47dbea611",
+          "bytes": 3096
+        },
+        "avif-12-RGBA.avif.f32": {
+          "sha256": "bef79cbeb91935fc8e54c4d6db922908dea02c286ddf4ce9bea230fb02a8555b",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif.blender.f32": {
+          "sha256": "7e20de2ee9d6cb0b873dedf89537a8950d22bd69aa604a64a2cd5b32ea7a2358",
+          "bytes": 13616
+        }
+      }
+    },
+    {
+      "nativeAPIsEqual": true,
+      "images": [
+        {
+          "format": "exr",
+          "nativeDecodedPixelsExact": true
+        },
+        {
+          "format": "tif",
+          "nativeDecodedPixelsExact": true
+        },
+        {
+          "format": "png",
+          "nativeDecodedPixelsExact": true
+        }
+      ],
+      "volumeGridTypes": 9,
+      "volumeNumpyExact": true,
+      "int64Exact": true,
+      "volumeMetadata": true,
+      "volumeTransform": true,
+      "colorConfig": true,
+      "materialDocument": true,
+      "shaderTextExactlyMatchesNative": true,
+      "savedBlendVerified": true,
+      "originalBlenderAVIF": true,
+      "avif": [
+        {
+          "name": "avif-8-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-8-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-8-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.0039225686274509805,
+          "blenderReaderMaxError": 0.0
+        },
+        {
+          "name": "avif-10-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0009765625,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 1.4901161193847656e-05
+        },
+        {
+          "name": "avif-10-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0019531846046447754,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-10-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.0,
+          "encoderTolerance": 0.002933551319648094,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-12-BW.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.000244140625,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 1.5497207641601562e-05
+        },
+        {
+          "name": "avif-12-RGB.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.00048828125,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        },
+        {
+          "name": "avif-12-RGBA.avif",
+          "readerMaxError": 0.0,
+          "encoderMaxError": 0.00048828125,
+          "encoderTolerance": 0.0007336007326007326,
+          "blenderReaderMaxError": 2.4080276489257812e-05
+        }
+      ],
+      "nativeDefaultOptimizationFlags": 263995331,
+      "nativeScalarOptimizationFlags": 196886467,
+      "scalarColorReference": {
+        "nativeScalarColorReference": true,
+        "disabledOptimization": "OPTIMIZATION_FAST_LOG_EXP_POW",
+        "defaultFlags": 263995331,
+        "scalarFlags": 196886467,
+        "cases": [
+          {
+            "name": "avif-8-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed"
+          },
+          {
+            "name": "avif-8-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d"
+          },
+          {
+            "name": "avif-8-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 0.0,
+            "nativeDefaultPixelsSha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e"
+          },
+          {
+            "name": "avif-10-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 1.4901161193847656e-05,
+            "nativeDefaultPixelsSha256": "1038971fc992f9daf923c972a196cf4f76ffc3459bcbd2d47e227f465fc4d0bb"
+          },
+          {
+            "name": "avif-10-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "bbd9a8497ad08586ad14d3c9a784b0c665529de6f17e3b1a6d6e38e18d5a8b01"
+          },
+          {
+            "name": "avif-10-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "81e4268393cb7ae6068d7e949fa0f7149c871beb9f679a369c8f77a14b1e0b85"
+          },
+          {
+            "name": "avif-12-BW.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 1.5497207641601562e-05,
+            "nativeDefaultPixelsSha256": "513f4ef1d72babe78762f221a83ddd996125ac0a148f4e71b4d000130502baeb"
+          },
+          {
+            "name": "avif-12-RGB.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "89fd5aeb1b1d5cd2fc3f3a271da479e3aeb737cdf4cdac8afd7f387a3b6e384c"
+          },
+          {
+            "name": "avif-12-RGBA.avif",
+            "scalarPixelsExact": true,
+            "defaultApproximationMaxError": 2.4080276489257812e-05,
+            "nativeDefaultPixelsSha256": "8f6777dfb17487dfa7c12e35affb8209ec0a3caa1c8952b76345980541a3d7ec"
+          }
+        ]
+      },
+      "bundleVersion": "f5bc7678d055b2921075",
+      "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+      "verifierSourceSha256": "36295afabbf4678d5d61a57879e254f71eeb0f8a6ae2b4ea690423f682d7038a",
+      "files": {
+        "config.ocio": {
+          "sha256": "a4368a2c30954d7caef01e620463fbe73c7a59eccccd12b13888dff3cc1e5f30",
+          "bytes": 522
+        },
+        "color-transform.glsl": {
+          "sha256": "7c9303a8828ccc609edb258e9e7a735b041138e9ec19cd27f4e6a1c63eaba077",
+          "bytes": 438
+        },
+        "image.exr": {
+          "sha256": "800e342424cb6d07680554deda8a14a1a51efc074058497ef71af070fc699423",
+          "bytes": 2851
+        },
+        "image.tif": {
+          "sha256": "afbc7331eb5a1daacc3df5a119ab0472d660f9a017d31879235c5abf16d680cb",
+          "bytes": 506
+        },
+        "image.png": {
+          "sha256": "a3e35c06e19d24e052091d2f431deec9361819c7556390ce77d44738c6b7e09b",
+          "bytes": 1334
+        },
+        "volume.vdb": {
+          "sha256": "8a37b7bc05512c7582d02fcebbd36d6d02aa7cd59e7f5cf871d3068855236e08",
+          "bytes": 100572
+        },
+        "material.mtlx": {
+          "sha256": "fe507f46b0f3c1019d716ca4eba3bbe58c6f487f3eb5121cff17185075922be7",
+          "bytes": 263
+        },
+        "shader-genglsl.txt": {
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54",
+          "bytes": 1160
+        },
+        "shader-genmsl.txt": {
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144",
+          "bytes": 8035
+        },
+        "shader-genosl.txt": {
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f",
+          "bytes": 742
+        },
+        "shader-genmdl.txt": {
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975",
+          "bytes": 738
+        },
+        "python-bindings.json": {
+          "sha256": "4def77ad01733a4b909cb18505ccf5a7a6dfc791f248ad170c95b1928e7a8dfe",
+          "bytes": 2675
+        },
+        "python-bindings.blend": {
+          "sha256": "8b06a24d6653df1170420ae0c511d8cb1a176c8d902500adc3b266f1b563f7de",
+          "bytes": 101400
+        },
+        "avif.json": {
+          "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
+          "bytes": 1081
+        },
+        "avif-8-BW.avif": {
+          "sha256": "ab271d13befa66d85b2e1589047332aee6447270790f8d58336b5f3ee0e384c3",
+          "bytes": 1195
+        },
+        "avif-8-BW.avif.f32": {
+          "sha256": "5947234f04eca52dd0505674a3de050b1ff11b041f21e4131f2e19d2651181c1",
+          "bytes": 3404
+        },
+        "avif-8-BW.avif.blender.f32": {
+          "sha256": "94f3cd1639c35c837911e84efc8f3971013758df20b179e25d8079a796ea7aed",
+          "bytes": 13616
+        },
+        "avif-8-RGB.avif": {
+          "sha256": "92ee3d34e916cba6a3c70e1f0718869436be04931e1224a2dd3b7e9c3ab743fd",
+          "bytes": 1574
+        },
+        "avif-8-RGB.avif.f32": {
+          "sha256": "d863a4cfa7dc495087f01f8830821ce378e7ca89fa8950e82c6c61adf6d9a05a",
+          "bytes": 10212
+        },
+        "avif-8-RGB.avif.blender.f32": {
+          "sha256": "c2dfd0c8bc00476ad8412e9cfedb27203f7b08065b55c769e49b8d8c47c9553d",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif": {
+          "sha256": "2ff1aac6ca559b42168f376409476a75716f9488f781d064fb1f07bd81071aab",
+          "bytes": 1557
+        },
+        "avif-8-RGBA.avif.f32": {
+          "sha256": "e84cbd63248c24b1d04e731344b62522e574988f4ff0076376381f5c63b85d74",
+          "bytes": 13616
+        },
+        "avif-8-RGBA.avif.blender.f32": {
+          "sha256": "ca923080545c1e253fe1c7fa95c8ed999bab7d79b6173d81c2822357efff588e",
+          "bytes": 13616
+        },
+        "avif-10-BW.avif": {
+          "sha256": "bbc9b2369cd8f2ee2e2f5fd7676707fcc220bdf75830b8ca060a4d56c9078d8b",
+          "bytes": 1349
+        },
+        "avif-10-BW.avif.f32": {
+          "sha256": "6ad8af243966678e76a6d6dea97a8434342657150cab2965ebdba9d5a71ce5b5",
+          "bytes": 3404
+        },
+        "avif-10-BW.avif.blender.f32": {
+          "sha256": "f5c74fd593cf17763b7a00360944ea1ea08663ec8300dbd4bec1dc033eff589c",
+          "bytes": 13616
+        },
+        "avif-10-RGB.avif": {
+          "sha256": "149037d79bf0e059a4448383735e28dec9f21b8a014a172b0a04db666652a23b",
+          "bytes": 1912
+        },
+        "avif-10-RGB.avif.f32": {
+          "sha256": "c8348cd3d76d5fc7a3f66970a631c2aabf3f04bbe55f87a1f9cadd5494a7a9e0",
+          "bytes": 10212
+        },
+        "avif-10-RGB.avif.blender.f32": {
+          "sha256": "ada366ca743255e814a99322b520ce75a93fb99b99400237cd9cc699b372b276",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif": {
+          "sha256": "53d0a4a3eae2dc5c929ed6aae7b20a2eb07178886599e64faea0570eb0b067e5",
+          "bytes": 2437
+        },
+        "avif-10-RGBA.avif.f32": {
+          "sha256": "44e9744d809dddd3df86dd00bce3dc724ffc973c52cda48ec2ab664d59279e6e",
+          "bytes": 13616
+        },
+        "avif-10-RGBA.avif.blender.f32": {
+          "sha256": "9ee6c7e9a717fc3f1d3ad928404b04db7171835e8a6fed1a67f023d15c626af5",
+          "bytes": 13616
+        },
+        "avif-12-BW.avif": {
+          "sha256": "aa0ff8e4ed6cea5fb561842f2b62a867a4e1466dbbeb9b69a75f8388d529c01e",
+          "bytes": 1724
+        },
+        "avif-12-BW.avif.f32": {
+          "sha256": "f70054ea40f2e581b484a9fc2ada1ea173a1e11491c92261369fed3884b8968c",
+          "bytes": 3404
+        },
+        "avif-12-BW.avif.blender.f32": {
+          "sha256": "b8fda730d5db9b38d32536d2f60bc9bef8cc8be99c8f7e43ccb0dbdf681f04e3",
+          "bytes": 13616
+        },
+        "avif-12-RGB.avif": {
+          "sha256": "a4a4846f260f1325840ad0686d1bc80493a32410469dbfd603d364a3a1c34786",
+          "bytes": 2538
+        },
+        "avif-12-RGB.avif.f32": {
+          "sha256": "9e8a238d6d1110829c6b216de570b2cf321ca145f003c3009b144a49d00be9ee",
+          "bytes": 10212
+        },
+        "avif-12-RGB.avif.blender.f32": {
+          "sha256": "f5b98b4b5f17a6c3e483826d86a3432c604ef205f8ad588dc636a07971b7039a",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif": {
+          "sha256": "72be65ec5bdbb28bafb7f68f70b7e1411aefda129f0ec6f7fa11afd47dbea611",
+          "bytes": 3096
+        },
+        "avif-12-RGBA.avif.f32": {
+          "sha256": "bef79cbeb91935fc8e54c4d6db922908dea02c286ddf4ce9bea230fb02a8555b",
+          "bytes": 13616
+        },
+        "avif-12-RGBA.avif.blender.f32": {
+          "sha256": "7e20de2ee9d6cb0b873dedf89537a8950d22bd69aa604a64a2cd5b32ea7a2358",
+          "bytes": 13616
+        }
+      }
+    }
+  ],
+  "recording": {
+    "bundleVersion": "f5bc7678d055b2921075",
+    "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+    "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
+    "durationSeconds": 95.84,
+    "chapters": [
+      {
+        "seconds": 0,
+        "title": "Start original Blender with the image, color, volume and material bindings"
+      },
+      {
+        "seconds": 17.354,
+        "title": "Run original Python APIs and export native-readable files"
+      },
+      {
+        "seconds": 25.056,
+        "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
+      },
+      {
+        "seconds": 43.53,
+        "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
+      },
+      {
+        "seconds": 56.775,
+        "title": "Inspect the results in the original Text Editor"
+      },
+      {
+        "seconds": 66.678,
+        "title": "Reopen the saved scene and volume after an offline reload"
+      }
+    ],
+    "captions": true,
+    "source": "Real hardware Chromium capture of original Blender, Python bindings, AVIF image export and offline reopening",
+    "path": "web/docs/python-bindings-walkthrough.mp4",
+    "bytes": 2950710,
+    "sha256": "fcf5075aefce142f39c9c2f73a46bed3f146388c0541bd4622758cc675ebb6fb",
+    "screenshot": {
+      "path": "web/docs/python-bindings-browser.png",
+      "sha256": "04a43231079f32c389d1cb68c022a042f1b9b0f2f7ee67c9442dec3f22379cb7"
+    }
+  }
+}

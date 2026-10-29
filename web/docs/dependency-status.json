@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "9d08b6bd9fd4bb9429db",
+  "bundleVersion": "f5bc7678d055b2921075",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -160,12 +160,12 @@
     "CPython _ctypes/libffi, general multiprocessing and raw socket transport",
     "Cython native accelerators and arbitrary dynamic Wasm extension loading",
     "MaterialX OpenGL rendering and OSL rendering compiler/runtime integration",
-    "USD OpenVDB support and the Hydra OpenImageIO image plugin",
+    "Hydra GPU rendering and browser graphics backends",
     "OpenSubdiv GPU evaluation"
   ],
   "componentAudit": "web/docs/dependency-components.md",
   "pythonFoundation": {
-    "verifiedBundle": "9d08b6bd9fd4bb9429db",
+    "verifiedBundle": "f5bc7678d055b2921075",
     "modules": [
       "_sqlite3",
       "_lzma",
@@ -202,7 +202,7 @@
     "evidence": "web/docs/python-foundation.acceptance.json"
   },
   "pythonBindings": {
-    "verifiedBundle": "9d08b6bd9fd4bb9429db",
+    "verifiedBundle": "f5bc7678d055b2921075",
     "versions": {
       "OpenImageIO": "3.1.13.1",
       "PyOpenColorIO": "2.5.0",
@@ -225,6 +225,19 @@
     "browserVariants": 3,
     "independentNativeReadbacks": 3,
     "evidence": "web/docs/python-bindings.acceptance.json"
+  },
+  "usdCPUImaging": {
+    "verifiedBundle": "f5bc7678d055b2921075",
+    "plugins": [
+      "hioOpenVDB",
+      "hioOiio"
+    ],
+    "volumeFormats": 4,
+    "standaloneOriginalAPIs": true,
+    "independentNativeReadback": true,
+    "browserRegistries": 3,
+    "gpuRendering": false,
+    "evidence": "web/docs/usd-cpu-imaging.acceptance.json"
   },
   "optimizationWork": [
     "NumPy explicit Wasm SIMD kernels",

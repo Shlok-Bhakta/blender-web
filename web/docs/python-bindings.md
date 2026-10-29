@@ -2,15 +2,13 @@
 
 [Watch the browser recording](python-bindings-walkthrough.mp4).
 
-Candidate `9d08b6bd9fd4bb9429db` passed these checks on hardware WebGPU, software
-WebGPU and the fallback runtime. Each passed independent readback in native
-Blender 5.2.2 LTS, including the saved `.blend`. Both source CI builds for runtime
-commit `89179a7` passed, along with 97 local functional regression stages. The
-performance pass overlapped unrelated host jobs and was discarded. The next
-release combines these bindings with the [USD CPU plugins](usd-cpu-imaging-checks.md)
-and requires a fresh 108-stage validation. Pages still serves
-`8f28615dc99fd90616b7`. Candidate `9d08b6bd9fd4bb9429db` is retained as an
-intermediate checkpoint, not a published release.
+Candidate `f5bc7678d055b2921075` combines the Python bindings, AVIF and USD CPU plugins.
+All 108 local regression stages and both source CI builds passed. Hardware
+WebGPU, software WebGPU and the fallback runtime passed the binding operations,
+offline reopening and independent native Blender readback, including the saved
+`.blend`. The archive is ready for deployment verification. Pages still serves
+`8f28615dc99fd90616b7` until those checks pass.
+See the [full validation record](combined-dependencies-validation.json).
 
 | Component | Tested operations |
 | --- | --- |

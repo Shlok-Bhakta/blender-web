@@ -11,11 +11,11 @@ passed before publication. A fresh hardware run on the
 public HTTPS download and offline reopen checks, followed by independent native
 readback. See the [live verification](python-foundation-live.json).
 
-The recording has been refreshed from candidate `9d08b6bd9fd4bb9429db`, whose
-foundation checks also passed all three runtime variants and native readback.
-The next release combines the additional Python bindings, AVIF and USD CPU
-plugins. Its production build and full 108-stage validation are pending.
-
+The recording and foundation checks have been refreshed from candidate
+`f5bc7678d055b2921075`. All three browser variants and native readback passed. This
+combined batch also includes Python bindings, AVIF and USD CPU plugins, and
+passed all 108 local stages and both source CI builds. Pages publication remains
+pending. See the [validation record](combined-dependencies-validation.json).
 
 | Added component | Verified operations |
 | --- | --- |
@@ -29,7 +29,7 @@ plugins. Its production build and full 108-stage validation are pending.
 | Original Blender downloader | Conditional gzip download, ETag/304 reuse, metadata locking, two requests overlapping at the server, background callbacks and worker shutdown |
 | Persistence | Database and compressed files survive an offline reload; native Blender opens the saved `.blend` and compares its proof text with the browser report |
 
-The selected runtime is 414.49 MiB before transfer compression. The service
+The selected runtime is 428.13 MiB before transfer compression. The service
 worker caches the selected runtime files by content hash. The existing fallback
 selection and persistent OPFS filesystem also cover these Python packages.
 

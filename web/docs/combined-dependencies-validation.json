@@ -1,0 +1,581 @@
+{
+  "bundleVersion": "f5bc7678d055b2921075",
+  "checkedAt": "2026-10-29T00:45:44.659351+00:00",
+  "runtimeSourceCommit": "0adaa9e7d14398c5eac001d0ac41691ffa73f6ea",
+  "sourceCI": [
+    {
+      "conclusion": "success",
+      "headSha": "0adaa9e7d14398c5eac001d0ac41691ffa73f6ea",
+      "status": "completed",
+      "url": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40645431611"
+    },
+    {
+      "conclusion": "success",
+      "headSha": "0adaa9e7d14398c5eac001d0ac41691ffa73f6ea",
+      "status": "completed",
+      "url": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40645431601"
+    }
+  ],
+  "checksPassed": 108,
+  "checks": [
+    {
+      "name": "python-foundation-hardware",
+      "seconds": 98.20784640312195,
+      "exitCode": 0
+    },
+    {
+      "name": "python-foundation-native-hardware",
+      "seconds": 1.4323441982269287,
+      "exitCode": 0
+    },
+    {
+      "name": "python-foundation-render",
+      "seconds": 118.94724178314209,
+      "exitCode": 0
+    },
+    {
+      "name": "python-foundation-native-render",
+      "seconds": 1.3262042999267578,
+      "exitCode": 0
+    },
+    {
+      "name": "python-foundation-ui",
+      "seconds": 116.90773510932922,
+      "exitCode": 0
+    },
+    {
+      "name": "python-foundation-native-ui",
+      "seconds": 1.2638142108917236,
+      "exitCode": 0
+    },
+    {
+      "name": "python-foundation-video",
+      "seconds": 16.15885066986084,
+      "exitCode": 0
+    },
+    {
+      "name": "python-bindings-hardware",
+      "seconds": 97.38268184661865,
+      "exitCode": 0
+    },
+    {
+      "name": "python-bindings-native-hardware",
+      "seconds": 3.542942523956299,
+      "exitCode": 0
+    },
+    {
+      "name": "python-bindings-render",
+      "seconds": 133.74560976028442,
+      "exitCode": 0
+    },
+    {
+      "name": "python-bindings-native-render",
+      "seconds": 3.392080545425415,
+      "exitCode": 0
+    },
+    {
+      "name": "python-bindings-ui",
+      "seconds": 131.93627285957336,
+      "exitCode": 0
+    },
+    {
+      "name": "python-bindings-native-ui",
+      "seconds": 3.452882766723633,
+      "exitCode": 0
+    },
+    {
+      "name": "python-bindings-video",
+      "seconds": 15.990283727645874,
+      "exitCode": 0
+    },
+    {
+      "name": "hevc-native",
+      "seconds": 0.2418668270111084,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-baseline",
+      "seconds": 3.886474847793579,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-hardware",
+      "seconds": 128.04559230804443,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-native-hardware",
+      "seconds": 12.525339841842651,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-render",
+      "seconds": 149.1559715270996,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-native-render",
+      "seconds": 11.426950216293335,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-ui",
+      "seconds": 75.22672009468079,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-native-ui",
+      "seconds": 12.360535621643066,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-hardware",
+      "seconds": 48.62439775466919,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-native-hardware",
+      "seconds": 1.532625436782837,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-render",
+      "seconds": 75.2661657333374,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-native-render",
+      "seconds": 1.5906352996826172,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-ui",
+      "seconds": 51.12283706665039,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-native-ui",
+      "seconds": 1.5838830471038818,
+      "exitCode": 0
+    },
+    {
+      "name": "render-libraries-video",
+      "seconds": 13.241422414779663,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-video",
+      "seconds": 5.077986001968384,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-benchmark",
+      "seconds": 56.82105875015259,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-profile",
+      "seconds": 59.03566551208496,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-cube-bvh2",
+      "seconds": 38.11689114570618,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-cube-embree",
+      "seconds": 37.38121700286865,
+      "exitCode": 0
+    },
+    {
+      "name": "embree-performance",
+      "seconds": 0.5095014572143555,
+      "exitCode": 0
+    },
+    {
+      "name": "audio-worklet",
+      "seconds": 0.037355899810791016,
+      "exitCode": 0
+    },
+    {
+      "name": "media-hardware",
+      "seconds": 97.93064093589783,
+      "exitCode": 0
+    },
+    {
+      "name": "media-native-hardware",
+      "seconds": 3.757540464401245,
+      "exitCode": 0
+    },
+    {
+      "name": "media-render",
+      "seconds": 125.69696927070618,
+      "exitCode": 0
+    },
+    {
+      "name": "media-native-render",
+      "seconds": 3.780198335647583,
+      "exitCode": 0
+    },
+    {
+      "name": "media-ui",
+      "seconds": 98.94840407371521,
+      "exitCode": 0
+    },
+    {
+      "name": "media-native-ui",
+      "seconds": 0.7930421829223633,
+      "exitCode": 0
+    },
+    {
+      "name": "media-video",
+      "seconds": 10.316534757614136,
+      "exitCode": 0
+    },
+    {
+      "name": "media-benchmark",
+      "seconds": 93.45407128334045,
+      "exitCode": 0
+    },
+    {
+      "name": "media-performance",
+      "seconds": 0.07188606262207031,
+      "exitCode": 0
+    },
+    {
+      "name": "media-profile",
+      "seconds": 123.2670373916626,
+      "exitCode": 0
+    },
+    {
+      "name": "gltf-hardware",
+      "seconds": 50.54909038543701,
+      "exitCode": 0
+    },
+    {
+      "name": "gltf-native-hardware",
+      "seconds": 1.3042709827423096,
+      "exitCode": 0
+    },
+    {
+      "name": "gltf-render",
+      "seconds": 76.99804019927979,
+      "exitCode": 0
+    },
+    {
+      "name": "gltf-native-render",
+      "seconds": 1.1072261333465576,
+      "exitCode": 0
+    },
+    {
+      "name": "gltf-ui",
+      "seconds": 76.33972501754761,
+      "exitCode": 0
+    },
+    {
+      "name": "gltf-native-ui",
+      "seconds": 1.1656906604766846,
+      "exitCode": 0
+    },
+    {
+      "name": "gltf-video",
+      "seconds": 5.610351085662842,
+      "exitCode": 0
+    },
+    {
+      "name": "tracking-hardware",
+      "seconds": 46.57968854904175,
+      "exitCode": 0
+    },
+    {
+      "name": "tracking-native-hardware",
+      "seconds": 0.8691120147705078,
+      "exitCode": 0
+    },
+    {
+      "name": "tracking-render",
+      "seconds": 67.92091512680054,
+      "exitCode": 0
+    },
+    {
+      "name": "tracking-native-render",
+      "seconds": 0.8658425807952881,
+      "exitCode": 0
+    },
+    {
+      "name": "tracking-ui",
+      "seconds": 65.98747062683105,
+      "exitCode": 0
+    },
+    {
+      "name": "tracking-native-ui",
+      "seconds": 0.891639232635498,
+      "exitCode": 0
+    },
+    {
+      "name": "tracking-video",
+      "seconds": 4.957211256027222,
+      "exitCode": 0
+    },
+    {
+      "name": "text-hardware",
+      "seconds": 61.30356788635254,
+      "exitCode": 0
+    },
+    {
+      "name": "text-render",
+      "seconds": 109.32469749450684,
+      "exitCode": 0
+    },
+    {
+      "name": "text-ui",
+      "seconds": 101.5220787525177,
+      "exitCode": 0
+    },
+    {
+      "name": "text-video",
+      "seconds": 6.848297119140625,
+      "exitCode": 0
+    },
+    {
+      "name": "usd-hardware",
+      "seconds": 51.93150591850281,
+      "exitCode": 0
+    },
+    {
+      "name": "usd-render",
+      "seconds": 73.70280814170837,
+      "exitCode": 0
+    },
+    {
+      "name": "usd-ui",
+      "seconds": 71.47731947898865,
+      "exitCode": 0
+    },
+    {
+      "name": "desktop-usd",
+      "seconds": 1.1742143630981445,
+      "exitCode": 0
+    },
+    {
+      "name": "usd-imaging-native",
+      "seconds": 1.0872220993041992,
+      "exitCode": 0
+    },
+    {
+      "name": "usd-video",
+      "seconds": 5.402092695236206,
+      "exitCode": 0
+    },
+    {
+      "name": "image-vector-hardware",
+      "seconds": 47.29034161567688,
+      "exitCode": 0
+    },
+    {
+      "name": "image-vector-render",
+      "seconds": 72.26580119132996,
+      "exitCode": 0
+    },
+    {
+      "name": "image-vector-ui",
+      "seconds": 64.64687275886536,
+      "exitCode": 0
+    },
+    {
+      "name": "image-vector-hardware-ui",
+      "seconds": 47.400105476379395,
+      "exitCode": 0
+    },
+    {
+      "name": "freestyle-hardware",
+      "seconds": 29.099342823028564,
+      "exitCode": 0
+    },
+    {
+      "name": "freestyle-software",
+      "seconds": 42.45911955833435,
+      "exitCode": 0
+    },
+    {
+      "name": "desktop-freestyle",
+      "seconds": 0.8524744510650635,
+      "exitCode": 0
+    },
+    {
+      "name": "desktop-images",
+      "seconds": 0.98659348487854,
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-status",
+      "seconds": 1.242368459701538,
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-video",
+      "seconds": 7.7495129108428955,
+      "exitCode": 0
+    },
+    {
+      "name": "volume-hardware",
+      "seconds": 49.485076665878296,
+      "exitCode": 0
+    },
+    {
+      "name": "volume-render",
+      "seconds": 85.14291834831238,
+      "exitCode": 0
+    },
+    {
+      "name": "volume-ui",
+      "seconds": 79.60793399810791,
+      "exitCode": 0
+    },
+    {
+      "name": "native-render",
+      "seconds": 115.67729711532593,
+      "exitCode": 0
+    },
+    {
+      "name": "native-ui",
+      "seconds": 110.49197244644165,
+      "exitCode": 0
+    },
+    {
+      "name": "native-hardware",
+      "seconds": 55.95078682899475,
+      "exitCode": 0
+    },
+    {
+      "name": "features-render",
+      "seconds": 69.99710130691528,
+      "exitCode": 0
+    },
+    {
+      "name": "features-ui",
+      "seconds": 67.26219177246094,
+      "exitCode": 0
+    },
+    {
+      "name": "features-hardware",
+      "seconds": 41.686294078826904,
+      "exitCode": 0
+    },
+    {
+      "name": "ocean-alembic-render",
+      "seconds": 100.97745084762573,
+      "exitCode": 0
+    },
+    {
+      "name": "ocean-alembic-ui",
+      "seconds": 96.16453170776367,
+      "exitCode": 0
+    },
+    {
+      "name": "ocean-alembic-hardware",
+      "seconds": 68.56359076499939,
+      "exitCode": 0
+    },
+    {
+      "name": "loading-render",
+      "seconds": 52.24889302253723,
+      "exitCode": 0
+    },
+    {
+      "name": "loading-ui",
+      "seconds": 51.75581455230713,
+      "exitCode": 0
+    },
+    {
+      "name": "cache",
+      "seconds": 1.6320548057556152,
+      "exitCode": 0
+    },
+    {
+      "name": "eevee-resize",
+      "seconds": 54.39435601234436,
+      "exitCode": 0
+    },
+    {
+      "name": "desktop-ocean",
+      "seconds": 1.4766829013824463,
+      "exitCode": 0
+    },
+    {
+      "name": "volume-video",
+      "seconds": 5.184008836746216,
+      "exitCode": 0
+    },
+    {
+      "name": "render-optimization",
+      "seconds": 395.73941469192505,
+      "exitCode": 0
+    },
+    {
+      "name": "native-performance-mesh",
+      "seconds": 10.736141920089722,
+      "exitCode": 0
+    },
+    {
+      "name": "native-performance-cycles",
+      "seconds": 1.2149689197540283,
+      "exitCode": 0
+    },
+    {
+      "name": "native-performance-eevee",
+      "seconds": 5.114869117736816,
+      "exitCode": 0
+    },
+    {
+      "name": "browser-performance-mesh",
+      "seconds": 27.973317861557007,
+      "exitCode": 0
+    },
+    {
+      "name": "browser-performance-cycles",
+      "seconds": 32.28510618209839,
+      "exitCode": 0
+    },
+    {
+      "name": "eevee-profile",
+      "seconds": 72.47624635696411,
+      "exitCode": 0
+    },
+    {
+      "name": "profile-summary",
+      "seconds": 0.5541584491729736,
+      "exitCode": 0
+    },
+    {
+      "name": "compare-performance",
+      "seconds": 0.4144256114959717,
+      "exitCode": 0
+    },
+    {
+      "name": "acceptance",
+      "seconds": 27.571908950805664,
+      "exitCode": 0
+    }
+  ],
+  "manifestSha256": "88eec2ed10ead17c6aa1b3a4da27a2c1686ebb49cb4cab09ccc3c5bea2dbcc5b",
+  "runnerSourceSha256": "d0f0d91f5fb98d070a92adec9020ce383ab1b7cc6e0ad02c304e86ca73ee5f2b",
+  "deploymentArchive": {
+    "name": "blender-web-pages.tar.gz",
+    "bytes": 275283837,
+    "sha256": "9d290dfd95d1d58e746ccf96fa703ff8ff89cfa8cefa5899e770d84fc6e6f450"
+  },
+  "benchmarkHostLoad": {
+    "bundleVersion": "f5bc7678d055b2921075",
+    "scope": "Shared host sampled during final benchmark stages; not machine isolation",
+    "samples": 54,
+    "firstSample": "2026-10-29T00:35:21.052936+00:00",
+    "lastSample": "2026-10-29T00:44:21.571005+00:00",
+    "otherCpuCoresMedian": 0.1849889797000941,
+    "otherCpuCoresMaximum": 1.089943135495304,
+    "otherBrowserCpuCoresMaximum": 0.009999496810779392,
+    "sampling": "Two-second CPU deltas, approximately every ten seconds",
+    "fullSamplesSha256": "17c7418604df6ceaad51060a4496b7fd07301584d35766a3b264ce5f11d9b965"
+  }
+}

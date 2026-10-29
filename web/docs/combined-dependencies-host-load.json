@@ -1,0 +1,12 @@
+{
+  "bundleVersion": "f5bc7678d055b2921075",
+  "scope": "Shared host sampled during final benchmark stages; not machine isolation",
+  "samples": 54,
+  "firstSample": "2026-10-29T00:35:21.052936+00:00",
+  "lastSample": "2026-10-29T00:44:21.571005+00:00",
+  "otherCpuCoresMedian": 0.1849889797000941,
+  "otherCpuCoresMaximum": 1.089943135495304,
+  "otherBrowserCpuCoresMaximum": 0.009999496810779392,
+  "sampling": "Two-second CPU deltas, approximately every ten seconds",
+  "fullSamplesSha256": "17c7418604df6ceaad51060a4496b7fd07301584d35766a3b264ce5f11d9b965"
+}

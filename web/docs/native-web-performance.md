@@ -62,25 +62,25 @@ pass times separate from CPU API-call times and from uninstrumented benchmarks.
 <!-- PERFORMANCE_RESULTS -->
 | Workload | Native median | Browser median | Browser/native |
 | --- | ---: | ---: | ---: |
-| Mesh construction, 128 by 128 grid | 0.017 s | 0.038 s | 2.18x |
-| CPU subdivision, 128 by 128 grid | 0.050 s | 0.085 s | 1.70x |
-| Mesh construction, 256 by 256 grid | 0.067 s | 0.135 s | 2.02x |
-| CPU subdivision, 256 by 256 grid | 0.192 s | 0.278 s | 1.45x |
-| Mesh construction, 384 by 384 grid | 0.160 s | 0.288 s | 1.80x |
-| CPU subdivision, 384 by 384 grid | 0.464 s | 0.563 s | 1.21x |
-| Ocean 12-frame evaluation | 0.841 s | 0.857 s | 1.02x |
-| Cycles CPU render | 0.025 s | 0.099 s | 3.90x |
-| Eevee GPU render | 1.040 s | 3.229 s | 3.10x |
+| Mesh construction, 128 by 128 grid | 0.017 s | 0.037 s | 2.20x |
+| CPU subdivision, 128 by 128 grid | 0.052 s | 0.080 s | 1.53x |
+| Mesh construction, 256 by 256 grid | 0.067 s | 0.135 s | 2.01x |
+| CPU subdivision, 256 by 256 grid | 0.204 s | 0.251 s | 1.23x |
+| Mesh construction, 384 by 384 grid | 0.142 s | 0.326 s | 2.29x |
+| CPU subdivision, 384 by 384 grid | 0.419 s | 0.612 s | 1.46x |
+| Ocean 12-frame evaluation | 0.859 s | 0.842 s | 0.98x |
+| Cycles CPU render | 0.023 s | 0.093 s | 4.00x |
+| Eevee GPU render | 1.078 s | 3.196 s | 2.96x |
 
 | Process-tree memory | Native | Browser |
 | --- | ---: | ---: |
-| Baseline | 274.1 MiB | 2434.9 MiB |
-| Workload peak | 658.2 MiB | 2778.2 MiB |
-| Workload peak above baseline | 384.1 MiB | 343.3 MiB |
-| After cleanup | 356.3 MiB | 2778.2 MiB |
-| Whole-process peak, including startup | 658.2 MiB | 2790.2 MiB |
+| Baseline | 268.7 MiB | 2269.9 MiB |
+| Workload peak | 648.3 MiB | 2605.7 MiB |
+| Workload peak above baseline | 379.6 MiB | 335.8 MiB |
+| After cleanup | 347.1 MiB | 2605.7 MiB |
+| Whole-process peak, including startup | 648.3 MiB | 2606.0 MiB |
 
-Tested bundle `8f28615dc99fd90616b7`, measured 2026-10-26T15:09:17.000601+00:00.
+Tested bundle `f5bc7678d055b2921075`, measured 2026-10-29T00:43:10.807613+00:00.
 <!-- /PERFORMANCE_RESULTS -->
 
 Reproduce after the application build finishes, with other substantial work idle:

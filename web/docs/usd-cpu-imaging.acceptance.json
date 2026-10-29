@@ -1,0 +1,147 @@
+{
+  "bundleVersion": "f5bc7678d055b2921075",
+  "installation": {
+    "source": {
+      "FILE": "usd-v26.03.tar.gz",
+      "HASH": "cc6d6bffdcdd038f60e2fe4726b08673",
+      "HASH_TYPE": "MD5",
+      "URI": "https://github.com/PixarAnimationStudios/OpenUSD/archive/v26.03.tar.gz",
+      "VERSION": "26.03"
+    },
+    "sdk": "4.0.23",
+    "flags": "-pthread -msimd128 -fwasm-exceptions",
+    "dependencyStamps": {
+      "usd": "389a895b3011bd7e89bf129004e3dbf2ad0704a7bb8d25d5883daca06ed6d5e2",
+      "openvdb": "a03595d45174dff700cc952b5baf27943feabce36520fdb6641b238981f387a6",
+      "openimageio": "743da4c182102ffdbdc23534e252d4ca1a854471a439ef14fb741b3cbb989618",
+      "tbb": "780e90735c0f16b781124a6293938c90b35ac1313f4070a4e9638cad1de0bfce",
+      "libheif": "b59ba537efe22583d0c24cdad6b4c63d8bd44a208dececa601b77e04d4556ad2"
+    },
+    "inputs": {
+      "web/tools/native_usd_imaging.py": "6bf803a6ccb850f5562d58e985f72a64787bd8e2c5b28bb2c515c32aa5664a4d",
+      "web/native/usd-imaging/CMakeLists.txt": "2989fc11fbf73eb78ac9da9c90fa2c3852f862c503fedd8e0e0ab4c4e3f1f6cf",
+      "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3",
+      "web/native/patches/usd.patch": "f3a0d9d4f038659d19500cba0564e467f180db273f0035b3ca62479db9733f5c",
+      "web/upstream.json": "ca65785635428e0de5a6d07f43848522534cc055d4a32bdbd4121d5e73131723"
+    },
+    "sourceHashes": {
+      "pxr/imaging/hioOpenVDB/api.h": "3c4971fb08389d20fc40a40c6914da76a0b81caeebc0dfb53ec8359aa24a1bcc",
+      "pxr/imaging/hioOpenVDB/debugCodes.cpp": "2b6949c150d5d9b44f9d73f6431785f95036d18374512db7853163cbbbe3fc56",
+      "pxr/imaging/hioOpenVDB/debugCodes.h": "6ad65e4096215b08d69f541b8ee2b80d3f0ba8c7a20cb0d1b306e9a02c5fcfc3",
+      "pxr/imaging/hioOpenVDB/pch.h": "570a6f466d6abe26c58946cb9b670b1a104b9ecb60d2806240eb29b99c056931",
+      "pxr/imaging/hioOpenVDB/plugInfo.json": "a71aa3b4e748835f007ed71b10d21ef3470b79118564f3dac560c083210f9b58",
+      "pxr/imaging/hioOpenVDB/utils.cpp": "577f5c777a5292fd4aeeec17b1bebbd2a91607fb87735102e285d2321dbc50dc",
+      "pxr/imaging/hioOpenVDB/utils.h": "96d5bf72a8463940cc869d6f00ca312bf032b8c7c89146abe7d3823970834121",
+      "pxr/imaging/hioOpenVDB/vdbAssetInterface.cpp": "e6de22b10b026ada16360ac448d99e9f320996f499dab222bab6a9650ff277a1",
+      "pxr/imaging/hioOpenVDB/vdbAssetInterface.h": "47e447484bbf76e7ad9a6324675cc12258c51a842e4e0fd1c9522cdf9078955c",
+      "pxr/imaging/hioOpenVDB/vdbTextureData.cpp": "cdb9ad4fa8e2b26098f1876277cf0f7e41b90c31705b2ed02c305459ab3b8d54",
+      "pxr/imaging/hioOpenVDB/vdbTextureData.h": "f7b23a8d90af98968ce55cbfca16632e7148cc844350ebaceda658b186ca78a1",
+      "pxr/imaging/plugin/hioOiio/metadata.cpp": "c64c15b82d862c86048dd85f6dc1c1f0ccb82921d8e38356e842a0c293e1e118",
+      "pxr/imaging/plugin/hioOiio/oiioImage.cpp": "3632b0f22bf5ba54a20064002d04c23e97b500aa44e6ca7b6739349fb75d4071",
+      "pxr/imaging/plugin/hioOiio/pch.h": "72247be022a5045d73cf003d4d7e2d422810bf5745d16d7145b1053b8631df4d",
+      "pxr/imaging/plugin/hioOiio/plugInfo.json": "5856109eb9a4874f85d2071080a6597ed9ab0c5bf225ef3d12a868e4efe93252"
+    },
+    "signature": "6011c75f9706cae4706704ac63b753b5d0fc1270c06c3f957a9b063da0f18bb8",
+    "components": [
+      "hioOpenVDB",
+      "hioOiio"
+    ],
+    "gpuEnabled": false,
+    "artifacts": {
+      "include/pxr/imaging/hioOpenVDB/api.h": "3c4971fb08389d20fc40a40c6914da76a0b81caeebc0dfb53ec8359aa24a1bcc",
+      "include/pxr/imaging/hioOpenVDB/utils.h": "96d5bf72a8463940cc869d6f00ca312bf032b8c7c89146abe7d3823970834121",
+      "include/pxr/imaging/hioOpenVDB/vdbAssetInterface.h": "47e447484bbf76e7ad9a6324675cc12258c51a842e4e0fd1c9522cdf9078955c",
+      "lib/usd/hioOpenVDB/resources/plugInfo.json": "e285852e8060cd3d95dc21dac25c303e82e0c84a1b845013b4a4b3aa4f20f11f",
+      "lib/blender-web-usd-imaging/libhioOpenVDB.a": "5392322656b30102a05e0baa900e087c54d60bcfcaaad33bbb0d1aa07e49ea88",
+      "lib/usd/hioOiio/resources/plugInfo.json": "917e1730dc0c8e0ca3d3c3e86f740c6e1f6e64bbbfcc27da68e37d3365ba5321",
+      "lib/blender-web-usd-imaging/libhioOiio.a": "f4cd28301742f561713cf47e458c58aef9d1af4ab735d4123c4c0a86985fdeee",
+      "lib/blender-web-usd-imaging/libraries.cmake": "71f830dd76cef72cde407e7a1f0f6658920ec1fd408dc742aa427fd1b8f14e90"
+    }
+  },
+  "operations": {
+    "originalPluginRegistry": true,
+    "tiffPixelsExact": true,
+    "vdbDenseVoxelsExact": true,
+    "gpuRequired": false,
+    "volumeTypes": 4,
+    "volumeTransformsExact": true,
+    "missingGridRecovery": true,
+    "hioWriteReadExact": true,
+    "sourceHashes": {
+      "web/native/tests/usd_imaging.cc": "614c51932739d34982d55e4ab473ae802bce354027341f3f7a6f642028523eb3",
+      "web/native/usd-imaging/CMakeLists.txt": "2989fc11fbf73eb78ac9da9c90fa2c3852f862c503fedd8e0e0ab4c4e3f1f6cf",
+      "web/tools/native_usd_imaging.py": "6bf803a6ccb850f5562d58e985f72a64787bd8e2c5b28bb2c515c32aa5664a4d",
+      "web/native/tests/CMakeLists.txt": "26c91f5650271081d5fbaee1868d42bb8598b943eaa39e355ef9a147d20d37f5",
+      "web/native/dependencies.cmake": "9ce282302be6d1c5ec8190a93823c63b3bd51e5babd3f7586f84372e1487febf",
+      "web/tools/native_deps.py": "ad33655af25e25b51bc986aa8c689ab9d6df7b8864601079126a7ee63eca92dd",
+      "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3"
+    },
+    "installationSha256": "d049cc06c88c7dfdc4bbc2f0e6d8b5e4833feb3b8c5f8fa5bb548bce947c78ad"
+  },
+  "nativeReadback": {
+    "nativePixelsExact": true,
+    "nativeHioWrittenPixelsExact": true,
+    "nativeVoxelsExact": true,
+    "nativeTransformExact": true,
+    "volumeTypes": 4,
+    "nativePlugins": {
+      "hioOiio": true,
+      "hioOpenVDB": true
+    },
+    "blenderVersion": "5.2.2 LTS",
+    "blenderRevision": "d13f752e3b9c",
+    "files": {
+      "hio-roundtrip.tif": "047612cb5bc58d06de3d18bc3c2698ff6cae676deca48a69c4dbe1d0bef75c73",
+      "hio-written.tif": "4635bb538cd5e27fb24e5378905c4444da3bea03584bd2f9dda26728852cbc01",
+      "hio-roundtrip.vdb": "52ffef56463f102666a02e6d1720a238992250bad48be9a230521b0609f0b36f",
+      "float.vdb": "6f73f0b6ffbee3ebab69e1d8a01ebfe2a1208ce0f1435c9a0b17da91450b8ac4",
+      "float.raw": "61caf4fd91816666236276025125f454674d40e1a3367b46b0129e0121ded5d2",
+      "double.vdb": "6594217a0f25b5398029ab24d2a148487de9a43ccab2dce7104cf3d4cf3f47a2",
+      "double.raw": "a722883996ae7168467418a173f6a3314c988e6993869f14c90e3262439355ee",
+      "vec3f.vdb": "ef7f63455c30817b7a6f5ae576351a59fad4eca85af52dab34fca4af079fe28a",
+      "vec3f.raw": "0ec85cc1fefbcb97a85091be615846db793a37d78ba3ca7d8ddccf7c14d3e92a",
+      "vec3d.vdb": "7711d6ca4553362fd3a05f43ecc784b6a3e7d0535a176bc3154239c11f134f41",
+      "vec3d.raw": "6d74a126bb39d68dd29b1753c3082160033b11e85cc083232d9985823af76e88"
+    },
+    "unitReportSha256": "b97217d656ebbd46b54fd7420ac319adaa3809b2566ec8a058e8f56af6b3a974",
+    "verifierSourceSha256": "0aace2720bd41775237c81038152889f70b1bed3589cc7e794d71c849e639d5a"
+  },
+  "browserRegistries": [
+    {
+      "hioOiio": {
+        "loaded": true,
+        "type": "HioOIIO_Image",
+        "staticLibrary": true
+      },
+      "hioOpenVDB": {
+        "loaded": true,
+        "type": "HioOpenVDB_TextureData",
+        "staticLibrary": true
+      }
+    },
+    {
+      "hioOiio": {
+        "loaded": true,
+        "type": "HioOIIO_Image",
+        "staticLibrary": true
+      },
+      "hioOpenVDB": {
+        "loaded": true,
+        "type": "HioOpenVDB_TextureData",
+        "staticLibrary": true
+      }
+    },
+    {
+      "hioOiio": {
+        "loaded": true,
+        "type": "HioOIIO_Image",
+        "staticLibrary": true
+      },
+      "hioOpenVDB": {
+        "loaded": true,
+        "type": "HioOpenVDB_TextureData",
+        "staticLibrary": true
+      }
+    }
+  ]
+}

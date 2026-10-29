@@ -1,6 +1,6 @@
 {
-  "runtimeSourceCommit": "8e6d2ff6cb448c8494e7a4885eb1d7caae58688d",
-  "applicationIntegrated": false,
+  "runtimeSourceCommit": "0adaa9e7d14398c5eac001d0ac41691ffa73f6ea",
+  "applicationIntegrated": true,
   "editorCI": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40442294033",
   "applicationCI": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40442280628",
   "installation": {
@@ -55,9 +55,9 @@
       "include/pxr/imaging/hioOpenVDB/utils.h": "96d5bf72a8463940cc869d6f00ca312bf032b8c7c89146abe7d3823970834121",
       "include/pxr/imaging/hioOpenVDB/vdbAssetInterface.h": "47e447484bbf76e7ad9a6324675cc12258c51a842e4e0fd1c9522cdf9078955c",
       "lib/usd/hioOpenVDB/resources/plugInfo.json": "e285852e8060cd3d95dc21dac25c303e82e0c84a1b845013b4a4b3aa4f20f11f",
-      "lib/blender-web-usd-imaging/libhioOpenVDB.a": "d2f5998955b6b48d473b44424c879191f9d2843e083932c8eb484fcd0f3c59ad",
+      "lib/blender-web-usd-imaging/libhioOpenVDB.a": "5392322656b30102a05e0baa900e087c54d60bcfcaaad33bbb0d1aa07e49ea88",
       "lib/usd/hioOiio/resources/plugInfo.json": "917e1730dc0c8e0ca3d3c3e86f740c6e1f6e64bbbfcc27da68e37d3365ba5321",
-      "lib/blender-web-usd-imaging/libhioOiio.a": "8ac3c100037e6e89cd07d516ceb9df187e8ff277c4ff5e02524da79e3aa8fad7",
+      "lib/blender-web-usd-imaging/libhioOiio.a": "f4cd28301742f561713cf47e458c58aef9d1af4ab735d4123c4c0a86985fdeee",
       "lib/blender-web-usd-imaging/libraries.cmake": "71f830dd76cef72cde407e7a1f0f6658920ec1fd408dc742aa427fd1b8f14e90"
     }
   },
@@ -79,7 +79,7 @@
       "web/tools/native_deps.py": "ad33655af25e25b51bc986aa8c689ab9d6df7b8864601079126a7ee63eca92dd",
       "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3"
     },
-    "installationSha256": "6ab5d7038e3500f230b2becc10eac1b8ea61b92758162d2dda0010e248fcb8fd"
+    "installationSha256": "d049cc06c88c7dfdc4bbc2f0e6d8b5e4833feb3b8c5f8fa5bb548bce947c78ad"
   },
   "nativeReadback": {
     "nativePixelsExact": true,
@@ -94,19 +94,19 @@
     "blenderVersion": "5.2.2 LTS",
     "blenderRevision": "d13f752e3b9c",
     "files": {
-      "hio-roundtrip.tif": "770e8e3d0d002632c65ce8bca9afc6a95655e76d78f9a6b32b872206fa736c06",
-      "hio-written.tif": "e02db25083a47f334fc96636b944595def722c19be8fb25ffbab63b47cf80573",
-      "hio-roundtrip.vdb": "f81ad16850ec27bc390b396e6d5a25da0f440d990934d6f9744cd45b3c2af844",
-      "float.vdb": "5a07eadc4d87befeb70a8aa87db91b0d4eb7db63339ab51fea2f6386aa9b2044",
+      "hio-roundtrip.tif": "047612cb5bc58d06de3d18bc3c2698ff6cae676deca48a69c4dbe1d0bef75c73",
+      "hio-written.tif": "4635bb538cd5e27fb24e5378905c4444da3bea03584bd2f9dda26728852cbc01",
+      "hio-roundtrip.vdb": "52ffef56463f102666a02e6d1720a238992250bad48be9a230521b0609f0b36f",
+      "float.vdb": "6f73f0b6ffbee3ebab69e1d8a01ebfe2a1208ce0f1435c9a0b17da91450b8ac4",
       "float.raw": "61caf4fd91816666236276025125f454674d40e1a3367b46b0129e0121ded5d2",
-      "double.vdb": "68f87ce61c59b4aa824ed8d6dbd2adad44abb8fba714663a7c29637900956feb",
+      "double.vdb": "6594217a0f25b5398029ab24d2a148487de9a43ccab2dce7104cf3d4cf3f47a2",
       "double.raw": "a722883996ae7168467418a173f6a3314c988e6993869f14c90e3262439355ee",
-      "vec3f.vdb": "18a57b7eafc419d43e04176575398406220f07cda12209f4766f47a4c22defd9",
+      "vec3f.vdb": "ef7f63455c30817b7a6f5ae576351a59fad4eca85af52dab34fca4af079fe28a",
       "vec3f.raw": "0ec85cc1fefbcb97a85091be615846db793a37d78ba3ca7d8ddccf7c14d3e92a",
-      "vec3d.vdb": "1e5a27ba97469d9e694990d39f9e2864e1825a9b3f9c765aa92e80d232b9ce71",
+      "vec3d.vdb": "7711d6ca4553362fd3a05f43ecc784b6a3e7d0535a176bc3154239c11f134f41",
       "vec3d.raw": "6d74a126bb39d68dd29b1753c3082160033b11e85cc083232d9985823af76e88"
     },
-    "unitReportSha256": "ef3668f3c2531d726ce35d3ce7e2d5df6e980563a2e74cb6a3e4cd229d955cec",
+    "unitReportSha256": "b97217d656ebbd46b54fd7420ac319adaa3809b2566ec8a058e8f56af6b3a974",
     "verifierSourceSha256": "0aace2720bd41775237c81038152889f70b1bed3589cc7e794d71c849e639d5a"
   },
   "cacheChecks": {
@@ -285,9 +285,48 @@
     }
   },
   "combinedSourceCI": {
-    "runtimeSourceCommit": "f37bb839cf7398e63cc7617dc9e9ecb324a8140b",
-    "application": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40447613806",
-    "editor": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40447613782",
+    "runtimeSourceCommit": "0adaa9e7d14398c5eac001d0ac41691ffa73f6ea",
+    "application": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40645431611",
+    "editor": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40645431601",
     "conclusion": "success"
-  }
+  },
+  "bundleVersion": "f5bc7678d055b2921075",
+  "browserRegistries": [
+    {
+      "hioOiio": {
+        "loaded": true,
+        "type": "HioOIIO_Image",
+        "staticLibrary": true
+      },
+      "hioOpenVDB": {
+        "loaded": true,
+        "type": "HioOpenVDB_TextureData",
+        "staticLibrary": true
+      }
+    },
+    {
+      "hioOiio": {
+        "loaded": true,
+        "type": "HioOIIO_Image",
+        "staticLibrary": true
+      },
+      "hioOpenVDB": {
+        "loaded": true,
+        "type": "HioOpenVDB_TextureData",
+        "staticLibrary": true
+      }
+    },
+    {
+      "hioOiio": {
+        "loaded": true,
+        "type": "HioOIIO_Image",
+        "staticLibrary": true
+      },
+      "hioOpenVDB": {
+        "loaded": true,
+        "type": "HioOpenVDB_TextureData",
+        "staticLibrary": true
+      }
+    }
+  ]
 }

@@ -18,6 +18,7 @@ batches. The static site's
 | Automatic `.blend` thumbnails | Deferred | Synchronous preview generation hangs outside a browser GPU job; a guarded GHOST save hook skips capture and restores the user's preview preference |
 | NumPy and FBX Python exporter | Enabled | Static NumPy extensions, linear algebra, FFT, both random APIs, RNA array transfer and FBX export/native import round trip |
 | SQLite, LZMA, OpenSSL and Python Zstandard | Implemented, tested | Original CPython extensions, database callbacks/WAL/FTS, three LZMA formats, multithreaded Zstandard, TLS 1.2/1.3 memory-BIO handshakes and certificate rejection |
+| Image, color, volume and material Python APIs | Implemented, tested | Eleven original extensions, NumPy image/color buffers, nine OpenVDB grid types, four MaterialX shader generators, threaded calls and native file readback. Nine AVIF exports cover 8/10/12-bit BW/RGB/RGBA and invalid-input recovery |
 | Native Python site packages and Cython | Implemented, tested | Pinned pure Python runtime packages and pip; original Cython compiler generates C source. Compiling and loading arbitrary generated extensions remains pending |
 | Python HTTP and Blender background downloader | Implemented, tested | Dedicated worker transport, binary transfers, timeout/CORS errors, gzip and conditional 304 downloads, two background download workers and shutdown |
 | Process-dependent add-ons and extension marketplace | Deferred | The downloader uses thread workers and copied channels. Native subprocesses, general multiprocessing, dynamic extensions and complete marketplace installation remain unavailable |
@@ -34,7 +35,7 @@ batches. The static site's
 | Potrace image tracing | Enabled | Original image-to-Grease-Pencil operator, stroke geometry compared with desktop |
 | Freestyle contour rendering | Enabled in JSPI bundle | Cycles CPU cube with red contour strokes, saved pixels compared with desktop |
 | USD scene exchange and MaterialX graph export | Enabled | USDA/USDC/USDZ exchange with desktop, animation, UVs, cameras/lights, world textures, Python hooks and eight implicit shape fixtures |
-| Hydra rendering and MaterialX Python bindings | Deferred | CPU imaging adapters supply shape geometry; native Hydra graphics devices are disabled |
+| USD CPU imaging and MaterialX Python bindings | Implemented, tested | Original hioOiio/hioOpenVDB factories, eight MaterialX extensions, four shader generators and native readback. Hydra graphics and MaterialX graphics renderers remain deferred |
 | Audio/video IO and Video Sequencer | Enabled | WAV/FLAC/Ogg/MP3 and MKV/MP4/WebM inputs, video seeking, original audio and H.264/AAC or VP9/Opus video exports compared with desktop |
 | Browser audio playback | Enabled | Original Audaspace mixer feeds a shared PCM ring and AudioWorklet; stereo playback, timeline advancement, captured output and offline reopen |
 | Audio time stretching and pitch shifting | Implemented, tested | Rubber Band with FFTW, original Audaspace APIs, independent duration and stereo pitch checks |
@@ -146,8 +147,8 @@ reload using the cached application and persistent USD files.
 | --- | --- |
 | 0:00 | Open original Blender with USD and MaterialX |
 | 0:12 | Import native scenes; export USDA, USDC and USDZ with MaterialX and Python hooks |
-| 0:28 | USD is available in Blender's original export menu |
-| 0:37 | Reload offline and repeat interchange from persistent browser storage |
+| 0:27 | USD is available in Blender's original export menu |
+| 0:36 | Reload offline and repeat interchange from persistent browser storage |
 <!-- /USD_RECORDING_CHAPTERS -->
 
 ![USD in Blender's original export menu](../docs/usd-export-menu.png)
@@ -200,7 +201,7 @@ variants reopen VDB fixtures from OPFS after an offline reload.
 | 0:15 | Compare VDB import and volume modifiers with desktop Blender |
 | 0:19 | Mesh to Volume and Volume to Mesh in the original viewport |
 | 0:25 | Replay the four-frame Mantaflow gas simulation in Blender |
-| 0:35 | Reload offline and reopen the VDB files from browser storage |
+| 0:34 | Reload offline and reopen the VDB files from browser storage |
 <!-- /VOLUME_RECORDING_CHAPTERS -->
 
 The [memory64 investigation](../docs/memory64.md) records a standalone shared
@@ -308,7 +309,7 @@ saved PNG is compared with the same settings in desktop Blender 5.2.2. These are
 functional checks; host activity makes their timings unsuitable as an isolated
 performance benchmark.
 
-The selected runtime is about 227.5 MiB before HTTP compression, including
+The selected runtime is about 428.13 MiB before HTTP compression, including
 Python, NumPy and Blender's data. Only one browser variant downloads. The two
 variants currently have identical Wasm bytes, so their content-hash cache entry
 can also be shared. The [cache report](../docs/loading-cache.acceptance.json)
