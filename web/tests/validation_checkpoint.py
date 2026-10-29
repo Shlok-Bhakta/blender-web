@@ -6,6 +6,7 @@ import io
 import json
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -16,6 +17,9 @@ import native_validate
 
 class ValidationCheckpoint(unittest.TestCase):
     def test_new_candidate_cannot_reuse_previous_status_when_stopped(self):
+        first_stage = subprocess.check_output(
+            [sys.executable, native_validate.__file__, '--list'], text=True
+        ).splitlines()[0].split(':', 1)[0]
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             base = root / 'build/native'
@@ -29,9 +33,9 @@ class ValidationCheckpoint(unittest.TestCase):
             checkpoint.write_text(json.dumps(dict(version='old-candidate')))
             status = base / 'validation-status.json'
             status.write_text(json.dumps([
-                dict(name='python-foundation-hardware', exitCode=0, seconds=1)]))
+                dict(name=first_stage, exitCode=0, seconds=1)]))
             arguments = ['native_validate.py', '--blender', sys.executable,
-                         '--stop-before', 'python-foundation-hardware']
+                         '--stop-before', first_stage]
             with patch.object(native_validate, 'ROOT', root), \
                     patch.object(sys, 'argv', arguments), \
                     contextlib.redirect_stdout(io.StringIO()):
@@ -41,7 +45,7 @@ class ValidationCheckpoint(unittest.TestCase):
             self.assertEqual(json.loads(status.read_text()), [])
             self.assertEqual(json.loads(checkpoint.read_text()), manifest)
             arguments = ['native_validate.py', '--blender', sys.executable,
-                         '--resume-from', 'python-foundation-hardware']
+                         '--resume-from', first_stage]
             with patch.object(native_validate, 'ROOT', root), \
                     patch.object(sys, 'argv', arguments):
                 with self.assertRaisesRegex(AssertionError, 'previously recorded stage'):
