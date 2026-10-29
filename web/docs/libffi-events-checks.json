@@ -1,0 +1,310 @@
+{
+  "checkedAt": "2026-10-29T01:23:54.791344+00:00",
+  "originalLibffi": "3.5.2",
+  "productionIntegrated": false,
+  "browserVerified": true,
+  "bridgePollingMilliseconds": 0,
+  "underlyingSDKConditionWaitSliceMilliseconds": 100,
+  "workerStress": {
+    "originalLibffi": "3.5.2",
+    "existingWorkers": 8,
+    "newWorkers": 250,
+    "signatureReuseIterations": 1000,
+    "signatureKinds": 4,
+    "calls": 9340,
+    "tableSize": 102,
+    "serialTableSize": 99,
+    "registeredThreads": 274,
+    "concurrentPublishers": 4,
+    "concurrentClosures": 80,
+    "inFlightFree": true,
+    "nestedCreationDuringRetirement": true,
+    "pthreadExitCleanup": true,
+    "pollingMilliseconds": 0,
+    "indefinitelySleepingWorkers": 8,
+    "idleRepeatedWaits": 0,
+    "sleepingWorkerPublications": 200,
+    "sleepingWorkerQueuedNotices": 0,
+    "genericCIF": true,
+    "libffiIntegrated": false
+  },
+  "nodeStressRun": {
+    "exitCode": 0,
+    "timeout": false,
+    "seconds": 3.7796449097804725
+  },
+  "browser": {
+    "originalLibffi": "3.5.2",
+    "existingWorkers": 8,
+    "newWorkers": 250,
+    "signatureReuseIterations": 1000,
+    "signatureKinds": 4,
+    "calls": 9340,
+    "tableSize": 102,
+    "serialTableSize": 99,
+    "registeredThreads": 274,
+    "concurrentPublishers": 4,
+    "concurrentClosures": 80,
+    "inFlightFree": true,
+    "nestedCreationDuringRetirement": true,
+    "pthreadExitCleanup": true,
+    "pollingMilliseconds": 0,
+    "indefinitelySleepingWorkers": 8,
+    "idleRepeatedWaits": 0,
+    "sleepingWorkerPublications": 200,
+    "sleepingWorkerQueuedNotices": 0,
+    "genericCIF": true,
+    "libffiIntegrated": false,
+    "browserVersion": "145.0.7632.6",
+    "crossOriginIsolated": true,
+    "browserErrors": [],
+    "exitCode": 0
+  },
+  "extendedABI": {
+    "nodeCallbackCalls": 72,
+    "nodeCompiledVariadicCalls": 9,
+    "browser": {
+      "originalLibffi": "3.5.2",
+      "extendedSignatureKinds": 4,
+      "calls": 72,
+      "longDoubleExact": true,
+      "mixedVarargsExact": true,
+      "singleFieldAggregateVarargsExact": true,
+      "zeroFixedVarargsExact": true,
+      "browserVersion": "145.0.7632.6",
+      "crossOriginIsolated": true,
+      "browserErrors": [],
+      "exitCode": 0
+    },
+    "native": {
+      "blenderVersion": "5.2.2 LTS",
+      "blenderRevision": "d13f752e3b9c",
+      "originalBlenderLibffi": "3.5.2",
+      "callbackCalls": 72,
+      "compiledVariadicCalls": 9,
+      "extendedSignatureKinds": 4,
+      "exactValues": true,
+      "nativeModuleSha256": "909f694f6cf495c8b6c5c202667dd582c3d098022f122240cb31dbbd16850bfc",
+      "driverSha256": "335bb555f95d819227e930010261446ecba9706862d9851ec5b7b5c864caa488",
+      "librarySha256": "919ea8b56c5dea1c29c1786d8e797daea2a9d775d752d14eb0fa1ec232f0ea11"
+    }
+  },
+  "negativeControls": {
+    "events-positive": {
+      "exitCode": 0,
+      "timeout": false
+    },
+    "polling-control": {
+      "exitCode": 1,
+      "timeout": false
+    },
+    "wake-control": {
+      "exitCode": 1,
+      "timeout": false
+    }
+  },
+  "files": [
+    {
+      "name": "bridge.cc",
+      "bytes": 8705,
+      "sha256": "5f689a04f646146bd3e84b91efdb120cdd6e5ea68245bf5854adb6da4b67ec5a"
+    },
+    {
+      "name": "check.cc",
+      "bytes": 45,
+      "sha256": "5ecb3ce932e8b44101ac5b56fb048508c7619c44b6c294706ade4f5e39e14b52"
+    },
+    {
+      "name": "test-tail.cc",
+      "bytes": 9742,
+      "sha256": "a230f9fea76b675553fa6acc113d67853147f4256ad19374864ff36ad7794d0f"
+    },
+    {
+      "name": "ffi.c",
+      "bytes": 28024,
+      "sha256": "65cebb8ec87c71e24e373c77ecac54ec259121cfcb1261cd87ce6305a730ffaa"
+    },
+    {
+      "name": "build.sh",
+      "bytes": 1267,
+      "sha256": "3e4bce0497c6f78d7f8e18a20d4250f09e41ab09796ecf3f1913e7043c8af650"
+    },
+    {
+      "name": "build-abi.sh",
+      "bytes": 1275,
+      "sha256": "af8d59d32c13de757b3b8145c4b5de3b6693076f67bbe4672bbd03b5609a8d92"
+    },
+    {
+      "name": "build-browser.sh",
+      "bytes": 1275,
+      "sha256": "6ebe00c9601278e521de79ec8f4467a242d783b96b617e238cc247b8a0ee26ee"
+    },
+    {
+      "name": "build-browser-abi.sh",
+      "bytes": 1283,
+      "sha256": "4d433ec6f5b8d1dd355ab281d2a8d52028ca01507611419a04613699dd797e0b"
+    },
+    {
+      "name": "abi-check.cc",
+      "bytes": 5576,
+      "sha256": "a051b0bc0c951fefa40442cb369722414f0ac5c6c26d6d6fd9f1acaf85238851"
+    },
+    {
+      "name": "check.js",
+      "bytes": 76548,
+      "sha256": "6e218144764d59b81562f778ba6fc3bc41922405eac385632aac86612a8833da"
+    },
+    {
+      "name": "check.wasm",
+      "bytes": 71895,
+      "sha256": "a12a49e53cd651d6aa6f490eace2fef9a3527b75f119537e01053e6758d085d4"
+    },
+    {
+      "name": "abi-check.js",
+      "bytes": 79207,
+      "sha256": "a5832ca749b128b51f212e905d681214fd48a249c733d9330dc73be58daadc83"
+    },
+    {
+      "name": "abi-check.wasm",
+      "bytes": 63252,
+      "sha256": "be2aedee6bf000bcc7b23111aff862108fb1cec247f4cc9f6a517ed03b16df83"
+    },
+    {
+      "name": "web-check.js",
+      "bytes": 76814,
+      "sha256": "bf7d80748cdd9542dbc86cec3f17f0cecac5a39b8a969a0c7dd351caf792c34f"
+    },
+    {
+      "name": "web-check.wasm",
+      "bytes": 71895,
+      "sha256": "a12a49e53cd651d6aa6f490eace2fef9a3527b75f119537e01053e6758d085d4"
+    },
+    {
+      "name": "abi-web-check.js",
+      "bytes": 79473,
+      "sha256": "8c058e8cb7d4f6c7f19d3e5b93ece3c667159e55b0e31dfd9caf521a4f026954"
+    },
+    {
+      "name": "abi-web-check.wasm",
+      "bytes": 63252,
+      "sha256": "be2aedee6bf000bcc7b23111aff862108fb1cec247f4cc9f6a517ed03b16df83"
+    },
+    {
+      "name": "index.html",
+      "bytes": 680,
+      "sha256": "1dca0ba756e290e30c29a17d41b34ac845e4f3fe06336215ef646fbe3d8aa72c"
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 75,
+      "sha256": "ed6cff7cedc27cdf81b6e4e1582bcaab2d28f11ea47cca75655ee89913a28ff9"
+    },
+    {
+      "name": "browser.cjs",
+      "bytes": 1914,
+      "sha256": "06d43f8a7f5eb0baa012596222b345f6ff1280366af1b9749c7e0a4153b9c02f"
+    },
+    {
+      "name": "browser-verification.json",
+      "bytes": 700,
+      "sha256": "bf6d64754e13f30d2bf02e6e0be5bf748e9c825cc412f01a95ff51ec2c36710e"
+    },
+    {
+      "name": "browser-abi-verification.json",
+      "bytes": 318,
+      "sha256": "67abda11a683fa5f2d10187f172262c7d4e09e7a2f712b8cd0e88f4040eed6a2"
+    },
+    {
+      "name": "browser-raw.json",
+      "bytes": 3354,
+      "sha256": "b94059fc7789523d03e90c86386c0fc9df0fe9e715ff70e4d7dc32d418602c27"
+    },
+    {
+      "name": "browser-abi-raw.json",
+      "bytes": 1693,
+      "sha256": "ba4d829c1b0a877758748b3ea1758e920a8c5289117502526fd80c20aca5a4ba"
+    },
+    {
+      "name": "events-positive.log",
+      "bytes": 984,
+      "sha256": "79526e79e6ac8dad82b756e9dc3cd5cc4bb4e2165eac1fce45024f4b4b97599c"
+    },
+    {
+      "name": "polling-control.log",
+      "bytes": 1259,
+      "sha256": "5fe6f849d129d1a6b8c0c9561aadcb2fcc09854ffa71224366c28579ef3cc3b6"
+    },
+    {
+      "name": "wake-control.log",
+      "bytes": 997,
+      "sha256": "70c934ad73b839a0a92d24011f43e8917f89f3b3ff534aedbaed81c7a070efc9"
+    },
+    {
+      "name": "events-results.json",
+      "bytes": 204,
+      "sha256": "517fd3a416e7a3e751a8ad488c9be029430512ed23c8f1e7bf039d9635327516"
+    },
+    {
+      "name": "stress.log",
+      "bytes": 2184,
+      "sha256": "66561d79a566b1c7b80fb949397203fe64d6aca386e625b30b0bf82d55217c21"
+    },
+    {
+      "name": "stress-result.json",
+      "bytes": 73,
+      "sha256": "6ac9b98b473c3350c8bfc9bf62776ba066b8957aa1ab3e972d9898e8595307b9"
+    },
+    {
+      "name": "abi.log",
+      "bytes": 1206,
+      "sha256": "6a7323ef40043855fe909fd0eba85b90c86048ce4d358cede0a634538a739ecc"
+    },
+    {
+      "name": "native-check.cc",
+      "bytes": 5647,
+      "sha256": "335bb555f95d819227e930010261446ecba9706862d9851ec5b7b5c864caa488"
+    },
+    {
+      "name": "native-check.so",
+      "bytes": 22040,
+      "sha256": "919ea8b56c5dea1c29c1786d8e797daea2a9d775d752d14eb0fa1ec232f0ea11"
+    },
+    {
+      "name": "native-verify.py",
+      "bytes": 997,
+      "sha256": "609e5eee005da166e85207ccbb2903273a59c35d09113e870fe6ed5e68c10849"
+    },
+    {
+      "name": "native-verification.json",
+      "bytes": 481,
+      "sha256": "9d2e8b8bc5d706acaa1ed68e76d7cbdf7b39541accc3ac9607dc75827eef97b9"
+    },
+    {
+      "name": "native-readback.log",
+      "bytes": 1761,
+      "sha256": "9caada3c85eb508e8e38cd47f1664a929f4d58ca8157e37af20788d140480165"
+    }
+  ],
+  "sdkSourceHashes": {
+    "system/lib/libc/musl/src/thread/__timedwait.c": "87d6ff15e0923a493c9f743c133b4d98350ae30506c4a877a979047d4454f576",
+    "system/lib/pthread/emscripten_futex_wait.c": "eab2c6d69316987fbdccaf5ffe18023d6fc8b30c2a4012938157a71ac2ae0f7f"
+  },
+  "limitations": [
+    "This is an isolated library conformance test, not production Blender ctypes support",
+    "Application startup and complete worker registration still need integration",
+    "Thread cancellation and exiting from inside a callback remain unverified",
+    "Self-free, stale callback calls and untracked workers remain unsupported or unverified",
+    "Bounded table reuse does not establish bounded compiled-module or GC memory",
+    "The registry mutex surrounds wait transitions; application performance still needs measurement"
+  ],
+  "emscriptenVersion": "4.0.23",
+  "sourceArchive": {
+    "name": "libffi-3.5.2.tar.gz",
+    "sha256": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc"
+  },
+  "evidenceArchive": {
+    "path": "web/docs/libffi-events-probe-evidence.tar.gz",
+    "bytes": 248822,
+    "sha256": "0ef6491fbbd437d9146f4c0061a099f73f8061e39edefa01481e0f5d84916139"
+  }
+}

@@ -8,8 +8,10 @@ Callback retirement waits for a running callback. A new test also creates, invok
 
 An independent C driver resolved libffi from pinned native Blender 5.2.2 LTS's original `_ctypes` module. Its 720 exact calls include 640 worker calls using the same four signature categories. The native module, driver, Wasm sources, binaries and logs have recorded hashes.
 
-The current bridge polls futex waits in two-millisecond slices while preserving the original deadline. Replacing polling, testing forced termination and cancellation, self-free, stale callback calls, untracked workers, more ABI layouts and full application ctypes integration remain necessary. This is not evidence of full dependency parity.
+This earlier bridge polls futex waits in two-millisecond slices while preserving the original deadline. Replacing polling, testing forced termination and cancellation, self-free, stale callback calls, untracked workers, more ABI layouts and full application ctypes integration remain necessary. This is not evidence of full dependency parity.
 
 The [machine-readable proof](libffi-worker-checks.json) identifies the exact inputs and limitations. The [80 KiB evidence archive](libffi-worker-probe-evidence.tar.gz) contains the source patch, C++ drivers, binaries, logs and reproduction instructions.
 
 The [extended argument checks](libffi-varargs-checks.md) add mixed varargs, long doubles, small aggregates and zero fixed arguments. They fix a separate forward-marshalling alignment bug and retain the full worker stress result.
+
+The [new worker protocol](libffi-events-checks.md) removes bridge polling and passes the full Node and Chromium tests. This page retains the earlier snapshot and its exact evidence.
