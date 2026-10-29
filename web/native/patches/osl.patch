@@ -1,0 +1,27 @@
+--- a/src/cmake/compiler.cmake
++++ b/src/cmake/compiler.cmake
+@@ -64,6 +64,10 @@
+     # CLANG_VERSION_STRING.
+     set (CMAKE_COMPILER_IS_CLANG 1)
+     EXECUTE_PROCESS( COMMAND ${CMAKE_CXX_COMPILER} --version OUTPUT_VARIABLE clang_full_version_string )
++    if (EMSCRIPTEN)
++        # The wrapper reports its SDK version; CMake identifies the underlying Clang.
++        set (clang_full_version_string "clang version ${CMAKE_CXX_COMPILER_VERSION}")
++    endif ()
+     if (clang_full_version_string MATCHES "Apple")
+         set (CMAKE_CXX_COMPILER_ID "AppleClang")
+         set (CMAKE_COMPILER_IS_APPLECLANG 1)
+--- a/src/include/OSL/oslconfig.h.in
++++ b/src/include/OSL/oslconfig.h.in
+@@ -152,7 +152,11 @@
+ 
+ 
+ /// ustringhash_pod is the type we use to pass hash data in llvm function calls.
++#if defined(__EMSCRIPTEN__)
++using ustringhash_pod = ustringhash::hash_t;
++#else
+ using ustringhash_pod = size_t;
++#endif
+ 
+ /// ustring_pod is the type we use to pass string data in llvm function calls.
+ using ustring_pod = const char*;

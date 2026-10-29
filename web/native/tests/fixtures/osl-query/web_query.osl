@@ -1,0 +1,15 @@
+shader web_query(
+    float gain = 1.25 [[string label = "Gain", float min = 0, float max = 4]],
+    int steps = 7,
+    string label = "browser",
+    color tint = color(0.25, 0.5, 0.75),
+    vector axis = vector(1, 2, 3),
+    float weights[3] = {0.125, 0.25, 0.625},
+    matrix basis = matrix(1),
+    output color result = 0,
+    output float energy = 0)
+[[string help = "Browser query fixture"]]
+{
+    result = tint * gain;
+    energy = weights[0] + weights[1] + weights[2] + steps;
+}

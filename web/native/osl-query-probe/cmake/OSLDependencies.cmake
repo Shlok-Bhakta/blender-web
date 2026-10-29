@@ -1,0 +1,5 @@
+find_package(OpenEXR CONFIG REQUIRED)
+find_package(WebP CONFIG REQUIRED)
+find_package(OpenJPEG CONFIG REQUIRED)
+find_package(Freetype REQUIRED)
+find_package(libheif CONFIG REQUIRED)

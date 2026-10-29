@@ -1,0 +1,92 @@
+{
+  "node": {
+    "fileAndMemory": true,
+    "hashHighBitsPreserved": true,
+    "hashPodBytes": 8,
+    "invalidInputRecovery": true,
+    "nativeMetadataExact": true,
+    "oslVersion": "1.15.3.0",
+    "parallelQueries": 128,
+    "parameters": 9,
+    "pointerBytes": 4,
+    "workers": 4
+  },
+  "browser": {
+    "result": {
+      "fileAndMemory": true,
+      "hashHighBitsPreserved": true,
+      "hashPodBytes": 8,
+      "invalidInputRecovery": true,
+      "nativeMetadataExact": true,
+      "oslVersion": "1.15.3.0",
+      "parallelQueries": 128,
+      "parameters": 9,
+      "pointerBytes": 4,
+      "workers": 4
+    },
+    "diagnostics": [
+      "ERROR: Error, line : ",
+      "ERROR: Failed parse of preloaded OSO code (error code 1)"
+    ],
+    "crossOriginIsolated": true,
+    "offline": true
+  },
+  "browserErrors": [],
+  "browserVersion": "145.0.7632.6",
+  "applicationIntegrated": false,
+  "source": {
+    "FILE": "OpenShadingLanguage-1.15.3.0.tar.gz",
+    "HASH": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+    "HASH_TYPE": "SHA256",
+    "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
+    "VERSION": "1.15.3.0"
+  },
+  "patchSha256": "87bb3402a0883e40838ca559047cbbddad0b366b6bf24dd6247e7a05a47ea63f",
+  "nativeReference": {
+    "version": "1.15.3.0",
+    "blenderRevision": "d13f752e3b9c",
+    "nativeModuleSha256": "9f980d338f288208bbc57f59938fca44836e31b6450841b2ab0dc40ca166ebbe",
+    "invalidRejected": true,
+    "invalidQueryError": "",
+    "missingRejected": true,
+    "missingDiagnostic": true,
+    "recovered": true
+  },
+  "emscriptenVersion": "4.0.23",
+  "shaderExecutionVerified": false,
+  "originalHashAliasRejected": true,
+  "hashNegativeControlLogSha256": "626354ece6cbf327c036d8d772641ff4e26bf10cef10d39cc2a2eb2034e1e74f",
+  "artifacts": {
+    "query-proof/osl-query.js": {
+      "bytes": 80386,
+      "sha256": "69dadcb3e0e718bb6ca31df0d606938f010b5338cf5c92d39c6329ff3bea45f6"
+    },
+    "query-proof/osl-query.wasm": {
+      "bytes": 407268,
+      "sha256": "b6f93b2ca9cbfa5057d51441a48de9724efe8e5a3fede68e9012e74f95024425"
+    },
+    "osl-wasm/lib/liboslquery.a": {
+      "bytes": 810506,
+      "sha256": "174aa615d9e40ac060998a3c8cea713936e41b0f52b9a4a01e39d0ce6b910a20"
+    },
+    "query-fixtures/web_query.oso": {
+      "bytes": 2033,
+      "sha256": "81a8b177d2655ee221be864eeb605d7d26a6552b28df1d2f42d7d8b48da31eac"
+    },
+    "query-fixtures/native-query.json": {
+      "bytes": 3277,
+      "sha256": "f102a41bcaefb19cd10abbaefea5b5116d38ec4b6a3afcccbee447f73f905b17"
+    }
+  },
+  "sourceHashes": {
+    "web/tools/native_osl_query_probe.py": "923ae59523e729a01520413b090657c52659ed4816e5b135e90c474e8b9098ef",
+    "web/native/patches/osl.patch": "87bb3402a0883e40838ca559047cbbddad0b366b6bf24dd6247e7a05a47ea63f",
+    "web/native/osl-query-probe/CMakeLists.txt": "906c26e96866daa15e183987e6e548ccd7d4ba42533e287a6ca0f4073b403326",
+    "web/native/osl-query-probe/cmake/FindLLVM.cmake": "0f2637da53758493d8a4e36815ef84b2bfa0a93dbf0ec26034c497531ac37138",
+    "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d",
+    "web/native/tests/osl-query.cc": "563259da480e7063cea04916a9706adffd932c38982d0729e26406c3d33cc15b",
+    "web/native/tests/osl-query-native.py": "2985b26663d36222d89fa6d3650919b2a89ee9580f3793a408377c5efd51b486",
+    "web/native/tests/fixtures/osl-query/web_query.osl": "ec5faba004325e74d10a7517ce717f3f533137e18460764a087eb6ef223d3abc",
+    "web/tests/osl-query.cjs": "ea2fc2d2b8f104073c49e3dcc857e41a249f47c5514dfc97378ab83c97b87437"
+  }
+}
