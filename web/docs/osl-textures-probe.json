@@ -1,0 +1,208 @@
+{
+  "node": {
+    "ownedOSLSystems": 8,
+    "nativeOwnerRetirement": true,
+    "tableReused": true,
+    "automaticPublication": true,
+    "mixedFFICallbacks": 7296,
+    "workerCompilation": true,
+    "busyWorkerPublication": true,
+    "shadingPoints": 7296,
+    "rendererCallbacks": 14592,
+    "concurrentCompilation": true,
+    "cooperativeCancellation": true,
+    "closureTrees": true,
+    "closureStrings": true,
+    "textureSamples": true,
+    "mainOnWorker": true,
+    "dynamicWorkerStartup": true
+  },
+  "browser": {
+    "result": {
+      "ownedOSLSystems": 8,
+      "nativeOwnerRetirement": true,
+      "tableReused": true,
+      "automaticPublication": true,
+      "mixedFFICallbacks": 7296,
+      "workerCompilation": true,
+      "busyWorkerPublication": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "concurrentCompilation": true,
+      "cooperativeCancellation": true,
+      "closureTrees": true,
+      "closureStrings": true,
+      "textureSamples": true,
+      "mainOnWorker": true,
+      "dynamicWorkerStartup": true
+    },
+    "bytecode": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/web_execute.oso\nshader web_execute\nparam\tfloat\tgain\t1.25\t\t%read{0,7} %write{2147483647,-1}\nparam\tstring\ttag\t\"browser\"\t\t%read{8,23} %write{2147483647,-1}\nparam\tstring\ttexname\t\"texture.exr\"\t\t%read{16,16} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{5,5}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\noparam\tint\tmatches\t0\t\t%read{2147483647,-1} %write{14,14}\noparam\tstring\techoed\t\"\"\t\t%read{2147483647,-1} %write{15,15}\noparam\tclosure color\tlobes\t\t\t%read{2147483647,-1} %write{25,25}\noparam\tcolor\ttexel\t0 0 0\t\t%read{2147483647,-1} %write{16,16}\nglobal\tpoint\tP\t%read{6,6} %write{2147483647,-1}\nglobal\tfloat\tu\t%read{0,18} %write{2147483647,-1} %derivs\nglobal\tfloat\tv\t%read{1,18} %write{2147483647,-1} %derivs\ntemp\tfloat\t$tmp1\t%read{5,5} %write{0,0}\ntemp\tfloat\t$tmp2\t%read{5,5} %write{1,1}\ntemp\tfloat\t$tmp3\t%read{4,4} %write{2,2}\ntemp\tfloat\t$tmp4\t%read{4,4} %write{3,3}\ntemp\tfloat\t$tmp5\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\nconst\tstring\t$const1\t\"browser\"\t\t%read{8,8} %write{2147483647,-1}\ntemp\tint\t$tmp7\t%read{11,11} %write{8,8}\ntemp\tint\t$tmp8\t%read{10,10} %write{9,9}\nconst\tstring\t$const2\t\"brow\"\t\t%read{9,9} %write{2147483647,-1}\nconst\tint\t$const3\t2\t\t%read{10,10} %write{2147483647,-1}\ntemp\tint\t$tmp9\t%read{11,11} %write{10,10}\ntemp\tint\t$tmp10\t%read{14,14} %write{11,11}\ntemp\tint\t$tmp11\t%read{13,13} %write{12,12}\nconst\tint\t$const4\t4\t\t%read{13,13} %write{2147483647,-1}\ntemp\tint\t$tmp12\t%read{14,14} %write{13,13}\nconst\tstring\t$const5\t\"interp\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const6\t\"closest\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const7\t\"swrap\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const8\t\"clamp\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const9\t\"twrap\"\t\t%read{16,16} %write{2147483647,-1}\ntemp\tclosure color\t$tmp13\t%read{19,19} %write{17,17}\nconst\tnormal\t$const10\t0 0 1\t\t%read{17,17} %write{2147483647,-1}\nconst\tstring\t$const11\t\"label\"\t\t%read{17,17} %write{2147483647,-1}\nconst\tstring\t$const12\t\"diffuse\"\t\t%read{17,17} %write{2147483647,-1}\ntemp\tcolor\t$tmp15\t%read{19,19} %write{18,18}\nconst\tfloat\t$const13\t0.25\t\t%read{18,18} %write{2147483647,-1}\ntemp\tclosure color\t$tmp16\t%read{22,22} %write{19,19}\ntemp\tclosure color\t$tmp17\t%read{21,21} %write{20,20}\nconst\tstring\t$const14\t\"emission\"\t\t%read{20,20} %write{2147483647,-1}\nconst\tcolor\t$const15\t0.100000001 0.200000003 0.300000012\t\t%read{21,21} %write{2147483647,-1}\ntemp\tclosure color\t$tmp19\t%read{22,22} %write{21,21}\ntemp\tclosure color\t$tmp20\t%read{25,25} %write{22,22}\ntemp\tclosure color\t$tmp21\t%read{24,24} %write{23,23}\nconst\tstring\t$const16\t\"debug\"\t\t%read{23,23} %write{2147483647,-1}\nconst\tcolor\t$const17\t0.400000006 0.400000006 0.400000006\t\t%read{24,24} %write{2147483647,-1}\ntemp\tclosure color\t$tmp23\t%read{25,25} %write{24,24}\ncode ___main___\n# fixtures/web_execute.osl:13\n#     energy = dot(P, P) + gain;\n\tmul\t\t$tmp1 u gain \t%filename{\"fixtures/web_execute.osl\"} %line{13} %argrw{\"wrr\"}\n\tadd\t\t$tmp2 v gain \t%argrw{\"wrr\"}\n\tsin\t\t$tmp3 u \t%argrw{\"wr\"}\n\tcos\t\t$tmp4 v \t%argrw{\"wr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tcolor\t\tresult $tmp1 $tmp2 $tmp5 \t%argrw{\"wrrr\"}\n# fixtures/web_execute.osl:14\n#     matches = (tag == \"browser\") + startswith(tag, \"brow\") * 2 + strlen(tag) * 4;\n\tdot\t\t$tmp6 P P \t%line{14} %argrw{\"wrr\"}\n\tadd\t\tenergy $tmp6 gain \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:15\n#     echoed = tag;\n\teq\t\t$tmp7 tag $const1 \t%line{15} %argrw{\"wrr\"}\n\tstartswith\t$tmp8 tag $const2 \t%argrw{\"wrr\"}\n\tmul\t\t$tmp9 $tmp8 $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp10 $tmp7 $tmp9 \t%argrw{\"wrr\"}\n\tstrlen\t\t$tmp11 tag \t%argrw{\"wr\"}\n\tmul\t\t$tmp12 $tmp11 $const4 \t%argrw{\"wrr\"}\n\tadd\t\tmatches $tmp10 $tmp12 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:16\n#     texel = texture(texname, u, v, \"interp\", \"closest\", \"swrap\", \"clamp\", \"twrap\", \"clamp\");\n\tassign\t\techoed tag \t%line{16} %argrw{\"wr\"}\n# fixtures/web_execute.osl:17\n#     lobes = color(u, 0.25, v) * diffuse(normal(0, 0, 1), \"label\", tag)\n\ttexture\t\ttexel texname u v $const5 $const6 $const7 $const8 $const9 $const8 \t%line{17} %argrw{\"wrrrrrrrrr\"} %argderivs{2,3}\n# fixtures/web_execute.osl:18\n#           + color(0.1, 0.2, 0.3) * emission() + color(0.4) * debug(tag);\n\tclosure\t\t$tmp13 $const12 $const10 $const11 tag \t%line{18} %argrw{\"wrrrr\"}\n\tcolor\t\t$tmp15 u $const13 v \t%argrw{\"wrrr\"}\n\tmul\t\t$tmp16 $tmp13 $tmp15 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:19\n# }\n\tclosure\t\t$tmp17 $const14 \t%line{19} %argrw{\"wr\"}\n\tmul\t\t$tmp19 $tmp17 $const15 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp20 $tmp16 $tmp19 \t%argrw{\"wrr\"}\n\tclosure\t\t$tmp21 $const16 tag \t%argrw{\"wrr\"}\n\tmul\t\t$tmp23 $tmp21 $const17 \t%argrw{\"wrr\"}\n\tadd\t\tlobes $tmp20 $tmp23 \t%argrw{\"wrr\"}\n\tend\n",
+    "diagnostics": [
+      "warning: unsupported syscall: __syscall_prlimit64",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "program exited (with status: 0), but keepRuntimeAlive() is set (counter=0) due to an async operation, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)"
+    ],
+    "crossOriginIsolated": true,
+    "offline": true
+  },
+  "nodeDiagnostics": [
+    "warning: unsupported syscall: __syscall_prlimit64",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "program exited (with status: 0), but keepRuntimeAlive() is set (counter=0) due to an async operation, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)"
+  ],
+  "browserErrors": [],
+  "browserVersion": "145.0.7632.6",
+  "applicationIntegrated": false,
+  "browserShaderExecutionVerified": true,
+  "source": {
+    "source": {
+      "FILE": "OpenShadingLanguage-1.15.3.0.tar.gz",
+      "HASH": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
+      "VERSION": "1.15.3.0"
+    },
+    "patches": {
+      "osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+      "osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a",
+      "osl-owned.patch": "6cfbde8dba6628485990a5a7da499bf9bed8eea91cfb5161d73bb73b540e2d2f",
+      "osl-closures.patch": "f2377e48de0945221fcc5975da18c8d0b69bbc3caf4998cadd860e36e4132441"
+    }
+  },
+  "emscriptenVersion": "4.0.23",
+  "llvmVersion": "20.1.8",
+  "native": {
+    "native": {
+      "nativeClosureTrees": true,
+      "nativeClosureStrings": true,
+      "nativeTextureSamples": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "ffiCallbacks": 7296
+    },
+    "node": {
+      "nativeClosureTrees": true,
+      "nativeClosureStrings": true,
+      "nativeTextureSamples": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "ffiCallbacks": 7296
+    },
+    "browser": {
+      "nativeClosureTrees": true,
+      "nativeClosureStrings": true,
+      "nativeTextureSamples": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "ffiCallbacks": 7296
+    }
+  },
+  "nativeFFI": {
+    "source": {
+      "FILE": "libffi-3.5.2.tar.gz",
+      "HASH": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/libffi/libffi/releases/download/v3.5.2/libffi-3.5.2.tar.gz",
+      "VERSION": "3.5.2"
+    },
+    "target": "x86_64-linux-gnu",
+    "archiveSha256": "e22581b78a7f62c73efff29a26f105846fcaa6675eadb04e83abf7833131db21",
+    "ffiHeaderSha256": "3c5831e3bc9a8538cdb7bbfdb84215faa9d719f17c8fdf23d30cf59859183983",
+    "targetHeaderSha256": "45e4fd2585aaed711e4fa3d1377b70c8e54dcdc56bdf402fa23a8816d19cc58a"
+  },
+  "oslLibraryHashes": {
+    "osl-wasm/lib/liboslexec.a": "73c085f1d61127219160a83dcbabf51378834010167fd0945632bee7fd8be531",
+    "osl-wasm/lib/liboslquery.a": "819934a1ca720e7054db5392fdcc23accdb7eb6cb0dec570166fc30805c420ec",
+    "osl-wasm/lib/liboslnoise.a": "fb38584d4e3a1780a48b2ff35d560af4f8fba0f7c2769a1490f6ae961be92ba2"
+  },
+  "nativeLibraries": {
+    "liboslexec.so.1.15.3": "5497e7bb936d51dcc6e2eadcbc777f01ef3ff5e24c48cf518853b7a5ad69728a",
+    "libOpenImageIO.so.3.1.13": "207b70b9d3d1ae48f6013dbad654ad0306a10ae35c8c0e546dab189a761d6efb",
+    "libOpenImageIO_Util.so.3.1.13": "e52439d9788a61ec3f7ad8a1af82970e06655512fd9842de92b421868a93c080"
+  },
+  "prerequisiteSha256": "4f898dd1eac1083b3f462db4e2928734de1f7a40bc9fce31bf7c7404b6b6b24a",
+  "artifacts": {
+    "runtime/osl-runtime.js": {
+      "bytes": 373138,
+      "sha256": "c74609d6d48804b87b9f5220be5e103421c7d298ea0ea3a9da12d37c3876b39d"
+    },
+    "runtime/osl-runtime.wasm": {
+      "bytes": 78485565,
+      "sha256": "2fbd8129b3e6bc67b153b948d62b95989baca5de9725ec2c0db391341fd38caf"
+    },
+    "osl-native": {
+      "bytes": 118120,
+      "sha256": "590f9b62c5f745a2b19fe0dde7453adc8b7e113035ef1bcc92a9fd9005b6e3df"
+    },
+    "evidence/osl-runtime.png": {
+      "bytes": 186725,
+      "sha256": "0b4d933872479a8ef752d1c12ee0a11abe5fe733ef465567fb6b25dd199a8e36"
+    },
+    "evidence/osl-runtime.webm": {
+      "bytes": 912676,
+      "sha256": "cfc5f0b5ad55afe57a8929668c9dd75dbb990df9dad5a8e823376eb0d2fdc2a5"
+    },
+    "evidence/browser-fixtures/web_execute.oso": {
+      "bytes": 4738,
+      "sha256": "e8d47dc35af6ae99226d9f5b0b135ae756742208b8eb236511ece8274c83e6bf"
+    },
+    "evidence/native-fixtures/web_execute.oso": {
+      "bytes": 5133,
+      "sha256": "de40a792e826aa6f1eb71937016871e5c3047ef0834b70f290bf0abf590081b5"
+    },
+    "evidence/node-fixtures/web_execute.oso": {
+      "bytes": 4738,
+      "sha256": "e8d47dc35af6ae99226d9f5b0b135ae756742208b8eb236511ece8274c83e6bf"
+    },
+    "evidence/browser-fixtures/texture.exr": {
+      "bytes": 399,
+      "sha256": "892181379f497e99c221a907494ccce88b4252afd1cf63002f8e505b8707360c"
+    },
+    "evidence/native-fixtures/texture.exr": {
+      "bytes": 399,
+      "sha256": "892181379f497e99c221a907494ccce88b4252afd1cf63002f8e505b8707360c"
+    },
+    "evidence/node-fixtures/texture.exr": {
+      "bytes": 399,
+      "sha256": "892181379f497e99c221a907494ccce88b4252afd1cf63002f8e505b8707360c"
+    }
+  },
+  "sourceHashes": {
+    "web/tools/native_osl_textures_probe.py": "25fb6797b14ec18b4f4beb4dc24acb863a55b419633e191705eb65494ee706a1",
+    "web/native/tests/osl-textures.cc": "8804e319f9b66b773a8169df5e512be7f8c9b4d82ac3db68ebfc05dd72ee6da8",
+    "web/native/osl-textures-probe/CMakeLists.txt": "8c7cd68dbb44b089d9d09732263a44465bb4d76813d18d47a234dca9e7246d55",
+    "web/tests/osl-textures.cjs": "08f38cba336508bfab5460e3660f4a1d646d572f09a91b216aba1ec8286a0393",
+    "web/native/tests/osl-runtime-native.py": "1985f7db1790c725da2683256024674fdb34eb2469ef776494846c617794221b",
+    "web/native/tests/fixtures/osl-textures/web_execute.osl": "fe60fbaac624a81347137b1aefd5afb09b6e85c639310fc06f946db237f174b0"
+  }
+}
