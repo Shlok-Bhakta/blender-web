@@ -11,3 +11,5 @@ An independent C driver resolved libffi from pinned native Blender 5.2.2 LTS's o
 The current bridge polls futex waits in two-millisecond slices while preserving the original deadline. Replacing polling, testing forced termination and cancellation, self-free, stale callback calls, untracked workers, more ABI layouts and full application ctypes integration remain necessary. This is not evidence of full dependency parity.
 
 The [machine-readable proof](libffi-worker-checks.json) identifies the exact inputs and limitations. The [80 KiB evidence archive](libffi-worker-probe-evidence.tar.gz) contains the source patch, C++ drivers, binaries, logs and reproduction instructions.
+
+The [extended argument checks](libffi-varargs-checks.md) add mixed varargs, long doubles, small aggregates and zero fixed arguments. They fix a separate forward-marshalling alignment bug and retain the full worker stress result.

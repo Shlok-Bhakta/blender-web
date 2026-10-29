@@ -1,0 +1,204 @@
+{
+  "checkedAt": "2026-10-29T00:59:24.969186+00:00",
+  "productionIntegrated": false,
+  "browserVerified": false,
+  "originalLibffi": "3.5.2",
+  "sourceArchive": {
+    "name": "libffi-3.5.2.tar.gz",
+    "sha256": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc"
+  },
+  "workerStress": {
+    "originalLibffi": "3.5.2",
+    "existingWorkers": 8,
+    "newWorkers": 250,
+    "signatureReuseIterations": 1000,
+    "signatureKinds": 4,
+    "calls": 9332,
+    "tableSize": 87,
+    "serialTableSize": 84,
+    "registeredThreads": 266,
+    "concurrentPublishers": 4,
+    "concurrentClosures": 80,
+    "inFlightFree": true,
+    "nestedCreationDuringRetirement": true,
+    "pthreadExitCleanup": true,
+    "pollingMilliseconds": 2,
+    "genericCIF": true,
+    "libffiIntegrated": false
+  },
+  "extendedABI": {
+    "callbackCalls": 72,
+    "compiledVariadicCalls": 9,
+    "signatureCategories": [
+      "Mixed variadic integers, floating point, pointers, aggregate and long double",
+      "Fixed long-double arguments and return",
+      "Single-field aggregate in varargs",
+      "Variadic calls with zero fixed arguments"
+    ],
+    "directCallbacks": true,
+    "ffiCallToCallback": true,
+    "ffiCallToCompiledVariadic": true
+  },
+  "native": {
+    "blenderVersion": "5.2.2 LTS",
+    "blenderRevision": "d13f752e3b9c",
+    "originalBlenderLibffi": "3.5.2",
+    "callbackCalls": 72,
+    "compiledVariadicCalls": 9,
+    "extendedSignatureKinds": 4,
+    "exactValues": true,
+    "nativeModuleSha256": "909f694f6cf495c8b6c5c202667dd582c3d098022f122240cb31dbbd16850bfc",
+    "driverSha256": "335bb555f95d819227e930010261446ecba9706862d9851ec5b7b5c864caa488",
+    "librarySha256": "919ea8b56c5dea1c29c1786d8e797daea2a9d775d752d14eb0fa1ec232f0ea11"
+  },
+  "negativeControl": {
+    "exitCode": 1,
+    "timeout": false,
+    "expectedFinalInteger": 8,
+    "observedFinalInteger": 29
+  },
+  "files": [
+    {
+      "name": "ffi-varargs/check.cc",
+      "bytes": 5553,
+      "sha256": "fe9de2f9a548c5788ed3523f9e169259166b4d83bd02465afad446db3aaf931a"
+    },
+    {
+      "name": "ffi-varargs/ffi.c",
+      "bytes": 28024,
+      "sha256": "65cebb8ec87c71e24e373c77ecac54ec259121cfcb1261cd87ce6305a730ffaa"
+    },
+    {
+      "name": "ffi-varargs/build.sh",
+      "bytes": 1275,
+      "sha256": "d938d54f0982803fa84755aa2f6b68228670ae18f063a96d3203fb4b81a3f404"
+    },
+    {
+      "name": "ffi-varargs/check.js",
+      "bytes": 79203,
+      "sha256": "39fda7b4a6e13275cf6640e39404562244d05cfd2765d98ebe9b2c00b265db22"
+    },
+    {
+      "name": "ffi-varargs/check.wasm",
+      "bytes": 56242,
+      "sha256": "61d0760e2df4d981e73a23d923cecf0937736598d1ae359b4400a104a84cff13"
+    },
+    {
+      "name": "ffi-varargs/libffi.a",
+      "bytes": 20998,
+      "sha256": "b33cdce72bb022a8355d04e751fb51f8b28d0f77133efb6eaab5977fc4deb984"
+    },
+    {
+      "name": "ffi-varargs/ffi-wasm-varargs.patch",
+      "bytes": 7646,
+      "sha256": "28c44125f0a4d040301c59f537dc3b2df7736af00c49a5a545aff44d95254349"
+    },
+    {
+      "name": "ffi-varargs/stress-driver.cc",
+      "bytes": 37,
+      "sha256": "a386cbae2f82ce300a4e8e59689a1b86920d274396e77f66dddc5e0be4149fc8"
+    },
+    {
+      "name": "ffi-varargs/build-stress.sh",
+      "bytes": 1284,
+      "sha256": "fe86bbcb21202c57b7a05df33328d36c19a1eb2ed98e5e65480369035cb8ed08"
+    },
+    {
+      "name": "ffi-varargs/stress.js",
+      "bytes": 76549,
+      "sha256": "877b8a05862c0492e9b59d39fcabc5ad65b1a11bbb7d324dabaf64d1d9366b3f"
+    },
+    {
+      "name": "ffi-varargs/stress.wasm",
+      "bytes": 61331,
+      "sha256": "eb16cee831ac7b0968070cd92d63024ef63a71e7e56a1cac103903fd8d6b5072"
+    },
+    {
+      "name": "ffi-varargs/stress.log",
+      "bytes": 1841,
+      "sha256": "b589849bb7b64f65fcb4ed144b42a19bd4d70245601ee2bf9ead2ef559921d98"
+    },
+    {
+      "name": "ffi-varargs/stress-result.json",
+      "bytes": 72,
+      "sha256": "a94a7c1fcb286d21e2b62aa823b2f85b0ef519f10e5a0311e8cee2557a7bcf07"
+    },
+    {
+      "name": "ffi-varargs/check-compiler.log",
+      "bytes": 1206,
+      "sha256": "6a7323ef40043855fe909fd0eba85b90c86048ce4d358cede0a634538a739ecc"
+    },
+    {
+      "name": "ffi-varargs/native-check.cc",
+      "bytes": 5647,
+      "sha256": "335bb555f95d819227e930010261446ecba9706862d9851ec5b7b5c864caa488"
+    },
+    {
+      "name": "ffi-varargs/native-check.so",
+      "bytes": 22040,
+      "sha256": "919ea8b56c5dea1c29c1786d8e797daea2a9d775d752d14eb0fa1ec232f0ea11"
+    },
+    {
+      "name": "ffi-varargs/native-verify.py",
+      "bytes": 997,
+      "sha256": "609e5eee005da166e85207ccbb2903273a59c35d09113e870fe6ed5e68c10849"
+    },
+    {
+      "name": "ffi-varargs/native-verification.json",
+      "bytes": 481,
+      "sha256": "9d2e8b8bc5d706acaa1ed68e76d7cbdf7b39541accc3ac9607dc75827eef97b9"
+    },
+    {
+      "name": "ffi-varargs/native-readback.log",
+      "bytes": 1761,
+      "sha256": "9caada3c85eb508e8e38cd47f1664a929f4d58ca8157e37af20788d140480165"
+    },
+    {
+      "name": "ffi-varargs/negative-control.log",
+      "bytes": 1230,
+      "sha256": "e95b4b7274ef23b96d726ed2859ed89a2a18bf130a7901b11950ec59a7229f22"
+    },
+    {
+      "name": "ffi-varargs/negative-result.json",
+      "bytes": 99,
+      "sha256": "6d8287f1f89c89c956615195756ef6819a22342ebcff14931673c483108e7a89"
+    },
+    {
+      "name": "ffi-varargs/before/check.cc",
+      "bytes": 4915,
+      "sha256": "4485f48ee28651d0d5b447bc223e9a805f7246bfae5d916a5ae4f715d2dc03af"
+    },
+    {
+      "name": "ffi-varargs/before/ffi.c",
+      "bytes": 29398,
+      "sha256": "c0d41cb68314ebb999fc1879713e4853ab92dfeb130eb5552cae1c0f0651f160"
+    },
+    {
+      "name": "ffi-varargs/before/check.js",
+      "bytes": 80589,
+      "sha256": "fed07a41273f068e0cc529da591d417bc8d5e4f8875b661f2fa495b83bd930bc"
+    },
+    {
+      "name": "ffi-varargs/before/check.wasm",
+      "bytes": 55750,
+      "sha256": "e359a146ef14e68b7f382c78ebdd6346e2d94255672d6a3b3b14d451d25ea82f"
+    },
+    {
+      "name": "ffi-reentrant/check.cc",
+      "bytes": 14516,
+      "sha256": "fef29e68fc1835580573095d2aa35f3d93b8064a0d277193fdc530440f89251f"
+    }
+  ],
+  "limitations": [
+    "This remains an isolated Node pthread experiment; application and browser integration are pending",
+    "The worker bridge still polls futex waits every two milliseconds",
+    "Forced termination, cancellation, self-free and calls after free remain unverified or unsupported",
+    "These four additional ABI categories do not prove every possible C ABI layout",
+    "Bounded table reuse does not prove bounded compiled-module or GC memory"
+  ],
+  "evidenceArchive": {
+    "path": "web/docs/libffi-varargs-probe-evidence.tar.gz",
+    "bytes": 194344,
+    "sha256": "2be967751fd397aa5cb9b4b6b9a1c0a14b0d9e4924d387a11854df4ff1931d52"
+  }
+}
