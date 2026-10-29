@@ -188,7 +188,7 @@
    size = DEC_PTR(size);
    code = DEC_PTR(code);
 -  var closure = _malloc(size);
-+  var closure = _ffi_web_malloc(size);
++  var closure = DEC_PTR(_ffi_web_malloc(size));
    var index = getEmptyTableSlot();
    DEREF_PTR(code, 0) = ENC_PTR(index);
    CLOSURE__wrapper(closure) = ENC_PTR(index);

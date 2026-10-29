@@ -24,6 +24,8 @@ existing futex wait returns. Retirement waits for running callbacks without
 holding the registry mutex. Thread cleanup releases active counts when a
 callback calls `pthread_exit`. The bridge adds no periodic polling; the SDK's
 existing waits retain their own behavior.
+Publication waits for active registered workers to reach a proxy or wait
+boundary. A long C job can delay callback creation.
 
 The dependency patch corrects mixed variadic argument layout and unsigned
 address handling in libffi's Wasm backend. It also permits installation in
@@ -37,6 +39,9 @@ Verified dependency checks in Node and Chromium:
 - A variadic callback with no extra arguments.
 - Sparse heap growth to 2,418,016,256 bytes, CIF metadata above 2 GiB, and struct
   calls and callbacks using a stack above 2 GiB.
+- A controlled closure allocation above 2 GiB, including metadata initialization,
+  preparation, invocation and retirement. The original allocation path fails
+  the metadata check; normalizing its returned pointer fixes it.
 
 The integrated application checks use real Python and libc APIs rather than a
 replacement ctypes implementation. They exercise 240 callbacks across four

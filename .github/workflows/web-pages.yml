@@ -91,7 +91,7 @@ jobs:
             build/native/deps/prefix/include/shaderc
             build/native/deps/prefix/lib/libshaderc_combined.a
             build/native/gpu-deps
-          key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/tools/native_python_packages.py', 'web/tools/native_bindings.py', 'web/native/python-bindings/**', 'web/native/patches/yamlcpp.patch', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
+          key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/tools/native_python_packages.py', 'web/tools/native_bindings.py', 'web/native/python-bindings/**', 'web/native/patches/yamlcpp.patch', 'web/native/patches/ffi.patch', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
           restore-keys: ${{ runner.os }}-native-app-deps-v2-
       - name: Build and validate native dependencies
         run: |

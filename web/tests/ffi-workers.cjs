@@ -6,7 +6,7 @@ const path = require('node:path');
 const http = require('node:http');
 const crypto = require('node:crypto');
 const {chromium} = require('playwright');
-const directory = path.resolve('build/native/checks');
+const directory = path.resolve(process.env.WEB_FFI_DIRECTORY || 'build/native/checks');
 const output = path.resolve(process.env.WEB_FFI_OUTPUT || 'build/native/ffi-browser-evidence');
 const entries = ['ffi-workers-check', 'ffi-high-address-check'];
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -62,6 +62,7 @@ async function main() {
       } else {
         assert.equal(raw.result.heapBytes, 2418016256);
         assert(raw.result.highMetadata && raw.result.highStack && raw.result.aggregateCallbacks &&
+          raw.result.highClosureAllocation &&
           raw.result.sparseAllocation);
       }
       results[entry] = {result: raw.result, browserErrors: errors,

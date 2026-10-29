@@ -42,6 +42,7 @@ def validate(base, manifest):
     assert workers['nestedRetirement'] and workers['threadExitDuringCallback']
     high = browser_ffi['results']['ffi-high-address-check']['result']
     assert high['heapBytes'] == 2418016256 and high['highStack'] and high['aggregateCallbacks']
+    assert high['highClosureAllocation']
     source = digest(ROOT / 'web/native/tests/python-ctypes.py')
     runner = digest(ROOT / 'web/tests/python-ctypes.cjs')
     verifier = digest(ROOT / 'web/tools/native_ctypes_verify.py')

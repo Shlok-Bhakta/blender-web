@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 #include <emscripten/heap.h>
+#include <emscripten.h>
 #include <ffi.h>
 #include <pthread.h>
 #include <cstdint>
@@ -81,6 +82,35 @@ void *check(void *)
 int main()
 {
   require(emscripten_resize_heap(0x90200000), "grow sparse heap");
+  // Make the real allocation path return a reserved high address without
+  // physically allocating two gigabytes first. Allocation runs on the runtime
+  // thread, so override and restore its JS bindings there, not on this worker.
+  MAIN_THREAD_EM_ASM({
+    globalThis.ffiSavedMalloc = _ffi_web_malloc;
+    globalThis.ffiSavedFree = _ffi_web_free;
+    _ffi_web_malloc = () => 0x80010600 | 0;
+    _ffi_web_free = () => {};
+  });
+  ffi_cif high_cif;
+  ffi_type *high_args[] = {&ffi_type_sint32};
+  require(ffi_prep_cif(&high_cif, FFI_DEFAULT_ABI, 1, &ffi_type_sint32, high_args) == FFI_OK,
+          "high closure CIF");
+  void *high_code = nullptr;
+  auto *high_memory = static_cast<ffi_closure *>(ffi_closure_alloc(sizeof(ffi_closure), &high_code));
+  require(reinterpret_cast<uintptr_t>(high_memory) == 0x80010600, "controlled high closure allocation");
+  require(*reinterpret_cast<void **>(high_memory) == high_code, "high closure allocation metadata");
+  require(ffi_prep_closure_loc(high_memory, &high_cif,
+              [](ffi_cif *, void *result, void **args, void *) {
+                *static_cast<int *>(result) = *static_cast<int *>(args[0]) + 1;
+              }, nullptr, high_code) == FFI_OK, "prepare high closure");
+  require(reinterpret_cast<int (*)(int)>(high_code)(7) == 8, "invoke high closure");
+  ffi_closure_free(high_memory);
+  MAIN_THREAD_EM_ASM({
+    _ffi_web_malloc = globalThis.ffiSavedMalloc;
+    _ffi_web_free = globalThis.ffiSavedFree;
+    delete globalThis.ffiSavedMalloc;
+    delete globalThis.ffiSavedFree;
+  });
   check(nullptr);
   pthread_attr_t attributes;
   require(pthread_attr_init(&attributes) == 0, "initialize attributes");
@@ -91,5 +121,5 @@ int main()
   require(pthread_join(thread, nullptr) == 0, "join high stack worker");
   pthread_attr_destroy(&attributes);
   std::puts("{\"heapBytes\":2418016256,\"highMetadata\":true,\"highStack\":true,"
-            "\"aggregateCallbacks\":true,\"sparseAllocation\":true}");
+            "\"aggregateCallbacks\":true,\"highClosureAllocation\":true,\"sparseAllocation\":true}");
 }
