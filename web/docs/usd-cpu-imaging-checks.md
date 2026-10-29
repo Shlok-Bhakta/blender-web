@@ -1,11 +1,13 @@
 # USD CPU image and volume plugins
 
-Candidate `f5bc7678d055b2921075` includes OpenUSD 26.03's original `hioOiio` and
+Published bundle `f5bc7678d055b2921075` includes OpenUSD 26.03's original `hioOiio` and
 `hioOpenVDB` CPU plugins. Both original factories passed standalone Wasm tests and
 independent native Blender readback. The optimized application passed hardware
 WebGPU, software WebGPU and fallback checks, USD scene exchange and offline
-reopening. All 108 local stages and both source CI builds passed. Pages
-publication is pending. See the [validation record](combined-dependencies-validation.json).
+reopening. All 108 local stages, both source CI builds and all 17 deployment
+groups passed. Fresh hardware checks on the live Pages site and independent
+native readback also passed. See the [validation record](combined-dependencies-validation.json)
+and [live proof](combined-dependencies-live.json).
 
 Watch the [optimized production recording](usd-materialx-walkthrough.mp4) and
 [its metadata](usd-recording.json). The shorter clip below records the earlier

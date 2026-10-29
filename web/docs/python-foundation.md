@@ -2,20 +2,18 @@
 
 [Watch the actual browser recording](python-foundation-walkthrough.mp4).
 
-Published bundle `8f28615dc99fd90616b7` passed the Python foundation checks on
-hardware WebGPU, software WebGPU and the fallback runtime. Each variant also
-passed independent readback in native Blender 5.2.2 LTS. All 100 local application
-regression stages and both source CI builds passed. All sixteen deployment groups
-passed before publication. A fresh hardware run on the
-[live Pages site](https://shlok-bhakta.github.io/blender-web/) passed the Python,
-public HTTPS download and offline reopen checks, followed by independent native
-readback. See the [live verification](python-foundation-live.json).
+Published bundle `f5bc7678d055b2921075` passed the Python foundation checks on hardware
+WebGPU, software WebGPU and the fallback runtime, with independent native
+Blender 5.2.2 LTS readback. All 108 local stages, both source CI builds and all
+17 deployment groups passed. A fresh hardware run on the [live Pages site](https://shlok-bhakta.github.io/blender-web/)
+passed the foundation libraries, public HTTPS downloads and offline reopening,
+followed by independent native readback. Both original background downloads
+overlapped at the fixture server. See the [live proof](combined-dependencies-live.json)
+and [validation record](combined-dependencies-validation.json).
 
-The recording and foundation checks have been refreshed from candidate
-`f5bc7678d055b2921075`. All three browser variants and native readback passed. This
-combined batch also includes Python bindings, AVIF and USD CPU plugins, and
-passed all 108 local stages and both source CI builds. Pages publication remains
-pending. See the [validation record](combined-dependencies-validation.json).
+The recording and foundation checks use this published bundle. The combined
+release also includes the image, color, volume and material Python bindings,
+AVIF and original USD CPU plugins.
 
 | Added component | Verified operations |
 | --- | --- |

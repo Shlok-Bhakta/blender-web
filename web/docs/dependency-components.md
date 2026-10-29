@@ -1,10 +1,11 @@
 # Dependency component audit
 
-This audit compares candidate `f5bc7678d055b2921075` with the pinned Blender 5.2.2 LTS
-sources and installed native build. All 108 local stages and both source CI builds
-passed, including the combined Python bindings, AVIF and original USD CPU image
-and volume plugins. Pages publication is pending; the live site still serves
-`8f28615dc99fd90616b7`. See the [validation record](combined-dependencies-validation.json).
+This audit compares published bundle `f5bc7678d055b2921075` with the pinned Blender 5.2.2 LTS
+sources and installed native build. All 108 local stages, both source CI builds
+and all 17 deployment groups passed, including the combined Python bindings,
+AVIF and original USD CPU image and volume plugins. Fresh live hardware checks,
+offline reopening and independent native readback also passed. See the
+[validation record](combined-dependencies-validation.json) and [live proof](combined-dependencies-live.json).
 
 This audit supplements the [build flag report](dependency-status.json). A top-level
 library flag does not prove its Python bindings, plugins, devices or every format

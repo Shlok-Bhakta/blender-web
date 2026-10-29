@@ -328,5 +328,12 @@
         "staticLibrary": true
       }
     }
-  ]
+  ],
+  "published": true,
+  "publication": {
+    "url": "https://shlok-bhakta.github.io/blender-web/",
+    "publisher": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40797088914",
+    "verifiedGroups": 17,
+    "liveProof": "combined-dependencies-live.json"
+  }
 }

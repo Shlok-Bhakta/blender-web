@@ -2,13 +2,13 @@
 
 [Watch the browser recording](python-bindings-walkthrough.mp4).
 
-Candidate `f5bc7678d055b2921075` combines the Python bindings, AVIF and USD CPU plugins.
-All 108 local regression stages and both source CI builds passed. Hardware
-WebGPU, software WebGPU and the fallback runtime passed the binding operations,
-offline reopening and independent native Blender readback, including the saved
-`.blend`. The archive is ready for deployment verification. Pages still serves
-`8f28615dc99fd90616b7` until those checks pass.
-See the [full validation record](combined-dependencies-validation.json).
+Published bundle `f5bc7678d055b2921075` combines the Python bindings, AVIF and USD CPU plugins.
+All 108 local regression stages, both source CI builds and all 17 deployment
+groups passed. Hardware WebGPU, software WebGPU and the fallback runtime passed
+binding operations, offline reopening and independent native Blender readback,
+including the saved `.blend`. A fresh hardware run on the live Pages site and
+independent native readback also passed. See the [live proof](combined-dependencies-live.json)
+and [full validation record](combined-dependencies-validation.json).
 
 | Component | Tested operations |
 | --- | --- |

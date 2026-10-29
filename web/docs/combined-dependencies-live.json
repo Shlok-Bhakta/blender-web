@@ -1,0 +1,97 @@
+{
+  "bundleVersion": "f5bc7678d055b2921075",
+  "url": "https://shlok-bhakta.github.io/blender-web/",
+  "checkedAt": "2026-10-29T01:03:44.915637+00:00",
+  "publisher": "https://github.com/Shlok-Bhakta/blender-web/actions/runs/40797088914",
+  "publisherGroupsPassed": 17,
+  "publisherCommit": "98ea3c5b8523f858417bc92654d68d2214162349",
+  "manifestSha256": "88eec2ed10ead17c6aa1b3a4da27a2c1686ebb49cb4cab09ccc3c5bea2dbcc5b",
+  "checks": {
+    "python-bindings": {
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "offlineReopen": true,
+      "nativeReadback": true,
+      "browserErrors": [],
+      "browserAcceptanceSha256": "5361bf6067b5047c76a1d73970c4086b47a9600ade4b0bb7e3f7e60a561c304e",
+      "nativeVerificationSha256": "9caa3a31d8383e7a4816acc8a6fcee79ea0b545587834687cad1fdfceb5968e7"
+    },
+    "usd": {
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": "",
+        "features": [
+          "depth32float-stencil8",
+          "rg11b10ufloat-renderable",
+          "texture-formats-tier1",
+          "bgra8unorm-storage",
+          "chromium-experimental-multi-draw-indirect",
+          "texture-compression-bc",
+          "dual-source-blending",
+          "core-features-and-limits",
+          "chromium-experimental-timestamp-query-inside-passes",
+          "float32-filterable",
+          "indirect-first-instance",
+          "float32-blendable",
+          "texture-compression-etc2",
+          "depth-clip-control",
+          "texture-compression-bc-sliced-3d",
+          "timestamp-query",
+          "clip-distances",
+          "shader-f16",
+          "texture-formats-tier2",
+          "primitive-index",
+          "texture-component-swizzle",
+          "subgroups"
+        ]
+      },
+      "offlineReopen": true,
+      "nativeReadback": true,
+      "browserErrors": [],
+      "browserAcceptanceSha256": "81df209a8c7e80e8429a48c1049c87eea8d755c455cdeab37ebdc68cbbe9497c",
+      "nativeVerificationSha256": "f24e8612236f476968e8daf8f066ca8943c05bd4e0ff2d39cb025b1f497e93d1",
+      "cpuImagingPlugins": {
+        "hioOiio": {
+          "loaded": true,
+          "type": "HioOIIO_Image",
+          "staticLibrary": true
+        },
+        "hioOpenVDB": {
+          "loaded": true,
+          "type": "HioOpenVDB_TextureData",
+          "staticLibrary": true
+        }
+      }
+    },
+    "foundation": {
+      "hardware": true,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "offlineReopen": true,
+      "nativeReadback": true,
+      "browserErrors": [],
+      "browserAcceptanceSha256": "f0d5a569317952cbbf68ec0207d1e34edce77fde80372173962c979ea7c18de9",
+      "nativeVerificationSha256": "9aca5362332cfcf6fa7134e654d45c53d9db9b33f50368a89e09f73db11442d3",
+      "publicHTTPSFixture": true,
+      "peakBackgroundDownloads": 2
+    }
+  },
+  "evidence": {
+    "url": "https://github.com/Shlok-Bhakta/blender-web/releases/download/web-native-f5bc7678d055b2921075/combined-dependencies-live-evidence.tar.gz",
+    "bytes": 25637039,
+    "sha256": "51ecc7bae11b7655c3646ed03cd985f054e4635e7ad8269b3832ce1f0daf371d"
+  },
+  "runnerSourceSha256": "8ce38a8be005de6a7e0b1515d5e71c2f44998512066e3ec8dbaae4752dca08fe"
+}
