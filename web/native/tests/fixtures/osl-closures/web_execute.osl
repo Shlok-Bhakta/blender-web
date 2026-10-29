@@ -1,0 +1,16 @@
+shader web_execute(
+    float gain = 1.25,
+    string tag = "browser",
+    output color result = 0,
+    output float energy = 0,
+    output int matches = 0,
+    output string echoed = "",
+    output closure color lobes = 0)
+{
+    result = color(u * gain, v + gain, sin(u) + cos(v));
+    energy = dot(P, P) + gain;
+    matches = (tag == "browser") + startswith(tag, "brow") * 2 + strlen(tag) * 4;
+    echoed = tag;
+    lobes = color(u, 0.25, v) * diffuse(normal(0, 0, 1), "label", tag)
+          + color(0.1, 0.2, 0.3) * emission() + color(0.4) * debug(tag);
+}

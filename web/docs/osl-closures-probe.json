@@ -1,0 +1,293 @@
+{
+  "node": {
+    "ownedOSLSystems": 8,
+    "nativeOwnerRetirement": true,
+    "tableReused": true,
+    "automaticPublication": true,
+    "mixedFFICallbacks": 7296,
+    "workerCompilation": true,
+    "busyWorkerPublication": true,
+    "shadingPoints": 7296,
+    "rendererCallbacks": 14592,
+    "concurrentCompilation": true,
+    "cooperativeCancellation": true,
+    "closureTrees": true,
+    "closureStrings": true
+  },
+  "browser": {
+    "result": {
+      "ownedOSLSystems": 8,
+      "nativeOwnerRetirement": true,
+      "tableReused": true,
+      "automaticPublication": true,
+      "mixedFFICallbacks": 7296,
+      "workerCompilation": true,
+      "busyWorkerPublication": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "concurrentCompilation": true,
+      "cooperativeCancellation": true,
+      "closureTrees": true,
+      "closureStrings": true
+    },
+    "bytecode": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/web_execute.oso\nshader web_execute\nparam\tfloat\tgain\t1.25\t\t%read{0,7} %write{2147483647,-1}\nparam\tstring\ttag\t\"browser\"\t\t%read{8,22} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{5,5}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\noparam\tint\tmatches\t0\t\t%read{2147483647,-1} %write{14,14}\noparam\tstring\techoed\t\"\"\t\t%read{2147483647,-1} %write{15,15}\noparam\tclosure color\tlobes\t\t\t%read{2147483647,-1} %write{24,24}\nglobal\tpoint\tP\t%read{6,6} %write{2147483647,-1}\nglobal\tfloat\tu\t%read{0,17} %write{2147483647,-1}\nglobal\tfloat\tv\t%read{1,17} %write{2147483647,-1}\ntemp\tfloat\t$tmp1\t%read{5,5} %write{0,0}\ntemp\tfloat\t$tmp2\t%read{5,5} %write{1,1}\ntemp\tfloat\t$tmp3\t%read{4,4} %write{2,2}\ntemp\tfloat\t$tmp4\t%read{4,4} %write{3,3}\ntemp\tfloat\t$tmp5\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\nconst\tstring\t$const1\t\"browser\"\t\t%read{8,8} %write{2147483647,-1}\ntemp\tint\t$tmp7\t%read{11,11} %write{8,8}\ntemp\tint\t$tmp8\t%read{10,10} %write{9,9}\nconst\tstring\t$const2\t\"brow\"\t\t%read{9,9} %write{2147483647,-1}\nconst\tint\t$const3\t2\t\t%read{10,10} %write{2147483647,-1}\ntemp\tint\t$tmp9\t%read{11,11} %write{10,10}\ntemp\tint\t$tmp10\t%read{14,14} %write{11,11}\ntemp\tint\t$tmp11\t%read{13,13} %write{12,12}\nconst\tint\t$const4\t4\t\t%read{13,13} %write{2147483647,-1}\ntemp\tint\t$tmp12\t%read{14,14} %write{13,13}\ntemp\tclosure color\t$tmp13\t%read{18,18} %write{16,16}\nconst\tnormal\t$const5\t0 0 1\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const6\t\"label\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const7\t\"diffuse\"\t\t%read{16,16} %write{2147483647,-1}\ntemp\tcolor\t$tmp15\t%read{18,18} %write{17,17}\nconst\tfloat\t$const8\t0.25\t\t%read{17,17} %write{2147483647,-1}\ntemp\tclosure color\t$tmp16\t%read{21,21} %write{18,18}\ntemp\tclosure color\t$tmp17\t%read{20,20} %write{19,19}\nconst\tstring\t$const9\t\"emission\"\t\t%read{19,19} %write{2147483647,-1}\nconst\tcolor\t$const10\t0.100000001 0.200000003 0.300000012\t\t%read{20,20} %write{2147483647,-1}\ntemp\tclosure color\t$tmp19\t%read{21,21} %write{20,20}\ntemp\tclosure color\t$tmp20\t%read{24,24} %write{21,21}\ntemp\tclosure color\t$tmp21\t%read{23,23} %write{22,22}\nconst\tstring\t$const11\t\"debug\"\t\t%read{22,22} %write{2147483647,-1}\nconst\tcolor\t$const12\t0.400000006 0.400000006 0.400000006\t\t%read{23,23} %write{2147483647,-1}\ntemp\tclosure color\t$tmp23\t%read{24,24} %write{23,23}\ncode ___main___\n# fixtures/web_execute.osl:11\n#     energy = dot(P, P) + gain;\n\tmul\t\t$tmp1 u gain \t%filename{\"fixtures/web_execute.osl\"} %line{11} %argrw{\"wrr\"}\n\tadd\t\t$tmp2 v gain \t%argrw{\"wrr\"}\n\tsin\t\t$tmp3 u \t%argrw{\"wr\"}\n\tcos\t\t$tmp4 v \t%argrw{\"wr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tcolor\t\tresult $tmp1 $tmp2 $tmp5 \t%argrw{\"wrrr\"}\n# fixtures/web_execute.osl:12\n#     matches = (tag == \"browser\") + startswith(tag, \"brow\") * 2 + strlen(tag) * 4;\n\tdot\t\t$tmp6 P P \t%line{12} %argrw{\"wrr\"}\n\tadd\t\tenergy $tmp6 gain \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:13\n#     echoed = tag;\n\teq\t\t$tmp7 tag $const1 \t%line{13} %argrw{\"wrr\"}\n\tstartswith\t$tmp8 tag $const2 \t%argrw{\"wrr\"}\n\tmul\t\t$tmp9 $tmp8 $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp10 $tmp7 $tmp9 \t%argrw{\"wrr\"}\n\tstrlen\t\t$tmp11 tag \t%argrw{\"wr\"}\n\tmul\t\t$tmp12 $tmp11 $const4 \t%argrw{\"wrr\"}\n\tadd\t\tmatches $tmp10 $tmp12 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:14\n#     lobes = color(u, 0.25, v) * diffuse(normal(0, 0, 1), \"label\", tag)\n\tassign\t\techoed tag \t%line{14} %argrw{\"wr\"}\n# fixtures/web_execute.osl:15\n#           + color(0.1, 0.2, 0.3) * emission() + color(0.4) * debug(tag);\n\tclosure\t\t$tmp13 $const7 $const5 $const6 tag \t%line{15} %argrw{\"wrrrr\"}\n\tcolor\t\t$tmp15 u $const8 v \t%argrw{\"wrrr\"}\n\tmul\t\t$tmp16 $tmp13 $tmp15 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:16\n# }\n\tclosure\t\t$tmp17 $const9 \t%line{16} %argrw{\"wr\"}\n\tmul\t\t$tmp19 $tmp17 $const10 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp20 $tmp16 $tmp19 \t%argrw{\"wrr\"}\n\tclosure\t\t$tmp21 $const11 tag \t%argrw{\"wrr\"}\n\tmul\t\t$tmp23 $tmp21 $const12 \t%argrw{\"wrr\"}\n\tadd\t\tlobes $tmp20 $tmp23 \t%argrw{\"wrr\"}\n\tend\n",
+    "diagnostics": [
+      "warning: unsupported syscall: __syscall_prlimit64",
+      "Blocking on the main thread is very dangerous, see https://emscripten.org/docs/porting/pthreads.html#blocking-on-the-main-browser-thread",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch."
+    ],
+    "crossOriginIsolated": true,
+    "offline": true
+  },
+  "nodeDiagnostics": [
+    "warning: unsupported syscall: __syscall_prlimit64",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"markAsFinished\" command from terminated worker: 8",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 7",
+    "received \"markAsFinished\" command from terminated worker: 7",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"callHandler\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 6",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 9",
+    "received \"markAsFinished\" command from terminated worker: 10",
+    "received \"markAsFinished\" command from terminated worker: 10",
+    "received \"markAsFinished\" command from terminated worker: 10",
+    "received \"markAsFinished\" command from terminated worker: 10",
+    "received \"markAsFinished\" command from terminated worker: 10",
+    "received \"markAsFinished\" command from terminated worker: 10",
+    "received \"markAsFinished\" command from terminated worker: 10",
+    "received \"markAsFinished\" command from terminated worker: 10"
+  ],
+  "browserErrors": [],
+  "browserVersion": "145.0.7632.6",
+  "applicationIntegrated": false,
+  "browserShaderExecutionVerified": true,
+  "source": {
+    "source": {
+      "FILE": "OpenShadingLanguage-1.15.3.0.tar.gz",
+      "HASH": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
+      "VERSION": "1.15.3.0"
+    },
+    "patches": {
+      "osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+      "osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a",
+      "osl-owned.patch": "6cfbde8dba6628485990a5a7da499bf9bed8eea91cfb5161d73bb73b540e2d2f",
+      "osl-closures.patch": "f2377e48de0945221fcc5975da18c8d0b69bbc3caf4998cadd860e36e4132441"
+    }
+  },
+  "emscriptenVersion": "4.0.23",
+  "llvmVersion": "20.1.8",
+  "native": {
+    "native": {
+      "nativeClosureTrees": true,
+      "nativeClosureStrings": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "ffiCallbacks": 7296
+    },
+    "node": {
+      "nativeClosureTrees": true,
+      "nativeClosureStrings": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "ffiCallbacks": 7296
+    },
+    "browser": {
+      "nativeClosureTrees": true,
+      "nativeClosureStrings": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "ffiCallbacks": 7296
+    }
+  },
+  "nativeLibraries": {
+    "liboslexec.so.1.15.3": "5497e7bb936d51dcc6e2eadcbc777f01ef3ff5e24c48cf518853b7a5ad69728a",
+    "libOpenImageIO.so.3.1.13": "207b70b9d3d1ae48f6013dbad654ad0306a10ae35c8c0e546dab189a761d6efb",
+    "libOpenImageIO_Util.so.3.1.13": "e52439d9788a61ec3f7ad8a1af82970e06655512fd9842de92b421868a93c080"
+  },
+  "nativeFFI": {
+    "source": {
+      "FILE": "libffi-3.5.2.tar.gz",
+      "HASH": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/libffi/libffi/releases/download/v3.5.2/libffi-3.5.2.tar.gz",
+      "VERSION": "3.5.2"
+    },
+    "target": "x86_64-linux-gnu",
+    "archiveSha256": "e22581b78a7f62c73efff29a26f105846fcaa6675eadb04e83abf7833131db21",
+    "ffiHeaderSha256": "3c5831e3bc9a8538cdb7bbfdb84215faa9d719f17c8fdf23d30cf59859183983",
+    "targetHeaderSha256": "45e4fd2585aaed711e4fa3d1377b70c8e54dcdc56bdf402fa23a8816d19cc58a"
+  },
+  "rendererHelperCount": 418,
+  "nativeCompiler": {
+    "blenderRevision": "d13f752e3b9c",
+    "oslVersion": "1.15.3.0"
+  },
+  "closureControl": {
+    "original": {
+      "registrationAccepted": false,
+      "publicStringBytes": 4,
+      "hashBytes": 8
+    },
+    "corrected": {
+      "registrationAccepted": true,
+      "publicStringBytes": 4,
+      "hashBytes": 8
+    }
+  },
+  "controlSource": {
+    "source": {
+      "FILE": "OpenShadingLanguage-1.15.3.0.tar.gz",
+      "HASH": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
+      "VERSION": "1.15.3.0"
+    },
+    "patches": {
+      "osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+      "osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a",
+      "osl-owned.patch": "6cfbde8dba6628485990a5a7da499bf9bed8eea91cfb5161d73bb73b540e2d2f"
+    }
+  },
+  "controlLibrarySha256": "c7b20dd89576f9ca8ea0fd4203e19dceeb77abac49e110ecbd943b5888d6b2ba",
+  "artifacts": {
+    "runtime/osl-runtime.js": {
+      "bytes": 372731,
+      "sha256": "671f33859017ab35ae43d7111e593e832fb443b913412429599f12e84b71e34b"
+    },
+    "runtime/osl-runtime.wasm": {
+      "bytes": 78483025,
+      "sha256": "d6eb2485ad59e4549ebeec9461b4c7a3e65585cc542a5a26be4b0eb3f2681d43"
+    },
+    "osl-native": {
+      "bytes": 113616,
+      "sha256": "e07656f65c7c7bc4f4718022246682f639a813015691f999e2426478ecbafb1c"
+    },
+    "osl-wasm/lib/liboslexec.a": {
+      "bytes": 7771312,
+      "sha256": "73c085f1d61127219160a83dcbabf51378834010167fd0945632bee7fd8be531"
+    },
+    "evidence/osl-runtime.png": {
+      "bytes": 158217,
+      "sha256": "33fdbfbb11ffb96f72233b842bb681e256c9bcc417dd9ff53a0810f56697d593"
+    },
+    "evidence/osl-runtime.webm": {
+      "bytes": 987703,
+      "sha256": "8886d03e08f857ca6244fefb0dcea80ffa7a84eba8f27c4430876b7835ff434f"
+    },
+    "control/osl-runtime.js": {
+      "bytes": 372731,
+      "sha256": "671f33859017ab35ae43d7111e593e832fb443b913412429599f12e84b71e34b"
+    },
+    "control/osl-runtime.wasm": {
+      "bytes": 78482959,
+      "sha256": "f690ac89e73838e74bda0624b144ed85555fcc47c709ac8d7481f28d1589dbe5"
+    },
+    "evidence/closure-control.json": {
+      "bytes": 209,
+      "sha256": "330f8458a0a0c2000484f2884fbb3c179599e6b22bf8478a2f6fd1095715619e"
+    },
+    "evidence/browser-fixtures/web_execute.oso": {
+      "bytes": 4003,
+      "sha256": "b92d45f62bd6549d4e7cdebb1edc36d98dd05c7a22f852be5a7fe198b3e51b3d"
+    },
+    "evidence/native-fixtures/web_execute.oso": {
+      "bytes": 4368,
+      "sha256": "ae28f8a791831ee167626297f45ce5f2addfeda289c288702a5152aa89aef8c4"
+    },
+    "evidence/node-fixtures/web_execute.oso": {
+      "bytes": 4003,
+      "sha256": "b92d45f62bd6549d4e7cdebb1edc36d98dd05c7a22f852be5a7fe198b3e51b3d"
+    }
+  },
+  "sourceHashes": {
+    "web/tools/native_osl_closures_probe.py": "116f959ddf8eb30c5c446875633f5aa8f6cf37f9bfa73a5bf18ab77192992c4f",
+    "web/tools/native_osl_native_ffi.py": "2e1a17c0b0a6e73b7db3901642178b701be5f4b9088a226989f67ab5afb099ff",
+    "web/tools/native_osl_bitcode.py": "70f8b0a7e53af18718b49ceaa2ad22e7c7f7e275d89b293ab849137c94e97f15",
+    "web/native/ghost/GHOST_WebOSL.hh": "4d64ce557c021955157e8bf77e4fb4dee70f929655cbec0750cf16e34fa5bab8",
+    "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "6d53ae2ba1f2438c901b97d167cd8238999707f78406884be8934e7e5f5f0c5c",
+    "web/native/ghost/GHOST_WebOSLOwnedProbe.hh": "94986866a3a8f3516d9f7181b0c40d0ecd895e9be516de782eced57d047c3faf",
+    "web/native/ghost/GHOST_WebJITProbe.cc": "9282078f77047bef6369ac0b2c94d8ca8fae043f98bb418dbfcc4ada443fda3f",
+    "web/native/ghost/GHOST_WebJITProbe.hh": "337dde83f739ca0ef00671cc4a9d92b741bcd7c2f5e8dc34ad839fd4b0349122",
+    "web/native/ghost/GHOST_WebWorkerResources.hh": "58049886eb2b543ebe347fedacdcdcdcc425c7b24c6cef877e70232a1c1bd89b",
+    "web/native/ghost/GHOST_WebFFI.cc": "b6424a21da4d097534a8e2fda711275dfe691bb4ababd0d0fda60c8b2527049a",
+    "web/native/ghost/GHOST_WebFFI.hh": "e1c1c5c7341de78e0eb5ca8ac3e427bd6e21830d31c09a7b2baea702b3521e17",
+    "web/native/patches/osl.patch": "53b2fceb7d61bfa7c428690ddeef0b9719f6d6a52df86b185405e26415ee653a",
+    "web/native/patches/osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a",
+    "web/native/patches/osl-owned.patch": "6cfbde8dba6628485990a5a7da499bf9bed8eea91cfb5161d73bb73b540e2d2f",
+    "web/native/patches/osl-closures.patch": "f2377e48de0945221fcc5975da18c8d0b69bbc3caf4998cadd860e36e4132441",
+    "web/native/osl-closures-probe/CMakeLists.txt": "36fa0b91e639d87e67422c5948415638c939b3d9f74111eb5ee1b9b6d2957907",
+    "web/native/tests/osl-closures.cc": "8afea6037fb0edfce21b32713ba9fee3a4d334b35859d45eb6e85e0e82dfe93d",
+    "web/native/tests/osl-runtime-native.py": "1985f7db1790c725da2683256024674fdb34eb2469ef776494846c617794221b",
+    "web/tests/osl-closures.cjs": "5281028bf4f67a83f4317c8e6ca3d067befe27309e9964ee883e9efd6988a8fd",
+    "web/tests/osl-closure-control.cjs": "158a491f7b79e20886a5340d7569c0c78c6e5a3aa0f5e77c719e249d6729048f",
+    "web/native/tests/fixtures/osl-closures/web_execute.osl": "1ba3f3bc03870007c2536d39fa259e0ccce2b8580a55f68c67ed5d3e6da95f4c",
+    "web/native/osl-query-probe/cmake/FindLLVM.cmake": "0f2637da53758493d8a4e36815ef84b2bfa0a93dbf0ec26034c497531ac37138",
+    "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d"
+  }
+}

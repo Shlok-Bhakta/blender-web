@@ -59,7 +59,9 @@ above 2 GiB; it is not a large Blender scene benchmark.
 The ownership executable uses a 128 MiB initial heap, a 4 GiB Wasm32 ceiling,
 twelve worker slots and an unoptimized debug link. Artifact size and run time
 are not production performance results. External side-module dependencies and
-TLS definitions are rejected. Texture/closure coverage, cancellation during compilation, variable-size module
+TLS definitions are rejected. The later [closure test](osl-closures-probe.md) covers diffuse/emission/debug
+weights and full string parameters with independent native checks. Texture
+coverage, cancellation during compilation, variable-size module
 reuse, Python query bindings and the full
 Cycles adapter still require qualification. Full dependency parity is pending.
 

@@ -1,0 +1,54 @@
+--- a/src/liboslexec/shadingsys.cpp
++++ b/src/liboslexec/shadingsys.cpp
+@@ -1485,8 +1485,12 @@
+                                     SetupClosureFunc setup)
+ {
+     for (int i = 0; params && params[i].type != TypeDesc(); ++i) {
++        size_t storage_size = params[i].type.size();
++#if defined(__EMSCRIPTEN__)
++        storage_size = GHOST_web_osl_hash_storage_size(storage_size, params[i].type.basetype == TypeDesc::STRING);
++#endif
+         if (params[i].key == NULL
+-            && params[i].type.size() != (size_t)params[i].field_size) {
++            && storage_size != (size_t)params[i].field_size) {
+             errorfmt(
+                 "Parameter {} of '{}' closure is assigned to a field of incompatible size",
+                 i + 1, name);
+--- a/src/liboslexec/llvm_gen.cpp
++++ b/src/liboslexec/llvm_gen.cpp
+@@ -9,6 +9,9 @@
+ #include "oslexec_pvt.h"
+ #include <OSL/genclosure.h>
+ #include "backendllvm.h"
++#if defined(__EMSCRIPTEN__)
++#    include "GHOST_WebOSL.hh"
++#endif
+ 
+ using namespace OSL;
+ using namespace OSL::pvt;
+@@ -3805,7 +3808,11 @@
+                 OSL_DASSERT(p.offset + p.field_size <= clentry->struct_size);
+                 llvm::Value* dst = rop.ll.offset_ptr(mem_void_ptr, p.offset);
+                 llvm::Value* src = rop.llvm_void_ptr(Value);
+-                rop.ll.op_memcpy(dst, src, (int)p.type.size(),
++                size_t storage_size = p.type.size();
++#if defined(__EMSCRIPTEN__)
++                storage_size = GHOST_web_osl_hash_storage_size(storage_size, p.type.basetype == TypeDesc::STRING);
++#endif
++                rop.ll.op_memcpy(dst, src, int(storage_size),
+                                  4 /* use 4 byte alignment for now */);
+                 legal = true;
+                 break;
+@@ -3907,7 +3914,11 @@
+             && equivalent(t, p.type)) {
+             llvm::Value* dst = rop.ll.offset_ptr(mem_void_ptr, p.offset);
+             llvm::Value* src = rop.llvm_void_ptr(sym);
+-            rop.ll.op_memcpy(dst, src, (int)p.type.size(),
++            size_t storage_size = p.type.size();
++#if defined(__EMSCRIPTEN__)
++                storage_size = GHOST_web_osl_hash_storage_size(storage_size, p.type.basetype == TypeDesc::STRING);
++#endif
++                rop.ll.op_memcpy(dst, src, int(storage_size),
+                              4 /* use 4 byte alignment for now */);
+         } else {
+             rop.shadingcontext()->errorfmt(
