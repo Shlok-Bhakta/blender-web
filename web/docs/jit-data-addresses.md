@@ -33,3 +33,5 @@ python3 web/tools/native_jit_data_check.py --jobs 2
 The tool requires the installed LLVM and libffi recipes. Its report records
 source, dependency and artifact hashes. The owned loader still needs broader
 variable-layout allocation stress before renderer integration.
+The [Cycles ABI check](cycles-osl-abi.md) separately tests the original closure
+and shader-global layouts and full string hashes.
