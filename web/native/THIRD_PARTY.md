@@ -111,6 +111,15 @@ installation. GHOST owns the worker synchronization and static symbol lookup.
 See the [integration status](../docs/ctypes-integration.md) for release evidence
 and the limits of static process symbols.
 
+LLVM 20.1.8, Clang and LLD use Blender's pinned original LLVM source archive,
+with its Apache-2.0 license and LLVM exceptions retained under
+`licenses/dependencies/llvm/`. OSL 1.15.3.0 retains its original BSD-3-Clause
+notices under `licenses/dependencies/osl/`. Its original Python query module and
+package wrapper are statically registered in the application. Wasm-only OSL
+patches preserve 64-bit string hashes on wasm32 and connect the separately tested
+shader runtime to GHOST's code ownership hooks. Cycles OSL rendering integration
+remains separate work.
+
 Rubber Band 4.0.0 uses Blender's pinned source archive and its FFTW backend.
 It retains GPL-2.0-or-later notices. libaom 3.13.1 retains its BSD-2-Clause
 license and patent notices; x265 4.1 retains GPL-2.0-or-later notices. All three

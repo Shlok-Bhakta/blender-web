@@ -28,7 +28,8 @@ def validate(base, manifest):
     installation = base / 'deps/python-bindings/installed.json'
     assert digest(installation) == library['bindingInstallationSha256']
     installed = read(installation)
-    assert len(installed['modules']) == 11
+    assert len(installed['modules']) == 12
+    assert 'oslquery.oslquery' in installed['modules']
     for name, expected in installed['artifacts'].items():
         assert digest(base / 'deps/prefix' / name) == expected, name
     source = digest(ROOT / 'web/native/tests/python-bindings.py')

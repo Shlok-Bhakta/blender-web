@@ -42,6 +42,8 @@ def main():
     foundation = python_proof['libraryChecks']['foundation']
     from native_bindings_acceptance import validate as validate_bindings
     bindings_proof = validate_bindings(base, manifest)
+    from native_osl_python_acceptance import validate as validate_osl_python
+    osl_python = validate_osl_python(base, manifest)
     from native_usd_imaging_acceptance import validate as validate_usd_imaging
     usd_imaging = validate_usd_imaging(base, manifest)
     native=desktop['options'];web=browser['buildOptions']
@@ -91,12 +93,20 @@ def main():
             evidence='web/docs/python-foundation.acceptance.json'),
         pythonBindings=dict(
             verifiedBundle=manifest['version'],
-            versions=bindings_proof['libraryChecks']['versions'], modules=11,
+            versions=bindings_proof['libraryChecks']['versions'], modules=len(json.loads(
+                (base/'deps/python-bindings/installed.json').read_text())['modules']),
             materialXGenerators=['GLSL', 'MSL', 'OSL', 'MDL'],
             openVDBGridTypes=9, openVDBAX=False, avifDepths=[8,10,12],
             browserVariants=len(bindings_proof['browserVariants']),
             independentNativeReadbacks=len(bindings_proof['nativeReadback']),
             evidence='web/docs/python-bindings.acceptance.json'),
+        oslPythonQueries=dict(verifiedBundle=manifest['version'],
+            version=osl_python['libraryChecks']['result']['version'],
+            browserVariants=len(osl_python['browserVariants']),
+            independentNativeReadbacks=len(osl_python['nativeReadback']),
+            compilerLibrariesInstalled=True, originalPythonModule=True,
+            cyclesOSLRenderer=osl_python['cyclesOSLRenderer'],
+            evidence='web/docs/osl-python.acceptance.json'),
         pythonCtypes=dict(verifiedBundle=manifest['version'], libffiVersion='3.5.2',
             originalModule=True, pythonNamespaceSymbols=ctypes_proof['pythonNamespaceSymbols'],
             browserVariants=len(ctypes_proof['browserVariants']),
@@ -111,7 +121,7 @@ def main():
         optimizationWork=['NumPy explicit Wasm SIMD kernels', 'OpenColorIO SIMD kernels'],
         separateEnhancements=['HarfBuzz/FriBidi integration into Blender font rendering'],
         baseLibraryRecipes=libraries,
-        baseLibraryRecipeScope='The base static-library builder only; excludes CPython/NumPy, shader compilers, bundled Blender code and platform SDKs.',
+        baseLibraryRecipeScope='The base static-library builder only; includes LLVM/OSL but excludes CPython/NumPy, WebGPU shader translators, separately built imaging components, bundled Blender code and platform SDKs.',
         browserReportSourceSha256=browser['sourceSha256'],
         limitations=[
             'Build flags are configuration evidence, not proof of every operation or performance parity.',

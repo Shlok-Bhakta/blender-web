@@ -29,6 +29,8 @@ def main():
     python_ctypes = validate_ctypes(base, manifest)
     from native_bindings_acceptance import validate as validate_bindings
     python_bindings = validate_bindings(base, manifest)
+    from native_osl_python_acceptance import validate as validate_osl_python
+    osl_python = validate_osl_python(base, manifest)
     from native_usd_imaging_acceptance import validate as validate_usd_imaging
     usd_imaging = validate_usd_imaging(base, manifest)
     from native_render_libraries_acceptance import validate as validate_render_libraries
@@ -346,6 +348,7 @@ def main():
               'pythonFoundation':python_foundation,
               'pythonCtypes':python_ctypes,
               'pythonBindings':python_bindings,
+              'oslPythonQueries':osl_python,
               'usdCPUImaging':usd_imaging,
               'nativeChecks':native, 'recording':recording, 'wasmBuild':wasm_build,
               'oceanAlembic':{'browserVariants':oceans,'browserExportInDesktop':desktop_ocean},
@@ -416,6 +419,7 @@ def main():
     write(docs / 'python-foundation.acceptance.json', python_foundation)
     write(docs / 'python-ctypes.acceptance.json', python_ctypes)
     write(docs / 'python-bindings.acceptance.json', python_bindings)
+    write(docs / 'osl-python.acceptance.json', osl_python)
     write(docs / 'usd-cpu-imaging.acceptance.json', usd_imaging)
     write(docs / 'loading-cache.acceptance.json', {
         'render':loading[0], 'uiFallback':loading[1],

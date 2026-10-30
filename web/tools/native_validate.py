@@ -94,6 +94,12 @@ def main():
         directory = 'build/native/python-bindings-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
         run(f'python-bindings-native-{suffix}', ['python3', 'web/tools/native_bindings_verify.py', directory, '--blender', args.blender])
     run('python-bindings-video', ['python3', 'web/tools/native_bindings_recording.py'])
+    run('osl-python-library-native', ['python3', 'web/tools/native_osl_python_check.py', '--blender', args.blender])
+    for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:
+        run(f'osl-python-{suffix}', ['node', 'web/tests/osl-python.cjs'], **flags)
+        directory = 'build/native/osl-python-evidence' + ('-hardware' if suffix == 'hardware' else '-ui' if suffix == 'ui' else '')
+        run(f'osl-python-native-{suffix}', ['python3', 'web/tools/native_osl_python_verify.py', directory, '--blender', args.blender])
+    run('osl-python-video', ['python3', 'web/tools/native_osl_python_recording.py'])
     run('hevc-native', ['python3', 'web/tools/native_hevc_verify.py'])
     run('render-libraries-baseline', ['python3', 'web/tools/native_render_libraries_baseline.py', '--blender', args.blender])
     for suffix, flags in [('hardware', {'WEB_TEST_HARDWARE': '1'}), ('render', {}), ('ui', {'WEB_TEST_UI_FALLBACK': '1'})]:

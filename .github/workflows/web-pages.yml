@@ -30,6 +30,8 @@ jobs:
       - name: Verify validation checkpoint isolation
         run: python3 web/tests/validation_checkpoint.py
       - uses: astral-sh/setup-uv@v6
+      - name: Install native OSL parser tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends flex bison m4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -64,7 +66,7 @@ jobs:
             build/native/deps/prefix
             build/native/deps/downloads
             build/native/deps/*/installed.json
-          key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/tools/native_media.py', 'web/tools/native_text.py', 'web/tools/native_usd.py', 'web/tools/native_usd_imaging.py', 'web/native/usd-imaging/**', 'web/tools/native_oidn.py', 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json', 'web/native/oidn/**', 'web/tools/native_app_deps.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/native/openssl-wasm.conf', 'web/native/shader-deps/**', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
+          key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/tools/native_media.py', 'web/tools/native_text.py', 'web/tools/native_usd.py', 'web/tools/native_usd_imaging.py', 'web/native/usd-imaging/**', 'web/tools/native_oidn.py', 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json', 'web/native/oidn/**', 'web/tools/native_app_deps.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/native/openssl-wasm.conf', 'web/native/shader-deps/**', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
           restore-keys: ${{ runner.os }}-native-deps-
       - uses: actions/cache/restore@v4
         id: app-deps
@@ -91,7 +93,7 @@ jobs:
             build/native/deps/prefix/include/shaderc
             build/native/deps/prefix/lib/libshaderc_combined.a
             build/native/gpu-deps
-          key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/tools/native_python_packages.py', 'web/tools/native_bindings.py', 'web/native/python-bindings/**', 'web/native/patches/yamlcpp.patch', 'web/native/patches/ffi.patch', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
+          key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/tools/native_python_packages.py', 'web/tools/native_bindings.py', 'web/native/python-bindings/**', 'web/native/patches/yamlcpp.patch', 'web/native/patches/ffi.patch', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
           restore-keys: ${{ runner.os }}-native-app-deps-v2-
       - name: Build and validate native dependencies
         run: |
@@ -163,6 +165,8 @@ jobs:
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/loading.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-ctypes.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-ctypes.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/osl-python.cjs
+          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/osl-python.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-bindings.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-bindings.cjs
           WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-foundation.cjs
@@ -202,6 +206,9 @@ jobs:
             build/native/python-foundation-evidence*
             build/native/python-bindings-evidence*
             build/native/python-bindings-check.json
+            build/native/osl-python-evidence*
+            build/native/osl-python-check/*.log
+            build/native/compiler-check/*.log
             build/native/hevc-check-*.hevc
             build/native/embree-evidence*
             build/native/cache-evidence

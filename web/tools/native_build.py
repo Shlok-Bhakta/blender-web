@@ -355,6 +355,8 @@ def check_python_bindings(base, prefix):
     report['cleanInterpreterShutdown'] = True
     (base / 'python-bindings-check.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(dict(versions=report['versions'], cleanInterpreterShutdown=True)), flush=True)
+    from native_osl_python_check import check as check_osl_python
+    check_osl_python(base)
 
 
 def prepare_native(base, full_assets=False):
@@ -441,6 +443,9 @@ def main():
     prefix = base / "deps/prefix"
     os.environ["PKG_CONFIG_LIBDIR"] = str(prefix / "lib/pkgconfig")
     os.environ["PKG_CONFIG_PATH"] = ""
+    if args.check_deps:
+        from native_compiler_check import check as check_compilers
+        check_compilers(base, args.jobs)
     if args.app:
         stage(base, source, prefix, shader_seed=not args.skip_shader_seed)
         if args.check_deps:

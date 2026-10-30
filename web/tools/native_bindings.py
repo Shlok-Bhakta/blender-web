@@ -13,10 +13,12 @@ from prepare import ROOT
 
 MATERIALX_MODULES = ('Core', 'Format', 'GenShader', 'GenGlsl', 'GenMsl', 'GenOsl', 'GenMdl', 'Render')
 MODULES = [('PyOpenColorIO.PyOpenColorIO', 'PyOpenColorIO'),
-           ('OpenImageIO.OpenImageIO', 'OpenImageIO'), ('openvdb', 'openvdb')]
+           ('OpenImageIO.OpenImageIO', 'OpenImageIO'), ('openvdb', 'openvdb'),
+           ('oslquery.oslquery', 'oslquery')]
 MODULES += [('MaterialX.PyMaterialX' + module, 'PyMaterialX' + module)
             for module in MATERIALX_MODULES]
-LIBRARIES = ['PyOpenColorIO', 'PyOpenImageIO', 'openvdb_python', 'nanobind_runtime']
+LIBRARIES = ['PyOpenColorIO', 'PyOpenImageIO', 'openvdb_python', 'nanobind_runtime',
+             'oslquery_python']
 LIBRARIES += ['PyMaterialX' + module for module in MATERIALX_MODULES]
 LIBRARIES += ['MaterialXGenOsl', 'MaterialXGenMdl', 'MaterialXRender']
 INPUTS = ['web/tools/native_bindings.py', 'web/native/python-bindings/CMakeLists.txt',
@@ -41,11 +43,11 @@ def build(base, jobs):
     prefix = base / 'deps/prefix'
     lock = work / 'source-lock.json'
     subprocess.run(['cmake', f'-DBLENDER_SOURCE={ROOT / "blender"}',
-        '-DDEPENDENCIES=PYBIND11;NANOBIND;OPENCOLORIO;OPENIMAGEIO;OPENVDB;MATERIALX',
+        '-DDEPENDENCIES=PYBIND11;NANOBIND;OPENCOLORIO;OPENIMAGEIO;OPENVDB;MATERIALX;OSL',
         f'-DOUTPUT={lock}', '-P', str(ROOT / 'web/native/dependency-lock.cmake')], check=True)
     sources = json.loads(lock.read_text())
     dependency_stamps = {}
-    for name in ('opencolorio', 'openimageio', 'openvdb', 'materialx', 'yamlcpp', 'robinmap'):
+    for name in ('opencolorio', 'openimageio', 'openvdb', 'materialx', 'yamlcpp', 'robinmap', 'osl'):
         stamp = base / f'deps/{name}/installed.json'
         if not stamp.is_file():
             raise RuntimeError(f'Build {name} before its Python bindings')
@@ -115,6 +117,7 @@ def build(base, jobs):
         ('PyOpenColorIO', src / 'opencolorio/src/bindings/python/package'),
         ('OpenImageIO', src / 'openimageio/src/python'),
         ('MaterialX', src / 'materialx/python/MaterialX'),
+        ('oslquery', src / 'osl/src/liboslquery'),
     ):
         destination = site / package
         destination.mkdir(parents=True, exist_ok=True)
@@ -140,8 +143,10 @@ def build(base, jobs):
     destination = prefix / 'lib/blender-web-bindings'
     cmake = destination / 'libraries.cmake'
     cmake.write_text('set(BLENDER_WEB_PYTHON_BINDING_LIBRARIES\n' +
-        '\n'.join(f'  "${{CMAKE_CURRENT_LIST_DIR}}/lib{name}.a"' for name in LIBRARIES) + '\n)\n')
-    artifacts += [header, cmake, *(destination / f'lib{name}.a' for name in LIBRARIES)]
+        '\n'.join(f'  "${{CMAKE_CURRENT_LIST_DIR}}/lib{name}.a"' for name in LIBRARIES) +
+        '\n  "${CMAKE_CURRENT_LIST_DIR}/../liboslquery.a"\n)\n')
+    artifacts += [header, cmake, prefix / 'lib/liboslquery.a',
+                  *(destination / f'lib{name}.a' for name in LIBRARIES)]
     report = dict(signature=signature, sources=sources, sourceHashes=inputs,
         dependencyStamps=dependency_stamps, modules=[name for name, _ in MODULES],
         artifacts={str(path.relative_to(prefix)): digest(path) for path in sorted(artifacts)},

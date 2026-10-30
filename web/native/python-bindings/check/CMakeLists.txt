@@ -31,7 +31,17 @@ target_link_options(check PRIVATE -O2 --profiling-funcs -pthread -msimd128 -fwas
   -sWASMFS=1 -sFORCE_FILESYSTEM=1
   "--preload-file=${BLENDER_WEB_ASSETS}/python3.13@/python/lib/python3.13"
   "--preload-file=${CMAKE_CURRENT_LIST_DIR}/../../tests/python-bindings.py@/python-bindings.py")
-foreach(package PyOpenColorIO OpenImageIO MaterialX)
+set_property(TARGET check APPEND PROPERTY LINK_DEPENDS
+  "${CMAKE_CURRENT_LIST_DIR}/../../tests/python-bindings.py")
+foreach(package PyOpenColorIO OpenImageIO MaterialX oslquery)
   target_link_options(check PRIVATE
     "--preload-file=${prefix}/lib/python3.13/site-packages/${package}@/python/lib/python3.13/site-packages/${package}")
 endforeach()
+if(BLENDER_WEB_OSL_FIXTURE)
+  target_compile_definitions(check PRIVATE BLENDER_WEB_BINDING_TEST_SCRIPT="/osl-python.py")
+  target_link_options(check PRIVATE
+    "--preload-file=${CMAKE_CURRENT_LIST_DIR}/../../tests/osl-python.py@/osl-python.py"
+    "--preload-file=${BLENDER_WEB_OSL_FIXTURE}@/fixtures/web_query.oso")
+  set_property(TARGET check APPEND PROPERTY LINK_DEPENDS
+    "${CMAKE_CURRENT_LIST_DIR}/../../tests/osl-python.py" "${BLENDER_WEB_OSL_FIXTURE}")
+endif()

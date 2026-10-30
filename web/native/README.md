@@ -307,7 +307,7 @@ It does not provide general multiprocessing, raw sockets or subprocesses.
 Marketplace installation and cross-tab metadata locking remain unverified.
 
 The image, color, volume and material binding build statically registers the
-original OpenImageIO, PyOpenColorIO, OpenVDB and eight MaterialX extension modules.
+original OpenImageIO, PyOpenColorIO, OpenVDB, OSL query and eight MaterialX extension modules.
 It preserves their Python package wrappers. MaterialX generates GLSL, MSL, OSL
 and MDL source and supplies its core image and mesh utilities. Its OpenGL renderer
 and OSL rendering compiler/runtime integration remain separate work.
@@ -334,12 +334,46 @@ process disables only OpenColorIO's `OPTIMIZATION_FAST_LOG_EXP_POW` approximatio
 and requires exact equality with the browser's scalar color results. The report
 retains the difference from native SSE defaults separately from codec errors.
 
-The combined interpreter check runs all eleven extensions in one process and
-requires clean Python finalization. The Wasm-only nanobind patch supplies the
+The combined interpreter check exercises the image, color, volume and material
+extensions in one process and requires clean Python finalization. The Wasm-only
+nanobind patch supplies the
 constructor callback's exact three-argument signature. Module-specific compiler
 definitions keep MaterialX's internal helper names distinct when statically
 linked. The guarded yaml-cpp value lifetime fix avoids an invalid shutdown
 callback signature without changing its native build.
+
+LLVM 20.1.8, Clang, LLD and OSL 1.15.3.0 now have pinned installation recipes.
+LLVM's native tools generate build tables and matching helper bitcode; its
+installed libraries target Wasm. `oslc` is the original compiler running in Node
+and reads build inputs through Node's filesystem. Installed CMake packages refer
+to real archives. The OSL build selects its four exported libraries and two
+installed commands; its uninstalled BSDL table generator is separate.
+
+The original `oslquery` Python package shares OpenImageIO's `TypeDesc` binding.
+Its check covers shader defaults and metadata, file and memory queries, Unicode
+paths, invalid input, recovery and calls from Python worker threads. Cycles OSL
+rendering remains disabled until the renderer adapter is qualified.
+See the [installation and application checks](../docs/llvm-osl-installation.md)
+for native comparisons and recordings. Native `flex`, `bison` and `m4` are build
+prerequisites for the original OSL parser.
+
+```sh
+# Activate the pinned SDK before running these build and interpreter checks.
+python3 web/tools/native_deps.py --jobs 4 LLVM OSL
+python3 web/tools/native_compiler_check.py --jobs 2
+python3 web/tools/native_bindings.py --jobs 4
+python3 web/tools/native_osl_python_check.py --blender /path/to/blender
+WEB_TEST_HARDWARE=1 node web/tests/osl-python.cjs
+WEB_TEST_UI_FALLBACK=1 node web/tests/osl-python.cjs
+python3 web/tools/native_osl_python_verify.py build/native/osl-python-evidence-hardware --blender /path/to/blender
+python3 web/tools/native_osl_python_recording.py
+```
+
+The browser fixture is bytecode produced by the earlier offline browser compiler
+proof, with its checksum recorded in `web/docs/osl-compiler-probe.json`.
+The installed compiler check also compiles fresh bytecode and compares its query
+results with native Blender's metadata reference. These compiler and library
+checks do not enable OSL rendering in Blender's browser application.
 
 The static Draco bridge gives its opaque `Encoder` and `Decoder` types web-specific
 names so they cannot collide with libheif's global classes and destructors. Its
@@ -436,13 +470,14 @@ on software WebGPU. `native_dependency_recording.py` captions the hardware
 image/vector and Freestyle recordings. `native_dependency_status.py --blender
 /path/to/blender` compares the desktop and browser's actual build flags.
 
-`native_validate.py` runs the full 108-stage local acceptance sequence, including
+`native_validate.py` lists 126 local acceptance stages, including
 desktop readback, recordings and native/browser benchmarks. Serve the candidate
 site on port 8093 and an unseeded control build of the same Blender release on
 port 8098, or pass `--candidate-url` and `--control-url`. The build helper's
 `--skip-shader-seed` option produces an unseeded control; retain its site directory
 before rebuilding the seeded candidate. Hardware checks require a working WebGPU
-adapter. Run benchmarks while other substantial work is idle.
+adapter. Activate the pinned SDK for the OSL interpreter check. Run benchmarks
+while other substantial work is idle.
 
 ```sh
 python3 web/tools/native_validate.py --blender /path/to/native/blender

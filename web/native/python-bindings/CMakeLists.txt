@@ -47,6 +47,11 @@ web_binding(PyOpenImageIO ${oiio_sources})
 target_compile_definitions(PyOpenImageIO PRIVATE OIIO_INTERNAL=1 PYMODULE_NAME=OpenImageIO)
 target_link_libraries(PyOpenImageIO PRIVATE OpenImageIO::OpenImageIO)
 
+# Compile OSL's original query module against the installed target headers.
+# Shader execution is enabled separately when the Cycles adapter is qualified.
+web_binding(oslquery_python "${src}/osl/src/liboslquery/py_osl.cpp")
+target_link_libraries(oslquery_python PRIVATE OpenImageIO::OpenImageIO)
+
 web_binding(nanobind_runtime "${src}/nanobind/src/nb_combined.cpp")
 web_binding(openvdb_python
   "${src}/openvdb/openvdb/openvdb/python/pyFloatGrid.cc"
@@ -95,6 +100,6 @@ foreach(module Core Format GenShader GenGlsl GenMsl GenOsl GenMdl Render)
   endif()
   list(APPEND materialx_bindings PyMaterialX${module})
 endforeach()
-install(TARGETS PyOpenColorIO PyOpenImageIO nanobind_runtime openvdb_python
+install(TARGETS PyOpenColorIO PyOpenImageIO nanobind_runtime openvdb_python oslquery_python
   ${materialx_bindings} ${additional_libraries}
   ARCHIVE DESTINATION lib/blender-web-bindings)

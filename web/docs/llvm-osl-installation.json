@@ -1,0 +1,735 @@
+{
+  "scope": "Installed LLVM/Clang/LLD and OSL libraries; standalone execution and Python APIs. Blender application UI qualification is separate.",
+  "measuredAt": "2026-10-29T21:25:08.395943+00:00",
+  "compilerInstallation": {
+    "source": {
+      "FILE": "llvm-project-20.1.8.src.tar.xz",
+      "HASH": "915e251a657450a2ba8e4c106e4f9555",
+      "HASH_TYPE": "MD5",
+      "URI": "https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.8/llvm-project-20.1.8.src.tar.xz",
+      "VERSION": "20.1.8"
+    },
+    "nativeTools": {
+      "llvm-tblgen": "24c4fa8d6f9b6886bc8ca8ed1c27a4d3867a04c9c80de5cfb16c3777f54e636d",
+      "clang-tblgen": "2fc37c49049490653977b589359bf0edc3dfc3d5d82368f611eecbecfae154a6",
+      "llvm-as": "8b8e01ad7885473807e306d6e252c68891b2d6c378dc2efae5280b8fdd83aa3a",
+      "llvm-link": "e7357a1145e2f624baf8d6b0e0e05923890d30f4b5b377953e98703d48833d3a",
+      "clang++": "baa4c99ff25b05357f92b1eea26eb01d7001fe7214ef478d8cdd67bbf86c91cb"
+    },
+    "hostBuild": "/home/crabcake/Projects/blender-web/build/native/parity-probes/llvm-osl/host",
+    "wasmBuild": "/home/crabcake/Projects/blender-web/build/native/parity-probes/llvm-osl/wasm",
+    "reusedHost": true,
+    "reusedWasm": true,
+    "toolArtifacts": {
+      "bin/lld.js": "358955c54b457fd5c4d0a49ae48b6278a56e45179b4ca52348854b837fce2ed5",
+      "bin/lld.wasm": "6c7ac06173a65c7582defde60c008b9cbccb6496e1baeec5dfb4ac29c6fda4c6",
+      "bin/c-index-test.js": "e38d54c050851e336356ac0e50aeca2415cf87dd375904645b52ba876d4fc3d9",
+      "bin/c-index-test.wasm": "4815367144b0ba85a8ba02a98c773f561b16e34347b89c1fc2a4bec8ca30c81b"
+    },
+    "archives": {
+      "lib/libLLVMCore.a": "0a46469974f09fbe01395d0826c9ac9debbc65bc69a28d7d6324200339c64db2",
+      "lib/libLLVMWebAssemblyCodeGen.a": "1c20ee644bee9903f130a33afa20adec6331c1e7c32f88eaaa474245e1944b0d",
+      "lib/libclangFrontend.a": "822cab6be11ad208d6f1686597c90d15c1f4e532f03a958d62af9cb1dced517f",
+      "lib/liblldWasm.a": "6707f1258d465256efde0d4bc39599d95e9adedb8aa603c02587123dde6b91c6",
+      "lib/cmake/llvm/LLVMConfig.cmake": "470cb87c5b1dc1f1e713cdfb1a8e6b9df292d8110b867537f176a461b110f105",
+      "lib/cmake/clang/ClangConfig.cmake": "6d250c829a19aaf9b7e15e0f5ddba2afddb21f927a7a396434744c79d2948ada",
+      "lib/cmake/lld/LLDConfig.cmake": "f05b35ad222f4c9bfb05d2bc4df94eb076ecad60e924164ace06873e63a93d79"
+    }
+  },
+  "oslInstallation": {
+    "nativeTools": {
+      "llvm-tblgen": "24c4fa8d6f9b6886bc8ca8ed1c27a4d3867a04c9c80de5cfb16c3777f54e636d",
+      "clang-tblgen": "2fc37c49049490653977b589359bf0edc3dfc3d5d82368f611eecbecfae154a6",
+      "llvm-as": "8b8e01ad7885473807e306d6e252c68891b2d6c378dc2efae5280b8fdd83aa3a",
+      "llvm-link": "e7357a1145e2f624baf8d6b0e0e05923890d30f4b5b377953e98703d48833d3a",
+      "clang++": "baa4c99ff25b05357f92b1eea26eb01d7001fe7214ef478d8cdd67bbf86c91cb"
+    },
+    "source": {
+      "FILE": "OpenShadingLanguage-1.15.3.0.tar.gz",
+      "HASH": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+      "HASH_TYPE": "SHA256",
+      "URI": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz",
+      "VERSION": "1.15.3.0"
+    },
+    "runtimePatches": {
+      "web/native/patches/osl-runtime.patch": "fa4d2f3677fe5ead2b8d603c4c5a53fedc7043fa75201594c1d159253052bb0a",
+      "web/native/patches/osl-owned.patch": "6cfbde8dba6628485990a5a7da499bf9bed8eea91cfb5161d73bb73b540e2d2f",
+      "web/native/patches/osl-closures.patch": "f2377e48de0945221fcc5975da18c8d0b69bbc3caf4998cadd860e36e4132441"
+    },
+    "compilerJavaScript": "a6aa13134c587ea37eadccc99a29ac8e50aa4065f607b9d646a6c2a9cf2f5700",
+    "compilerWasm": "9848700354a2812107d38f1f79ae02fdbe308e8ec025680b831751cea922579c",
+    "libraries": {
+      "oslcomp": "8be6a38d03c5a2011ac5bd918f0ca82d99f0071d39e79642e0b8dd4b0f64d446",
+      "oslexec": "955f2bf1df82fa58316bd562424536e6417c7b73943a09e48c657cade9e68d27",
+      "oslnoise": "fb38584d4e3a1780a48b2ff35d560af4f8fba0f7c2769a1490f6ae961be92ba2",
+      "oslquery": "5e05fcdaa40111aeacb588ad3ba43af57310ff327ea46b66f55d9ad607918e64"
+    }
+  },
+  "compilers": {
+    "llvm": {
+      "llvmVersion": "20.1.8",
+      "compiledModules": 3,
+      "invalidIRRejected": true,
+      "invalidLinkRecovered": true,
+      "generated": [
+        {
+          "integerCases": 4096,
+          "wideIntegerCases": 4096,
+          "shaderValues": 4096,
+          "simdValues": 4096,
+          "emptyLoop": true,
+          "hostFunctionImport": true,
+          "constantFold": true,
+          "bytes": 584
+        },
+        {
+          "integerCases": 4096,
+          "wideIntegerCases": 4096,
+          "shaderValues": 4096,
+          "simdValues": 4096,
+          "emptyLoop": true,
+          "hostFunctionImport": true,
+          "constantFold": true,
+          "bytes": 584
+        },
+        {
+          "integerCases": 4096,
+          "wideIntegerCases": 4096,
+          "shaderValues": 4096,
+          "simdValues": 4096,
+          "emptyLoop": true,
+          "hostFunctionImport": true,
+          "constantFold": true,
+          "bytes": 584
+        }
+      ]
+    },
+    "emscriptenVersion": "4.0.23",
+    "installedDependencyStamps": {
+      "llvm": "af7acadf95d28d9c8574dab5faaf44ecf3db7dd0d42012c5c15815a425f13652",
+      "osl": "4396af35f8594f9a7d6d5ee2dfcf5521dae696c551a894aaeec95ea85e772383"
+    },
+    "sourceHashes": {
+      "web/tools/native_compiler_check.py": "6383561f83c5d78ffd69bd21dd2e3b4b90b7ec8340fa292c0dad8866cef441dd",
+      "web/native/compiler-check/CMakeLists.txt": "ae5b421dab778402e2bbb4cf63800e414eb366399d0cc0ee328854d46aac65b4",
+      "web/native/tests/llvm-compiler.cc": "14761ec5ceacb9711c8adacc8ac3324caebaaac695032feb59b3ed78067188bf",
+      "web/tests/llvm-generated.cjs": "09b9cfe49bf5f3afcea21a633ccd1aead0928c8d3463d5916a2fd080008fac24",
+      "web/native/tests/fixtures/osl-query/web_query.osl": "ec5faba004325e74d10a7517ce717f3f533137e18460764a087eb6ef223d3abc",
+      "web/native/tests/fixtures/osl-query/native-query.json": "f102a41bcaefb19cd10abbaefea5b5116d38ec4b6a3afcccbee447f73f905b17",
+      "web/native/tests/osl-query.cc": "8f8fb5b2cd44f9d1f89ac4e9e24a0c6eec629665a2bf7ee3e0d09f3385094f25",
+      "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d"
+    },
+    "osl": {
+      "fileAndMemory": true,
+      "hashHighBitsPreserved": true,
+      "hashPodBytes": 8,
+      "invalidInputRecovery": true,
+      "nativeMetadataExact": true,
+      "oslVersion": "1.15.3.0",
+      "parallelQueries": 128,
+      "parameters": 9,
+      "pointerBytes": 4,
+      "workers": 4
+    },
+    "invalidShaderRejected": true,
+    "compilerRecovery": true,
+    "shaderSha256": "8839c33a8d2be41d618f68c96d750773e1969b722c17877f390daa2b1af88283",
+    "artifacts": {
+      "compiler-check/all/generated-shader-0.wasm": {
+        "bytes": 584,
+        "sha256": "8dd835e310c31a376b6eb1e50a53c925e09e07e49ec29eb3815c86059f399f81"
+      },
+      "compiler-check/all/generated-shader-1.wasm": {
+        "bytes": 584,
+        "sha256": "047200e4207833d2648d7a28327ae5885a0ed8632813aba2c87daa4a756790e5"
+      },
+      "compiler-check/all/generated-shader-2.wasm": {
+        "bytes": 584,
+        "sha256": "a420b621d75b6c91a955104412c04d5293804a6d102f7efa407d1fb10297a638"
+      },
+      "compiler-check/all/llvm-compiler.wasm": {
+        "bytes": 27980873,
+        "sha256": "ded75b2873d2019349d263dd206382b747956c29f8d5d1084ecc35c643463a9d"
+      },
+      "compiler-check/all/osl-query.wasm": {
+        "bytes": 407408,
+        "sha256": "f0c92041c951655e06bbe054c2212c0f89dd8c10c9accceccd48c7c06690df14"
+      }
+    }
+  },
+  "offlineLLVM": {
+    "llvmVersion": "20.1.8",
+    "compiledModules": 3,
+    "invalidIRRejected": true,
+    "invalidLinkRecovered": true,
+    "generated": [
+      {
+        "integerCases": 4096,
+        "wideIntegerCases": 4096,
+        "shaderValues": 4096,
+        "simdValues": 4096,
+        "emptyLoop": true,
+        "hostFunctionImport": true,
+        "constantFold": true,
+        "bytes": 584
+      },
+      {
+        "integerCases": 4096,
+        "wideIntegerCases": 4096,
+        "shaderValues": 4096,
+        "simdValues": 4096,
+        "emptyLoop": true,
+        "hostFunctionImport": true,
+        "constantFold": true,
+        "bytes": 584
+      },
+      {
+        "integerCases": 4096,
+        "wideIntegerCases": 4096,
+        "shaderValues": 4096,
+        "simdValues": 4096,
+        "emptyLoop": true,
+        "hostFunctionImport": true,
+        "constantFold": true,
+        "bytes": 584
+      }
+    ],
+    "diagnostics": [
+      "wasm-ld: error: cannot open /missing-object.o: No such file or directory"
+    ],
+    "compileSeconds": 1.763164999961853,
+    "compiledAndExecutedOffline": true,
+    "navigatorOnlineAtCompilation": false,
+    "crossOriginIsolated": true,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+    "browserVersion": "145.0.7632.6",
+    "browserErrors": [],
+    "compilerWasm": {
+      "bytes": 27980873,
+      "sha256": "ded75b2873d2019349d263dd206382b747956c29f8d5d1084ecc35c643463a9d"
+    }
+  },
+  "oslRuntime": {
+    "node": {
+      "ownedOSLSystems": 8,
+      "nativeOwnerRetirement": true,
+      "tableReused": true,
+      "automaticPublication": true,
+      "mixedFFICallbacks": 7296,
+      "workerCompilation": true,
+      "busyWorkerPublication": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "concurrentCompilation": true,
+      "cooperativeCancellation": true,
+      "closureTrees": true,
+      "closureStrings": true,
+      "textureSamples": true,
+      "mainOnWorker": true,
+      "dynamicWorkerStartup": true
+    },
+    "browser": {
+      "result": {
+        "ownedOSLSystems": 8,
+        "nativeOwnerRetirement": true,
+        "tableReused": true,
+        "automaticPublication": true,
+        "mixedFFICallbacks": 7296,
+        "workerCompilation": true,
+        "busyWorkerPublication": true,
+        "shadingPoints": 7296,
+        "rendererCallbacks": 14592,
+        "concurrentCompilation": true,
+        "cooperativeCancellation": true,
+        "closureTrees": true,
+        "closureStrings": true,
+        "textureSamples": true,
+        "mainOnWorker": true,
+        "dynamicWorkerStartup": true
+      },
+      "bytecode": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/web_execute.oso\nshader web_execute\nparam\tfloat\tgain\t1.25\t\t%read{0,7} %write{2147483647,-1}\nparam\tstring\ttag\t\"browser\"\t\t%read{8,23} %write{2147483647,-1}\nparam\tstring\ttexname\t\"texture.exr\"\t\t%read{16,16} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{5,5}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\noparam\tint\tmatches\t0\t\t%read{2147483647,-1} %write{14,14}\noparam\tstring\techoed\t\"\"\t\t%read{2147483647,-1} %write{15,15}\noparam\tclosure color\tlobes\t\t\t%read{2147483647,-1} %write{25,25}\noparam\tcolor\ttexel\t0 0 0\t\t%read{2147483647,-1} %write{16,16}\nglobal\tpoint\tP\t%read{6,6} %write{2147483647,-1}\nglobal\tfloat\tu\t%read{0,18} %write{2147483647,-1} %derivs\nglobal\tfloat\tv\t%read{1,18} %write{2147483647,-1} %derivs\ntemp\tfloat\t$tmp1\t%read{5,5} %write{0,0}\ntemp\tfloat\t$tmp2\t%read{5,5} %write{1,1}\ntemp\tfloat\t$tmp3\t%read{4,4} %write{2,2}\ntemp\tfloat\t$tmp4\t%read{4,4} %write{3,3}\ntemp\tfloat\t$tmp5\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\nconst\tstring\t$const1\t\"browser\"\t\t%read{8,8} %write{2147483647,-1}\ntemp\tint\t$tmp7\t%read{11,11} %write{8,8}\ntemp\tint\t$tmp8\t%read{10,10} %write{9,9}\nconst\tstring\t$const2\t\"brow\"\t\t%read{9,9} %write{2147483647,-1}\nconst\tint\t$const3\t2\t\t%read{10,10} %write{2147483647,-1}\ntemp\tint\t$tmp9\t%read{11,11} %write{10,10}\ntemp\tint\t$tmp10\t%read{14,14} %write{11,11}\ntemp\tint\t$tmp11\t%read{13,13} %write{12,12}\nconst\tint\t$const4\t4\t\t%read{13,13} %write{2147483647,-1}\ntemp\tint\t$tmp12\t%read{14,14} %write{13,13}\nconst\tstring\t$const5\t\"interp\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const6\t\"closest\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const7\t\"swrap\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const8\t\"clamp\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const9\t\"twrap\"\t\t%read{16,16} %write{2147483647,-1}\ntemp\tclosure color\t$tmp13\t%read{19,19} %write{17,17}\nconst\tnormal\t$const10\t0 0 1\t\t%read{17,17} %write{2147483647,-1}\nconst\tstring\t$const11\t\"label\"\t\t%read{17,17} %write{2147483647,-1}\nconst\tstring\t$const12\t\"diffuse\"\t\t%read{17,17} %write{2147483647,-1}\ntemp\tcolor\t$tmp15\t%read{19,19} %write{18,18}\nconst\tfloat\t$const13\t0.25\t\t%read{18,18} %write{2147483647,-1}\ntemp\tclosure color\t$tmp16\t%read{22,22} %write{19,19}\ntemp\tclosure color\t$tmp17\t%read{21,21} %write{20,20}\nconst\tstring\t$const14\t\"emission\"\t\t%read{20,20} %write{2147483647,-1}\nconst\tcolor\t$const15\t0.100000001 0.200000003 0.300000012\t\t%read{21,21} %write{2147483647,-1}\ntemp\tclosure color\t$tmp19\t%read{22,22} %write{21,21}\ntemp\tclosure color\t$tmp20\t%read{25,25} %write{22,22}\ntemp\tclosure color\t$tmp21\t%read{24,24} %write{23,23}\nconst\tstring\t$const16\t\"debug\"\t\t%read{23,23} %write{2147483647,-1}\nconst\tcolor\t$const17\t0.400000006 0.400000006 0.400000006\t\t%read{24,24} %write{2147483647,-1}\ntemp\tclosure color\t$tmp23\t%read{25,25} %write{24,24}\ncode ___main___\n# fixtures/web_execute.osl:13\n#     energy = dot(P, P) + gain;\n\tmul\t\t$tmp1 u gain \t%filename{\"fixtures/web_execute.osl\"} %line{13} %argrw{\"wrr\"}\n\tadd\t\t$tmp2 v gain \t%argrw{\"wrr\"}\n\tsin\t\t$tmp3 u \t%argrw{\"wr\"}\n\tcos\t\t$tmp4 v \t%argrw{\"wr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tcolor\t\tresult $tmp1 $tmp2 $tmp5 \t%argrw{\"wrrr\"}\n# fixtures/web_execute.osl:14\n#     matches = (tag == \"browser\") + startswith(tag, \"brow\") * 2 + strlen(tag) * 4;\n\tdot\t\t$tmp6 P P \t%line{14} %argrw{\"wrr\"}\n\tadd\t\tenergy $tmp6 gain \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:15\n#     echoed = tag;\n\teq\t\t$tmp7 tag $const1 \t%line{15} %argrw{\"wrr\"}\n\tstartswith\t$tmp8 tag $const2 \t%argrw{\"wrr\"}\n\tmul\t\t$tmp9 $tmp8 $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp10 $tmp7 $tmp9 \t%argrw{\"wrr\"}\n\tstrlen\t\t$tmp11 tag \t%argrw{\"wr\"}\n\tmul\t\t$tmp12 $tmp11 $const4 \t%argrw{\"wrr\"}\n\tadd\t\tmatches $tmp10 $tmp12 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:16\n#     texel = texture(texname, u, v, \"interp\", \"closest\", \"swrap\", \"clamp\", \"twrap\", \"clamp\");\n\tassign\t\techoed tag \t%line{16} %argrw{\"wr\"}\n# fixtures/web_execute.osl:17\n#     lobes = color(u, 0.25, v) * diffuse(normal(0, 0, 1), \"label\", tag)\n\ttexture\t\ttexel texname u v $const5 $const6 $const7 $const8 $const9 $const8 \t%line{17} %argrw{\"wrrrrrrrrr\"} %argderivs{2,3}\n# fixtures/web_execute.osl:18\n#           + color(0.1, 0.2, 0.3) * emission() + color(0.4) * debug(tag);\n\tclosure\t\t$tmp13 $const12 $const10 $const11 tag \t%line{18} %argrw{\"wrrrr\"}\n\tcolor\t\t$tmp15 u $const13 v \t%argrw{\"wrrr\"}\n\tmul\t\t$tmp16 $tmp13 $tmp15 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:19\n# }\n\tclosure\t\t$tmp17 $const14 \t%line{19} %argrw{\"wr\"}\n\tmul\t\t$tmp19 $tmp17 $const15 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp20 $tmp16 $tmp19 \t%argrw{\"wrr\"}\n\tclosure\t\t$tmp21 $const16 tag \t%argrw{\"wrr\"}\n\tmul\t\t$tmp23 $tmp21 $const17 \t%argrw{\"wrr\"}\n\tadd\t\tlobes $tmp20 $tmp23 \t%argrw{\"wrr\"}\n\tend\n",
+      "diagnostics": [
+        "warning: unsupported syscall: __syscall_prlimit64",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "program exited (with status: 0), but keepRuntimeAlive() is set (counter=0) due to an async operation, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)"
+      ],
+      "crossOriginIsolated": true,
+      "offline": true
+    },
+    "nodeDiagnostics": [
+      "warning: unsupported syscall: __syscall_prlimit64",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "program exited (with status: 0), but keepRuntimeAlive() is set (counter=0) due to an async operation, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)"
+    ],
+    "browserErrors": [],
+    "browserVersion": "145.0.7632.6",
+    "applicationIntegrated": false,
+    "browserShaderExecutionVerified": true,
+    "native": {
+      "node": {
+        "nativeClosureTrees": true,
+        "nativeClosureStrings": true,
+        "nativeTextureSamples": true,
+        "shadingPoints": 7296,
+        "rendererCallbacks": 14592,
+        "ffiCallbacks": 7296
+      },
+      "browser": {
+        "nativeClosureTrees": true,
+        "nativeClosureStrings": true,
+        "nativeTextureSamples": true,
+        "shadingPoints": 7296,
+        "rendererCallbacks": 14592,
+        "ffiCallbacks": 7296
+      }
+    },
+    "installedDependencyStamps": {
+      "llvm": "af7acadf95d28d9c8574dab5faaf44ecf3db7dd0d42012c5c15815a425f13652",
+      "osl": "4396af35f8594f9a7d6d5ee2dfcf5521dae696c551a894aaeec95ea85e772383"
+    },
+    "installedLibraries": {
+      "oslcomp": "8be6a38d03c5a2011ac5bd918f0ca82d99f0071d39e79642e0b8dd4b0f64d446",
+      "oslexec": "955f2bf1df82fa58316bd562424536e6417c7b73943a09e48c657cade9e68d27",
+      "oslnoise": "fb38584d4e3a1780a48b2ff35d560af4f8fba0f7c2769a1490f6ae961be92ba2",
+      "oslquery": "5e05fcdaa40111aeacb588ad3ba43af57310ff327ea46b66f55d9ad607918e64"
+    },
+    "sourceHashes": {
+      "web/native/osl-textures-probe/CMakeLists.txt": "8c7cd68dbb44b089d9d09732263a44465bb4d76813d18d47a234dca9e7246d55",
+      "web/native/tests/osl-textures.cc": "8804e319f9b66b773a8169df5e512be7f8c9b4d82ac3db68ebfc05dd72ee6da8",
+      "web/tests/osl-textures.cjs": "08f38cba336508bfab5460e3660f4a1d646d572f09a91b216aba1ec8286a0393",
+      "web/native/ghost/GHOST_WebJITProbe.cc": "9282078f77047bef6369ac0b2c94d8ca8fae043f98bb418dbfcc4ada443fda3f",
+      "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "6d53ae2ba1f2438c901b97d167cd8238999707f78406884be8934e7e5f5f0c5c",
+      "web/native/ghost/GHOST_WebFFI.cc": "b6424a21da4d097534a8e2fda711275dfe691bb4ababd0d0fda60c8b2527049a",
+      "web/native/ghost/GHOST_WebOSLOwnedProbe.hh": "94986866a3a8f3516d9f7181b0c40d0ecd895e9be516de782eced57d047c3faf",
+      "web/native/ghost/GHOST_WebOSL.hh": "4d64ce557c021955157e8bf77e4fb4dee70f929655cbec0750cf16e34fa5bab8",
+      "web/native/ghost/GHOST_WebWorkerResources.hh": "58049886eb2b543ebe347fedacdcdcdcc425c7b24c6cef877e70232a1c1bd89b",
+      "web/native/ghost/GHOST_WebJITProbe.hh": "337dde83f739ca0ef00671cc4a9d92b741bcd7c2f5e8dc34ad839fd4b0349122",
+      "web/native/ghost/GHOST_WebFFI.hh": "e1c1c5c7341de78e0eb5ca8ac3e427bd6e21830d31c09a7b2baea702b3521e17"
+    },
+    "nativeBinarySha256": "590f9b62c5f745a2b19fe0dde7453adc8b7e113035ef1bcc92a9fd9005b6e3df",
+    "prerequisiteSha256": "19ae7b66e6ecdae07edb0517af9d33c98a46185f27e8c56e47511679e229bd1a",
+    "runtimeWasm": {
+      "bytes": 78485565,
+      "sha256": "75b79bdc502f2aa5523f53492561a667f905571a6a4c4a29a3f5c47765657369"
+    },
+    "applicationCyclesOSL": false
+  },
+  "pythonQueries": {
+    "nativeAPIsEqual": true,
+    "cleanInterpreterShutdown": true,
+    "result": {
+      "version": "1.15.3.0",
+      "originalPackageWrapper": true,
+      "sharedOIIOTypeDesc": true,
+      "unicodeFilename": true,
+      "fileAndMemoryEqual": true,
+      "searchPath": true,
+      "invalidBytecodeRejected": true,
+      "missingFileDiagnostic": true,
+      "diagnosticReadAndClear": true,
+      "decoderRecovery": true,
+      "invalidParameterLookupsRejected": true,
+      "threadedQueries": 32,
+      "query": {
+        "name": "web_query",
+        "type": "shader",
+        "parameters": [
+          {
+            "name": "gain",
+            "type": "float",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": 1.25,
+            "metadata": [
+              {
+                "name": "label",
+                "type": "string",
+                "output": false,
+                "variableArray": false,
+                "structure": false,
+                "closure": false,
+                "value": "Gain",
+                "metadata": []
+              },
+              {
+                "name": "min",
+                "type": "float",
+                "output": false,
+                "variableArray": false,
+                "structure": false,
+                "closure": false,
+                "value": 0.0,
+                "metadata": []
+              },
+              {
+                "name": "max",
+                "type": "float",
+                "output": false,
+                "variableArray": false,
+                "structure": false,
+                "closure": false,
+                "value": 4.0,
+                "metadata": []
+              }
+            ]
+          },
+          {
+            "name": "steps",
+            "type": "int",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": 7,
+            "metadata": []
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": "browser",
+            "metadata": []
+          },
+          {
+            "name": "tint",
+            "type": "color",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              0.25,
+              0.5,
+              0.75
+            ],
+            "metadata": []
+          },
+          {
+            "name": "axis",
+            "type": "vector",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ],
+            "metadata": []
+          },
+          {
+            "name": "weights",
+            "type": "float[3]",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              0.125,
+              0.25,
+              0.625
+            ],
+            "metadata": []
+          },
+          {
+            "name": "basis",
+            "type": "matrix",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "metadata": []
+          },
+          {
+            "name": "result",
+            "type": "color",
+            "output": true,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "metadata": []
+          },
+          {
+            "name": "energy",
+            "type": "float",
+            "output": true,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": 0.0,
+            "metadata": []
+          }
+        ],
+        "metadata": [
+          {
+            "name": "help",
+            "type": "string",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": "Browser query fixture",
+            "metadata": []
+          }
+        ]
+      }
+    },
+    "sourceHashes": {
+      "web/tools/native_osl_python_check.py": "03166820d7930171e2b418191706d33570157efb684d6f9937977f85aeb6f0cd",
+      "web/native/tests/osl-python.py": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "web/native/tests/python-bindings.cc": "b2a8920de461120793b0054314136075870a2a04fc4c56ce772e8bfd044867b7",
+      "web/native/python-bindings/check/CMakeLists.txt": "534025fccfddc8ea542454ac6eb0dd10968f8d20342da6b83bc93b3eb3c60400"
+    },
+    "bindingInstallationSha256": "7d8a633c0fc5f3219a2b5f36b274f260e90d8ca4610aa92ee6dcf14a292a32f2",
+    "fixtureSha256": "8839c33a8d2be41d618f68c96d750773e1969b722c17877f390daa2b1af88283",
+    "artifacts": {
+      "osl-python-check/wasm/check.data": {
+        "bytes": 35462916,
+        "sha256": "4b38646d897427f39177590edb1b79e7532961601ebd52ea32640c67db356760"
+      },
+      "osl-python-check/wasm/check.js": {
+        "bytes": 425463,
+        "sha256": "ba5138dfc297868a3e0a98016119fe1cd85126cfdaa12d1f46eaa718f3de4f89"
+      },
+      "osl-python-check/wasm/check.wasm": {
+        "bytes": 72885922,
+        "sha256": "6f740dd29f5a8f5256f0218eba78c415bfa656b024e51162c370ec0084a6cbdb"
+      }
+    }
+  },
+  "existingPythonBindings": {
+    "versions": {
+      "OpenImageIO": "3.1.13.1",
+      "PyOpenColorIO": "2.5.0",
+      "MaterialX": "1.39.4"
+    },
+    "originalPackageWrappers": true,
+    "color": {
+      "numpyTransform": [
+        [
+          0.3499999940395355,
+          0.949999988079071,
+          2.299999952316284
+        ],
+        [
+          2.0999999046325684,
+          1.7000000476837158,
+          1.2999999523162842
+        ]
+      ],
+      "parallelCalls": 9,
+      "serialization": true,
+      "shaderGeneration": true,
+      "invalidColorSpaceRejected": true
+    },
+    "images": {
+      "numpyRoundtrip": true,
+      "files": [
+        {
+          "format": "exr",
+          "maxError": 0.0
+        },
+        {
+          "format": "tif",
+          "maxError": 7.62939453125e-06
+        },
+        {
+          "format": "png",
+          "maxError": 7.62939453125e-06
+        }
+      ],
+      "resize": true,
+      "pixelStatistics": true,
+      "parallelCalls": 9
+    },
+    "volume": {
+      "gridTypes": [
+        {
+          "name": "FloatGrid",
+          "value": 1.25
+        },
+        {
+          "name": "DoubleGrid",
+          "value": 1.25
+        },
+        {
+          "name": "BoolGrid",
+          "value": true
+        },
+        {
+          "name": "Int32Grid",
+          "value": 1234
+        },
+        {
+          "name": "Int64Grid",
+          "value": "18014398509481991"
+        },
+        {
+          "name": "Vec3SGrid",
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "Vec3IGrid",
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "Vec3DGrid",
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "PointDataGrid",
+          "value": 1234
+        }
+      ],
+      "numpyRoundtrip": true,
+      "fileRoundtrip": true,
+      "transform": true,
+      "metadata": true,
+      "missingGridRejected": true,
+      "parallelCalls": 12,
+      "axDisabled": true
+    },
+    "material": {
+      "documentRoundtrip": true,
+      "shaders": [
+        {
+          "target": "genglsl",
+          "bytes": 1160,
+          "sha256": "7744529341c69fabe5fcc7af3a3a1e3009639309e6289e6269e7f3fe65a42a54"
+        },
+        {
+          "target": "genmsl",
+          "bytes": 8035,
+          "sha256": "812cce76a8635861020560d9ed708ed4df1dd592005aa2e45b820c6cbd341144"
+        },
+        {
+          "target": "genosl",
+          "bytes": 742,
+          "sha256": "7eba0908c761f70df7459529d356a5d1f6b4d067054e10c5f066da24ee12c35f"
+        },
+        {
+          "target": "genmdl",
+          "bytes": 738,
+          "sha256": "54be36dc179fa7d61f1c800bcac23d7324113ec8d2499ed17e660f3e461a4975"
+        }
+      ],
+      "renderImage": true,
+      "imageDownsample": true,
+      "mesh": true,
+      "xmlRejection": true,
+      "parallelCalls": 9
+    },
+    "sourceHashes": {
+      "web/tools/native_bindings.py": "78246c1dfcddb1164aa235f4f50b52b18110b7ed3aff51e65293c23c9d96eadc",
+      "web/native/python-bindings/CMakeLists.txt": "c2c2536862f86b12989c4b9833e64d2f35f522603baa5278147f3869c97f78ef",
+      "web/native/python-bindings/nanobind-newfunc.patch": "5ee5757e540533915a3c673420f2f7638ae131f067b73be88eca1f983ab4e5ae",
+      "web/native/patches/yamlcpp.patch": "d50b6a94401d89e22eabde8fc61f58f76959d8e2680dc7b01893849dc7429c57",
+      "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3",
+      "web/upstream.json": "ca65785635428e0de5a6d07f43848522534cc055d4a32bdbd4121d5e73131723",
+      "web/native/tests/python-bindings.cc": "b2a8920de461120793b0054314136075870a2a04fc4c56ce772e8bfd044867b7",
+      "web/native/tests/python-bindings.py": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
+      "web/native/python-bindings/check/CMakeLists.txt": "534025fccfddc8ea542454ac6eb0dd10968f8d20342da6b83bc93b3eb3c60400"
+    },
+    "bindingInstallationSha256": "7d8a633c0fc5f3219a2b5f36b274f260e90d8ca4610aa92ee6dcf14a292a32f2",
+    "cleanInterpreterShutdown": true
+  },
+  "cyclesOSLRendererEnabled": false,
+  "sources": {
+    "web/tools/native_llvm.py": "6d273790979c5a06b438b347c746101fb125c4f4ff9d6ee18481356798845d5f",
+    "web/tools/native_osl.py": "6e976dfbd47b68ae374ade37be9d595c35268b48052a683f922072260a961c62",
+    "web/tools/native_deps.py": "80339d6a2ca13303b9bcb8e34565b636136a6dce0c07ca8f4ff77fabd5a8ae5d",
+    "web/tools/native_bindings.py": "78246c1dfcddb1164aa235f4f50b52b18110b7ed3aff51e65293c23c9d96eadc",
+    "web/native/python-bindings/CMakeLists.txt": "c2c2536862f86b12989c4b9833e64d2f35f522603baa5278147f3869c97f78ef",
+    "web/native/tests/osl-python.py": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b"
+  },
+  "limitations": [
+    "Cycles OSL renderer integration is not enabled by these checks.",
+    "Wasm32 shared heap remains limited to 4 GiB.",
+    "Runtime table reuse covers the fixture layouts; arbitrary module fragmentation remains unqualified.",
+    "Cancellation waits for shader users to join before native-owner retirement; it does not interrupt LLVM or a shader instruction.",
+    "Python query calls from threads retain the original binding GIL behavior.",
+    "BSDL lookup-table generation is an uninstalled build target and is not run by this recipe."
+  ],
+  "runtimeRecording": {
+    "path": "web/docs/osl-installed-runtime.mp4",
+    "bytes": 621359,
+    "sha256": "50cab0a9ccbaad6a20479b66cbc9ab28a6a6021b3a7d9f6149c97e0afb8c9367",
+    "durationSeconds": 10.958333,
+    "screenshot": {
+      "path": "web/docs/osl-installed-runtime.png",
+      "sha256": "0b4d933872479a8ef752d1c12ee0a11abe5fe733ef465567fb6b25dd199a8e36"
+    },
+    "scope": "Actual offline Chromium recording of standalone shader execution using installed OSL libraries; not the Blender UI."
+  }
+}

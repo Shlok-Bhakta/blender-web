@@ -1,0 +1,1141 @@
+{
+  "compilers": {
+    "llvm": {
+      "llvmVersion": "20.1.8",
+      "compiledModules": 3,
+      "invalidIRRejected": true,
+      "invalidLinkRecovered": true,
+      "generated": [
+        {
+          "integerCases": 4096,
+          "wideIntegerCases": 4096,
+          "shaderValues": 4096,
+          "simdValues": 4096,
+          "emptyLoop": true,
+          "hostFunctionImport": true,
+          "constantFold": true,
+          "bytes": 584
+        },
+        {
+          "integerCases": 4096,
+          "wideIntegerCases": 4096,
+          "shaderValues": 4096,
+          "simdValues": 4096,
+          "emptyLoop": true,
+          "hostFunctionImport": true,
+          "constantFold": true,
+          "bytes": 584
+        },
+        {
+          "integerCases": 4096,
+          "wideIntegerCases": 4096,
+          "shaderValues": 4096,
+          "simdValues": 4096,
+          "emptyLoop": true,
+          "hostFunctionImport": true,
+          "constantFold": true,
+          "bytes": 584
+        }
+      ]
+    },
+    "emscriptenVersion": "4.0.23",
+    "installedDependencyStamps": {
+      "llvm": "af7acadf95d28d9c8574dab5faaf44ecf3db7dd0d42012c5c15815a425f13652",
+      "osl": "4396af35f8594f9a7d6d5ee2dfcf5521dae696c551a894aaeec95ea85e772383"
+    },
+    "sourceHashes": {
+      "web/tools/native_compiler_check.py": "6383561f83c5d78ffd69bd21dd2e3b4b90b7ec8340fa292c0dad8866cef441dd",
+      "web/native/compiler-check/CMakeLists.txt": "ae5b421dab778402e2bbb4cf63800e414eb366399d0cc0ee328854d46aac65b4",
+      "web/native/tests/llvm-compiler.cc": "14761ec5ceacb9711c8adacc8ac3324caebaaac695032feb59b3ed78067188bf",
+      "web/tests/llvm-generated.cjs": "09b9cfe49bf5f3afcea21a633ccd1aead0928c8d3463d5916a2fd080008fac24",
+      "web/native/tests/fixtures/osl-query/web_query.osl": "ec5faba004325e74d10a7517ce717f3f533137e18460764a087eb6ef223d3abc",
+      "web/native/tests/fixtures/osl-query/native-query.json": "f102a41bcaefb19cd10abbaefea5b5116d38ec4b6a3afcccbee447f73f905b17",
+      "web/native/tests/osl-query.cc": "8f8fb5b2cd44f9d1f89ac4e9e24a0c6eec629665a2bf7ee3e0d09f3385094f25",
+      "web/native/osl-query-probe/cmake/OSLDependencies.cmake": "fd2ad13595d3a4ed78f627f855ad3c8bf97bd2a76c76c644aa68b56402b91b3d"
+    },
+    "osl": {
+      "fileAndMemory": true,
+      "hashHighBitsPreserved": true,
+      "hashPodBytes": 8,
+      "invalidInputRecovery": true,
+      "nativeMetadataExact": true,
+      "oslVersion": "1.15.3.0",
+      "parallelQueries": 128,
+      "parameters": 9,
+      "pointerBytes": 4,
+      "workers": 4
+    },
+    "invalidShaderRejected": true,
+    "compilerRecovery": true,
+    "shaderSha256": "8839c33a8d2be41d618f68c96d750773e1969b722c17877f390daa2b1af88283",
+    "artifacts": {
+      "compiler-check/all/generated-shader-0.wasm": {
+        "bytes": 584,
+        "sha256": "8dd835e310c31a376b6eb1e50a53c925e09e07e49ec29eb3815c86059f399f81"
+      },
+      "compiler-check/all/generated-shader-1.wasm": {
+        "bytes": 584,
+        "sha256": "047200e4207833d2648d7a28327ae5885a0ed8632813aba2c87daa4a756790e5"
+      },
+      "compiler-check/all/generated-shader-2.wasm": {
+        "bytes": 584,
+        "sha256": "a420b621d75b6c91a955104412c04d5293804a6d102f7efa407d1fb10297a638"
+      },
+      "compiler-check/all/llvm-compiler.wasm": {
+        "bytes": 27980873,
+        "sha256": "ded75b2873d2019349d263dd206382b747956c29f8d5d1084ecc35c643463a9d"
+      },
+      "compiler-check/all/osl-query.wasm": {
+        "bytes": 407408,
+        "sha256": "f0c92041c951655e06bbe054c2212c0f89dd8c10c9accceccd48c7c06690df14"
+      }
+    }
+  },
+  "libraryChecks": {
+    "nativeAPIsEqual": true,
+    "cleanInterpreterShutdown": true,
+    "result": {
+      "version": "1.15.3.0",
+      "originalPackageWrapper": true,
+      "sharedOIIOTypeDesc": true,
+      "unicodeFilename": true,
+      "fileAndMemoryEqual": true,
+      "searchPath": true,
+      "invalidBytecodeRejected": true,
+      "missingFileDiagnostic": true,
+      "diagnosticReadAndClear": true,
+      "decoderRecovery": true,
+      "invalidParameterLookupsRejected": true,
+      "threadedQueries": 32,
+      "query": {
+        "name": "web_query",
+        "type": "shader",
+        "parameters": [
+          {
+            "name": "gain",
+            "type": "float",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": 1.25,
+            "metadata": [
+              {
+                "name": "label",
+                "type": "string",
+                "output": false,
+                "variableArray": false,
+                "structure": false,
+                "closure": false,
+                "value": "Gain",
+                "metadata": []
+              },
+              {
+                "name": "min",
+                "type": "float",
+                "output": false,
+                "variableArray": false,
+                "structure": false,
+                "closure": false,
+                "value": 0.0,
+                "metadata": []
+              },
+              {
+                "name": "max",
+                "type": "float",
+                "output": false,
+                "variableArray": false,
+                "structure": false,
+                "closure": false,
+                "value": 4.0,
+                "metadata": []
+              }
+            ]
+          },
+          {
+            "name": "steps",
+            "type": "int",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": 7,
+            "metadata": []
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": "browser",
+            "metadata": []
+          },
+          {
+            "name": "tint",
+            "type": "color",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              0.25,
+              0.5,
+              0.75
+            ],
+            "metadata": []
+          },
+          {
+            "name": "axis",
+            "type": "vector",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ],
+            "metadata": []
+          },
+          {
+            "name": "weights",
+            "type": "float[3]",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              0.125,
+              0.25,
+              0.625
+            ],
+            "metadata": []
+          },
+          {
+            "name": "basis",
+            "type": "matrix",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "metadata": []
+          },
+          {
+            "name": "result",
+            "type": "color",
+            "output": true,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "metadata": []
+          },
+          {
+            "name": "energy",
+            "type": "float",
+            "output": true,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": 0.0,
+            "metadata": []
+          }
+        ],
+        "metadata": [
+          {
+            "name": "help",
+            "type": "string",
+            "output": false,
+            "variableArray": false,
+            "structure": false,
+            "closure": false,
+            "value": "Browser query fixture",
+            "metadata": []
+          }
+        ]
+      }
+    },
+    "sourceHashes": {
+      "web/tools/native_osl_python_check.py": "03166820d7930171e2b418191706d33570157efb684d6f9937977f85aeb6f0cd",
+      "web/native/tests/osl-python.py": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "web/native/tests/python-bindings.cc": "b2a8920de461120793b0054314136075870a2a04fc4c56ce772e8bfd044867b7",
+      "web/native/python-bindings/check/CMakeLists.txt": "534025fccfddc8ea542454ac6eb0dd10968f8d20342da6b83bc93b3eb3c60400"
+    },
+    "bindingInstallationSha256": "7d8a633c0fc5f3219a2b5f36b274f260e90d8ca4610aa92ee6dcf14a292a32f2",
+    "fixtureSha256": "8839c33a8d2be41d618f68c96d750773e1969b722c17877f390daa2b1af88283",
+    "artifacts": {
+      "osl-python-check/wasm/check.data": {
+        "bytes": 35462916,
+        "sha256": "4b38646d897427f39177590edb1b79e7532961601ebd52ea32640c67db356760"
+      },
+      "osl-python-check/wasm/check.js": {
+        "bytes": 425463,
+        "sha256": "ba5138dfc297868a3e0a98016119fe1cd85126cfdaa12d1f46eaa718f3de4f89"
+      },
+      "osl-python-check/wasm/check.wasm": {
+        "bytes": 72885922,
+        "sha256": "6f740dd29f5a8f5256f0218eba78c415bfa656b024e51162c370ec0084a6cbdb"
+      }
+    }
+  },
+  "browserVariants": [
+    {
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "hardware": false,
+      "fallback": false,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "result": {
+        "version": "1.15.3.0",
+        "originalPackageWrapper": true,
+        "sharedOIIOTypeDesc": true,
+        "unicodeFilename": true,
+        "fileAndMemoryEqual": true,
+        "searchPath": true,
+        "invalidBytecodeRejected": true,
+        "missingFileDiagnostic": true,
+        "diagnosticReadAndClear": true,
+        "decoderRecovery": true,
+        "invalidParameterLookupsRejected": true,
+        "threadedQueries": 32,
+        "query": {
+          "name": "web_query",
+          "type": "shader",
+          "parameters": [
+            {
+              "name": "gain",
+              "type": "float",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 1.25,
+              "metadata": [
+                {
+                  "name": "label",
+                  "type": "string",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": "Gain",
+                  "metadata": []
+                },
+                {
+                  "name": "min",
+                  "type": "float",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": 0,
+                  "metadata": []
+                },
+                {
+                  "name": "max",
+                  "type": "float",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": 4,
+                  "metadata": []
+                }
+              ]
+            },
+            {
+              "name": "steps",
+              "type": "int",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 7,
+              "metadata": []
+            },
+            {
+              "name": "label",
+              "type": "string",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": "browser",
+              "metadata": []
+            },
+            {
+              "name": "tint",
+              "type": "color",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0.25,
+                0.5,
+                0.75
+              ],
+              "metadata": []
+            },
+            {
+              "name": "axis",
+              "type": "vector",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                1,
+                2,
+                3
+              ],
+              "metadata": []
+            },
+            {
+              "name": "weights",
+              "type": "float[3]",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0.125,
+                0.25,
+                0.625
+              ],
+              "metadata": []
+            },
+            {
+              "name": "basis",
+              "type": "matrix",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+              ],
+              "metadata": []
+            },
+            {
+              "name": "result",
+              "type": "color",
+              "output": true,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0,
+                0,
+                0
+              ],
+              "metadata": []
+            },
+            {
+              "name": "energy",
+              "type": "float",
+              "output": true,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 0,
+              "metadata": []
+            }
+          ],
+          "metadata": [
+            {
+              "name": "help",
+              "type": "string",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": "Browser query fixture",
+              "metadata": []
+            }
+          ]
+        }
+      },
+      "offlineReopen": true,
+      "browserErrors": [],
+      "startupPythonErrors": [],
+      "files": {
+        "osl-python.blend": {
+          "bytes": 98605,
+          "sha256": "0924aa08f6e7f6e048b6a11b443d1558fe37307047ee4f02eaad867d3a05ac99"
+        },
+        "osl-python.json": {
+          "bytes": 3999,
+          "sha256": "1fc6c398a6c7515d98ffe1f810d5236ea1e50c380d164e6ca21b19efccb6538f"
+        },
+        "web_query.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        },
+        "shader-\u96ea.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        }
+      },
+      "chapters": [
+        {
+          "seconds": 0,
+          "title": "Start original Blender with the original OSL Python query module"
+        },
+        {
+          "seconds": 22.359,
+          "title": "Query real shader metadata, reject invalid input, and check Python threads"
+        },
+        {
+          "seconds": 51.867,
+          "title": "Reload offline, reopen the saved scene, and query the cached shader again"
+        }
+      ],
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-30T01:14:39.363Z",
+      "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "fixtureSha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56",
+      "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
+      "videoPath": "build/native/osl-python-evidence/osl-python.webm"
+    },
+    {
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "hardware": false,
+      "fallback": true,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "result": {
+        "version": "1.15.3.0",
+        "originalPackageWrapper": true,
+        "sharedOIIOTypeDesc": true,
+        "unicodeFilename": true,
+        "fileAndMemoryEqual": true,
+        "searchPath": true,
+        "invalidBytecodeRejected": true,
+        "missingFileDiagnostic": true,
+        "diagnosticReadAndClear": true,
+        "decoderRecovery": true,
+        "invalidParameterLookupsRejected": true,
+        "threadedQueries": 32,
+        "query": {
+          "name": "web_query",
+          "type": "shader",
+          "parameters": [
+            {
+              "name": "gain",
+              "type": "float",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 1.25,
+              "metadata": [
+                {
+                  "name": "label",
+                  "type": "string",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": "Gain",
+                  "metadata": []
+                },
+                {
+                  "name": "min",
+                  "type": "float",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": 0,
+                  "metadata": []
+                },
+                {
+                  "name": "max",
+                  "type": "float",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": 4,
+                  "metadata": []
+                }
+              ]
+            },
+            {
+              "name": "steps",
+              "type": "int",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 7,
+              "metadata": []
+            },
+            {
+              "name": "label",
+              "type": "string",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": "browser",
+              "metadata": []
+            },
+            {
+              "name": "tint",
+              "type": "color",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0.25,
+                0.5,
+                0.75
+              ],
+              "metadata": []
+            },
+            {
+              "name": "axis",
+              "type": "vector",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                1,
+                2,
+                3
+              ],
+              "metadata": []
+            },
+            {
+              "name": "weights",
+              "type": "float[3]",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0.125,
+                0.25,
+                0.625
+              ],
+              "metadata": []
+            },
+            {
+              "name": "basis",
+              "type": "matrix",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+              ],
+              "metadata": []
+            },
+            {
+              "name": "result",
+              "type": "color",
+              "output": true,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0,
+                0,
+                0
+              ],
+              "metadata": []
+            },
+            {
+              "name": "energy",
+              "type": "float",
+              "output": true,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 0,
+              "metadata": []
+            }
+          ],
+          "metadata": [
+            {
+              "name": "help",
+              "type": "string",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": "Browser query fixture",
+              "metadata": []
+            }
+          ]
+        }
+      },
+      "offlineReopen": true,
+      "browserErrors": [],
+      "startupPythonErrors": [],
+      "files": {
+        "osl-python.blend": {
+          "bytes": 98605,
+          "sha256": "c203d554aa1d3e445deeca1bad4651bce09a10afc2c62a79435aab24a6b17706"
+        },
+        "osl-python.json": {
+          "bytes": 3999,
+          "sha256": "1fc6c398a6c7515d98ffe1f810d5236ea1e50c380d164e6ca21b19efccb6538f"
+        },
+        "web_query.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        },
+        "shader-\u96ea.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        }
+      },
+      "chapters": [
+        {
+          "seconds": 0.002,
+          "title": "Start original Blender with the original OSL Python query module"
+        },
+        {
+          "seconds": 22.346,
+          "title": "Query real shader metadata, reject invalid input, and check Python threads"
+        },
+        {
+          "seconds": 55.928,
+          "title": "Reload offline, reopen the saved scene, and query the cached shader again"
+        }
+      ],
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-29T21:54:08.724Z",
+      "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "fixtureSha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56",
+      "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
+      "videoPath": "build/native/osl-python-evidence-ui/osl-python.webm"
+    },
+    {
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "hardware": true,
+      "fallback": false,
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "gcn-5",
+        "device": "",
+        "description": ""
+      },
+      "result": {
+        "version": "1.15.3.0",
+        "originalPackageWrapper": true,
+        "sharedOIIOTypeDesc": true,
+        "unicodeFilename": true,
+        "fileAndMemoryEqual": true,
+        "searchPath": true,
+        "invalidBytecodeRejected": true,
+        "missingFileDiagnostic": true,
+        "diagnosticReadAndClear": true,
+        "decoderRecovery": true,
+        "invalidParameterLookupsRejected": true,
+        "threadedQueries": 32,
+        "query": {
+          "name": "web_query",
+          "type": "shader",
+          "parameters": [
+            {
+              "name": "gain",
+              "type": "float",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 1.25,
+              "metadata": [
+                {
+                  "name": "label",
+                  "type": "string",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": "Gain",
+                  "metadata": []
+                },
+                {
+                  "name": "min",
+                  "type": "float",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": 0,
+                  "metadata": []
+                },
+                {
+                  "name": "max",
+                  "type": "float",
+                  "output": false,
+                  "variableArray": false,
+                  "structure": false,
+                  "closure": false,
+                  "value": 4,
+                  "metadata": []
+                }
+              ]
+            },
+            {
+              "name": "steps",
+              "type": "int",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 7,
+              "metadata": []
+            },
+            {
+              "name": "label",
+              "type": "string",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": "browser",
+              "metadata": []
+            },
+            {
+              "name": "tint",
+              "type": "color",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0.25,
+                0.5,
+                0.75
+              ],
+              "metadata": []
+            },
+            {
+              "name": "axis",
+              "type": "vector",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                1,
+                2,
+                3
+              ],
+              "metadata": []
+            },
+            {
+              "name": "weights",
+              "type": "float[3]",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0.125,
+                0.25,
+                0.625
+              ],
+              "metadata": []
+            },
+            {
+              "name": "basis",
+              "type": "matrix",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+              ],
+              "metadata": []
+            },
+            {
+              "name": "result",
+              "type": "color",
+              "output": true,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": [
+                0,
+                0,
+                0
+              ],
+              "metadata": []
+            },
+            {
+              "name": "energy",
+              "type": "float",
+              "output": true,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": 0,
+              "metadata": []
+            }
+          ],
+          "metadata": [
+            {
+              "name": "help",
+              "type": "string",
+              "output": false,
+              "variableArray": false,
+              "structure": false,
+              "closure": false,
+              "value": "Browser query fixture",
+              "metadata": []
+            }
+          ]
+        }
+      },
+      "offlineReopen": true,
+      "browserErrors": [],
+      "startupPythonErrors": [],
+      "files": {
+        "osl-python.blend": {
+          "bytes": 98606,
+          "sha256": "473f9495b47d11da0a594401635ee7c2a3be188bc1054cf9475ac3f6373939b0"
+        },
+        "osl-python.json": {
+          "bytes": 3999,
+          "sha256": "1fc6c398a6c7515d98ffe1f810d5236ea1e50c380d164e6ca21b19efccb6538f"
+        },
+        "web_query.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        },
+        "shader-\u96ea.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        }
+      },
+      "chapters": [
+        {
+          "seconds": 0.002,
+          "title": "Start original Blender with the original OSL Python query module"
+        },
+        {
+          "seconds": 16.82,
+          "title": "Query real shader metadata, reject invalid input, and check Python threads"
+        },
+        {
+          "seconds": 46.655,
+          "title": "Reload offline, reopen the saved scene, and query the cached shader again"
+        }
+      ],
+      "browserVersion": "145.0.7632.6",
+      "measuredAt": "2026-10-29T21:53:56.732Z",
+      "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "fixtureSha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56",
+      "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
+      "videoPath": "build/native/osl-python-evidence-hardware/osl-python.webm"
+    }
+  ],
+  "nativeReadback": [
+    {
+      "nativeAPIsEqual": true,
+      "savedBlendVerified": true,
+      "unicodeFileReadback": true,
+      "blenderRevision": "d13f752e3b9c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "verifierSourceSha256": "359747e2e88dfccff80d6ce388bf26a0a5cfd6ce063edacf6e25f141765bae34",
+      "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
+      "files": {
+        "osl-python.blend": {
+          "bytes": 98605,
+          "sha256": "0924aa08f6e7f6e048b6a11b443d1558fe37307047ee4f02eaad867d3a05ac99"
+        },
+        "osl-python.json": {
+          "bytes": 3999,
+          "sha256": "1fc6c398a6c7515d98ffe1f810d5236ea1e50c380d164e6ca21b19efccb6538f"
+        },
+        "web_query.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        },
+        "shader-\u96ea.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        }
+      }
+    },
+    {
+      "nativeAPIsEqual": true,
+      "savedBlendVerified": true,
+      "unicodeFileReadback": true,
+      "blenderRevision": "d13f752e3b9c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "verifierSourceSha256": "359747e2e88dfccff80d6ce388bf26a0a5cfd6ce063edacf6e25f141765bae34",
+      "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
+      "files": {
+        "osl-python.blend": {
+          "bytes": 98605,
+          "sha256": "c203d554aa1d3e445deeca1bad4651bce09a10afc2c62a79435aab24a6b17706"
+        },
+        "osl-python.json": {
+          "bytes": 3999,
+          "sha256": "1fc6c398a6c7515d98ffe1f810d5236ea1e50c380d164e6ca21b19efccb6538f"
+        },
+        "web_query.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        },
+        "shader-\u96ea.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        }
+      }
+    },
+    {
+      "nativeAPIsEqual": true,
+      "savedBlendVerified": true,
+      "unicodeFileReadback": true,
+      "blenderRevision": "d13f752e3b9c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+      "verifierSourceSha256": "359747e2e88dfccff80d6ce388bf26a0a5cfd6ce063edacf6e25f141765bae34",
+      "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
+      "files": {
+        "osl-python.blend": {
+          "bytes": 98606,
+          "sha256": "473f9495b47d11da0a594401635ee7c2a3be188bc1054cf9475ac3f6373939b0"
+        },
+        "osl-python.json": {
+          "bytes": 3999,
+          "sha256": "1fc6c398a6c7515d98ffe1f810d5236ea1e50c380d164e6ca21b19efccb6538f"
+        },
+        "web_query.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        },
+        "shader-\u96ea.oso": {
+          "bytes": 1753,
+          "sha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56"
+        }
+      }
+    }
+  ],
+  "recording": {
+    "bundleVersion": "6fc613eabfc47ac917c2",
+    "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
+    "durationSeconds": 73.416667,
+    "chapters": [
+      {
+        "seconds": 0.002,
+        "title": "Start original Blender with the original OSL Python query module"
+      },
+      {
+        "seconds": 16.82,
+        "title": "Query real shader metadata, reject invalid input, and check Python threads"
+      },
+      {
+        "seconds": 46.655,
+        "title": "Reload offline, reopen the saved scene, and query the cached shader again"
+      }
+    ],
+    "captions": false,
+    "source": "Actual hardware Chromium capture of original Blender and OSL Python queries",
+    "path": "web/docs/osl-python-walkthrough.mp4",
+    "bytes": 1761176,
+    "sha256": "2165344333098f4ccef85e39ced127e20d5bbe31d35ef804e13a83dcf8e6e554",
+    "screenshot": {
+      "path": "web/docs/osl-python-browser.png",
+      "sha256": "3242bc1f250ff5aff9d9d449766e780a041f63c4f424060ea8a2e89fa85dbaa1"
+    }
+  },
+  "cyclesOSLRenderer": false,
+  "scope": "Local Blender application integration; full release qualification remains pending.",
+  "published": false,
+  "bundleVersion": "6fc613eabfc47ac917c2",
+  "measuredAt": "2026-10-30T01:15:11.284071+00:00"
+}

@@ -40,12 +40,14 @@ concurrency:
 jobs:
   compile:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
         with:
           lfs: false
       - uses: astral-sh/setup-uv@v6
+      - name: Install native OSL parser tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends flex bison m4
       - name: Read pinned SDK
         run: |
           python3 - <<'PY'
@@ -74,7 +76,7 @@ jobs:
             build/native/deps/prefix
             build/native/deps/downloads
             build/native/deps/*/installed.json
-          key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/tools/native_media.py', 'web/tools/native_text.py', 'web/tools/native_usd.py', 'web/tools/native_usd_imaging.py', 'web/native/usd-imaging/**', 'web/tools/native_oidn.py', 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json', 'web/native/oidn/**', 'web/tools/native_app_deps.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/native/openssl-wasm.conf', 'web/native/shader-deps/**', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
+          key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/tools/native_media.py', 'web/tools/native_text.py', 'web/tools/native_usd.py', 'web/tools/native_usd_imaging.py', 'web/native/usd-imaging/**', 'web/tools/native_oidn.py', 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json', 'web/native/oidn/**', 'web/tools/native_app_deps.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/native/openssl-wasm.conf', 'web/native/shader-deps/**', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
           restore-keys: ${{ runner.os }}-native-deps-
       - name: Compile original editors and validate Wasm dependencies
         run: |
@@ -90,6 +92,9 @@ jobs:
             build/native/build.log
             build/native/deps/*/build.log
             build/native/deps/dependencies.json
+            build/native/compiler-check/build.log
+            build/native/compiler-check/invalid-shader.log
+            build/native/compiler-check.json
       - uses: actions/upload-artifact@v4
         with:
           name: wasm-editor-archives
@@ -97,4 +102,5 @@ jobs:
             build/native/editor/lib/*.a
             build/native/editor-compilation.json
             build/native/dependency-check.json
+            build/native/compiler-check.json
             web/native/README.md
