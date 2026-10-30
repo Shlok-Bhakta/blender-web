@@ -1,0 +1,31 @@
+--- a/intern/cycles/scene/osl.cpp
++++ b/intern/cycles/scene/osl.cpp
+@@ -15,6 +15,10 @@
+ #include "scene/stats.h"
+ 
+ #ifdef WITH_OSL
++
++#  ifdef WITH_GHOST_WEB
++#    include "native/ghost/GHOST_WebOSLRuntime.hh"
++#  endif
+ 
+ #  include "kernel/osl/globals.h"
+ #  include "kernel/osl/services.h"
+@@ -332,11 +336,17 @@
+        * build option, but we want to work with OSL builds that don't have it. */
+       auto *ts = reinterpret_cast<OSL::TextureSystem *>(1);
+ 
++#  ifdef WITH_GHOST_WEB
++      GHOST_web_osl_initialize_runtime();
++#  endif
+       auto ss = std::shared_ptr<OSL::ShadingSystem>(
+           new OSL::ShadingSystem(services, ts, &errhandler), [](OSL::ShadingSystem *ss) {
+             util_aligned_delete(static_cast<OSLRenderServices *>(ss->renderer()));
+             delete ss;
+           });
++#  ifdef WITH_GHOST_WEB
++      GHOST_web_osl_configure_system(*ss);
++#  endif
+       ss->attribute("lockgeom", 1);
+       ss->attribute("commonspace", "world");
+       ss->attribute("searchpath:shader", shader_path);

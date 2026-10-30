@@ -26,11 +26,13 @@
   "emscriptenVersion": "4.0.23",
   "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
   "sourceHashes": {
-    "web/tools/native_cycles_osl_abi.py": "8ef3c8dee11f835f047721d30b9620ea0902e5cb32c19d79bce740338ff088ed",
-    "web/native/cycles-osl-abi/CMakeLists.txt": "8df6d0ca1841b2a20336ac68502f7ee81df307612543da2050b919daa48561d5",
+    "web/tools/native_cycles_osl_abi.py": "d5a928f203f6b92fcfbf521babcdeb2b0981e532175f6dd25e6dc5c17f5ba525",
+    "web/native/cycles-osl-abi/CMakeLists.txt": "2b2c7220d5a546dfd4374bfe4e6597ff6e968fe7ec5e4d490274e9eed4b3208a",
     "web/native/tests/cycles-osl-abi.cc": "0a988a0e49689d24d9064de611a3bea4b2ae31f3acddf27502ad30145312e713",
     "web/native/ghost/GHOST_WebOSLTypes.hh": "9ef15520f4f473defcc1452f3a2cdad4173c98223c05399f6ea191b1d835ee26",
-    "web/patches/native-osl-types.patch": "a01190d4e201cfce05b6aa713bf8dbfecb60bfce52ced8a9db9e0e6a3559af21"
+    "web/native/ghost/GHOST_WebOSLRuntime.hh": "bb35b3fa67750f7f29275d5d97058190b11562e799338860b74d12e47df1942e",
+    "web/patches/native-osl-types.patch": "a01190d4e201cfce05b6aa713bf8dbfecb60bfce52ced8a9db9e0e6a3559af21",
+    "web/patches/native-osl-runtime.patch": "8a472445286d176640affbf460073b77374764ef4919bc16d8e6c5751ab754d2"
   },
   "upstreamSourceHashes": {
     "kernel/osl/types.h": "95fd39b49d8e9462860ef58f13e1dc93c59286f916ef50ef8a9c363ce279bf8c",
@@ -40,9 +42,11 @@
     "kernel/osl/strings.h": "27e75be4ae5223a7654f0b4f1a905ed61b8bdac07506ada21a163aab40b0c1d9",
     "kernel/osl/closures.cpp": "05d826bff6884d7212f117dd32a9881477bd2264c8e339ab9ce38221ce24b634",
     "kernel/osl/globals.cpp": "b2beba279361c1476ab0306bb1aec0927c20a2b625fff8d8d5911dc0f2604c5c",
-    "kernel/types.h": "4f1f0f0156f8f5c829916ad302d0390b3cb0b38bdf0edb7e3ebddf6e32a35647"
+    "kernel/types.h": "4f1f0f0156f8f5c829916ad302d0390b3cb0b38bdf0edb7e3ebddf6e32a35647",
+    "scene/osl.cpp": "1edd3638ee0af6740bf3a54a16b97d8a22dd9e76c20144806a40575fb19d8b85"
   },
   "compiledKernelSources": 3,
+  "compiledSceneSources": 1,
   "predefinedStringAssertions": 80,
   "installedDependencyStamps": {
     "osl": "4396af35f8594f9a7d6d5ee2dfcf5521dae696c551a894aaeec95ea85e772383",
@@ -75,6 +79,10 @@
     "cycles-osl-abi/wasm/CMakeFiles/cycles-osl-kernel.dir/home/crabcake/Projects/blender-web/build/native/cycles-osl-abi/source/intern/cycles/kernel/osl/services.cpp.o": {
       "bytes": 359025,
       "sha256": "28ac1cf927a96c33cc290af9b6e3c6e7defec15c56e409a27caeb7451e7f2f5f"
+    },
+    "cycles-osl-abi/wasm/CMakeFiles/cycles-osl-scene.dir/home/crabcake/Projects/blender-web/build/native/cycles-osl-abi/source/intern/cycles/scene/osl.cpp.o": {
+      "bytes": 206054,
+      "sha256": "b8bcaa552430e29b46e715f8cd3c8865c740c0fb336d3088ba350483b73cf250"
     }
   }
 }

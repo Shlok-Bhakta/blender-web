@@ -35,6 +35,7 @@ def main():
               'web/native/ghost/GHOST_WebJITProbe.cc', 'web/native/ghost/GHOST_WebJITProbe.hh',
               'web/native/ghost/GHOST_WebOSLOwnedProbe.cc', 'web/native/ghost/GHOST_WebOSLOwnedProbe.hh',
               'web/native/ghost/GHOST_WebOSL.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh',
+              'web/native/ghost/GHOST_WebOSLRuntime.hh',
               'web/native/ghost/GHOST_WebFFI.cc', 'web/native/ghost/GHOST_WebFFI.hh']
     hashes = {name: digest(ROOT / name) for name in inputs}
     stamps = {name: digest(base / f'deps/{name}/installed.json') for name in ('llvm', 'ffi')}

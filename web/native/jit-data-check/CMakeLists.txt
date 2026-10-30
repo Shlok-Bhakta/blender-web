@@ -7,7 +7,7 @@ include("${BLENDER_WEB_PREFIX}/lib/blender-web-ffi.cmake")
 add_executable(jit-data ../ghost/GHOST_WebOSLOwnedProbe.cc ../ghost/GHOST_WebJITProbe.cc
   ../ghost/GHOST_WebFFI.cc ../tests/jit-data.cc)
 target_compile_features(jit-data PRIVATE cxx_std_20)
-target_compile_definitions(jit-data PRIVATE WITH_GHOST_WEB_OSL_PROBE=1)
+target_compile_definitions(jit-data PRIVATE WITH_GHOST_WEB_OSL=1)
 target_include_directories(jit-data PRIVATE ../ghost "${BLENDER_WEB_PREFIX}/include")
 target_include_directories(jit-data SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS} ${LLD_INCLUDE_DIRS})
 target_compile_options(jit-data PRIVATE -pthread -msimd128 -fwasm-exceptions)

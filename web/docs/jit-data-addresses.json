@@ -9,6 +9,7 @@
     "independentOwners": true,
     "outOfOrderRetirement": true,
     "variableLayouts": 8,
+    "concurrentInitialization": true,
     "dataAlignment": 64,
     "ownedBlocks": 9,
     "ownedTableCapacity": 124,
@@ -24,6 +25,7 @@
     "independentOwners": true,
     "outOfOrderRetirement": true,
     "variableLayouts": 8,
+    "concurrentInitialization": true,
     "dataAlignment": 64,
     "ownedBlocks": 9,
     "ownedTableCapacity": 124,
@@ -69,16 +71,17 @@
   "browserVersion": "145.0.7632.6",
   "emscriptenVersion": "4.0.23",
   "sourceHashes": {
-    "web/tools/native_jit_data_check.py": "07def95b8cf241473e3cc17f97c2c028c8bd4e2b52f40fbcd8e7e9bcc7ba5487",
-    "web/native/jit-data-check/CMakeLists.txt": "81725dcce0cd4417b5ddb53a9f3e7477aa56c3a8bef2e1fce31edcf5da2ba6aa",
-    "web/native/tests/jit-data.cc": "1aef53e292e78bc43872f50b152f3f927d4fc6590dc1e0ab123a1f5353447039",
-    "web/tests/jit-data.cjs": "5c9c7d928658c8f8bd473191671db47ab23888fe5ba5267249e970e51da352d6",
+    "web/tools/native_jit_data_check.py": "cfd2177d3b70c652adb4e4316edbfd9608d6326388db9e29c0094cb665c409f2",
+    "web/native/jit-data-check/CMakeLists.txt": "793238d128243ab53a30bdde413350034651d1a491f70ef424db0e40b290ca34",
+    "web/native/tests/jit-data.cc": "a2d04487732aac8dd7f277f3e0d9488cac60f010650a89d95ddf29b80de092e9",
+    "web/tests/jit-data.cjs": "685e875d688ce6504527d0abde79a3731047cef5da4f28dfe87a3b4182a6c001",
     "web/native/ghost/GHOST_WebJITProbe.cc": "c0d662f7fc2d412eaafc5ee3d59ca99ce705b49c34feada873514caced288618",
     "web/native/ghost/GHOST_WebJITProbe.hh": "c4e5518859c26f537fcbb050c01c96738a1ba12003c6b0b2f8fbd0633aa11d88",
-    "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "a52b76206b8817f0b0167116098b549f755af13c2caec1c54967b3f1ca62812d",
+    "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "2918ddc8fccd4b6dfd665b0e084135143512121630524acb1eaf3088c0125fc3",
     "web/native/ghost/GHOST_WebOSLOwnedProbe.hh": "94986866a3a8f3516d9f7181b0c40d0ecd895e9be516de782eced57d047c3faf",
     "web/native/ghost/GHOST_WebOSL.hh": "4d64ce557c021955157e8bf77e4fb4dee70f929655cbec0750cf16e34fa5bab8",
     "web/native/ghost/GHOST_WebWorkerResources.hh": "58049886eb2b543ebe347fedacdcdcdcc425c7b24c6cef877e70232a1c1bd89b",
+    "web/native/ghost/GHOST_WebOSLRuntime.hh": "bb35b3fa67750f7f29275d5d97058190b11562e799338860b74d12e47df1942e",
     "web/native/ghost/GHOST_WebFFI.cc": "b6424a21da4d097534a8e2fda711275dfe691bb4ababd0d0fda60c8b2527049a",
     "web/native/ghost/GHOST_WebFFI.hh": "e1c1c5c7341de78e0eb5ca8ac3e427bd6e21830d31c09a7b2baea702b3521e17"
   },
@@ -90,15 +93,15 @@
   "artifacts": {
     "jit-data-check/wasm/jit-data.js": {
       "bytes": 232912,
-      "sha256": "459b3beb2589456980b5730d4da558e33588c3c6e17ed4832868a1e0270a3145"
+      "sha256": "b985e0f2fdaf7e7d46afdc95a3bd3f76369b0e5ea7d0db4a9cc1011362a22f24"
     },
     "jit-data-check/wasm/jit-data.wasm": {
-      "bytes": 51554159,
-      "sha256": "d73a77e40bcef243157054e9c11dcf37d1f56eeef168699a46181bab7c49c034"
+      "bytes": 51556325,
+      "sha256": "0d433fef4106deb32059a598096a3ce005814dbc63a170032619d7d5df6b4c7b"
     },
     "jit-data-check/evidence/jit-data.png": {
-      "bytes": 35459,
-      "sha256": "0496e94a901459574ac233c02b84fcb984e452c4ec4b6c7a95ce40e7145629a5"
+      "bytes": 37248,
+      "sha256": "10e6f959c7a6f758ced69b578f80a60eb22a9fae25dad33039586c40d24f82ff"
     }
   },
   "oslRuntimeRegression": {
@@ -218,23 +221,24 @@
         "sha256": "6fe3845b36f90072cf7ee00d48ebd3bfddec607a0ac16131007d3f90ecd87d52"
       },
       "osl-installed-probe/runtime/osl-runtime.wasm": {
-        "bytes": 78486046,
-        "sha256": "a779b9cbe7cf61dacd71ee96024cc2e40999984d63068762f04fcf65ebc79baf"
+        "bytes": 78485970,
+        "sha256": "050127e80df0343edc951eef17a0717e792c65d42639bae6beb1186167c3c7d3"
       },
-      "osl-installed-probe/data-regression/node-fixtures/web_execute.oso": {
+      "osl-installed-probe/bootstrap-regression/node-fixtures/web_execute.oso": {
         "bytes": 4738,
         "sha256": "e8d47dc35af6ae99226d9f5b0b135ae756742208b8eb236511ece8274c83e6bf"
       },
-      "osl-installed-probe/data-regression/browser-fixtures/web_execute.oso": {
+      "osl-installed-probe/bootstrap-regression/browser-fixtures/web_execute.oso": {
         "bytes": 4738,
         "sha256": "e8d47dc35af6ae99226d9f5b0b135ae756742208b8eb236511ece8274c83e6bf"
       }
     },
     "sourceHashes": {
-      "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "a52b76206b8817f0b0167116098b549f755af13c2caec1c54967b3f1ca62812d",
+      "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "2918ddc8fccd4b6dfd665b0e084135143512121630524acb1eaf3088c0125fc3",
       "web/native/ghost/GHOST_WebJITProbe.cc": "c0d662f7fc2d412eaafc5ee3d59ca99ce705b49c34feada873514caced288618",
       "web/native/ghost/GHOST_WebJITProbe.hh": "c4e5518859c26f537fcbb050c01c96738a1ba12003c6b0b2f8fbd0633aa11d88",
       "web/native/ghost/GHOST_WebOSLOwnedProbe.hh": "94986866a3a8f3516d9f7181b0c40d0ecd895e9be516de782eced57d047c3faf",
+      "web/native/ghost/GHOST_WebOSLRuntime.hh": "bb35b3fa67750f7f29275d5d97058190b11562e799338860b74d12e47df1942e",
       "web/native/tests/osl-textures.cc": "8804e319f9b66b773a8169df5e512be7f8c9b4d82ac3db68ebfc05dd72ee6da8",
       "web/tests/osl-textures.cjs": "08f38cba336508bfab5460e3660f4a1d646d572f09a91b216aba1ec8286a0393"
     }
