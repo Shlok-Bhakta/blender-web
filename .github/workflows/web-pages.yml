@@ -95,6 +95,40 @@ jobs:
             build/native/gpu-deps
           key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/tools/native_python_packages.py', 'web/tools/native_bindings.py', 'web/native/python-bindings/**', 'web/native/patches/yamlcpp.patch', 'web/native/patches/ffi.patch', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
           restore-keys: ${{ runner.os }}-native-app-deps-v2-
+      - name: Restore LLVM checkpoint
+        uses: actions/cache/restore@v4
+        id: llvm-checkpoint
+        with:
+          path: |
+            build/native/llvm-cache
+            build/native/deps/llvm/host
+          key: ${{ runner.os }}-native-llvm-${{ hashFiles('web/upstream.json', 'web/tools/native_llvm.py', 'web/tools/native_llvm_cache.py', 'web/native/toolchain.cmake') }}
+      - name: Build and checkpoint LLVM before OSL
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          python3 web/tests/osl_parser_headers.py
+          python3 - <<'PYTHON'
+          import argparse
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, 'web/tools')
+          from native_build import prepare_native
+          from native_deps import build
+          from native_llvm_cache import restore, export
+          base = Path('build/native').resolve()
+          prepare_native(base)
+          restore(base, base / 'llvm-cache')
+          build(argparse.Namespace(build_dir=base / 'deps', jobs=4, packages=['LLVM']))
+          export(base, base / 'llvm-cache')
+          PYTHON
+      - name: Save completed LLVM checkpoint
+        uses: actions/cache/save@v4
+        if: steps.llvm-checkpoint.outputs.cache-hit != 'true' && hashFiles('build/native/llvm-cache/manifest.json') != ''
+        with:
+          path: |
+            build/native/llvm-cache
+            build/native/deps/llvm/host
+          key: ${{ steps.llvm-checkpoint.outputs.cache-primary-key }}
       - name: Build and validate native dependencies
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"

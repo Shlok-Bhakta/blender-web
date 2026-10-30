@@ -3,6 +3,7 @@
 """Install original OSL libraries and a genuine Node-hosted oslc build command."""
 import json
 import os
+import shlex
 from pathlib import Path
 import shutil
 import subprocess
@@ -18,6 +19,25 @@ PATCHES = ['web/native/patches/osl-runtime.patch', 'web/native/patches/osl-owned
 HEADERS = ['web/native/ghost/GHOST_WebOSL.hh', 'web/native/ghost/GHOST_WebOSLOwnedProbe.hh']
 ADAPTERS = ['web/native/osl-query-probe/cmake/OSLDependencies.cmake',
             'web/native/osl-query-probe/cmake/FindLLVM.cmake']
+
+
+def isolate_flex(executable, directory):
+    """Keep OSL's inferred Flex include directory out of the native sysroot."""
+    directory = Path(directory).resolve()
+    binary, headers = directory / 'bin/flex', directory / 'include'
+    binary.parent.mkdir(parents=True, exist_ok=True)
+    headers.mkdir(parents=True, exist_ok=True)
+    # OSL derives ../include from FLEX_EXECUTABLE. A real launcher, rather than
+    # a symlink, keeps that path isolated even when the tool is /usr/bin/flex.
+    binary.write_text('#!/bin/sh\nexec ' + shlex.quote(str(executable)) + ' "$@"\n')
+    binary.chmod(0o755)
+    original = Path(executable).parents[1] / 'include/FlexLexer.h'
+    header = headers / 'FlexLexer.h'
+    if original.is_file():
+        shutil.copy2(original, header)
+    else:
+        header.unlink(missing_ok=True)
+    return binary
 
 
 def llvm_source(directory, lock, downloads):
@@ -57,6 +77,7 @@ def build_library(source, work, prefix, options, jobs, log, run, flags):
             raise RuntimeError(f'Original OSL needs native {name}; provide BLENDER_WEB_{name.upper()}')
         tools[name] = str(Path(value).resolve())
     env['M4'] = tools['m4']
+    flex = isolate_flex(tools['flex'], directory / 'host-tools')
     bison_data = Path(tools['bison']).parents[1] / 'share/bison'
     if bison_data.is_dir():
         env['BISON_PKGDATADIR'] = str(bison_data)
@@ -91,7 +112,7 @@ def build_library(source, work, prefix, options, jobs, log, run, flags):
          f'-DLLVM_LINK_TOOL={host / "bin/llvm-link"}', '-DOSL_BUILD_TESTS=OFF',
          '-DOSL_BUILD_SHADERS=OFF', '-DOSL_BUILD_PLUGINS=OFF', '-DUSE_PYTHON=OFF', '-DUSE_QT=OFF',
          '-DUSE_PARTIO=OFF', '-DOSL_USE_OPTIX=OFF', '-DSTOP_ON_WARNING=OFF', '-DINSTALL_DOCS=OFF',
-         f'-DFLEX_EXECUTABLE={tools["flex"]}', f'-DBISON_EXECUTABLE={tools["bison"]}', *options], log, env=env)
+         f'-DFLEX_EXECUTABLE={flex}', f'-DBISON_EXECUTABLE={tools["bison"]}', *options], log, env=env)
     # These are the original installed/exported targets. The default "all"
     # additionally runs BSDL's uninstalled native-only table generator, whose
     # tables are not consumed by any of OSL's four runtime/compiler libraries.

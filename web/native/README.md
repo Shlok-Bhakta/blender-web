@@ -349,6 +349,20 @@ and reads build inputs through Node's filesystem. Installed CMake packages refer
 to real archives. The OSL build selects its four exported libraries and two
 installed commands; its uninstalled BSDL table generator is separate.
 
+The native Flex executable runs through a private launcher. OSL infers an
+include directory from that executable's location; passing `/usr/bin/flex`
+directly would add native `/usr/include` to the Wasm build. The private directory
+contains only the original optional `FlexLexer.h`, keeping C and C++ headers in
+the SDK. `web/tests/osl_parser_headers.py` reproduces that failure with a real
+lexer and verifies the corrected wasm32 output.
+
+Source CI checkpoints LLVM before compiling OSL. Its cache contains only the
+files named by LLVM's genuine installation manifest, its companion Wasm tools,
+and the native tool build tree. Restoration verifies every file and its source,
+SDK and toolchain inputs before touching the dependency prefix. Other dependency
+files are preserved. An OSL failure therefore does not discard LLVM's completed
+build. The final compiler checks still execute the restored libraries.
+
 The original `oslquery` Python package shares OpenImageIO's `TypeDesc` binding.
 Its check covers shader defaults and metadata, file and memory queries, Unicode
 paths, invalid input, recovery and calls from Python worker threads. Cycles OSL
