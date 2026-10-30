@@ -91,6 +91,14 @@ EM_JS(uintptr_t, owned_symbol, (unsigned handle,const char *name), {
   const state=Module.ownedState,index=state.programs.get(handle)?.entries.get(UTF8ToString(name));
   return index && state.owners.get(index)===handle ? index : 0;
 });
+EM_JS(uintptr_t, owned_data_symbol, (unsigned handle,const char *name), {
+  const program=Module.ownedState.programs.get(handle);
+  if(!program)return 0;
+  const value=program.instance.exports[UTF8ToString(name)];
+  if(!(value instanceof WebAssembly.Global) || typeof value.value!=='number')return 0;
+  const offset=value.value>>>0, address=program.memoryBase+offset;
+  return offset<=program.bytes && address<=0xffffffff ? address : 0;
+});
 EM_JS(int, owned_retire, (unsigned handle), {
   const state=Module.ownedState,p=state.programs.get(handle);if(!p)return 0;
   for(let i=0;i<p.block.capacity;i++){const slot=p.block.base+i;if(state.owners.get(slot)===handle){setWasmTableEntry(slot,null);state.owners.delete(slot);}}

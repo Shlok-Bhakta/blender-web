@@ -58,6 +58,8 @@ standalone Chromium capture; application UI checks are separate.
 The runtime fixture covers nearest EXR samples and fixed program layouts.
 Broader texture operations, arbitrary table fragmentation, Cycles renderer
 integration and heaps above wasm32's 4 GiB limit remain separate work.
+The [JIT data-address check](jit-data-addresses.md) separately verifies global
+lookup, relocations and out-of-order cleanup with the installed libraries.
 Cancellation joins shader users before releasing their native owner; it does
 not interrupt LLVM compilation or an individual shader instruction. The recipe
 builds OSL's four exported libraries and two installed commands, excluding the

@@ -389,6 +389,14 @@ The installed compiler check also compiles fresh bytecode and compares its query
 results with native Blender's metadata reference. These compiler and library
 checks do not enable OSL rendering in Blender's browser application.
 
+The standalone [JIT data-address check](../docs/jit-data-addresses.md) covers
+global lookup, data/function pointer relocations, shared worker reads and
+out-of-order native-owner retirement using the installed LLVM libraries:
+
+```sh
+python3 web/tools/native_jit_data_check.py --jobs 2
+```
+
 The static Draco bridge gives its opaque `Encoder` and `Decoder` types web-specific
 names so they cannot collide with libheif's global classes and destructors. Its
 original C entry points stay intact. The AVIF regression executable links both
