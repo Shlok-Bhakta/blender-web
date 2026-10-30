@@ -319,7 +319,7 @@ class WebOSLEngine : public llvm::ExecutionEngine {
     GHOST_web_invoke_runtime_thread(
         [](void *value) {
           auto &q = *static_cast<Query *>(value);
-          q.result = owned_symbol(q.handle, q.name);
+          q.result = owned_data_symbol(q.handle, q.name);
         },
         &query);
     return query.result;

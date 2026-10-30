@@ -1,0 +1,208 @@
+{
+  "node": {
+    "programs": 8,
+    "workerReads": 32,
+    "globalAddresses": true,
+    "dataRelocations": true,
+    "functionRelocations": true,
+    "nativeOwnerRetirement": true,
+    "independentOwners": true,
+    "outOfOrderRetirement": true
+  },
+  "browser": {
+    "programs": 8,
+    "workerReads": 32,
+    "globalAddresses": true,
+    "dataRelocations": true,
+    "functionRelocations": true,
+    "nativeOwnerRetirement": true,
+    "independentOwners": true,
+    "outOfOrderRetirement": true
+  },
+  "offline": true,
+  "browserErrors": [],
+  "nodeDiagnostics": [
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "program exited (with status: 0), but keepRuntimeAlive() is set (counter=0) due to an async operation, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)"
+  ],
+  "browserVersion": "145.0.7632.6",
+  "emscriptenVersion": "4.0.23",
+  "sourceHashes": {
+    "web/tools/native_jit_data_check.py": "07def95b8cf241473e3cc17f97c2c028c8bd4e2b52f40fbcd8e7e9bcc7ba5487",
+    "web/native/jit-data-check/CMakeLists.txt": "81725dcce0cd4417b5ddb53a9f3e7477aa56c3a8bef2e1fce31edcf5da2ba6aa",
+    "web/native/tests/jit-data.cc": "218ab89166d6c68ffa9cb2ecdfa6ef138d99bea039046ddb4257e2e5f0ff6253",
+    "web/tests/jit-data.cjs": "7e514027e6569624b65213025d1c2bdb4a69e38c07bcf84050673525a0b01bf2",
+    "web/native/ghost/GHOST_WebJITProbe.cc": "c0d662f7fc2d412eaafc5ee3d59ca99ce705b49c34feada873514caced288618",
+    "web/native/ghost/GHOST_WebJITProbe.hh": "c4e5518859c26f537fcbb050c01c96738a1ba12003c6b0b2f8fbd0633aa11d88",
+    "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "a52b76206b8817f0b0167116098b549f755af13c2caec1c54967b3f1ca62812d",
+    "web/native/ghost/GHOST_WebOSLOwnedProbe.hh": "94986866a3a8f3516d9f7181b0c40d0ecd895e9be516de782eced57d047c3faf",
+    "web/native/ghost/GHOST_WebOSL.hh": "4d64ce557c021955157e8bf77e4fb4dee70f929655cbec0750cf16e34fa5bab8",
+    "web/native/ghost/GHOST_WebWorkerResources.hh": "58049886eb2b543ebe347fedacdcdcdcc425c7b24c6cef877e70232a1c1bd89b",
+    "web/native/ghost/GHOST_WebFFI.cc": "b6424a21da4d097534a8e2fda711275dfe691bb4ababd0d0fda60c8b2527049a",
+    "web/native/ghost/GHOST_WebFFI.hh": "e1c1c5c7341de78e0eb5ca8ac3e427bd6e21830d31c09a7b2baea702b3521e17"
+  },
+  "installedDependencyStamps": {
+    "llvm": "af7acadf95d28d9c8574dab5faaf44ecf3db7dd0d42012c5c15815a425f13652",
+    "ffi": "492be753528bc5ce6b9478ebee62ec013412804306947ca6ec52c5974011eb90"
+  },
+  "applicationIntegrated": false,
+  "artifacts": {
+    "jit-data-check/wasm/jit-data.js": {
+      "bytes": 232660,
+      "sha256": "a3f7fb94b31df335cf1b4f0e4a799526b6db5928c009b590d8041f0e037313e4"
+    },
+    "jit-data-check/wasm/jit-data.wasm": {
+      "bytes": 51549401,
+      "sha256": "7b44a20fb239583384d22f4aee6f4156f3d660920b8c5bd01b2b4d2f52f2ba5b"
+    },
+    "jit-data-check/evidence/jit-data.png": {
+      "bytes": 27303,
+      "sha256": "2a5576fc61022410e0b7756096f1a7a68ec82a4f787d87878737a6fe1bde7a16"
+    }
+  },
+  "oslRuntimeRegression": {
+    "node": {
+      "ownedOSLSystems": 8,
+      "nativeOwnerRetirement": true,
+      "tableReused": true,
+      "automaticPublication": true,
+      "mixedFFICallbacks": 7296,
+      "workerCompilation": true,
+      "busyWorkerPublication": true,
+      "shadingPoints": 7296,
+      "rendererCallbacks": 14592,
+      "concurrentCompilation": true,
+      "cooperativeCancellation": true,
+      "closureTrees": true,
+      "closureStrings": true,
+      "textureSamples": true,
+      "mainOnWorker": true,
+      "dynamicWorkerStartup": true
+    },
+    "browser": {
+      "result": {
+        "ownedOSLSystems": 8,
+        "nativeOwnerRetirement": true,
+        "tableReused": true,
+        "automaticPublication": true,
+        "mixedFFICallbacks": 7296,
+        "workerCompilation": true,
+        "busyWorkerPublication": true,
+        "shadingPoints": 7296,
+        "rendererCallbacks": 14592,
+        "concurrentCompilation": true,
+        "cooperativeCancellation": true,
+        "closureTrees": true,
+        "closureStrings": true,
+        "textureSamples": true,
+        "mainOnWorker": true,
+        "dynamicWorkerStartup": true
+      },
+      "bytecode": "OpenShadingLanguage 1.00\n# Compiled by oslc 1.15.3.0\n# options: -q -I/osl/include -o /fixtures/web_execute.oso\nshader web_execute\nparam\tfloat\tgain\t1.25\t\t%read{0,7} %write{2147483647,-1}\nparam\tstring\ttag\t\"browser\"\t\t%read{8,23} %write{2147483647,-1}\nparam\tstring\ttexname\t\"texture.exr\"\t\t%read{16,16} %write{2147483647,-1}\noparam\tcolor\tresult\t0 0 0\t\t%read{2147483647,-1} %write{5,5}\noparam\tfloat\tenergy\t0\t\t%read{2147483647,-1} %write{7,7}\noparam\tint\tmatches\t0\t\t%read{2147483647,-1} %write{14,14}\noparam\tstring\techoed\t\"\"\t\t%read{2147483647,-1} %write{15,15}\noparam\tclosure color\tlobes\t\t\t%read{2147483647,-1} %write{25,25}\noparam\tcolor\ttexel\t0 0 0\t\t%read{2147483647,-1} %write{16,16}\nglobal\tpoint\tP\t%read{6,6} %write{2147483647,-1}\nglobal\tfloat\tu\t%read{0,18} %write{2147483647,-1} %derivs\nglobal\tfloat\tv\t%read{1,18} %write{2147483647,-1} %derivs\ntemp\tfloat\t$tmp1\t%read{5,5} %write{0,0}\ntemp\tfloat\t$tmp2\t%read{5,5} %write{1,1}\ntemp\tfloat\t$tmp3\t%read{4,4} %write{2,2}\ntemp\tfloat\t$tmp4\t%read{4,4} %write{3,3}\ntemp\tfloat\t$tmp5\t%read{5,5} %write{4,4}\ntemp\tfloat\t$tmp6\t%read{7,7} %write{6,6}\nconst\tstring\t$const1\t\"browser\"\t\t%read{8,8} %write{2147483647,-1}\ntemp\tint\t$tmp7\t%read{11,11} %write{8,8}\ntemp\tint\t$tmp8\t%read{10,10} %write{9,9}\nconst\tstring\t$const2\t\"brow\"\t\t%read{9,9} %write{2147483647,-1}\nconst\tint\t$const3\t2\t\t%read{10,10} %write{2147483647,-1}\ntemp\tint\t$tmp9\t%read{11,11} %write{10,10}\ntemp\tint\t$tmp10\t%read{14,14} %write{11,11}\ntemp\tint\t$tmp11\t%read{13,13} %write{12,12}\nconst\tint\t$const4\t4\t\t%read{13,13} %write{2147483647,-1}\ntemp\tint\t$tmp12\t%read{14,14} %write{13,13}\nconst\tstring\t$const5\t\"interp\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const6\t\"closest\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const7\t\"swrap\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const8\t\"clamp\"\t\t%read{16,16} %write{2147483647,-1}\nconst\tstring\t$const9\t\"twrap\"\t\t%read{16,16} %write{2147483647,-1}\ntemp\tclosure color\t$tmp13\t%read{19,19} %write{17,17}\nconst\tnormal\t$const10\t0 0 1\t\t%read{17,17} %write{2147483647,-1}\nconst\tstring\t$const11\t\"label\"\t\t%read{17,17} %write{2147483647,-1}\nconst\tstring\t$const12\t\"diffuse\"\t\t%read{17,17} %write{2147483647,-1}\ntemp\tcolor\t$tmp15\t%read{19,19} %write{18,18}\nconst\tfloat\t$const13\t0.25\t\t%read{18,18} %write{2147483647,-1}\ntemp\tclosure color\t$tmp16\t%read{22,22} %write{19,19}\ntemp\tclosure color\t$tmp17\t%read{21,21} %write{20,20}\nconst\tstring\t$const14\t\"emission\"\t\t%read{20,20} %write{2147483647,-1}\nconst\tcolor\t$const15\t0.100000001 0.200000003 0.300000012\t\t%read{21,21} %write{2147483647,-1}\ntemp\tclosure color\t$tmp19\t%read{22,22} %write{21,21}\ntemp\tclosure color\t$tmp20\t%read{25,25} %write{22,22}\ntemp\tclosure color\t$tmp21\t%read{24,24} %write{23,23}\nconst\tstring\t$const16\t\"debug\"\t\t%read{23,23} %write{2147483647,-1}\nconst\tcolor\t$const17\t0.400000006 0.400000006 0.400000006\t\t%read{24,24} %write{2147483647,-1}\ntemp\tclosure color\t$tmp23\t%read{25,25} %write{24,24}\ncode ___main___\n# fixtures/web_execute.osl:13\n#     energy = dot(P, P) + gain;\n\tmul\t\t$tmp1 u gain \t%filename{\"fixtures/web_execute.osl\"} %line{13} %argrw{\"wrr\"}\n\tadd\t\t$tmp2 v gain \t%argrw{\"wrr\"}\n\tsin\t\t$tmp3 u \t%argrw{\"wr\"}\n\tcos\t\t$tmp4 v \t%argrw{\"wr\"}\n\tadd\t\t$tmp5 $tmp3 $tmp4 \t%argrw{\"wrr\"}\n\tcolor\t\tresult $tmp1 $tmp2 $tmp5 \t%argrw{\"wrrr\"}\n# fixtures/web_execute.osl:14\n#     matches = (tag == \"browser\") + startswith(tag, \"brow\") * 2 + strlen(tag) * 4;\n\tdot\t\t$tmp6 P P \t%line{14} %argrw{\"wrr\"}\n\tadd\t\tenergy $tmp6 gain \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:15\n#     echoed = tag;\n\teq\t\t$tmp7 tag $const1 \t%line{15} %argrw{\"wrr\"}\n\tstartswith\t$tmp8 tag $const2 \t%argrw{\"wrr\"}\n\tmul\t\t$tmp9 $tmp8 $const3 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp10 $tmp7 $tmp9 \t%argrw{\"wrr\"}\n\tstrlen\t\t$tmp11 tag \t%argrw{\"wr\"}\n\tmul\t\t$tmp12 $tmp11 $const4 \t%argrw{\"wrr\"}\n\tadd\t\tmatches $tmp10 $tmp12 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:16\n#     texel = texture(texname, u, v, \"interp\", \"closest\", \"swrap\", \"clamp\", \"twrap\", \"clamp\");\n\tassign\t\techoed tag \t%line{16} %argrw{\"wr\"}\n# fixtures/web_execute.osl:17\n#     lobes = color(u, 0.25, v) * diffuse(normal(0, 0, 1), \"label\", tag)\n\ttexture\t\ttexel texname u v $const5 $const6 $const7 $const8 $const9 $const8 \t%line{17} %argrw{\"wrrrrrrrrr\"} %argderivs{2,3}\n# fixtures/web_execute.osl:18\n#           + color(0.1, 0.2, 0.3) * emission() + color(0.4) * debug(tag);\n\tclosure\t\t$tmp13 $const12 $const10 $const11 tag \t%line{18} %argrw{\"wrrrr\"}\n\tcolor\t\t$tmp15 u $const13 v \t%argrw{\"wrrr\"}\n\tmul\t\t$tmp16 $tmp13 $tmp15 \t%argrw{\"wrr\"}\n# fixtures/web_execute.osl:19\n# }\n\tclosure\t\t$tmp17 $const14 \t%line{19} %argrw{\"wr\"}\n\tmul\t\t$tmp19 $tmp17 $const15 \t%argrw{\"wrr\"}\n\tadd\t\t$tmp20 $tmp16 $tmp19 \t%argrw{\"wrr\"}\n\tclosure\t\t$tmp21 $const16 tag \t%argrw{\"wrr\"}\n\tmul\t\t$tmp23 $tmp21 $const17 \t%argrw{\"wrr\"}\n\tadd\t\tlobes $tmp20 $tmp23 \t%argrw{\"wrr\"}\n\tend\n",
+      "diagnostics": [
+        "warning: unsupported syscall: __syscall_prlimit64",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+        "program exited (with status: 0), but keepRuntimeAlive() is set (counter=0) due to an async operation, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)"
+      ],
+      "crossOriginIsolated": true,
+      "offline": true
+    },
+    "nodeDiagnostics": [
+      "warning: unsupported syscall: __syscall_prlimit64",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+      "program exited (with status: 0), but keepRuntimeAlive() is set (counter=0) due to an async operation, so halting execution but not exiting the runtime or preventing further async execution (you can use emscripten_force_exit, if you want to force a true shutdown)"
+    ],
+    "browserErrors": [],
+    "browserVersion": "145.0.7632.6",
+    "applicationIntegrated": false,
+    "browserShaderExecutionVerified": true,
+    "native": {
+      "node": {
+        "nativeClosureTrees": true,
+        "nativeClosureStrings": true,
+        "nativeTextureSamples": true,
+        "shadingPoints": 7296,
+        "rendererCallbacks": 14592,
+        "ffiCallbacks": 7296
+      },
+      "browser": {
+        "nativeClosureTrees": true,
+        "nativeClosureStrings": true,
+        "nativeTextureSamples": true,
+        "shadingPoints": 7296,
+        "rendererCallbacks": 14592,
+        "ffiCallbacks": 7296
+      }
+    },
+    "nativeBinarySha256": "590f9b62c5f745a2b19fe0dde7453adc8b7e113035ef1bcc92a9fd9005b6e3df",
+    "nativeLibraries": {
+      "liboslexec.so.1.15.3": "5497e7bb936d51dcc6e2eadcbc777f01ef3ff5e24c48cf518853b7a5ad69728a",
+      "libOpenImageIO.so.3.1.13": "207b70b9d3d1ae48f6013dbad654ad0306a10ae35c8c0e546dab189a761d6efb",
+      "libOpenImageIO_Util.so.3.1.13": "e52439d9788a61ec3f7ad8a1af82970e06655512fd9842de92b421868a93c080"
+    },
+    "prerequisiteSha256": "19ae7b66e6ecdae07edb0517af9d33c98a46185f27e8c56e47511679e229bd1a",
+    "artifacts": {
+      "osl-installed-probe/runtime/osl-runtime.js": {
+        "bytes": 373639,
+        "sha256": "6fe3845b36f90072cf7ee00d48ebd3bfddec607a0ac16131007d3f90ecd87d52"
+      },
+      "osl-installed-probe/runtime/osl-runtime.wasm": {
+        "bytes": 78486046,
+        "sha256": "a779b9cbe7cf61dacd71ee96024cc2e40999984d63068762f04fcf65ebc79baf"
+      },
+      "osl-installed-probe/data-regression/node-fixtures/web_execute.oso": {
+        "bytes": 4738,
+        "sha256": "e8d47dc35af6ae99226d9f5b0b135ae756742208b8eb236511ece8274c83e6bf"
+      },
+      "osl-installed-probe/data-regression/browser-fixtures/web_execute.oso": {
+        "bytes": 4738,
+        "sha256": "e8d47dc35af6ae99226d9f5b0b135ae756742208b8eb236511ece8274c83e6bf"
+      }
+    },
+    "sourceHashes": {
+      "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "a52b76206b8817f0b0167116098b549f755af13c2caec1c54967b3f1ca62812d",
+      "web/native/ghost/GHOST_WebJITProbe.cc": "c0d662f7fc2d412eaafc5ee3d59ca99ce705b49c34feada873514caced288618",
+      "web/native/ghost/GHOST_WebJITProbe.hh": "c4e5518859c26f537fcbb050c01c96738a1ba12003c6b0b2f8fbd0633aa11d88",
+      "web/native/ghost/GHOST_WebOSLOwnedProbe.hh": "94986866a3a8f3516d9f7181b0c40d0ecd895e9be516de782eced57d047c3faf",
+      "web/native/tests/osl-textures.cc": "8804e319f9b66b773a8169df5e512be7f8c9b4d82ac3db68ebfc05dd72ee6da8",
+      "web/tests/osl-textures.cjs": "08f38cba336508bfab5460e3660f4a1d646d572f09a91b216aba1ec8286a0393"
+    }
+  }
+}
