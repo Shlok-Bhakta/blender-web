@@ -38,3 +38,5 @@ python3 web/tools/native_cycles_osl_abi.py --blender /path/to/native/blender
 Renderer initialization, worker ownership, texture-map teardown and cached
 shader lifetimes still need application tests. Actual Cycles OSL renders remain
 required before enabling the application option.
+The [full node-library compilation check](cycles-osl-shaders.md) independently
+compares all 103 original shaders and their 719 parameters with native Blender.

@@ -407,6 +407,15 @@ separate from these compilation checks.
 python3 web/tools/native_cycles_osl_abi.py --blender /path/to/native/blender
 ```
 
+The [original Cycles node-library check](../docs/cycles-osl-shaders.md) builds
+all 103 shaders through their original CMake target with the installed Wasm
+compiler, then independently compiles them in native Blender and compares all
+719 parameters and metadata:
+
+```sh
+python3 web/tools/native_cycles_osl_shaders.py --jobs 2 --blender /path/to/native/blender
+```
+
 The static Draco bridge gives its opaque `Encoder` and `Decoder` types web-specific
 names so they cannot collide with libheif's global classes and destructors. Its
 original C entry points stay intact. The AVIF regression executable links both
