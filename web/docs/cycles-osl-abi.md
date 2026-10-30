@@ -17,13 +17,24 @@ node types and pointers through the actual Cycles types. Native and Wasm runs
 also preserve the complete hash `8a7dc2d27a1bd227`, with assertions enabled.
 The tool first requires the original headers to reproduce the failures.
 
+The guarded texture adapter uses a pointer to Cycles' existing texture-map
+record, which already holds its `ImageHandle`. It adds no allocation or ID
+limit. Tests exercise all four texture types with zero, positive IDs,
+`INT_MAX`, negative UDIM indices and `INT_MIN`, plus the original null-handle
+decoding. These 24 cases use fixture records with Cycles' actual field types;
+the test also instantiates the macro with Cycles' complete record type.
+
+The three original OSL kernel source files, `closures.cpp`, `globals.cpp` and
+`services.cpp`, compile to actual wasm32 objects with the shims. All 80 predefined
+device-string assertions remain active and pass using OIIO's original
+`strhash64` function. The report records the source and object hashes. Compiling
+these objects does not link or qualify the Cycles OSL renderer.
+
 ```sh
 # Activate the pinned SDK and build OSL/OpenImageIO first.
 python3 web/tools/native_cycles_osl_abi.py --blender /path/to/native/blender
 ```
 
-Cycles' texture-handle packing still shifts a pointer-sized integer by 32 bits.
-That representation needs a separate wasm32 adapter, including negative UDIM
-indices and the `INT_MAX` missing-image sentinel. General JIT allocation stress,
-renderer initialization, worker ownership and actual Cycles OSL renders remain
+Renderer initialization, worker ownership, texture-map teardown and cached
+shader lifetimes still need application tests. Actual Cycles OSL renders remain
 required before enabling the application option.

@@ -42,17 +42,22 @@ def main():
               'web/patches/native-osl-types.patch']
     hashes = {name: digest(ROOT / name) for name in inputs}
     stamps = {name: digest(base / f'deps/{name}/installed.json') for name in ('osl', 'openimageio')}
-    upstream_headers = {name: digest(ROOT / 'blender/intern/cycles' / name)
-                        for name in ('kernel/osl/types.h', 'kernel/osl/closures_template.h', 'kernel/types.h')}
-    for name in ('types.h', 'closures_template.h'):
+    upstream_inputs = {name: digest(ROOT / 'blender/intern/cycles' / name)
+                        for name in ('kernel/osl/types.h', 'kernel/osl/closures_template.h',
+                                     'kernel/osl/services.h', 'kernel/osl/services.cpp',
+                                     'kernel/osl/strings.h', 'kernel/osl/closures.cpp',
+                                     'kernel/osl/globals.cpp', 'kernel/types.h')}
+    for name in ('types.h', 'closures_template.h', 'services.cpp', 'strings.h'):
         shutil.copy2(ROOT / 'blender/intern/cycles/kernel/osl' / name, headers / name)
-    compiler_args = ['-std=c++20', '-fno-strict-aliasing', '-UNDEBUG', '-DWITH_GHOST_WEB',
+    compiler_args = ['-std=c++20', '-fno-strict-aliasing', '-UNDEBUG', '-DWITH_GHOST_WEB', '-DWITH_OSL',
         '-DCCL_NAMESPACE_BEGIN=namespace ccl {', '-DCCL_NAMESPACE_END=}',
         f'-I{source / "intern/cycles"}', f'-I{ROOT / "blender/intern/cycles"}',
+        f'-I{ROOT / "blender/intern/atomic"}',
         f'-I{ROOT / "web"}', f'-I{prefix / "include"}', f'-I{prefix / "include/Imath"}']
     test = ROOT / 'web/native/tests/cycles-osl-abi.cc'
     baseline = subprocess.run(['em++', '-pthread', '-msimd128', '-fwasm-exceptions',
-                               '-fsyntax-only', *compiler_args, test], text=True, capture_output=True)
+                               '-fsyntax-only', '-DBLENDER_WEB_OSL_ABI_BASELINE',
+                               *compiler_args, test], text=True, capture_output=True)
     (work / 'baseline.log').write_text(baseline.stdout + baseline.stderr)
     assert baseline.returncode and '16 == 12' in baseline.stderr and '24 == 20' in baseline.stderr
     assert 'StringFactory' in baseline.stderr
@@ -78,15 +83,25 @@ def main():
     assert wasm['pointerBytes'] == 4 and native['pointerBytes'] == 8
     for item in (wasm, native):
         assert item['closureTree'] and item['stringHashFull'] and not item['applicationIntegrated']
+        assert item['textureHandleCases'] == 24
     assert wasm['hash'] == native['hash']
     assert hashes == {name: digest(ROOT / name) for name in inputs}, 'Sources changed during validation'
     assert stamps == {name: digest(base / f'deps/{name}/installed.json') for name in stamps}
+    assert upstream_inputs == {name: digest(ROOT / 'blender/intern/cycles' / name) for name in upstream_inputs}
+    objects = sorted((work / 'wasm/CMakeFiles/cycles-osl-kernel.dir').rglob('*.cpp.o'))
+    assert sorted(path.name for path in objects) == ['closures.cpp.o', 'globals.cpp.o', 'services.cpp.o']
+    readobj = Path(shutil.which('emcc')).resolve().parent.parent / 'bin/llvm-readobj'
+    for path in objects:
+        header = subprocess.check_output([readobj, '--file-headers', path], text=True)
+        assert 'Format: WASM' in header and 'Arch: wasm32' in header
+    string_assertions = sum(line.startswith('OSL_DEVICE_STRING(') for line in (headers / 'strings.h').read_text().splitlines())
     report = dict(wasm=wasm, native=native, emscriptenVersion=sdk, blenderRevision=revision,
-                  sourceHashes=hashes, upstreamHeaders=upstream_headers,
+                  sourceHashes=hashes, upstreamSourceHashes=upstream_inputs,
+                  compiledKernelSources=3, predefinedStringAssertions=string_assertions,
                   installedDependencyStamps=stamps, nativeLibrarySha256=digest(library),
                   baselineLayoutMismatchReproduced=True, applicationIntegrated=False,
                   artifacts={str(path.relative_to(base)): dict(bytes=path.stat().st_size, sha256=digest(path))
-                             for path in [work / 'wasm/cycles-osl-abi.js', work / 'wasm/cycles-osl-abi.wasm', binary]})
+                             for path in [work / 'wasm/cycles-osl-abi.js', work / 'wasm/cycles-osl-abi.wasm', binary, *objects]})
     (work / 'acceptance.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report), flush=True)
 
