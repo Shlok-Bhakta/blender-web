@@ -1,0 +1,46 @@
+--- a/intern/cycles/kernel/osl/types.h
++++ b/intern/cycles/kernel/osl/types.h
+@@ -3,6 +3,10 @@
+  * SPDX-License-Identifier: Apache-2.0 */
+ 
+ #pragma once
++
++#ifdef WITH_GHOST_WEB
++#  include "native/ghost/GHOST_WebOSLTypes.hh"
++#endif
+ 
+ #if !defined(__KERNEL_GPU__)
+ #  include <OSL/oslversion.h>
+@@ -33,7 +37,11 @@
+ struct IntegratorShadowStateCPU;
+ struct OSLTraceData;
+ 
++#ifdef WITH_GHOST_WEB
++ccl_device_inline DeviceString make_string(const char *str, const GHOST_WebOSLHash hash)
++#else
+ ccl_device_inline DeviceString make_string(const char *str, const size_t hash)
++#endif
+ {
+ #if defined(__KERNEL_GPU__)
+   (void)str;
+@@ -67,12 +75,20 @@
+   OSLClosureType id;
+ };
+ 
++#ifdef WITH_GHOST_WEB
++struct ccl_align(GHOST_web_osl_closure_pointer_alignment()) OSLClosureMul : public OSLClosure {
++#else
+ struct ccl_align(8) OSLClosureMul : public OSLClosure {
++#endif
+   packed_float3 weight;
+   const ccl_private OSLClosure *closure;
+ };
+ 
++#ifdef WITH_GHOST_WEB
++struct ccl_align(GHOST_web_osl_closure_pointer_alignment()) OSLClosureAdd : public OSLClosure {
++#else
+ struct ccl_align(8) OSLClosureAdd : public OSLClosure {
++#endif
+   const ccl_private OSLClosure *closureA;
+   const ccl_private OSLClosure *closureB;
+ };

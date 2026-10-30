@@ -1,0 +1,61 @@
+{
+  "wasm": {
+    "pointerBytes": 4,
+    "addBytes": 12,
+    "multiplyBytes": 20,
+    "componentBytes": 16,
+    "shaderGlobalsPrefixBytes": 272,
+    "closureTree": true,
+    "stringHashFull": true,
+    "hash": "8a7dc2d27a1bd227",
+    "textureHandlePorted": false,
+    "applicationIntegrated": false
+  },
+  "native": {
+    "pointerBytes": 8,
+    "addBytes": 24,
+    "multiplyBytes": 24,
+    "componentBytes": 16,
+    "shaderGlobalsPrefixBytes": 312,
+    "closureTree": true,
+    "stringHashFull": true,
+    "hash": "8a7dc2d27a1bd227",
+    "textureHandlePorted": false,
+    "applicationIntegrated": false
+  },
+  "emscriptenVersion": "4.0.23",
+  "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
+  "sourceHashes": {
+    "web/tools/native_cycles_osl_abi.py": "75830c1d0a4d831d8c6125440d19d856e47725bce47b5f77d2901882271c43d7",
+    "web/native/cycles-osl-abi/CMakeLists.txt": "9c8b702a3002bb30344cc053a9b16e9f8cbad133278f00283fc0a4a7c10837f6",
+    "web/native/tests/cycles-osl-abi.cc": "a320bac851e461fe7ff5be2c9a024d49cd7eedee16371b216211571f9f0d5d25",
+    "web/native/ghost/GHOST_WebOSLTypes.hh": "ac53c90b90318a0a868e193f396385ac29bd5ff8815eb78ef3ffc86f5011248b",
+    "web/patches/native-osl-types.patch": "639ce6786f9e78dbb548210a1417e6762fc2681ba4fa01b4aceb1b28d68dbd40"
+  },
+  "upstreamHeaders": {
+    "kernel/osl/types.h": "95fd39b49d8e9462860ef58f13e1dc93c59286f916ef50ef8a9c363ce279bf8c",
+    "kernel/osl/closures_template.h": "eabf7ecf9bb5ba7048361a835e85b8ad17c98da077c802bfa6731dfff371d9af",
+    "kernel/types.h": "4f1f0f0156f8f5c829916ad302d0390b3cb0b38bdf0edb7e3ebddf6e32a35647"
+  },
+  "installedDependencyStamps": {
+    "osl": "4396af35f8594f9a7d6d5ee2dfcf5521dae696c551a894aaeec95ea85e772383",
+    "openimageio": "743da4c182102ffdbdc23534e252d4ca1a854471a439ef14fb741b3cbb989618"
+  },
+  "nativeLibrarySha256": "e52439d9788a61ec3f7ad8a1af82970e06655512fd9842de92b421868a93c080",
+  "baselineLayoutMismatchReproduced": true,
+  "applicationIntegrated": false,
+  "artifacts": {
+    "cycles-osl-abi/wasm/cycles-osl-abi.js": {
+      "bytes": 23389,
+      "sha256": "a6c082b67f685c73afbe6650cd57fa0f93f095087ca2607f14e1cce9a7bb2c53"
+    },
+    "cycles-osl-abi/wasm/cycles-osl-abi.wasm": {
+      "bytes": 52664,
+      "sha256": "03b492503f93f03f412cb7e83b5b65343aca17c2b7a2756c338b7c79560c8771"
+    },
+    "cycles-osl-abi/native": {
+      "bytes": 16664,
+      "sha256": "b7c0b2806951faa164113c40cd13c4b94863d69d517120722549a4cc9defce83"
+    }
+  }
+}
