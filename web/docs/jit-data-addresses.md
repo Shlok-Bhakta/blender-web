@@ -8,12 +8,17 @@ the wasm32 address range. Missing symbols, functions and retired programs
 return zero from data lookup.
 
 The [recorded checks](jit-data-addresses.json) use the installed LLVM 20.1.8
-libraries in Node and offline Chromium. Eight programs stay alive together,
-each with the same symbol names and separate allocations. Tests verify array
+libraries in Node and offline Chromium. Thirty-two programs run in four batches
+of eight live owners. Their eight layouts vary data allocation sizes from 4 to
+32 KiB and the number of exported functions. Each has the same data symbol names
+and a separate allocation. Tests verify array
 initializers, all 64 bits of an integer global, relocated data and function
-pointers, writes read by generated code on four workers, and retirement in a
+pointers, 128 reads from generated code on four workers, and retirement in a
 different order from creation. Remaining programs retain their data after each
-retirement. Users join before their native memory owner is released.
+retirement. Each new data allocation is zeroed and aligned to 64 bytes. Both
+runs reuse a pool of nine table blocks with 124 total slots. All allocations
+and active table entries retire after every batch. Users join before their
+native memory owner is released.
 
 The existing original OSL fixture also passed with the changed engine and
 loader. Each Node/browser run shades 7,296 points, makes 14,592 renderer
@@ -31,7 +36,8 @@ python3 web/tools/native_jit_data_check.py --jobs 2
 ```
 
 The tool requires the installed LLVM and libffi recipes. Its report records
-source, dependency and artifact hashes. The owned loader still needs broader
-variable-layout allocation stress before renderer integration.
+source, dependency and artifact hashes. The fixture covers these eight layouts;
+larger mixed-lifetime workloads and other alignments still need testing before
+renderer integration.
 The [Cycles ABI check](cycles-osl-abi.md) separately tests the original closure
 and shader-global layouts and full string hashes.

@@ -2,6 +2,7 @@
 #include "GHOST_WebJITProbe.hh"
 #include "GHOST_WebOSL.hh"
 #include "GHOST_WebOSLOwnedProbe.hh"
+#include "GHOST_WebWorkerResources.hh"
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/RTDyldMemoryManager.h>
@@ -65,17 +66,23 @@ define i32 @read_value(i32 %index) {
 define ptr @data_pointer() { ret ptr @values }
 )IR";
 
-int main()
+static void check_round(unsigned round)
 {
-  GHOST_web_osl_install_probe_engine();
   std::vector<std::unique_ptr<llvm::LLVMContext>> contexts;
   std::vector<std::unique_ptr<llvm::ExecutionEngine>> engines;
   std::vector<int *> arrays;
   std::vector<unsigned> handles;
   for (unsigned iteration = 0; iteration < 8; ++iteration) {
+    const unsigned layout = (iteration * 3 + round * 5) % 8;
+    const unsigned padding_bytes = 4096 * (layout + 1);
+    std::string ir = std::string(program) + "\n@padding = global [" +
+                     std::to_string(padding_bytes) + " x i8] zeroinitializer, align 64\n";
+    for (unsigned i = 0; i <= layout * 2; ++i)
+      ir += "define i32 @layout_" + std::to_string(i) + "() { ret i32 " +
+            std::to_string(layout) + " }\n";
     auto context = std::make_unique<llvm::LLVMContext>();
     llvm::SMDiagnostic diagnostic;
-    auto module = llvm::parseAssemblyString(program, diagnostic, *context);
+    auto module = llvm::parseAssemblyString(ir, diagnostic, *context);
     require(bool(module), "valid LLVM fixture");
     std::string error;
     llvm::EngineBuilder builder(std::move(module));
@@ -86,6 +93,10 @@ int main()
     auto *values = reinterpret_cast<int *>(uintptr_t(engine->getGlobalValueAddress("values")));
     require(values != nullptr, "global lookup must return a data address");
     require(values[0] == 11 && values[3] == 44, "initialized array at its relocated address");
+    auto *padding = reinterpret_cast<unsigned char *>(uintptr_t(engine->getGlobalValueAddress("padding")));
+    require(padding && !(uintptr_t(padding) % 64), "variable-size data alignment");
+    require(padding[0] == 0 && padding[padding_bytes - 1] == 0, "fresh zeroed data allocation");
+    padding[0] = padding[padding_bytes - 1] = layout + 1;
     auto *selected = reinterpret_cast<int **>(uintptr_t(engine->getGlobalValueAddress("selected")));
     require(selected && *selected == values + 2, "data pointer relocation");
     auto *wide = reinterpret_cast<uint64_t *>(uintptr_t(engine->getGlobalValueAddress("wide")));
@@ -136,6 +147,28 @@ int main()
         require(arrays[i][2] == int(1000 + i), "out-of-order retirement preserves live data");
   }
   require(owned_clean(), "all mapped data and table blocks retired");
-  std::puts("{\"programs\":8,\"workerReads\":32,\"globalAddresses\":true,\"dataRelocations\":true,\"functionRelocations\":true,\"nativeOwnerRetirement\":true,\"independentOwners\":true,\"outOfOrderRetirement\":true}");
+}
+
+int main()
+{
+  GHOST_web_osl_install_probe_engine();
+  for (unsigned round = 0; round < 4; ++round) check_round(round);
+  unsigned metrics[3] = {};
+  GHOST_web_invoke_runtime_thread([](void *value) {
+    EM_ASM({
+      const blocks = Module.ownedState.blocks;
+      new Uint32Array(wasmMemory.buffer, $0 >>> 0, 3).set([
+        blocks.length, blocks.reduce((sum, block) => sum + block.capacity, 0),
+        Math.max(...blocks.map(block => block.capacity))]);
+    }, value);
+  }, metrics);
+  const auto [blocks, capacity, largest] = metrics;
+  require(blocks > 0 && blocks <= 8 * 8 && capacity <= 8 * 8 * largest,
+          "bounded capacity for eight layouts and eight live owners");
+  std::printf("{\"programs\":32,\"workerReads\":128,\"globalAddresses\":true,"
+              "\"dataRelocations\":true,\"functionRelocations\":true,\"nativeOwnerRetirement\":true,"
+              "\"independentOwners\":true,\"outOfOrderRetirement\":true,\"variableLayouts\":8,"
+              "\"dataAlignment\":64,\"ownedBlocks\":%u,\"ownedTableCapacity\":%u,\"largestBlock\":%u}\n",
+              blocks, capacity, largest);
   return 0;
 }
