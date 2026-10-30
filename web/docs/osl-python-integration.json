@@ -506,7 +506,7 @@
       "files": {
         "osl-python.blend": {
           "bytes": 98605,
-          "sha256": "0924aa08f6e7f6e048b6a11b443d1558fe37307047ee4f02eaad867d3a05ac99"
+          "sha256": "b024d803437fafa1751da3e91d355263440cd410e5ac0290099de820e95c72ce"
         },
         "osl-python.json": {
           "bytes": 3999,
@@ -523,20 +523,20 @@
       },
       "chapters": [
         {
-          "seconds": 0,
+          "seconds": 0.001,
           "title": "Start original Blender with the original OSL Python query module"
         },
         {
-          "seconds": 22.359,
+          "seconds": 17.037,
           "title": "Query real shader metadata, reject invalid input, and check Python threads"
         },
         {
-          "seconds": 51.867,
+          "seconds": 46.516,
           "title": "Reload offline, reopen the saved scene, and query the cached shader again"
         }
       ],
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-30T01:14:39.363Z",
+      "measuredAt": "2026-10-30T01:29:47.398Z",
       "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
       "fixtureSha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56",
       "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
@@ -743,8 +743,8 @@
       "startupPythonErrors": [],
       "files": {
         "osl-python.blend": {
-          "bytes": 98605,
-          "sha256": "c203d554aa1d3e445deeca1bad4651bce09a10afc2c62a79435aab24a6b17706"
+          "bytes": 98615,
+          "sha256": "51d5934c0984b7ed4d36bdb917a91f800912d389a2289c4b23b1bbbb41903bc1"
         },
         "osl-python.json": {
           "bytes": 3999,
@@ -761,20 +761,20 @@
       },
       "chapters": [
         {
-          "seconds": 0.002,
+          "seconds": 0.001,
           "title": "Start original Blender with the original OSL Python query module"
         },
         {
-          "seconds": 22.346,
+          "seconds": 17.228,
           "title": "Query real shader metadata, reject invalid input, and check Python threads"
         },
         {
-          "seconds": 55.928,
+          "seconds": 47.535,
           "title": "Reload offline, reopen the saved scene, and query the cached shader again"
         }
       ],
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-29T21:54:08.724Z",
+      "measuredAt": "2026-10-30T01:31:05.924Z",
       "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
       "fixtureSha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56",
       "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
@@ -981,8 +981,8 @@
       "startupPythonErrors": [],
       "files": {
         "osl-python.blend": {
-          "bytes": 98606,
-          "sha256": "473f9495b47d11da0a594401635ee7c2a3be188bc1054cf9475ac3f6373939b0"
+          "bytes": 98604,
+          "sha256": "33768de447658f05341757bcdd2c3d4f671ad80c3778a89d173ed87b4ffcdc57"
         },
         "osl-python.json": {
           "bytes": 3999,
@@ -999,20 +999,20 @@
       },
       "chapters": [
         {
-          "seconds": 0.002,
+          "seconds": 0.001,
           "title": "Start original Blender with the original OSL Python query module"
         },
         {
-          "seconds": 16.82,
+          "seconds": 12.775,
           "title": "Query real shader metadata, reject invalid input, and check Python threads"
         },
         {
-          "seconds": 46.655,
+          "seconds": 34.244,
           "title": "Reload offline, reopen the saved scene, and query the cached shader again"
         }
       ],
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-29T21:53:56.732Z",
+      "measuredAt": "2026-10-30T01:28:31.304Z",
       "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
       "fixtureSha256": "b2c1dfb5b3a302d868a26810fa879d14d44d4db2f602037a6c78cd5ba2c85a56",
       "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
@@ -1032,7 +1032,7 @@
       "files": {
         "osl-python.blend": {
           "bytes": 98605,
-          "sha256": "0924aa08f6e7f6e048b6a11b443d1558fe37307047ee4f02eaad867d3a05ac99"
+          "sha256": "b024d803437fafa1751da3e91d355263440cd410e5ac0290099de820e95c72ce"
         },
         "osl-python.json": {
           "bytes": 3999,
@@ -1059,8 +1059,8 @@
       "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
       "files": {
         "osl-python.blend": {
-          "bytes": 98605,
-          "sha256": "c203d554aa1d3e445deeca1bad4651bce09a10afc2c62a79435aab24a6b17706"
+          "bytes": 98615,
+          "sha256": "51d5934c0984b7ed4d36bdb917a91f800912d389a2289c4b23b1bbbb41903bc1"
         },
         "osl-python.json": {
           "bytes": 3999,
@@ -1087,8 +1087,8 @@
       "runnerSourceSha256": "bd5c8c10f060c843b6bd5e4ebcb53452c2fcdaa9fe556f2519ea0a50342b6075",
       "files": {
         "osl-python.blend": {
-          "bytes": 98606,
-          "sha256": "473f9495b47d11da0a594401635ee7c2a3be188bc1054cf9475ac3f6373939b0"
+          "bytes": 98604,
+          "sha256": "33768de447658f05341757bcdd2c3d4f671ad80c3778a89d173ed87b4ffcdc57"
         },
         "osl-python.json": {
           "bytes": 3999,
@@ -1108,26 +1108,26 @@
   "recording": {
     "bundleVersion": "6fc613eabfc47ac917c2",
     "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
-    "durationSeconds": 73.416667,
+    "durationSeconds": 53.291667,
     "chapters": [
       {
-        "seconds": 0.002,
+        "seconds": 0.001,
         "title": "Start original Blender with the original OSL Python query module"
       },
       {
-        "seconds": 16.82,
+        "seconds": 12.775,
         "title": "Query real shader metadata, reject invalid input, and check Python threads"
       },
       {
-        "seconds": 46.655,
+        "seconds": 34.244,
         "title": "Reload offline, reopen the saved scene, and query the cached shader again"
       }
     ],
     "captions": false,
     "source": "Actual hardware Chromium capture of original Blender and OSL Python queries",
     "path": "web/docs/osl-python-walkthrough.mp4",
-    "bytes": 1761176,
-    "sha256": "2165344333098f4ccef85e39ced127e20d5bbe31d35ef804e13a83dcf8e6e554",
+    "bytes": 1600080,
+    "sha256": "84e6b1196c7fb4804fa916e4ed6a823b3f9f39ceb4afed2db2aa87dc889def8e",
     "screenshot": {
       "path": "web/docs/osl-python-browser.png",
       "sha256": "3242bc1f250ff5aff9d9d449766e780a041f63c4f424060ea8a2e89fa85dbaa1"
@@ -1137,5 +1137,5 @@
   "scope": "Local Blender application integration; full release qualification remains pending.",
   "published": false,
   "bundleVersion": "6fc613eabfc47ac917c2",
-  "measuredAt": "2026-10-30T01:15:11.284071+00:00"
+  "measuredAt": "2026-10-30T02:11:53.168417+00:00"
 }

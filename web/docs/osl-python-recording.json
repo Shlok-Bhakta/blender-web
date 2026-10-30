@@ -1,26 +1,26 @@
 {
   "bundleVersion": "6fc613eabfc47ac917c2",
   "sourceSha256": "7a62df9b7dfc26eea0ce13d1395a60b4cb8330b175f1eead81d14dd086d6ef0b",
-  "durationSeconds": 73.416667,
+  "durationSeconds": 53.291667,
   "chapters": [
     {
-      "seconds": 0.002,
+      "seconds": 0.001,
       "title": "Start original Blender with the original OSL Python query module"
     },
     {
-      "seconds": 16.82,
+      "seconds": 12.775,
       "title": "Query real shader metadata, reject invalid input, and check Python threads"
     },
     {
-      "seconds": 46.655,
+      "seconds": 34.244,
       "title": "Reload offline, reopen the saved scene, and query the cached shader again"
     }
   ],
   "captions": false,
   "source": "Actual hardware Chromium capture of original Blender and OSL Python queries",
   "path": "web/docs/osl-python-walkthrough.mp4",
-  "bytes": 1761176,
-  "sha256": "2165344333098f4ccef85e39ced127e20d5bbe31d35ef804e13a83dcf8e6e554",
+  "bytes": 1600080,
+  "sha256": "84e6b1196c7fb4804fa916e4ed6a823b3f9f39ceb4afed2db2aa87dc889def8e",
   "screenshot": {
     "path": "web/docs/osl-python-browser.png",
     "sha256": "3242bc1f250ff5aff9d9d449766e780a041f63c4f424060ea8a2e89fa85dbaa1"

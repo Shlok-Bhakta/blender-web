@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "81aa3ca51ec1b21db65c",
+  "bundleVersion": "6fc613eabfc47ac917c2",
   "installation": {
     "source": {
       "FILE": "usd-v26.03.tar.gz",
@@ -73,7 +73,7 @@
       "web/tools/native_usd_imaging.py": "6bf803a6ccb850f5562d58e985f72a64787bd8e2c5b28bb2c515c32aa5664a4d",
       "web/native/tests/CMakeLists.txt": "22a7ccd1de081030f5a0281d64de4c445c337cff044475004d709b41b7eebf2f",
       "web/native/dependencies.cmake": "9ce282302be6d1c5ec8190a93823c63b3bd51e5babd3f7586f84372e1487febf",
-      "web/tools/native_deps.py": "3d548b08e1668cd6f0ad510e536d4c00240f4734c8e3acadbfb3ac6a2912ec64",
+      "web/tools/native_deps.py": "80339d6a2ca13303b9bcb8e34565b636136a6dce0c07ca8f4ff77fabd5a8ae5d",
       "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3"
     },
     "installationSha256": "d049cc06c88c7dfdc4bbc2f0e6d8b5e4833feb3b8c5f8fa5bb548bce947c78ad"
@@ -91,19 +91,19 @@
     "blenderVersion": "5.2.2 LTS",
     "blenderRevision": "d13f752e3b9c",
     "files": {
-      "hio-roundtrip.tif": "492fe2b3cd50df5c47017ca429f72fe77253e6fd287bf14082d6f6edaafb1a83",
-      "hio-written.tif": "955c1807b97230508ede5dc150378d5f17faccade55a1ce340d3b76a5f01c7e7",
-      "hio-roundtrip.vdb": "a19e741a4ba66546986f60db06e651b391ed1209bc644b5628da9ab5dbb03689",
-      "float.vdb": "2e417b48f62baefb094d3c8cbac685baaf2305859b91b3c27d494822494477a9",
+      "hio-roundtrip.tif": "43ddb802f41bc870d7e48f34fa45417354e73c341845fb795a57e1a18724ebfd",
+      "hio-written.tif": "43ddb802f41bc870d7e48f34fa45417354e73c341845fb795a57e1a18724ebfd",
+      "hio-roundtrip.vdb": "ca7fdeb14081bda85df4de70232d0ff5fa01742a2236a37cae28bcc441a27d89",
+      "float.vdb": "bcdfb35a1c581bd7c926568015d2cb33d91144e0f44bed662940dc0ed118662f",
       "float.raw": "61caf4fd91816666236276025125f454674d40e1a3367b46b0129e0121ded5d2",
-      "double.vdb": "8f4e4726232c6e279fbf84f52cc36dc0042452b16ae62430c11da30bfcdead42",
+      "double.vdb": "5ee37170ee7bc500783b838c862ac3500e7189eaf80dac158c93e36836ae0b70",
       "double.raw": "a722883996ae7168467418a173f6a3314c988e6993869f14c90e3262439355ee",
-      "vec3f.vdb": "977c7fd5e6235a4f5a60b3be47d059116af05235fa650363c3f61cd9486053c0",
+      "vec3f.vdb": "4d7b68fc81e1dfc5c0d1c8726095bbb96edfbeeb9d41c46bc6d59c2369955d0a",
       "vec3f.raw": "0ec85cc1fefbcb97a85091be615846db793a37d78ba3ca7d8ddccf7c14d3e92a",
-      "vec3d.vdb": "c97871e0cdf90de6830dba3db21919abbbad1376a02230d4703c380758c09ee8",
+      "vec3d.vdb": "c96ce88ca1d6e388d3644e30cd79b2621411fa29bb76083907f70b7ce0caf496",
       "vec3d.raw": "6d74a126bb39d68dd29b1753c3082160033b11e85cc083232d9985823af76e88"
     },
-    "unitReportSha256": "7ec5d101c29de596888a44f09849ce5ccf02b4b1b73ac2d699e672d49ea76bdf",
+    "unitReportSha256": "c6e90cf484dfa2d61fdf25851866e510bd36350b030535dcc200da1d8a309532",
     "verifierSourceSha256": "0aace2720bd41775237c81038152889f70b1bed3589cc7e794d71c849e639d5a"
   },
   "browserRegistries": [

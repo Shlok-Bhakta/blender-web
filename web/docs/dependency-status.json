@@ -1,5 +1,5 @@
 {
-  "bundleVersion": "81aa3ca51ec1b21db65c",
+  "bundleVersion": "6fc613eabfc47ac917c2",
   "blenderVersion": "5.2.2 LTS",
   "desktopRevision": "d13f752e3b9c",
   "desktopBuildOptions": {
@@ -165,7 +165,7 @@
   ],
   "componentAudit": "web/docs/dependency-components.md",
   "pythonFoundation": {
-    "verifiedBundle": "81aa3ca51ec1b21db65c",
+    "verifiedBundle": "6fc613eabfc47ac917c2",
     "modules": [
       "_sqlite3",
       "_lzma",
@@ -202,13 +202,13 @@
     "evidence": "web/docs/python-foundation.acceptance.json"
   },
   "pythonBindings": {
-    "verifiedBundle": "81aa3ca51ec1b21db65c",
+    "verifiedBundle": "6fc613eabfc47ac917c2",
     "versions": {
       "OpenImageIO": "3.1.13.1",
       "PyOpenColorIO": "2.5.0",
       "MaterialX": "1.39.4"
     },
-    "modules": 11,
+    "modules": 12,
     "materialXGenerators": [
       "GLSL",
       "MSL",
@@ -226,8 +226,18 @@
     "independentNativeReadbacks": 3,
     "evidence": "web/docs/python-bindings.acceptance.json"
   },
+  "oslPythonQueries": {
+    "verifiedBundle": "6fc613eabfc47ac917c2",
+    "version": "1.15.3.0",
+    "browserVariants": 3,
+    "independentNativeReadbacks": 3,
+    "compilerLibrariesInstalled": true,
+    "originalPythonModule": true,
+    "cyclesOSLRenderer": false,
+    "evidence": "web/docs/osl-python.acceptance.json"
+  },
   "pythonCtypes": {
-    "verifiedBundle": "81aa3ca51ec1b21db65c",
+    "verifiedBundle": "6fc613eabfc47ac917c2",
     "libffiVersion": "3.5.2",
     "originalModule": true,
     "pythonNamespaceSymbols": 1260,
@@ -238,7 +248,7 @@
     "evidence": "web/docs/python-ctypes.acceptance.json"
   },
   "usdCPUImaging": {
-    "verifiedBundle": "81aa3ca51ec1b21db65c",
+    "verifiedBundle": "6fc613eabfc47ac917c2",
     "plugins": [
       "hioOpenVDB",
       "hioOiio"
@@ -691,9 +701,23 @@
       "archiveHash": "9f6f083900680b79ca4a136270103844",
       "hashType": "MD5",
       "source": "https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v3.1.13.1.tar.gz"
+    },
+    {
+      "name": "LLVM",
+      "version": "20.1.8",
+      "archiveHash": "915e251a657450a2ba8e4c106e4f9555",
+      "hashType": "MD5",
+      "source": "https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.8/llvm-project-20.1.8.src.tar.xz"
+    },
+    {
+      "name": "OSL",
+      "version": "1.15.3.0",
+      "archiveHash": "560232b3298e33f3bf45c6f21f20b484f5acc260f6d4035db0f76f22994d679a",
+      "hashType": "SHA256",
+      "source": "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/releases/download/v1.15.3.0/OSL-1.15.3.0.tar.gz"
     }
   ],
-  "baseLibraryRecipeScope": "The base static-library builder only; excludes CPython/NumPy, shader compilers, bundled Blender code and platform SDKs.",
+  "baseLibraryRecipeScope": "The base static-library builder only; includes LLVM/OSL but excludes CPython/NumPy, WebGPU shader translators, separately built imaging components, bundled Blender code and platform SDKs.",
   "browserReportSourceSha256": "6d5fc2887f63a58dc544912f6170448316d5a8e8571c97efda0381e2552b6219",
   "limitations": [
     "Build flags are configuration evidence, not proof of every operation or performance parity.",

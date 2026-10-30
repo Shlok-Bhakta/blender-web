@@ -134,17 +134,17 @@
       "parallelCalls": 9
     },
     "sourceHashes": {
-      "web/tools/native_bindings.py": "639d62002c1b909e449d552d001e45e71707c6bb89280c16d091e0a5add203ac",
-      "web/native/python-bindings/CMakeLists.txt": "4142643f424fa4fb39767cd09dfe9673b722d51b186c0fa6b6728903fff60579",
+      "web/tools/native_bindings.py": "78246c1dfcddb1164aa235f4f50b52b18110b7ed3aff51e65293c23c9d96eadc",
+      "web/native/python-bindings/CMakeLists.txt": "c2c2536862f86b12989c4b9833e64d2f35f522603baa5278147f3869c97f78ef",
       "web/native/python-bindings/nanobind-newfunc.patch": "5ee5757e540533915a3c673420f2f7638ae131f067b73be88eca1f983ab4e5ae",
       "web/native/patches/yamlcpp.patch": "d50b6a94401d89e22eabde8fc61f58f76959d8e2680dc7b01893849dc7429c57",
       "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3",
       "web/upstream.json": "ca65785635428e0de5a6d07f43848522534cc055d4a32bdbd4121d5e73131723",
-      "web/native/tests/python-bindings.cc": "0d72852a72df647bdde3f80d4848b3f400fd542231efb4b6ae397ed72c72e88d",
+      "web/native/tests/python-bindings.cc": "b2a8920de461120793b0054314136075870a2a04fc4c56ce772e8bfd044867b7",
       "web/native/tests/python-bindings.py": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
-      "web/native/python-bindings/check/CMakeLists.txt": "1ff161a5021328de85ffc83df567ba112f0ef9b7fe91a96800d0041488482580"
+      "web/native/python-bindings/check/CMakeLists.txt": "534025fccfddc8ea542454ac6eb0dd10968f8d20342da6b83bc93b3eb3c60400"
     },
-    "bindingInstallationSha256": "5812d68a38994de8cd8c249ad72e9ddbf48dc6154dc0735d7c007f0d2147b2b3",
+    "bindingInstallationSha256": "7d8a633c0fc5f3219a2b5f36b274f260e90d8ca4610aa92ee6dcf14a292a32f2",
     "cleanInterpreterShutdown": true
   },
   "standaloneAVIF": {
@@ -219,13 +219,13 @@
       "web/native/ghost/GHOST_WebDracoTypes.hh": "e86241ba0f77207172cc4082a8449a20d0b889622ff4c188424f68f6065c8d22",
       "web/native/tests/CMakeLists.txt": "22a7ccd1de081030f5a0281d64de4c445c337cff044475004d709b41b7eebf2f",
       "web/native/dependencies.cmake": "9ce282302be6d1c5ec8190a93823c63b3bd51e5babd3f7586f84372e1487febf",
-      "web/tools/native_deps.py": "3d548b08e1668cd6f0ad510e536d4c00240f4734c8e3acadbfb3ac6a2912ec64",
+      "web/tools/native_deps.py": "80339d6a2ca13303b9bcb8e34565b636136a6dce0c07ca8f4ff77fabd5a8ae5d",
       "web/native/toolchain.cmake": "4a826d42c61a20e66b7127c95d5f64143796173824f00219afd5b63c718601c3"
     }
   },
   "browserVariants": [
     {
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
       "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
       "runnerSourceSha256": "8cb767e1f64f15ff5d0664d4d9b1741a86244e64bcaa7f824f03cdf0d90f0eda",
@@ -238,7 +238,7 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-29T06:16:57.055Z",
+      "measuredAt": "2026-10-30T01:25:43.411Z",
       "report": {
         "versions": {
           "OpenImageIO": "3.1.13.1",
@@ -465,11 +465,11 @@
           "bytes": 438
         },
         "image.exr": {
-          "sha256": "a46e4f52e1d41d5ca5a076c09fc3a1892011af80dfa288d0c4e890a95045d4b4",
+          "sha256": "8232e74aa0e3c77724fd1fc1102b2086cdff623e773366a02edcaf3a3675ef86",
           "bytes": 2851
         },
         "image.tif": {
-          "sha256": "b5515e7c18c17bce3f421795c2f81a5fe149d86d352c2a6ce1ca09878f1bd73d",
+          "sha256": "5288905b4d038580f0266c29d56437f2171647223db86db43f36023b090ca2c3",
           "bytes": 506
         },
         "image.png": {
@@ -477,7 +477,7 @@
           "bytes": 1334
         },
         "volume.vdb": {
-          "sha256": "3d3c3f82c92e7233c8c21095b0414d6ce35a37e0d3efc416d9720190cba7426a",
+          "sha256": "1d1478bd3f5c16acb721a62a6704c704b644e58fda5a126315827cf5052a1a0b",
           "bytes": 100572
         },
         "material.mtlx": {
@@ -505,8 +505,8 @@
           "bytes": 2675
         },
         "python-bindings.blend": {
-          "sha256": "b7a16b9f8214881154e9855a98c7c23848056754aaa7cefa7d947b086bd8b7ef",
-          "bytes": 101408
+          "sha256": "fc7e9c1a68745f5d4b54ec033c4797f065fb0fb75ecfd67371458a557f075282",
+          "bytes": 101397
         },
         "avif.json": {
           "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
@@ -630,30 +630,30 @@
           "title": "Start original Blender with the image, color, volume and material bindings"
         },
         {
-          "seconds": 16.148,
+          "seconds": 17.004,
           "title": "Run original Python APIs and export native-readable files"
         },
         {
-          "seconds": 26.018,
+          "seconds": 27.404,
           "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
         },
         {
-          "seconds": 51.093,
+          "seconds": 53.326,
           "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
         },
         {
-          "seconds": 64.146,
+          "seconds": 66.189,
           "title": "Inspect the results in the original Text Editor"
         },
         {
-          "seconds": 72.294,
+          "seconds": 74.364,
           "title": "Reopen the saved scene and volume after an offline reload"
         }
       ],
       "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-bindings-evidence/python-bindings.webm"
     },
     {
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
       "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
       "runnerSourceSha256": "8cb767e1f64f15ff5d0664d4d9b1741a86244e64bcaa7f824f03cdf0d90f0eda",
@@ -666,7 +666,7 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-29T06:18:33.277Z",
+      "measuredAt": "2026-10-30T01:27:22.326Z",
       "report": {
         "versions": {
           "OpenImageIO": "3.1.13.1",
@@ -893,11 +893,11 @@
           "bytes": 438
         },
         "image.exr": {
-          "sha256": "39d75872660ce1afd4552793b396a56ce58375eaf45610cb7c406452d1774f3e",
+          "sha256": "8b6c04f63bf7f8378da2e23db5d9785475ee265d0a7b7466f555e13d1256a68d",
           "bytes": 2851
         },
         "image.tif": {
-          "sha256": "cc3e79d3495ce8dcaa6111ec03a793cc79d08c12ea291b96cba836ae81c150d1",
+          "sha256": "5f497fae66d9a3fabcf1daee8f86c695b43264d53708569d99b684326f79856f",
           "bytes": 506
         },
         "image.png": {
@@ -905,7 +905,7 @@
           "bytes": 1334
         },
         "volume.vdb": {
-          "sha256": "ef5cc973397a5b2a9385ae3a89095a2c636e25664eeb90e1cc9c1a07843f68f6",
+          "sha256": "06a144b9f6c59c49d7885613a11e20ae78734c0691d19261d60fb5a28990fd3f",
           "bytes": 100572
         },
         "material.mtlx": {
@@ -933,8 +933,8 @@
           "bytes": 2675
         },
         "python-bindings.blend": {
-          "sha256": "d72452ff2263d44063343ee170dfecc67515548639e51e2a20bd8a49647a77ed",
-          "bytes": 101395
+          "sha256": "a56f279944322c224c687368cd90d38b8985d648d2c38701ff68d412fd427cbd",
+          "bytes": 101397
         },
         "avif.json": {
           "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
@@ -1058,30 +1058,30 @@
           "title": "Start original Blender with the image, color, volume and material bindings"
         },
         {
-          "seconds": 17.07,
+          "seconds": 17.283,
           "title": "Run original Python APIs and export native-readable files"
         },
         {
-          "seconds": 26.678,
+          "seconds": 26.839,
           "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
         },
         {
-          "seconds": 50.62,
+          "seconds": 52.694,
           "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
         },
         {
-          "seconds": 62.586,
+          "seconds": 65.076,
           "title": "Inspect the results in the original Text Editor"
         },
         {
-          "seconds": 70.773,
+          "seconds": 73.391,
           "title": "Reopen the saved scene and volume after an offline reload"
         }
       ],
       "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-bindings-evidence-ui/python-bindings.webm"
     },
     {
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
       "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
       "runnerSourceSha256": "8cb767e1f64f15ff5d0664d4d9b1741a86244e64bcaa7f824f03cdf0d90f0eda",
@@ -1094,7 +1094,7 @@
         "description": ""
       },
       "browserVersion": "145.0.7632.6",
-      "measuredAt": "2026-10-29T06:15:18.818Z",
+      "measuredAt": "2026-10-30T01:24:03.662Z",
       "report": {
         "versions": {
           "OpenImageIO": "3.1.13.1",
@@ -1321,11 +1321,11 @@
           "bytes": 438
         },
         "image.exr": {
-          "sha256": "3b17d62b0d8883680d4a50b29f4154869864ff48d3dc89f51c56ae97e66712c4",
+          "sha256": "b4079eba6d9550a7069c2bac4b21ad0cc66e41b25e28fcdee1f29ad88800955c",
           "bytes": 2851
         },
         "image.tif": {
-          "sha256": "75b98673f37b05f37bd2031ecab9db76a7afa4c17eb0c3f02de937110adfbb91",
+          "sha256": "60a45f2d80b8a944c70040c9da6f5d3e0e669bcede0063a368487dc478b8dbf1",
           "bytes": 506
         },
         "image.png": {
@@ -1333,7 +1333,7 @@
           "bytes": 1334
         },
         "volume.vdb": {
-          "sha256": "c83a6c59274bc3de0edbe2d46930ffc303c90cb3a723e748256c02fdb0d5e306",
+          "sha256": "1352b45d9399d399d2076e4a04dd4e97645a779cc8ebc19f1469add9eb0e8a9c",
           "bytes": 100572
         },
         "material.mtlx": {
@@ -1361,8 +1361,8 @@
           "bytes": 2675
         },
         "python-bindings.blend": {
-          "sha256": "76b100edf8d6bcea53047e25f9a1e39e645494870c4cc961016b416c409690a8",
-          "bytes": 101414
+          "sha256": "3ab01962ea9f43876b7952b588f4b9cb66111b57f633383aaccc11c29c97162e",
+          "bytes": 101409
         },
         "avif.json": {
           "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
@@ -1482,27 +1482,27 @@
       "browserErrors": [],
       "chapters": [
         {
-          "seconds": 0,
+          "seconds": 0.001,
           "title": "Start original Blender with the image, color, volume and material bindings"
         },
         {
-          "seconds": 12.361,
+          "seconds": 12.678,
           "title": "Run original Python APIs and export native-readable files"
         },
         {
-          "seconds": 19.993,
+          "seconds": 20.205,
           "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
         },
         {
-          "seconds": 37.927,
+          "seconds": 37.862,
           "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
         },
         {
-          "seconds": 48.672,
+          "seconds": 48.193,
           "title": "Inspect the results in the original Text Editor"
         },
         {
-          "seconds": 56.977,
+          "seconds": 56.465,
           "title": "Reopen the saved scene and volume after an offline reload"
         }
       ],
@@ -1665,7 +1665,7 @@
           }
         ]
       },
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
       "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
       "verifierSourceSha256": "36295afabbf4678d5d61a57879e254f71eeb0f8a6ae2b4ea690423f682d7038a",
@@ -1679,11 +1679,11 @@
           "bytes": 438
         },
         "image.exr": {
-          "sha256": "a46e4f52e1d41d5ca5a076c09fc3a1892011af80dfa288d0c4e890a95045d4b4",
+          "sha256": "8232e74aa0e3c77724fd1fc1102b2086cdff623e773366a02edcaf3a3675ef86",
           "bytes": 2851
         },
         "image.tif": {
-          "sha256": "b5515e7c18c17bce3f421795c2f81a5fe149d86d352c2a6ce1ca09878f1bd73d",
+          "sha256": "5288905b4d038580f0266c29d56437f2171647223db86db43f36023b090ca2c3",
           "bytes": 506
         },
         "image.png": {
@@ -1691,7 +1691,7 @@
           "bytes": 1334
         },
         "volume.vdb": {
-          "sha256": "3d3c3f82c92e7233c8c21095b0414d6ce35a37e0d3efc416d9720190cba7426a",
+          "sha256": "1d1478bd3f5c16acb721a62a6704c704b644e58fda5a126315827cf5052a1a0b",
           "bytes": 100572
         },
         "material.mtlx": {
@@ -1719,8 +1719,8 @@
           "bytes": 2675
         },
         "python-bindings.blend": {
-          "sha256": "b7a16b9f8214881154e9855a98c7c23848056754aaa7cefa7d947b086bd8b7ef",
-          "bytes": 101408
+          "sha256": "fc7e9c1a68745f5d4b54ec033c4797f065fb0fb75ecfd67371458a557f075282",
+          "bytes": 101397
         },
         "avif.json": {
           "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
@@ -1991,7 +1991,7 @@
           }
         ]
       },
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
       "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
       "verifierSourceSha256": "36295afabbf4678d5d61a57879e254f71eeb0f8a6ae2b4ea690423f682d7038a",
@@ -2005,11 +2005,11 @@
           "bytes": 438
         },
         "image.exr": {
-          "sha256": "39d75872660ce1afd4552793b396a56ce58375eaf45610cb7c406452d1774f3e",
+          "sha256": "8b6c04f63bf7f8378da2e23db5d9785475ee265d0a7b7466f555e13d1256a68d",
           "bytes": 2851
         },
         "image.tif": {
-          "sha256": "cc3e79d3495ce8dcaa6111ec03a793cc79d08c12ea291b96cba836ae81c150d1",
+          "sha256": "5f497fae66d9a3fabcf1daee8f86c695b43264d53708569d99b684326f79856f",
           "bytes": 506
         },
         "image.png": {
@@ -2017,7 +2017,7 @@
           "bytes": 1334
         },
         "volume.vdb": {
-          "sha256": "ef5cc973397a5b2a9385ae3a89095a2c636e25664eeb90e1cc9c1a07843f68f6",
+          "sha256": "06a144b9f6c59c49d7885613a11e20ae78734c0691d19261d60fb5a28990fd3f",
           "bytes": 100572
         },
         "material.mtlx": {
@@ -2045,8 +2045,8 @@
           "bytes": 2675
         },
         "python-bindings.blend": {
-          "sha256": "d72452ff2263d44063343ee170dfecc67515548639e51e2a20bd8a49647a77ed",
-          "bytes": 101395
+          "sha256": "a56f279944322c224c687368cd90d38b8985d648d2c38701ff68d412fd427cbd",
+          "bytes": 101397
         },
         "avif.json": {
           "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
@@ -2317,7 +2317,7 @@
           }
         ]
       },
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
       "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
       "verifierSourceSha256": "36295afabbf4678d5d61a57879e254f71eeb0f8a6ae2b4ea690423f682d7038a",
@@ -2331,11 +2331,11 @@
           "bytes": 438
         },
         "image.exr": {
-          "sha256": "3b17d62b0d8883680d4a50b29f4154869864ff48d3dc89f51c56ae97e66712c4",
+          "sha256": "b4079eba6d9550a7069c2bac4b21ad0cc66e41b25e28fcdee1f29ad88800955c",
           "bytes": 2851
         },
         "image.tif": {
-          "sha256": "75b98673f37b05f37bd2031ecab9db76a7afa4c17eb0c3f02de937110adfbb91",
+          "sha256": "60a45f2d80b8a944c70040c9da6f5d3e0e669bcede0063a368487dc478b8dbf1",
           "bytes": 506
         },
         "image.png": {
@@ -2343,7 +2343,7 @@
           "bytes": 1334
         },
         "volume.vdb": {
-          "sha256": "c83a6c59274bc3de0edbe2d46930ffc303c90cb3a723e748256c02fdb0d5e306",
+          "sha256": "1352b45d9399d399d2076e4a04dd4e97645a779cc8ebc19f1469add9eb0e8a9c",
           "bytes": 100572
         },
         "material.mtlx": {
@@ -2371,8 +2371,8 @@
           "bytes": 2675
         },
         "python-bindings.blend": {
-          "sha256": "76b100edf8d6bcea53047e25f9a1e39e645494870c4cc961016b416c409690a8",
-          "bytes": 101414
+          "sha256": "3ab01962ea9f43876b7952b588f4b9cb66111b57f633383aaccc11c29c97162e",
+          "bytes": 101409
         },
         "avif.json": {
           "sha256": "a1bffa9db1cdc8cbf2b76147fe8d3e4d4a483cf4b2fe599340749136b3727c03",
@@ -2490,41 +2490,41 @@
     }
   ],
   "recording": {
-    "bundleVersion": "81aa3ca51ec1b21db65c",
+    "bundleVersion": "6fc613eabfc47ac917c2",
     "sourceSha256": "17e47c83dcaad5e06b2093efc2763bead6613cd3909ce52be43533c4d4a8ea0d",
     "avifSourceSha256": "6cb75e1a13675feca1b4aebd48f9f2d8166fa4088e6998414639c041ca427cba",
-    "durationSeconds": 72.32,
+    "durationSeconds": 72.56,
     "chapters": [
       {
-        "seconds": 0,
+        "seconds": 0.001,
         "title": "Start original Blender with the image, color, volume and material bindings"
       },
       {
-        "seconds": 12.361,
+        "seconds": 12.678,
         "title": "Run original Python APIs and export native-readable files"
       },
       {
-        "seconds": 19.993,
+        "seconds": 20.205,
         "title": "Export AVIF through Blender at 8, 10 and 12 bits with odd-width byte input"
       },
       {
-        "seconds": 37.927,
+        "seconds": 37.862,
         "title": "Inspect the exported 12-bit AVIF in Blender Image Editor"
       },
       {
-        "seconds": 48.672,
+        "seconds": 48.193,
         "title": "Inspect the results in the original Text Editor"
       },
       {
-        "seconds": 56.977,
+        "seconds": 56.465,
         "title": "Reopen the saved scene and volume after an offline reload"
       }
     ],
     "captions": true,
     "source": "Real hardware Chromium capture of original Blender, Python bindings, AVIF image export and offline reopening",
     "path": "web/docs/python-bindings-walkthrough.mp4",
-    "bytes": 2700108,
-    "sha256": "4a9c0f8a092e3cb33236c666ccb03469926cae4075c53ceb8d6777619cc8b7d2",
+    "bytes": 2660976,
+    "sha256": "381c9ac53a55b8f7cc6f1afb5b9c844b02568c8e656fa16cc1338e5264e6f2fb",
     "screenshot": {
       "path": "web/docs/python-bindings-browser.png",
       "sha256": "04a43231079f32c389d1cb68c022a042f1b9b0f2f7ee67c9442dec3f22379cb7"

@@ -472,10 +472,11 @@ image/vector and Freestyle recordings. `native_dependency_status.py --blender
 
 `native_validate.py` lists 126 local acceptance stages, including
 desktop readback, recordings and native/browser benchmarks. Serve the candidate
-site on port 8093 and an unseeded control build of the same Blender release on
+site on port 8093 and a control build of the same Blender release on
 port 8098, or pass `--candidate-url` and `--control-url`. The build helper's
-`--skip-shader-seed` option produces an unseeded control; retain its site directory
-before rebuilding the seeded candidate. Hardware checks require a working WebGPU
+`--skip-shader-seed` option produces an unseeded control for cache experiments;
+a frozen published build can measure changes between releases. Retain the control
+site directory before rebuilding the candidate. Hardware checks require a working WebGPU
 adapter. Activate the pinned SDK for the OSL interpreter check. Run benchmarks
 while other substantial work is idle.
 
@@ -644,7 +645,7 @@ source-build workflow remains available and builds the application itself.
 
 Source CI builds and tests the application on pushes and publishes its artifacts.
 GitHub Pages publication goes through `publish-validated.yml`, which verifies the
-release archive's SHA-256 and runs seventeen browser validation groups before
+release archive's SHA-256 and runs nineteen browser validation groups before
 deployment. The repository's `github-pages` environment permits the `main`
 branch. Dispatch this workflow with `--ref main` at the commit containing the
 matching acceptance evidence. A release may retain its separate frozen branch;

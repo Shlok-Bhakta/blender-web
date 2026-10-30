@@ -139,8 +139,8 @@
       "web/native/tests/python-foundation.py": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
       "web/native/tests/python-ctypes.py": "f9b583fdf200b5410cec4ddd252f409c0b1a0c7602af3f831f439e3c552fec1c",
       "web/native/tests/python-tls-fixture.hh": "4c50b852b5cafd48c4a4ebcb2ecf99696563ac563e50fced86e103a5de6c6e0f",
-      "web/tools/native_build.py": "af4ec908118fb93df6bc057bdcb887164f067997d64ef9441a0db360d6a2a8a4",
-      "web/tools/native_python.py": "baea018e49302b98009d64fa53004c35e4035da367835f22052be2b3603015cc",
+      "web/tools/native_build.py": "5ecfe2b933d56b67ee09dfcece8e9e221c7d3a63a2c5b4e64ef39535e18983eb",
+      "web/tools/native_python.py": "fc16c132b758077d2af213f505aa88b09ba88fa54bc3e870ac78df0cc7f7909e",
       "web/tools/native_python_packages.py": "9eadec7399cda3d80cb92eeb3aa661322ea4d18cefd6e1b27ef48530e80f4d0a",
       "web/native/python-packages.json": "c506f1685479ef01ea1ded0ad1a2f0ec82d476ff42289600f95a425c1fe21fc0",
       "web/native/openssl-wasm.conf": "69c1272de17d19eee1e033df31b89469d2faf40b64b51560cb62d937c01417c2",
@@ -149,18 +149,19 @@
       "web/native/ghost/GHOST_WebDownload.py": "102a05968f7deb57d5b8927dd393a9355ed2f29e8936a27875af286d5efc3817",
       "web/patches/native-python-download.patch": "6766c2b21ca0aeb696e4642e90ecb612abb3fd9902bb027c44e5d265aea35f56",
       "web/native/patches/urllib3.patch": "eb6170675a902c93ba09862774a1ccf7e8ec3a239739c54b5473da19fd981161",
-      "web/tools/native_deps.py": "3d548b08e1668cd6f0ad510e536d4c00240f4734c8e3acadbfb3ac6a2912ec64",
+      "web/tools/native_deps.py": "80339d6a2ca13303b9bcb8e34565b636136a6dce0c07ca8f4ff77fabd5a8ae5d",
       "web/tools/native_ffi.py": "6763966a1117dae82413acf2f9282724a524a198353069f128d11aea26c3fda1",
       "web/native/patches/ffi.patch": "c4d97f07840b36470cb6a63a5ab7cb12e4b308ee38ab06a2f06c2e9017bc33af",
-      "web/native/ghost/GHOST_WebFFI.cc": "a08e4bd38b218347ed74e4170cec064ee644654e5c6cffc8281f959314998992",
+      "web/native/ghost/GHOST_WebFFI.cc": "b6424a21da4d097534a8e2fda711275dfe691bb4ababd0d0fda60c8b2527049a",
       "web/native/ghost/GHOST_WebFFI.hh": "e1c1c5c7341de78e0eb5ca8ac3e427bd6e21830d31c09a7b2baea702b3521e17",
+      "web/native/ghost/GHOST_WebWorkerResources.hh": "58049886eb2b543ebe347fedacdcdcdcc425c7b24c6cef877e70232a1c1bd89b",
       "web/native/ghost/GHOST_WebCTypes.cc": "ce3a0dc17a1b1dd85f981e52f5494fc4d4a40f3b92c22c6a16d4b9e19a9c0c92",
       "web/native/ghost/GHOST_WebCTypes.hh": "a2491d7416105ecc3cf3d27cf2abac8a13bf69f964ccf0e9ee98da6216d7c409"
     }
   },
   "browserVariants": [
     {
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
       "runnerSourceSha256": "85d7896c6544f97519a0f1b380f444c2612223d11c6fd4620dfd7a6f85053741",
       "hardware": false,
@@ -312,8 +313,8 @@
           "bytes": 85
         },
         "python-foundation.blend": {
-          "sha256": "22944470fd8c9da654da15b883df230df0d5f7ec47e8dc68b1443ed758d8654f",
-          "bytes": 102347
+          "sha256": "d20c6bce17a35d0ca5b7b6f98d0dfb965122bc4bdd3efe18fb814398408291fe",
+          "bytes": 102348
         },
         "browser_generated.c": {
           "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
@@ -332,7 +333,7 @@
           "bytes": 262147
         }
       },
-      "networkURL": "http://127.0.0.1:34359",
+      "networkURL": "http://127.0.0.1:46579",
       "peakBackgroundDownloads": 2,
       "offlineReopen": true,
       "browserErrors": [],
@@ -343,27 +344,27 @@
           "title": "Start original Blender with the embedded Python dependencies"
         },
         {
-          "seconds": 16.288,
+          "seconds": 18.266,
           "title": "Check SQLite, compression, TLS, packages and Cython in Blender"
         },
         {
-          "seconds": 24.964,
+          "seconds": 28.699,
           "title": "Exercise browser HTTP, binary transfers, timeout and CORS rejection"
         },
         {
-          "seconds": 52.893,
+          "seconds": 56.143,
           "title": "Inspect the dependency results in the original Text Editor"
         },
         {
-          "seconds": 61.125,
+          "seconds": 64.719,
           "title": "Reopen saved database and compressed files after an offline reload"
         }
       ],
-      "durationSeconds": 82.722,
+      "durationSeconds": 85.622,
       "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-foundation-evidence/python-foundation.webm"
     },
     {
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
       "runnerSourceSha256": "85d7896c6544f97519a0f1b380f444c2612223d11c6fd4620dfd7a6f85053741",
       "hardware": false,
@@ -515,8 +516,8 @@
           "bytes": 85
         },
         "python-foundation.blend": {
-          "sha256": "a597bfc67c746da95d8794dae2ef15ace8c6e07abf6e196524ec1f8914f0075e",
-          "bytes": 102363
+          "sha256": "e99e0456f289eaacbe449fdaca1b2ba11675ebde349e375b2b5592ce81ec8763",
+          "bytes": 102373
         },
         "browser_generated.c": {
           "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
@@ -535,7 +536,7 @@
           "bytes": 262147
         }
       },
-      "networkURL": "http://127.0.0.1:43643",
+      "networkURL": "http://127.0.0.1:46437",
       "peakBackgroundDownloads": 2,
       "offlineReopen": true,
       "browserErrors": [],
@@ -546,27 +547,27 @@
           "title": "Start original Blender with the embedded Python dependencies"
         },
         {
-          "seconds": 17.212,
+          "seconds": 19.842,
           "title": "Check SQLite, compression, TLS, packages and Cython in Blender"
         },
         {
-          "seconds": 26.403,
+          "seconds": 29.437,
           "title": "Exercise browser HTTP, binary transfers, timeout and CORS rejection"
         },
         {
-          "seconds": 52.814,
+          "seconds": 57.348,
           "title": "Inspect the dependency results in the original Text Editor"
         },
         {
-          "seconds": 60.973,
+          "seconds": 66.991,
           "title": "Reopen saved database and compressed files after an offline reload"
         }
       ],
-      "durationSeconds": 80.457,
+      "durationSeconds": 92.942,
       "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-foundation-evidence-ui/python-foundation.webm"
     },
     {
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
       "runnerSourceSha256": "85d7896c6544f97519a0f1b380f444c2612223d11c6fd4620dfd7a6f85053741",
       "hardware": true,
@@ -718,8 +719,8 @@
           "bytes": 85
         },
         "python-foundation.blend": {
-          "sha256": "d31977dc0dcaad9da806253fefcbe18cc30e60e8602f3c2cbcc59490f3228f3e",
-          "bytes": 102359
+          "sha256": "b1470940484b2c287638249a25ea87d3cfa953501faf9453a50f6178679083b4",
+          "bytes": 102347
         },
         "browser_generated.c": {
           "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
@@ -738,34 +739,34 @@
           "bytes": 262147
         }
       },
-      "networkURL": "http://127.0.0.1:41047",
+      "networkURL": "http://127.0.0.1:35675",
       "peakBackgroundDownloads": 2,
       "offlineReopen": true,
       "browserErrors": [],
       "startupPythonErrors": [],
       "chapters": [
         {
-          "seconds": 0,
+          "seconds": 0.001,
           "title": "Start original Blender with the embedded Python dependencies"
         },
         {
-          "seconds": 11.992,
+          "seconds": 13.29,
           "title": "Check SQLite, compression, TLS, packages and Cython in Blender"
         },
         {
-          "seconds": 18.961,
+          "seconds": 19.953,
           "title": "Exercise browser HTTP, binary transfers, timeout and CORS rejection"
         },
         {
-          "seconds": 37.279,
+          "seconds": 39.409,
           "title": "Inspect the dependency results in the original Text Editor"
         },
         {
-          "seconds": 45.54,
+          "seconds": 47.177,
           "title": "Reopen saved database and compressed files after an offline reload"
         }
       ],
-      "durationSeconds": 60.003,
+      "durationSeconds": 61.71,
       "videoPath": "/home/crabcake/Projects/blender-web/build/native/python-foundation-evidence-hardware/python-foundation.webm"
     }
   ],
@@ -859,7 +860,7 @@
         "THREADSAFE=1"
       ],
       "sqliteOptionsMatchExceptMmapAndCompiler": true,
-      "bundleVersion": "81aa3ca51ec1b21db65c",
+      "bundleVersion": "6fc613eabfc47ac917c2",
       "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
       "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
       "files": {
@@ -880,272 +881,272 @@
           "bytes": 85
         },
         "python-foundation.blend": {
-          "sha256": "22944470fd8c9da654da15b883df230df0d5f7ec47e8dc68b1443ed758d8654f",
+          "sha256": "d20c6bce17a35d0ca5b7b6f98d0dfb965122bc4bdd3efe18fb814398408291fe",
+          "bytes": 102348
+        },
+        "browser_generated.c": {
+          "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
+          "bytes": 234944
+        },
+        "download-direct.bin": {
+          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
+          "bytes": 262147
+        },
+        "download-one.bin": {
+          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
+          "bytes": 262147
+        },
+        "download-two.bin": {
+          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
+          "bytes": 262147
+        }
+      },
+      "tlsCertificateSignature": true
+    },
+    {
+      "sqliteReadback": true,
+      "lzmaReadback": true,
+      "zstandardReadback": true,
+      "savedBlendVerified": true,
+      "cythonCodeInspected": true,
+      "httpDownloadsVerified": true,
+      "nativePackageVersions": {
+        "setuptools": "80.9.0",
+        "packaging": "25.0",
+        "pyproject-metadata": "0.9.1",
+        "idna": "3.10",
+        "charset-normalizer": "3.4.1",
+        "urllib3": "2.4.0",
+        "certifi": "2025.4.26",
+        "requests": "2.32.3",
+        "autopep8": "2.3.1",
+        "pycodestyle": "2.13.0",
+        "docutils": "0.22.4",
+        "attrs": "25.3.0",
+        "cattrs": "25.1.1",
+        "fastjsonschema": "2.21.1",
+        "typing-extensions": "4.14.1",
+        "tomli-w": "1.2.0",
+        "pip": "26.0.1",
+        "Cython": "3.0.11",
+        "zstandard": "0.25.0"
+      },
+      "nativeSQLiteOptions": [
+        "ATOMIC_INTRINSICS=1",
+        "COMPILER=gcc-14.2.1 20250110 (Red Hat 14.2.1-11)",
+        "DEFAULT_AUTOVACUUM",
+        "DEFAULT_CACHE_SIZE=-2000",
+        "DEFAULT_FILE_FORMAT=4",
+        "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+        "DEFAULT_MMAP_SIZE=0",
+        "DEFAULT_PAGE_SIZE=4096",
+        "DEFAULT_PCACHE_INITSZ=20",
+        "DEFAULT_RECURSIVE_TRIGGERS",
+        "DEFAULT_SECTOR_SIZE=4096",
+        "DEFAULT_SYNCHRONOUS=2",
+        "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+        "DEFAULT_WAL_SYNCHRONOUS=2",
+        "DEFAULT_WORKER_THREADS=0",
+        "DIRECT_OVERFLOW_READ",
+        "ENABLE_COLUMN_METADATA",
+        "ENABLE_DBSTAT_VTAB",
+        "ENABLE_FTS3",
+        "ENABLE_FTS3_PARENTHESIS",
+        "ENABLE_FTS4",
+        "ENABLE_FTS5",
+        "ENABLE_GEOPOLY",
+        "ENABLE_LOAD_EXTENSION",
+        "ENABLE_MATH_FUNCTIONS",
+        "ENABLE_PERCENTILE",
+        "ENABLE_PREUPDATE_HOOK",
+        "ENABLE_RTREE",
+        "ENABLE_SESSION",
+        "ENABLE_STMTVTAB",
+        "ENABLE_UNLOCK_NOTIFY",
+        "ENABLE_UPDATE_DELETE_LIMIT",
+        "LIKE_DOESNT_MATCH_BLOBS",
+        "MALLOC_SOFT_LIMIT=1024",
+        "MAX_ATTACHED=10",
+        "MAX_COLUMN=2000",
+        "MAX_COMPOUND_SELECT=500",
+        "MAX_DEFAULT_PAGE_SIZE=8192",
+        "MAX_EXPR_DEPTH=1000",
+        "MAX_FUNCTION_ARG=1000",
+        "MAX_LENGTH=1000000000",
+        "MAX_LIKE_PATTERN_LENGTH=50000",
+        "MAX_MMAP_SIZE=0x7fff0000",
+        "MAX_PAGE_COUNT=0xfffffffe",
+        "MAX_PAGE_SIZE=65536",
+        "MAX_SCHEMA_RETRY=25",
+        "MAX_SQL_LENGTH=1000000000",
+        "MAX_TRIGGER_DEPTH=1000",
+        "MAX_VARIABLE_NUMBER=250000",
+        "MAX_VDBE_OP=250000000",
+        "MAX_WORKER_THREADS=8",
+        "MUTEX_PTHREADS",
+        "OMIT_LOOKASIDE",
+        "SECURE_DELETE",
+        "SOUNDEX",
+        "SYSTEM_MALLOC",
+        "TEMP_STORE=1",
+        "THREADSAFE=1"
+      ],
+      "sqliteOptionsMatchExceptMmapAndCompiler": true,
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
+      "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
+      "files": {
+        "python-foundation.json": {
+          "sha256": "b4d96defa0a5a51c521ba606f5e610433b07a0db668d9e0106714d9bbb88f04f",
+          "bytes": 3238
+        },
+        "python-roundtrip.sqlite": {
+          "sha256": "7bbcbbd923d1dd191aafdb0abcf41bd1bf5d113d2ad840eab1e937348c04e013",
+          "bytes": 98304
+        },
+        "python-roundtrip.xz": {
+          "sha256": "c30843522bd83ee33cf06615f7d86317b34b7de7f10844954e7cb9783e7bb8b2",
+          "bytes": 220
+        },
+        "python-roundtrip.zst": {
+          "sha256": "900e0874fadd7d53d94dcf2fea6ca81068ffd9ca791e6ff3152790f526881c86",
+          "bytes": 85
+        },
+        "python-foundation.blend": {
+          "sha256": "e99e0456f289eaacbe449fdaca1b2ba11675ebde349e375b2b5592ce81ec8763",
+          "bytes": 102373
+        },
+        "browser_generated.c": {
+          "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
+          "bytes": 234944
+        },
+        "download-direct.bin": {
+          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
+          "bytes": 262147
+        },
+        "download-one.bin": {
+          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
+          "bytes": 262147
+        },
+        "download-two.bin": {
+          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
+          "bytes": 262147
+        }
+      },
+      "tlsCertificateSignature": true
+    },
+    {
+      "sqliteReadback": true,
+      "lzmaReadback": true,
+      "zstandardReadback": true,
+      "savedBlendVerified": true,
+      "cythonCodeInspected": true,
+      "httpDownloadsVerified": true,
+      "nativePackageVersions": {
+        "setuptools": "80.9.0",
+        "packaging": "25.0",
+        "pyproject-metadata": "0.9.1",
+        "idna": "3.10",
+        "charset-normalizer": "3.4.1",
+        "urllib3": "2.4.0",
+        "certifi": "2025.4.26",
+        "requests": "2.32.3",
+        "autopep8": "2.3.1",
+        "pycodestyle": "2.13.0",
+        "docutils": "0.22.4",
+        "attrs": "25.3.0",
+        "cattrs": "25.1.1",
+        "fastjsonschema": "2.21.1",
+        "typing-extensions": "4.14.1",
+        "tomli-w": "1.2.0",
+        "pip": "26.0.1",
+        "Cython": "3.0.11",
+        "zstandard": "0.25.0"
+      },
+      "nativeSQLiteOptions": [
+        "ATOMIC_INTRINSICS=1",
+        "COMPILER=gcc-14.2.1 20250110 (Red Hat 14.2.1-11)",
+        "DEFAULT_AUTOVACUUM",
+        "DEFAULT_CACHE_SIZE=-2000",
+        "DEFAULT_FILE_FORMAT=4",
+        "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+        "DEFAULT_MMAP_SIZE=0",
+        "DEFAULT_PAGE_SIZE=4096",
+        "DEFAULT_PCACHE_INITSZ=20",
+        "DEFAULT_RECURSIVE_TRIGGERS",
+        "DEFAULT_SECTOR_SIZE=4096",
+        "DEFAULT_SYNCHRONOUS=2",
+        "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+        "DEFAULT_WAL_SYNCHRONOUS=2",
+        "DEFAULT_WORKER_THREADS=0",
+        "DIRECT_OVERFLOW_READ",
+        "ENABLE_COLUMN_METADATA",
+        "ENABLE_DBSTAT_VTAB",
+        "ENABLE_FTS3",
+        "ENABLE_FTS3_PARENTHESIS",
+        "ENABLE_FTS4",
+        "ENABLE_FTS5",
+        "ENABLE_GEOPOLY",
+        "ENABLE_LOAD_EXTENSION",
+        "ENABLE_MATH_FUNCTIONS",
+        "ENABLE_PERCENTILE",
+        "ENABLE_PREUPDATE_HOOK",
+        "ENABLE_RTREE",
+        "ENABLE_SESSION",
+        "ENABLE_STMTVTAB",
+        "ENABLE_UNLOCK_NOTIFY",
+        "ENABLE_UPDATE_DELETE_LIMIT",
+        "LIKE_DOESNT_MATCH_BLOBS",
+        "MALLOC_SOFT_LIMIT=1024",
+        "MAX_ATTACHED=10",
+        "MAX_COLUMN=2000",
+        "MAX_COMPOUND_SELECT=500",
+        "MAX_DEFAULT_PAGE_SIZE=8192",
+        "MAX_EXPR_DEPTH=1000",
+        "MAX_FUNCTION_ARG=1000",
+        "MAX_LENGTH=1000000000",
+        "MAX_LIKE_PATTERN_LENGTH=50000",
+        "MAX_MMAP_SIZE=0x7fff0000",
+        "MAX_PAGE_COUNT=0xfffffffe",
+        "MAX_PAGE_SIZE=65536",
+        "MAX_SCHEMA_RETRY=25",
+        "MAX_SQL_LENGTH=1000000000",
+        "MAX_TRIGGER_DEPTH=1000",
+        "MAX_VARIABLE_NUMBER=250000",
+        "MAX_VDBE_OP=250000000",
+        "MAX_WORKER_THREADS=8",
+        "MUTEX_PTHREADS",
+        "OMIT_LOOKASIDE",
+        "SECURE_DELETE",
+        "SOUNDEX",
+        "SYSTEM_MALLOC",
+        "TEMP_STORE=1",
+        "THREADSAFE=1"
+      ],
+      "sqliteOptionsMatchExceptMmapAndCompiler": true,
+      "bundleVersion": "6fc613eabfc47ac917c2",
+      "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
+      "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
+      "files": {
+        "python-foundation.json": {
+          "sha256": "b4d96defa0a5a51c521ba606f5e610433b07a0db668d9e0106714d9bbb88f04f",
+          "bytes": 3238
+        },
+        "python-roundtrip.sqlite": {
+          "sha256": "7bbcbbd923d1dd191aafdb0abcf41bd1bf5d113d2ad840eab1e937348c04e013",
+          "bytes": 98304
+        },
+        "python-roundtrip.xz": {
+          "sha256": "c30843522bd83ee33cf06615f7d86317b34b7de7f10844954e7cb9783e7bb8b2",
+          "bytes": 220
+        },
+        "python-roundtrip.zst": {
+          "sha256": "900e0874fadd7d53d94dcf2fea6ca81068ffd9ca791e6ff3152790f526881c86",
+          "bytes": 85
+        },
+        "python-foundation.blend": {
+          "sha256": "b1470940484b2c287638249a25ea87d3cfa953501faf9453a50f6178679083b4",
           "bytes": 102347
-        },
-        "browser_generated.c": {
-          "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
-          "bytes": 234944
-        },
-        "download-direct.bin": {
-          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
-          "bytes": 262147
-        },
-        "download-one.bin": {
-          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
-          "bytes": 262147
-        },
-        "download-two.bin": {
-          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
-          "bytes": 262147
-        }
-      },
-      "tlsCertificateSignature": true
-    },
-    {
-      "sqliteReadback": true,
-      "lzmaReadback": true,
-      "zstandardReadback": true,
-      "savedBlendVerified": true,
-      "cythonCodeInspected": true,
-      "httpDownloadsVerified": true,
-      "nativePackageVersions": {
-        "setuptools": "80.9.0",
-        "packaging": "25.0",
-        "pyproject-metadata": "0.9.1",
-        "idna": "3.10",
-        "charset-normalizer": "3.4.1",
-        "urllib3": "2.4.0",
-        "certifi": "2025.4.26",
-        "requests": "2.32.3",
-        "autopep8": "2.3.1",
-        "pycodestyle": "2.13.0",
-        "docutils": "0.22.4",
-        "attrs": "25.3.0",
-        "cattrs": "25.1.1",
-        "fastjsonschema": "2.21.1",
-        "typing-extensions": "4.14.1",
-        "tomli-w": "1.2.0",
-        "pip": "26.0.1",
-        "Cython": "3.0.11",
-        "zstandard": "0.25.0"
-      },
-      "nativeSQLiteOptions": [
-        "ATOMIC_INTRINSICS=1",
-        "COMPILER=gcc-14.2.1 20250110 (Red Hat 14.2.1-11)",
-        "DEFAULT_AUTOVACUUM",
-        "DEFAULT_CACHE_SIZE=-2000",
-        "DEFAULT_FILE_FORMAT=4",
-        "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
-        "DEFAULT_MMAP_SIZE=0",
-        "DEFAULT_PAGE_SIZE=4096",
-        "DEFAULT_PCACHE_INITSZ=20",
-        "DEFAULT_RECURSIVE_TRIGGERS",
-        "DEFAULT_SECTOR_SIZE=4096",
-        "DEFAULT_SYNCHRONOUS=2",
-        "DEFAULT_WAL_AUTOCHECKPOINT=1000",
-        "DEFAULT_WAL_SYNCHRONOUS=2",
-        "DEFAULT_WORKER_THREADS=0",
-        "DIRECT_OVERFLOW_READ",
-        "ENABLE_COLUMN_METADATA",
-        "ENABLE_DBSTAT_VTAB",
-        "ENABLE_FTS3",
-        "ENABLE_FTS3_PARENTHESIS",
-        "ENABLE_FTS4",
-        "ENABLE_FTS5",
-        "ENABLE_GEOPOLY",
-        "ENABLE_LOAD_EXTENSION",
-        "ENABLE_MATH_FUNCTIONS",
-        "ENABLE_PERCENTILE",
-        "ENABLE_PREUPDATE_HOOK",
-        "ENABLE_RTREE",
-        "ENABLE_SESSION",
-        "ENABLE_STMTVTAB",
-        "ENABLE_UNLOCK_NOTIFY",
-        "ENABLE_UPDATE_DELETE_LIMIT",
-        "LIKE_DOESNT_MATCH_BLOBS",
-        "MALLOC_SOFT_LIMIT=1024",
-        "MAX_ATTACHED=10",
-        "MAX_COLUMN=2000",
-        "MAX_COMPOUND_SELECT=500",
-        "MAX_DEFAULT_PAGE_SIZE=8192",
-        "MAX_EXPR_DEPTH=1000",
-        "MAX_FUNCTION_ARG=1000",
-        "MAX_LENGTH=1000000000",
-        "MAX_LIKE_PATTERN_LENGTH=50000",
-        "MAX_MMAP_SIZE=0x7fff0000",
-        "MAX_PAGE_COUNT=0xfffffffe",
-        "MAX_PAGE_SIZE=65536",
-        "MAX_SCHEMA_RETRY=25",
-        "MAX_SQL_LENGTH=1000000000",
-        "MAX_TRIGGER_DEPTH=1000",
-        "MAX_VARIABLE_NUMBER=250000",
-        "MAX_VDBE_OP=250000000",
-        "MAX_WORKER_THREADS=8",
-        "MUTEX_PTHREADS",
-        "OMIT_LOOKASIDE",
-        "SECURE_DELETE",
-        "SOUNDEX",
-        "SYSTEM_MALLOC",
-        "TEMP_STORE=1",
-        "THREADSAFE=1"
-      ],
-      "sqliteOptionsMatchExceptMmapAndCompiler": true,
-      "bundleVersion": "81aa3ca51ec1b21db65c",
-      "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
-      "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
-      "files": {
-        "python-foundation.json": {
-          "sha256": "b4d96defa0a5a51c521ba606f5e610433b07a0db668d9e0106714d9bbb88f04f",
-          "bytes": 3238
-        },
-        "python-roundtrip.sqlite": {
-          "sha256": "7bbcbbd923d1dd191aafdb0abcf41bd1bf5d113d2ad840eab1e937348c04e013",
-          "bytes": 98304
-        },
-        "python-roundtrip.xz": {
-          "sha256": "c30843522bd83ee33cf06615f7d86317b34b7de7f10844954e7cb9783e7bb8b2",
-          "bytes": 220
-        },
-        "python-roundtrip.zst": {
-          "sha256": "900e0874fadd7d53d94dcf2fea6ca81068ffd9ca791e6ff3152790f526881c86",
-          "bytes": 85
-        },
-        "python-foundation.blend": {
-          "sha256": "a597bfc67c746da95d8794dae2ef15ace8c6e07abf6e196524ec1f8914f0075e",
-          "bytes": 102363
-        },
-        "browser_generated.c": {
-          "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
-          "bytes": 234944
-        },
-        "download-direct.bin": {
-          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
-          "bytes": 262147
-        },
-        "download-one.bin": {
-          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
-          "bytes": 262147
-        },
-        "download-two.bin": {
-          "sha256": "571cdc979fe75d654cf5aa200d8cb6351ffd118d59839bc87780c4258b21346d",
-          "bytes": 262147
-        }
-      },
-      "tlsCertificateSignature": true
-    },
-    {
-      "sqliteReadback": true,
-      "lzmaReadback": true,
-      "zstandardReadback": true,
-      "savedBlendVerified": true,
-      "cythonCodeInspected": true,
-      "httpDownloadsVerified": true,
-      "nativePackageVersions": {
-        "setuptools": "80.9.0",
-        "packaging": "25.0",
-        "pyproject-metadata": "0.9.1",
-        "idna": "3.10",
-        "charset-normalizer": "3.4.1",
-        "urllib3": "2.4.0",
-        "certifi": "2025.4.26",
-        "requests": "2.32.3",
-        "autopep8": "2.3.1",
-        "pycodestyle": "2.13.0",
-        "docutils": "0.22.4",
-        "attrs": "25.3.0",
-        "cattrs": "25.1.1",
-        "fastjsonschema": "2.21.1",
-        "typing-extensions": "4.14.1",
-        "tomli-w": "1.2.0",
-        "pip": "26.0.1",
-        "Cython": "3.0.11",
-        "zstandard": "0.25.0"
-      },
-      "nativeSQLiteOptions": [
-        "ATOMIC_INTRINSICS=1",
-        "COMPILER=gcc-14.2.1 20250110 (Red Hat 14.2.1-11)",
-        "DEFAULT_AUTOVACUUM",
-        "DEFAULT_CACHE_SIZE=-2000",
-        "DEFAULT_FILE_FORMAT=4",
-        "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
-        "DEFAULT_MMAP_SIZE=0",
-        "DEFAULT_PAGE_SIZE=4096",
-        "DEFAULT_PCACHE_INITSZ=20",
-        "DEFAULT_RECURSIVE_TRIGGERS",
-        "DEFAULT_SECTOR_SIZE=4096",
-        "DEFAULT_SYNCHRONOUS=2",
-        "DEFAULT_WAL_AUTOCHECKPOINT=1000",
-        "DEFAULT_WAL_SYNCHRONOUS=2",
-        "DEFAULT_WORKER_THREADS=0",
-        "DIRECT_OVERFLOW_READ",
-        "ENABLE_COLUMN_METADATA",
-        "ENABLE_DBSTAT_VTAB",
-        "ENABLE_FTS3",
-        "ENABLE_FTS3_PARENTHESIS",
-        "ENABLE_FTS4",
-        "ENABLE_FTS5",
-        "ENABLE_GEOPOLY",
-        "ENABLE_LOAD_EXTENSION",
-        "ENABLE_MATH_FUNCTIONS",
-        "ENABLE_PERCENTILE",
-        "ENABLE_PREUPDATE_HOOK",
-        "ENABLE_RTREE",
-        "ENABLE_SESSION",
-        "ENABLE_STMTVTAB",
-        "ENABLE_UNLOCK_NOTIFY",
-        "ENABLE_UPDATE_DELETE_LIMIT",
-        "LIKE_DOESNT_MATCH_BLOBS",
-        "MALLOC_SOFT_LIMIT=1024",
-        "MAX_ATTACHED=10",
-        "MAX_COLUMN=2000",
-        "MAX_COMPOUND_SELECT=500",
-        "MAX_DEFAULT_PAGE_SIZE=8192",
-        "MAX_EXPR_DEPTH=1000",
-        "MAX_FUNCTION_ARG=1000",
-        "MAX_LENGTH=1000000000",
-        "MAX_LIKE_PATTERN_LENGTH=50000",
-        "MAX_MMAP_SIZE=0x7fff0000",
-        "MAX_PAGE_COUNT=0xfffffffe",
-        "MAX_PAGE_SIZE=65536",
-        "MAX_SCHEMA_RETRY=25",
-        "MAX_SQL_LENGTH=1000000000",
-        "MAX_TRIGGER_DEPTH=1000",
-        "MAX_VARIABLE_NUMBER=250000",
-        "MAX_VDBE_OP=250000000",
-        "MAX_WORKER_THREADS=8",
-        "MUTEX_PTHREADS",
-        "OMIT_LOOKASIDE",
-        "SECURE_DELETE",
-        "SOUNDEX",
-        "SYSTEM_MALLOC",
-        "TEMP_STORE=1",
-        "THREADSAFE=1"
-      ],
-      "sqliteOptionsMatchExceptMmapAndCompiler": true,
-      "bundleVersion": "81aa3ca51ec1b21db65c",
-      "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
-      "verifierSourceSha256": "c86ed5f56b01690f272e9715b7745cbaf48669d179901986f11e061cc37b165d",
-      "files": {
-        "python-foundation.json": {
-          "sha256": "b4d96defa0a5a51c521ba606f5e610433b07a0db668d9e0106714d9bbb88f04f",
-          "bytes": 3238
-        },
-        "python-roundtrip.sqlite": {
-          "sha256": "7bbcbbd923d1dd191aafdb0abcf41bd1bf5d113d2ad840eab1e937348c04e013",
-          "bytes": 98304
-        },
-        "python-roundtrip.xz": {
-          "sha256": "c30843522bd83ee33cf06615f7d86317b34b7de7f10844954e7cb9783e7bb8b2",
-          "bytes": 220
-        },
-        "python-roundtrip.zst": {
-          "sha256": "900e0874fadd7d53d94dcf2fea6ca81068ffd9ca791e6ff3152790f526881c86",
-          "bytes": 85
-        },
-        "python-foundation.blend": {
-          "sha256": "d31977dc0dcaad9da806253fefcbe18cc30e60e8602f3c2cbcc59490f3228f3e",
-          "bytes": 102359
         },
         "browser_generated.c": {
           "sha256": "929838e88752869fe614ae0916a02cd48368d72a3988083596a784b9ac48c895",
@@ -1168,36 +1169,36 @@
     }
   ],
   "recording": {
-    "bundleVersion": "81aa3ca51ec1b21db65c",
+    "bundleVersion": "6fc613eabfc47ac917c2",
     "sourceSha256": "8dff460c2d8989a97ef88c140e0d290ec3fc68a0cc8138160e815388c7289452",
-    "durationSeconds": 59.8,
+    "durationSeconds": 61.52,
     "chapters": [
       {
-        "seconds": 0,
+        "seconds": 0.001,
         "title": "Start original Blender with the embedded Python dependencies"
       },
       {
-        "seconds": 11.992,
+        "seconds": 13.29,
         "title": "Check SQLite, compression, TLS, packages and Cython in Blender"
       },
       {
-        "seconds": 18.961,
+        "seconds": 19.953,
         "title": "Exercise browser HTTP, binary transfers, timeout and CORS rejection"
       },
       {
-        "seconds": 37.279,
+        "seconds": 39.409,
         "title": "Inspect the dependency results in the original Text Editor"
       },
       {
-        "seconds": 45.54,
+        "seconds": 47.177,
         "title": "Reopen saved database and compressed files after an offline reload"
       }
     ],
     "captions": true,
     "source": "Real hardware Chromium capture of original Blender, Python libraries, HTTP downloads and offline reopening",
     "path": "web/docs/python-foundation-walkthrough.mp4",
-    "bytes": 1831395,
-    "sha256": "5ba41053704148aa985819f8879bffa461c588ebd2602822622bd5021516b482",
+    "bytes": 2007659,
+    "sha256": "a2aadf27c7c293b3012bccace37689dc856b0e088315c3c755490dfb77283faa",
     "screenshot": {
       "path": "web/docs/python-foundation-browser.png",
       "sha256": "c568199db3bbcffadb5092d79524ac8e7f851f1abfbf7ef663e7b1b8a04877ab"
