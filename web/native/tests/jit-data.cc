@@ -2,6 +2,7 @@
 #include "GHOST_WebJITProbe.hh"
 #include "GHOST_WebOSL.hh"
 #include "GHOST_WebOSLOwnedProbe.hh"
+#include "GHOST_WebOSLRuntime.hh"
 #include "GHOST_WebWorkerResources.hh"
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
@@ -151,7 +152,13 @@ static void check_round(unsigned round)
 
 int main()
 {
-  GHOST_web_osl_install_probe_engine();
+  std::vector<std::thread> initializers;
+  for (unsigned i = 0; i < 4; ++i)
+    initializers.emplace_back([] {
+      for (unsigned repeat = 0; repeat < 3; ++repeat) GHOST_web_osl_initialize_runtime();
+    });
+  for (auto &initializer : initializers) initializer.join();
+  GHOST_web_osl_initialize_runtime();
   for (unsigned round = 0; round < 4; ++round) check_round(round);
   unsigned metrics[3] = {};
   GHOST_web_invoke_runtime_thread([](void *value) {
@@ -168,7 +175,8 @@ int main()
   std::printf("{\"programs\":32,\"workerReads\":128,\"globalAddresses\":true,"
               "\"dataRelocations\":true,\"functionRelocations\":true,\"nativeOwnerRetirement\":true,"
               "\"independentOwners\":true,\"outOfOrderRetirement\":true,\"variableLayouts\":8,"
-              "\"dataAlignment\":64,\"ownedBlocks\":%u,\"ownedTableCapacity\":%u,\"largestBlock\":%u}\n",
+              "\"concurrentInitialization\":true,\"dataAlignment\":64,"
+              "\"ownedBlocks\":%u,\"ownedTableCapacity\":%u,\"largestBlock\":%u}\n",
               blocks, capacity, largest);
   return 0;
 }

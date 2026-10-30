@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 /* Experimental owned execution and lazy worker publication. */
-#if defined(__EMSCRIPTEN__) && defined(WITH_GHOST_WEB_OSL_PROBE)
+#if defined(__EMSCRIPTEN__) && (defined(WITH_GHOST_WEB_OSL_PROBE) || defined(WITH_GHOST_WEB_OSL))
+#  include "GHOST_WebOSLRuntime.hh"
 #  include "GHOST_WebOSLOwnedProbe.hh"
 #  include "GHOST_WebJITProbe.hh"
 #  include "GHOST_WebOSL.hh"
@@ -329,17 +330,21 @@ class WebOSLEngine : public llvm::ExecutionEngine {
     return reinterpret_cast<void *>(uintptr_t(getFunctionAddress(function->getName().str())));
   }
 };
-void GHOST_web_osl_install_probe_engine()
+void GHOST_web_osl_initialize_runtime()
 {
-  llvm::InitializeAllTargetInfos();
-  llvm::InitializeAllTargets();
-  llvm::InitializeAllTargetMCs();
-  llvm::InitializeAllAsmPrinters();
   static std::once_flag initialized;
   std::call_once(initialized, [] {
+    llvm::InitializeAllTargetInfos();
+    llvm::InitializeAllTargets();
+    llvm::InitializeAllTargetMCs();
+    llvm::InitializeAllAsmPrinters();
     GHOST_web_register_worker_resource({apply_programs, detach_programs, nullptr});
+    WebOSLEngine::install();
   });
-  WebOSLEngine::install();
+}
+void GHOST_web_osl_install_probe_engine()
+{
+  GHOST_web_osl_initialize_runtime();
 }
 
 #endif

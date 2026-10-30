@@ -20,6 +20,12 @@ runs reuse a pool of nine table blocks with 124 total slots. All program data
 and active table entries retire after every batch. Users join before their
 native memory owner is released.
 
+The public `GHOST_web_osl_initialize_runtime()` entry initializes LLVM, the
+engine factory and the worker-resource registration together under one
+`call_once`. Four workers call it concurrently twelve times before compiling
+the programs. The check uses `WITH_GHOST_WEB_OSL`; the prior standalone entry
+delegates to the same initializer.
+
 The existing original OSL fixture also passed with the changed engine and
 loader. Each Node/browser run shades 7,296 points, makes 14,592 renderer
 callbacks and 7,296 libffi calls, and checks closure trees, full string hashes,

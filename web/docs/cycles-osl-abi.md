@@ -30,6 +30,14 @@ device-string assertions remain active and pass using OIIO's original
 `strhash64` function. The report records the source and object hashes. Compiling
 these objects does not link or qualify the Cycles OSL renderer.
 
+The original scene OSL manager also compiles to a wasm32 object with a
+[guarded runtime hook](../patches/native-osl-runtime.patch). It initializes
+the GHOST runtime before constructing the shading system and selects its
+portable LLVM target. The [runtime check](jit-data-addresses.md) separately
+verifies concurrent initialization and actual worker execution. These patches
+are applied only to the private compilation check, keeping the existing
+application configuration unchanged.
+
 ```sh
 # Activate the pinned SDK and build OSL/OpenImageIO first.
 python3 web/tools/native_cycles_osl_abi.py --blender /path/to/native/blender

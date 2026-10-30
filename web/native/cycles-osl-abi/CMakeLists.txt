@@ -8,7 +8,8 @@ add_library(cycles-osl-kernel OBJECT
   "${BLENDER_WEB_STAGED}/intern/cycles/kernel/osl/services.cpp"
   "${BLENDER_SOURCE}/intern/cycles/kernel/osl/closures.cpp"
   "${BLENDER_SOURCE}/intern/cycles/kernel/osl/globals.cpp")
-foreach(target cycles-osl-abi cycles-osl-kernel)
+add_library(cycles-osl-scene OBJECT "${BLENDER_WEB_STAGED}/intern/cycles/scene/osl.cpp")
+foreach(target cycles-osl-abi cycles-osl-kernel cycles-osl-scene)
   target_compile_features(${target} PRIVATE cxx_std_20)
   target_compile_definitions(${target} PRIVATE WITH_GHOST_WEB WITH_OSL
     "CCL_NAMESPACE_BEGIN=namespace ccl {" "CCL_NAMESPACE_END=}")

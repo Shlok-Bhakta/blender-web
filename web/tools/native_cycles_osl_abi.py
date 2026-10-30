@@ -39,16 +39,20 @@ def main():
     headers.mkdir(parents=True, exist_ok=True)
     inputs = ['web/tools/native_cycles_osl_abi.py', 'web/native/cycles-osl-abi/CMakeLists.txt',
               'web/native/tests/cycles-osl-abi.cc', 'web/native/ghost/GHOST_WebOSLTypes.hh',
-              'web/patches/native-osl-types.patch']
+              'web/native/ghost/GHOST_WebOSLRuntime.hh',
+              'web/patches/native-osl-types.patch', 'web/patches/native-osl-runtime.patch']
     hashes = {name: digest(ROOT / name) for name in inputs}
     stamps = {name: digest(base / f'deps/{name}/installed.json') for name in ('osl', 'openimageio')}
     upstream_inputs = {name: digest(ROOT / 'blender/intern/cycles' / name)
                         for name in ('kernel/osl/types.h', 'kernel/osl/closures_template.h',
                                      'kernel/osl/services.h', 'kernel/osl/services.cpp',
                                      'kernel/osl/strings.h', 'kernel/osl/closures.cpp',
-                                     'kernel/osl/globals.cpp', 'kernel/types.h')}
+                                     'kernel/osl/globals.cpp', 'kernel/types.h', 'scene/osl.cpp')}
     for name in ('types.h', 'closures_template.h', 'services.cpp', 'strings.h'):
         shutil.copy2(ROOT / 'blender/intern/cycles/kernel/osl' / name, headers / name)
+    scene = source / 'intern/cycles/scene'
+    scene.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(ROOT / 'blender/intern/cycles/scene/osl.cpp', scene / 'osl.cpp')
     compiler_args = ['-std=c++20', '-fno-strict-aliasing', '-UNDEBUG', '-DWITH_GHOST_WEB', '-DWITH_OSL',
         '-DCCL_NAMESPACE_BEGIN=namespace ccl {', '-DCCL_NAMESPACE_END=}',
         f'-I{source / "intern/cycles"}', f'-I{ROOT / "blender/intern/cycles"}',
@@ -65,6 +69,8 @@ def main():
     log.write_text('')
     run(['git', 'apply', '--check', ROOT / 'web/patches/native-osl-types.patch'], log, cwd=source)
     run(['git', 'apply', ROOT / 'web/patches/native-osl-types.patch'], log, cwd=source)
+    run(['git', 'apply', '--check', ROOT / 'web/patches/native-osl-runtime.patch'], log, cwd=source)
+    run(['git', 'apply', ROOT / 'web/patches/native-osl-runtime.patch'], log, cwd=source)
     env = dict(os.environ, BINARYEN_CORES=os.environ.get('BINARYEN_CORES', '1'))
     run(['emcmake', 'cmake', '-S', ROOT / 'web/native/cycles-osl-abi', '-B', work / 'wasm',
          '-DCMAKE_BUILD_TYPE=Release', f'-DBLENDER_WEB_STAGED={source}', f'-DBLENDER_SOURCE={ROOT / "blender"}',
@@ -90,18 +96,20 @@ def main():
     assert upstream_inputs == {name: digest(ROOT / 'blender/intern/cycles' / name) for name in upstream_inputs}
     objects = sorted((work / 'wasm/CMakeFiles/cycles-osl-kernel.dir').rglob('*.cpp.o'))
     assert sorted(path.name for path in objects) == ['closures.cpp.o', 'globals.cpp.o', 'services.cpp.o']
+    scene_objects = sorted((work / 'wasm/CMakeFiles/cycles-osl-scene.dir').rglob('*.cpp.o'))
+    assert len(scene_objects) == 1 and scene_objects[0].name == 'osl.cpp.o'
     readobj = Path(shutil.which('emcc')).resolve().parent.parent / 'bin/llvm-readobj'
-    for path in objects:
+    for path in [*objects, *scene_objects]:
         header = subprocess.check_output([readobj, '--file-headers', path], text=True)
         assert 'Format: WASM' in header and 'Arch: wasm32' in header
     string_assertions = sum(line.startswith('OSL_DEVICE_STRING(') for line in (headers / 'strings.h').read_text().splitlines())
     report = dict(wasm=wasm, native=native, emscriptenVersion=sdk, blenderRevision=revision,
                   sourceHashes=hashes, upstreamSourceHashes=upstream_inputs,
-                  compiledKernelSources=3, predefinedStringAssertions=string_assertions,
+                  compiledKernelSources=3, compiledSceneSources=1, predefinedStringAssertions=string_assertions,
                   installedDependencyStamps=stamps, nativeLibrarySha256=digest(library),
                   baselineLayoutMismatchReproduced=True, applicationIntegrated=False,
                   artifacts={str(path.relative_to(base)): dict(bytes=path.stat().st_size, sha256=digest(path))
-                             for path in [work / 'wasm/cycles-osl-abi.js', work / 'wasm/cycles-osl-abi.wasm', binary, *objects]})
+                             for path in [work / 'wasm/cycles-osl-abi.js', work / 'wasm/cycles-osl-abi.wasm', binary, *objects, *scene_objects]})
     (work / 'acceptance.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report), flush=True)
 
