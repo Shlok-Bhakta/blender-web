@@ -15,9 +15,12 @@ async function execute(runtime, lines) {
 }
 
 function verify(report) {
-  assert.deepEqual(report, {programs: 8, workerReads: 32, globalAddresses: true,
-    dataRelocations: true, functionRelocations: true, nativeOwnerRetirement: true,
-    independentOwners: true, outOfOrderRetirement: true});
+  assert.equal(report.programs, 32); assert.equal(report.workerReads, 128);
+  for (const field of ['globalAddresses', 'dataRelocations', 'functionRelocations',
+    'nativeOwnerRetirement', 'independentOwners', 'outOfOrderRetirement']) assert.equal(report[field], true);
+  assert.equal(report.variableLayouts, 8); assert.equal(report.dataAlignment, 64);
+  assert(report.ownedBlocks > 0 && report.ownedBlocks <= 64);
+  assert(report.ownedTableCapacity <= 64 * report.largestBlock);
 }
 
 async function main() {

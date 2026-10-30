@@ -1,27 +1,61 @@
 {
   "node": {
-    "programs": 8,
-    "workerReads": 32,
+    "programs": 32,
+    "workerReads": 128,
     "globalAddresses": true,
     "dataRelocations": true,
     "functionRelocations": true,
     "nativeOwnerRetirement": true,
     "independentOwners": true,
-    "outOfOrderRetirement": true
+    "outOfOrderRetirement": true,
+    "variableLayouts": 8,
+    "dataAlignment": 64,
+    "ownedBlocks": 9,
+    "ownedTableCapacity": 124,
+    "largestBlock": 20
   },
   "browser": {
-    "programs": 8,
-    "workerReads": 32,
+    "programs": 32,
+    "workerReads": 128,
     "globalAddresses": true,
     "dataRelocations": true,
     "functionRelocations": true,
     "nativeOwnerRetirement": true,
     "independentOwners": true,
-    "outOfOrderRetirement": true
+    "outOfOrderRetirement": true,
+    "variableLayouts": 8,
+    "dataAlignment": 64,
+    "ownedBlocks": 9,
+    "ownedTableCapacity": 124,
+    "largestBlock": 20
   },
   "offline": true,
   "browserErrors": [],
   "nodeDiagnostics": [
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
+    "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
     "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
     "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
     "WARNING: This target JIT is not designed for the host you are running.  If bad things happen, please choose a different -march switch.",
@@ -37,8 +71,8 @@
   "sourceHashes": {
     "web/tools/native_jit_data_check.py": "07def95b8cf241473e3cc17f97c2c028c8bd4e2b52f40fbcd8e7e9bcc7ba5487",
     "web/native/jit-data-check/CMakeLists.txt": "81725dcce0cd4417b5ddb53a9f3e7477aa56c3a8bef2e1fce31edcf5da2ba6aa",
-    "web/native/tests/jit-data.cc": "218ab89166d6c68ffa9cb2ecdfa6ef138d99bea039046ddb4257e2e5f0ff6253",
-    "web/tests/jit-data.cjs": "7e514027e6569624b65213025d1c2bdb4a69e38c07bcf84050673525a0b01bf2",
+    "web/native/tests/jit-data.cc": "1aef53e292e78bc43872f50b152f3f927d4fc6590dc1e0ab123a1f5353447039",
+    "web/tests/jit-data.cjs": "5c9c7d928658c8f8bd473191671db47ab23888fe5ba5267249e970e51da352d6",
     "web/native/ghost/GHOST_WebJITProbe.cc": "c0d662f7fc2d412eaafc5ee3d59ca99ce705b49c34feada873514caced288618",
     "web/native/ghost/GHOST_WebJITProbe.hh": "c4e5518859c26f537fcbb050c01c96738a1ba12003c6b0b2f8fbd0633aa11d88",
     "web/native/ghost/GHOST_WebOSLOwnedProbe.cc": "a52b76206b8817f0b0167116098b549f755af13c2caec1c54967b3f1ca62812d",
@@ -55,16 +89,16 @@
   "applicationIntegrated": false,
   "artifacts": {
     "jit-data-check/wasm/jit-data.js": {
-      "bytes": 232660,
-      "sha256": "a3f7fb94b31df335cf1b4f0e4a799526b6db5928c009b590d8041f0e037313e4"
+      "bytes": 232912,
+      "sha256": "459b3beb2589456980b5730d4da558e33588c3c6e17ed4832868a1e0270a3145"
     },
     "jit-data-check/wasm/jit-data.wasm": {
-      "bytes": 51549401,
-      "sha256": "7b44a20fb239583384d22f4aee6f4156f3d660920b8c5bd01b2b4d2f52f2ba5b"
+      "bytes": 51554159,
+      "sha256": "d73a77e40bcef243157054e9c11dcf37d1f56eeef168699a46181bab7c49c034"
     },
     "jit-data-check/evidence/jit-data.png": {
-      "bytes": 27303,
-      "sha256": "2a5576fc61022410e0b7756096f1a7a68ec82a4f787d87878737a6fe1bde7a16"
+      "bytes": 35459,
+      "sha256": "0496e94a901459574ac233c02b84fcb984e452c4ec4b6c7a95ce40e7145629a5"
     }
   },
   "oslRuntimeRegression": {
