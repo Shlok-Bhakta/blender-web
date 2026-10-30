@@ -397,6 +397,16 @@ out-of-order native-owner retirement using the installed LLVM libraries:
 python3 web/tools/native_jit_data_check.py --jobs 2
 ```
 
+The [Cycles OSL ABI check](../docs/cycles-osl-abi.md) applies its guarded type
+patch to a private header/source copy, compiles the three original OSL kernel
+sources to wasm32, and checks closure layouts, full string hashes and texture
+handle representation against native types. It keeps renderer integration
+separate from these compilation checks.
+
+```sh
+python3 web/tools/native_cycles_osl_abi.py --blender /path/to/native/blender
+```
+
 The static Draco bridge gives its opaque `Encoder` and `Decoder` types web-specific
 names so they cannot collide with libheif's global classes and destructors. Its
 original C entry points stay intact. The AVIF regression executable links both

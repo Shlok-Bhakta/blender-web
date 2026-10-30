@@ -16,7 +16,7 @@ initializers, all 64 bits of an integer global, relocated data and function
 pointers, 128 reads from generated code on four workers, and retirement in a
 different order from creation. Remaining programs retain their data after each
 retirement. Each new data allocation is zeroed and aligned to 64 bytes. Both
-runs reuse a pool of nine table blocks with 124 total slots. All allocations
+runs reuse a pool of nine table blocks with 124 total slots. All program data
 and active table entries retire after every batch. Users join before their
 native memory owner is released.
 

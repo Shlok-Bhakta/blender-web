@@ -8,7 +8,7 @@
     "closureTree": true,
     "stringHashFull": true,
     "hash": "8a7dc2d27a1bd227",
-    "textureHandlePorted": false,
+    "textureHandleCases": 24,
     "applicationIntegrated": false
   },
   "native": {
@@ -20,23 +20,30 @@
     "closureTree": true,
     "stringHashFull": true,
     "hash": "8a7dc2d27a1bd227",
-    "textureHandlePorted": false,
+    "textureHandleCases": 24,
     "applicationIntegrated": false
   },
   "emscriptenVersion": "4.0.23",
   "blenderRevision": "d13f752e3b9c4f8c261cda552b1021f8bcc0382c",
   "sourceHashes": {
-    "web/tools/native_cycles_osl_abi.py": "75830c1d0a4d831d8c6125440d19d856e47725bce47b5f77d2901882271c43d7",
-    "web/native/cycles-osl-abi/CMakeLists.txt": "9c8b702a3002bb30344cc053a9b16e9f8cbad133278f00283fc0a4a7c10837f6",
-    "web/native/tests/cycles-osl-abi.cc": "a320bac851e461fe7ff5be2c9a024d49cd7eedee16371b216211571f9f0d5d25",
-    "web/native/ghost/GHOST_WebOSLTypes.hh": "ac53c90b90318a0a868e193f396385ac29bd5ff8815eb78ef3ffc86f5011248b",
-    "web/patches/native-osl-types.patch": "639ce6786f9e78dbb548210a1417e6762fc2681ba4fa01b4aceb1b28d68dbd40"
+    "web/tools/native_cycles_osl_abi.py": "8ef3c8dee11f835f047721d30b9620ea0902e5cb32c19d79bce740338ff088ed",
+    "web/native/cycles-osl-abi/CMakeLists.txt": "8df6d0ca1841b2a20336ac68502f7ee81df307612543da2050b919daa48561d5",
+    "web/native/tests/cycles-osl-abi.cc": "0a988a0e49689d24d9064de611a3bea4b2ae31f3acddf27502ad30145312e713",
+    "web/native/ghost/GHOST_WebOSLTypes.hh": "9ef15520f4f473defcc1452f3a2cdad4173c98223c05399f6ea191b1d835ee26",
+    "web/patches/native-osl-types.patch": "a01190d4e201cfce05b6aa713bf8dbfecb60bfce52ced8a9db9e0e6a3559af21"
   },
-  "upstreamHeaders": {
+  "upstreamSourceHashes": {
     "kernel/osl/types.h": "95fd39b49d8e9462860ef58f13e1dc93c59286f916ef50ef8a9c363ce279bf8c",
     "kernel/osl/closures_template.h": "eabf7ecf9bb5ba7048361a835e85b8ad17c98da077c802bfa6731dfff371d9af",
+    "kernel/osl/services.h": "f9606b2ac24f34ed5072bb8dd515ffac516f3dd2bd578b22ab3f3996566b8c0c",
+    "kernel/osl/services.cpp": "a5f85cf4da3d287be61823b32bb3b4879c81d54595c907f38c98a8e6ace5edab",
+    "kernel/osl/strings.h": "27e75be4ae5223a7654f0b4f1a905ed61b8bdac07506ada21a163aab40b0c1d9",
+    "kernel/osl/closures.cpp": "05d826bff6884d7212f117dd32a9881477bd2264c8e339ab9ce38221ce24b634",
+    "kernel/osl/globals.cpp": "b2beba279361c1476ab0306bb1aec0927c20a2b625fff8d8d5911dc0f2604c5c",
     "kernel/types.h": "4f1f0f0156f8f5c829916ad302d0390b3cb0b38bdf0edb7e3ebddf6e32a35647"
   },
+  "compiledKernelSources": 3,
+  "predefinedStringAssertions": 80,
   "installedDependencyStamps": {
     "osl": "4396af35f8594f9a7d6d5ee2dfcf5521dae696c551a894aaeec95ea85e772383",
     "openimageio": "743da4c182102ffdbdc23534e252d4ca1a854471a439ef14fb741b3cbb989618"
@@ -50,12 +57,24 @@
       "sha256": "a6c082b67f685c73afbe6650cd57fa0f93f095087ca2607f14e1cce9a7bb2c53"
     },
     "cycles-osl-abi/wasm/cycles-osl-abi.wasm": {
-      "bytes": 52664,
-      "sha256": "03b492503f93f03f412cb7e83b5b65343aca17c2b7a2756c338b7c79560c8771"
+      "bytes": 55924,
+      "sha256": "296168f40d6704a52f2d2a68688a9f9b6d17a9014101a5882ae9b32399ffc021"
     },
     "cycles-osl-abi/native": {
-      "bytes": 16664,
-      "sha256": "b7c0b2806951faa164113c40cd13c4b94863d69d517120722549a4cc9defce83"
+      "bytes": 21864,
+      "sha256": "07fa1f2948124b1da6dd4584c4ad3a723b60178cf231e4dc63c9988c23aab891"
+    },
+    "cycles-osl-abi/wasm/CMakeFiles/cycles-osl-kernel.dir/home/crabcake/Projects/blender-web/blender/intern/cycles/kernel/osl/closures.cpp.o": {
+      "bytes": 125210,
+      "sha256": "a894f873c5446a082b008a8ff16b9660bba7ce59cf273e1b7c08923b071e7107"
+    },
+    "cycles-osl-abi/wasm/CMakeFiles/cycles-osl-kernel.dir/home/crabcake/Projects/blender-web/blender/intern/cycles/kernel/osl/globals.cpp.o": {
+      "bytes": 1499,
+      "sha256": "e6b6cd80f033c8add4c5ad8e7adca338f438697ea00146fed0e0165438a856ff"
+    },
+    "cycles-osl-abi/wasm/CMakeFiles/cycles-osl-kernel.dir/home/crabcake/Projects/blender-web/build/native/cycles-osl-abi/source/intern/cycles/kernel/osl/services.cpp.o": {
+      "bytes": 359025,
+      "sha256": "28ac1cf927a96c33cc290af9b6e3c6e7defec15c56e409a27caeb7451e7f2f5f"
     }
   }
 }

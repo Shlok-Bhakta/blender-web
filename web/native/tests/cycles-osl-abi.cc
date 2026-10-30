@@ -11,6 +11,10 @@
 #include <OSL/oslclosure.h>
 #include <OSL/shaderglobals.h>
 #include "kernel/osl/types.h"
+#include "kernel/osl/services.h"
+#ifndef BLENDER_WEB_OSL_ABI_BASELINE
+#  include "kernel/osl/strings.h"
+#endif
 
 static_assert(sizeof(ccl::OSLClosure) == sizeof(OSL::ClosureColor));
 static_assert(sizeof(ccl::OSLClosureAdd) == sizeof(OSL::ClosureAdd));
@@ -45,6 +49,9 @@ static void require(bool condition, const char *message)
   }
 }
 
+#ifdef BLENDER_WEB_OSL_ABI_BASELINE
+int main() { return 0; }
+#else
 int main()
 {
   OSL::ClosureComponent first{}, second{};
@@ -71,11 +78,39 @@ int main()
   const uint64_t hash = OIIO::ustring(text).hash();
   require(hash > UINT32_MAX, "hash fixture exercises high bits");
   require(ccl::make_string(text, hash).hash() == hash, "Cycles preserves the complete hash");
+  require(ccl::DeviceStrings::u_common.hash() == UINT64_C(14645198576927606093),
+          "predefined device strings preserve the complete hash");
+  // Exercise the pointer adapter with the actual record field types, without
+  // creating an ImageManager or replacing ImageHandle's ownership methods.
+  struct Record {
+    decltype(ccl::OSLTextureHandle::type) type;
+    decltype(ccl::OSLTextureHandle::id) id;
+  };
+  const ccl::OSLTextureHandleType types[] = {ccl::OSLTextureHandleType::IMAGE,
+      ccl::OSLTextureHandleType::IES, ccl::OSLTextureHandleType::BEVEL, ccl::OSLTextureHandleType::AO};
+  const int ids[] = {0, 1, INT_MAX, -1, -17, INT_MIN};
+  require(GHOST_web_osl_texture_handle_type<Record>(nullptr) == ccl::OSLTextureHandleType{},
+          "null handle retains the original zero type");
+  require(GHOST_web_osl_texture_handle_id<Record>(nullptr) == 0, "null handle retains the original zero ID");
+  unsigned handles = 0;
+  for (auto type : types) for (int id : ids) {
+    const Record record{type, id};
+    const auto *handle = reinterpret_cast<const void *>(GHOST_web_osl_texture_handle(&record));
+    require(handle == &record, "texture handle retains the original record address");
+    require(GHOST_web_osl_texture_handle_type<Record>(handle) == type, "texture type is preserved");
+    require(GHOST_web_osl_texture_handle_id<Record>(handle) == id, "full signed image ID is preserved");
+    ++handles;
+  }
+  // Instantiate the production macro with Cycles' real complete record type.
+  using ccl::OSLTextureHandle;
+  using ActualType = decltype(OSL_TEXTURE_HANDLE_TYPE(static_cast<const void *>(nullptr)));
+  static_assert(std::is_same_v<ActualType, ccl::OSLTextureHandleType>);
   std::printf("{\"pointerBytes\":%zu,\"addBytes\":%zu,\"multiplyBytes\":%zu,"
               "\"componentBytes\":%zu,\"shaderGlobalsPrefixBytes\":%zu,"
               "\"closureTree\":true,\"stringHashFull\":true,\"hash\":\"%016llx\","
-              "\"textureHandlePorted\":false,\"applicationIntegrated\":false}\n",
+              "\"textureHandleCases\":%u,\"applicationIntegrated\":false}\n",
               sizeof(void *), sizeof(ccl::OSLClosureAdd), sizeof(ccl::OSLClosureMul),
               sizeof(ccl::OSLClosureComponent), sizeof(OSL::ShaderGlobals),
-              static_cast<unsigned long long>(hash));
+              static_cast<unsigned long long>(hash), handles);
 }
+#endif

@@ -44,3 +44,46 @@
    const ccl_private OSLClosure *closureA;
    const ccl_private OSLClosure *closureB;
  };
+@@ -150,8 +166,13 @@
+  * the OSL will interpret as an invalid handle. */
+ enum class OSLTextureHandleType : unsigned int { IMAGE = 1, IES = 2, BEVEL = 3, AO = 4 };
+ 
++#if defined(WITH_GHOST_WEB) && !defined(__KERNEL_GPU__)
++#  define OSL_TEXTURE_HANDLE_TYPE(handle) GHOST_web_osl_texture_handle_type<OSLTextureHandle>(handle)
++#  define OSL_TEXTURE_HANDLE_ID(handle) GHOST_web_osl_texture_handle_id<OSLTextureHandle>(handle)
++#else
+ #define OSL_TEXTURE_HANDLE_ENCODE(type, id) ((uintptr_t(type) << 32) | uintptr_t(uint(id)))
+ #define OSL_TEXTURE_HANDLE_TYPE(handle) OSLTextureHandleType(uintptr_t(handle) >> 32)
+ #define OSL_TEXTURE_HANDLE_ID(handle) int(uint(uintptr_t(handle) & uintptr_t(0xFFFFFFFF)))
++#endif
+ 
+ CCL_NAMESPACE_END
+--- a/intern/cycles/kernel/osl/services.cpp
++++ b/intern/cycles/kernel/osl/services.cpp
+@@ -273,8 +273,13 @@
+    *
+    * Note that we must keep the OSLTextureHandle in the map alive, as it holds
+    * the ImageHandle that keeps the image loaded in the manager. */
++#ifdef WITH_GHOST_WEB
++  return reinterpret_cast<OSL::TextureSystem::TextureHandle *>(
++      GHOST_web_osl_texture_handle(&it->second));
++#else
+   return reinterpret_cast<OSL::TextureSystem::TextureHandle *>(
+       OSL_TEXTURE_HANDLE_ENCODE(it->second.type, it->second.id));
++#endif
+ }
+ 
+ bool OSLRenderServices::good(OSL::TextureSystem::TextureHandle *texture_handle)
+--- a/intern/cycles/kernel/osl/strings.h
++++ b/intern/cycles/kernel/osl/strings.h
+@@ -22,6 +22,10 @@
+  * value in the error message for adding new entries. */
+ #ifdef __KERNEL_GPU__
+ #  define OSL_DEVICE_STRING(name, str, hash) ccl_device_constant DeviceString name = hash;
++#elif defined(WITH_GHOST_WEB)
++#  define OSL_DEVICE_STRING(name, str, hash) \
++    static ustring name(str); \
++    static_assert(GHOST_web_osl_string_hash(str) == hash);
+ #else
+ #  define OSL_DEVICE_STRING(name, str, hash) \
+     static ustring name(str); \
