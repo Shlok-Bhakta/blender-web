@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Build the original Blender application or editor archives for WebAssembly."""
 import argparse
+import filecmp
 import hashlib
 import json
 import os
@@ -9,11 +10,13 @@ from pathlib import Path
 import shutil
 import shlex
 import subprocess
+import time
 
 from native_deps import build as build_dependencies
 from prepare import ROOT, prepare_source
 from native_package import stage, stage_locales, stage_osl_shaders, collect
 from native_app_deps import build as build_application_dependencies
+from native_wasm_opt_cache import environment as cached_wasm_opt, file_digest
 
 EDITOR_ARCHIVES = ["bf_rna", "bf_editor_interface", "bf_editor_screen", "bf_windowmanager",
                    "bf_blenfont", "bf_intern_ghost"]
@@ -171,29 +174,48 @@ def check_shader_processor(base, source):
     print(json.dumps(report), flush=True)
 
 
-def build_ui_fallback(base, jobs):
-    """Relink the same objects without stack switching for browsers lacking JSPI."""
+JSPI_LINK_OPTIONS = " -sJSPI=1 \"-sJSPI_EXPORTS=['main','blender_web_run_gpu_jobs','blender_web_run_frame']\""
+
+
+def build_ui_fallback(base, env):
+    """Link the loader for browsers lacking JSPI against the render variant's Wasm.
+
+    Emscripten implements JSPI in the generated JavaScript, so both variants
+    share one Wasm binary and preload package. Rerun CMake's render link script
+    without the JSPI options into a scratch directory instead of reconfiguring
+    the build tree, so the render executable stays current for incremental
+    builds. Binaryen reuses the render link's identical optimization result.
+    """
     binary = base / "editor/bin"
-    saved = base / "render-binary"
-    saved.mkdir(exist_ok=True)
-    files = [path for path in binary.glob("blender.*") if path.suffix in (".js", ".wasm", ".data")]
-    for path in files:
-        shutil.copy2(path, saved / path.name)
-    subprocess.run(["cmake", "-S", str(base / "source"), "-B", str(base / "editor"),
-                    "-DBLENDER_WEB_JSPI=OFF"], check=True)
-    try:
-        subprocess.run(["cmake", "--build", str(base / "editor"), "--parallel", str(jobs),
-                        "--target", "blender"], check=True)
-        if (binary / "blender.data").read_bytes() != (saved / "blender.data").read_bytes():
-            raise RuntimeError("UI and render variants must share identical preload data")
-        for path in files:
-            if path.suffix != ".data":
-                shutil.copy2(path, binary / path.name.replace("blender.", "blender-ui.", 1))
-    finally:
-        subprocess.run(["cmake", "-S", str(base / "source"), "-B", str(base / "editor"),
-                        "-DBLENDER_WEB_JSPI=ON"], check=True)
-        for path in files:
-            shutil.copy2(saved / path.name, path)
+    creator = base / "editor/source/creator"
+    scratch = base / "ui-fallback"
+    script = (creator / "CMakeFiles/blender.dir/link.txt").read_text()
+    for option in (JSPI_LINK_OPTIONS, " -o ../../bin/blender.js "):
+        if script.count(option) != 1:
+            raise RuntimeError(f"Unexpected render link script; cannot derive the UI fallback from {option!r}")
+    script = script.replace(JSPI_LINK_OPTIONS, "").replace(
+        " -o ../../bin/blender.js ", f" -o {shlex.quote(str(scratch / 'blender.js'))} ")
+    inputs = hashlib.sha256(script.encode())
+    for name in ("blender.js", "blender.wasm", "blender.data"):
+        inputs.update(file_digest(binary / name).encode())
+    stamp = scratch / "inputs.sha256"
+    if not (stamp.exists() and stamp.read_text() == inputs.hexdigest() and (binary / "blender-ui.js").exists()):
+        start = time.monotonic()
+        shutil.rmtree(scratch, ignore_errors=True)
+        scratch.mkdir()
+        (scratch / "link.txt").write_text(script)
+        subprocess.run(["cmake", "-E", "cmake_link_script", str(scratch / "link.txt")],
+                       cwd=creator, env=env, check=True)
+        for name in ("blender.wasm", "blender.data"):
+            if not filecmp.cmp(scratch / name, binary / name, shallow=False):
+                raise RuntimeError(f"UI and render variants must share an identical {name}")
+        shutil.copy2(scratch / "blender.js", binary / "blender-ui.js")
+        for name in ("blender.wasm", "blender.data"):
+            (scratch / name).unlink()
+        stamp.write_text(inputs.hexdigest())
+        print(f"UI fallback loader linked in {time.monotonic() - start:.0f} s", flush=True)
+    # Earlier builds published a renamed copy of the shared binary.
+    (binary / "blender-ui.wasm").unlink(missing_ok=True)
 
 
 def check_switch_lowering(base):
@@ -416,6 +438,8 @@ def main():
     parser.add_argument("--skip-shader-seed", action="store_true", help="Bootstrap a fresh shader capture after translator changes")
     parser.add_argument("--render-only", action="store_true", help="Skip the fallback link during shader bootstrap or backend development")
     parser.add_argument("--cycles-osl", action="store_true", help="Enable Cycles OSL shading in the application")
+    parser.add_argument("--dev-link", action="store_true", help="Local test cycles only: link at -O1 without Binaryen "
+                        "optimization and skip the fallback link. Release validation rejects the resulting bundle")
     parser.add_argument("--configure-only", action="store_true")
     parser.add_argument("--deps-only", action="store_true", help="Build or verify dependencies, then stop before staging Blender")
     parser.add_argument("--check-deps", action="store_true", help="Run Wasm dependency checks under Node")
@@ -428,6 +452,9 @@ def main():
         parser.error("--deps-only cannot be combined with --skip-deps")
     if args.render_only and not args.app:
         parser.error("--render-only requires --app")
+    if args.dev_link and not args.app:
+        parser.error("--dev-link requires --app")
+    args.render_only = args.render_only or args.dev_link
     if args.render_only and args.targets and "blender" not in args.targets:
         parser.error("--render-only requires the blender target")
     if not shutil.which("emcmake"):
@@ -464,7 +491,8 @@ def main():
     if args.check_deps:
         check_dependencies(source, base, prefix, args.jobs)
     subprocess.run(["emcmake", "cmake", f"-DBLENDER_WEB_APPLICATION={'ON' if args.app else 'OFF'}", "-DBLENDER_WEB_JSPI=ON",
-                    f"-DBLENDER_WEB_CYCLES_OSL={'ON' if args.cycles_osl else 'OFF'}", "-G", "Unix Makefiles", "-S", str(source), "-B", str(base / "editor"),
+                    f"-DBLENDER_WEB_CYCLES_OSL={'ON' if args.cycles_osl else 'OFF'}",
+                    f"-DBLENDER_WEB_LINK_OPTIMIZATION={1 if args.dev_link else 3}", "-G", "Unix Makefiles", "-S", str(source), "-B", str(base / "editor"),
                     f"-DCMAKE_TOOLCHAIN_FILE={ROOT / 'web/native/toolchain.cmake'}",
                     f"-DCMAKE_PREFIX_PATH={prefix}", f"-DCMAKE_FIND_ROOT_PATH={prefix}",
                     "-C", str(source / "intern/ghost/web/native/config.cmake"),
@@ -479,10 +507,11 @@ def main():
                 subprocess.run([*command, "cycles_osl_shaders"], check=True)
                 stage_osl_shaders(base, source, prefix)
         if args.targets or args.app:
-            subprocess.run([*command, *(args.targets or ["blender"])], check=True)
+            link_env = cached_wasm_opt(base / "editor/wasm-opt-cache") if args.app else None
+            subprocess.run([*command, *(args.targets or ["blender"])], env=link_env, check=True)
             if args.app:
                 if not args.render_only:
-                    build_ui_fallback(base, args.jobs)
+                    build_ui_fallback(base, link_env)
                 check_expressions(base, source, prefix)
                 check_shader_processor(base, source)
                 check_image_cache(base, prefix)

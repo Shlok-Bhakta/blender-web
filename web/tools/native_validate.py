@@ -42,6 +42,7 @@ def main():
         link = (base / 'editor/source/creator/CMakeFiles/blender.dir/link.txt').read_text()
         assert '-O3' in link and ' -O0' not in link, 'Release optimization is required'
         manifest = json.loads((base / 'dist/manifest.json').read_text())
+        assert manifest.get('linkOptimization') == 3, 'Release Wasm requires the -O3 link (not --dev-link)'
         assert manifest['uiFallback'], 'Final package must include both variants'
         checkpoint = base / 'validation-candidate.json'
         if resume_from:
