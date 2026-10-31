@@ -12,6 +12,7 @@ on:
       - 'intern/ghost/**'
       - 'blender'
       - '.github/workflows/native-editors.yml'
+      - '.github/scripts/**'
       - '!web/native/*.md'
   pull_request:
     paths:
@@ -23,6 +24,7 @@ on:
       - 'intern/ghost/**'
       - 'blender'
       - '.github/workflows/native-editors.yml'
+      - '.github/scripts/**'
       - '!web/native/*.md'
   workflow_dispatch:
 
@@ -38,17 +40,55 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  compile:
+  plan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 360
+    timeout-minutes: 10
+    outputs:
+      llvm-key: ${{ steps.llvm.outputs.cache-primary-key }}
+      llvm-hit: ${{ steps.llvm.outputs.cache-hit }}
+      native-deps-key: ${{ steps.native-deps.outputs.cache-primary-key }}
     steps:
-      - uses: actions/checkout@v4
+      - &checkout
+        uses: actions/checkout@v4
         with:
           lfs: false
-      - uses: astral-sh/setup-uv@v6
+      - name: Look up LLVM checkpoint
+        id: llvm
+        uses: actions/cache/restore@v4
+        with:
+          lookup-only: true
+          path: |
+            build/native/llvm-cache
+            build/native/deps/llvm/host
+          key: ${{ runner.os }}-native-llvm-${{ hashFiles('web/upstream.json', 'web/tools/native_llvm.py', 'web/tools/native_llvm_cache.py', 'web/native/toolchain.cmake') }}
+      - name: Look up native dependencies
+        id: native-deps
+        uses: actions/cache/restore@v4
+        with:
+          lookup-only: true
+          path: |
+            build/native/deps/prefix
+            build/native/deps/downloads
+            build/native/deps/*/installed.json
+          key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/tools/native_media.py', 'web/tools/native_text.py', 'web/tools/native_usd.py', 'web/tools/native_usd_imaging.py', 'web/native/usd-imaging/**', 'web/tools/native_oidn.py', 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json', 'web/native/oidn/**', 'web/tools/native_app_deps.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/native/openssl-wasm.conf', 'web/native/shader-deps/**', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
+
+  # A cold LLVM build takes most of a job's 6 hours on its own.
+  llvm:
+    needs: plan
+    if: needs.plan.outputs.llvm-hit != 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - *checkout
+      - &setup-uv
+        uses: astral-sh/setup-uv@v6
       - name: Install native OSL parser tools
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends flex bison m4
-      - name: Read pinned SDK
+      - &pins
+        name: Read pinned SDK
         run: |
           python3 - <<'PY'
           import json, os
@@ -57,12 +97,14 @@ jobs:
               output.write(f"EMSDK_REVISION={pins['emsdkRevision']}\n")
               output.write(f"EMSDK_VERSION={pins['emscriptenVersion']}\n")
           PY
-      - uses: actions/cache@v4
+      - name: Restore Emscripten SDK
+        uses: actions/cache/restore@v4
         id: sdk-cache
         with:
           path: ${{ runner.temp }}/emsdk
           key: ${{ runner.os }}-emsdk-${{ hashFiles('web/upstream.json') }}
-      - name: Install Emscripten
+      - &install-sdk
+        name: Install Emscripten
         if: steps.sdk-cache.outputs.cache-hit != 'true'
         run: |
           git init "$RUNNER_TEMP/emsdk"
@@ -70,23 +112,27 @@ jobs:
           git -C "$RUNNER_TEMP/emsdk" checkout --detach FETCH_HEAD
           "$RUNNER_TEMP/emsdk/emsdk" install "$EMSDK_VERSION"
           "$RUNNER_TEMP/emsdk/emsdk" activate "$EMSDK_VERSION"
-      - uses: actions/cache@v4
+      # Installed LLVM stamps in a dependency prefix let the builder skip LLVM.
+      - name: Restore native dependencies
+        uses: actions/cache/restore@v4
         with:
           path: |
             build/native/deps/prefix
             build/native/deps/downloads
             build/native/deps/*/installed.json
-          key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/tools/native_media.py', 'web/tools/native_text.py', 'web/tools/native_usd.py', 'web/tools/native_usd_imaging.py', 'web/native/usd-imaging/**', 'web/tools/native_oidn.py', 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json', 'web/native/oidn/**', 'web/tools/native_app_deps.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/native/openssl-wasm.conf', 'web/native/shader-deps/**', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
+          key: ${{ needs.plan.outputs.native-deps-key }}
           restore-keys: ${{ runner.os }}-native-deps-
-      - name: Restore LLVM checkpoint
+      - &restore-llvm
+        name: Restore LLVM checkpoint
         uses: actions/cache/restore@v4
         id: llvm-checkpoint
         with:
           path: |
             build/native/llvm-cache
             build/native/deps/llvm/host
-          key: ${{ runner.os }}-native-llvm-${{ hashFiles('web/upstream.json', 'web/tools/native_llvm.py', 'web/tools/native_llvm_cache.py', 'web/native/toolchain.cmake') }}
-      - name: Build and checkpoint LLVM before OSL
+          key: ${{ needs.plan.outputs.llvm-key }}
+      - &build-llvm
+        name: Build and checkpoint LLVM before OSL
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           python3 web/tests/osl_parser_headers.py
@@ -105,19 +151,95 @@ jobs:
           export(base, base / 'llvm-cache')
           PYTHON
       - name: Save completed LLVM checkpoint
+        id: save-llvm
         uses: actions/cache/save@v4
         if: steps.llvm-checkpoint.outputs.cache-hit != 'true' && hashFiles('build/native/llvm-cache/manifest.json') != ''
         with:
           path: |
             build/native/llvm-cache
             build/native/deps/llvm/host
-          key: ${{ steps.llvm-checkpoint.outputs.cache-primary-key }}
+          key: ${{ needs.plan.outputs.llvm-key }}
+      - name: Remove superseded LLVM checkpoints
+        if: steps.save-llvm.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/prune-superseded-caches.sh "${{ runner.os }}-native-llvm-" "${{ needs.plan.outputs.llvm-key }}"
+
+  compile:
+    needs: [plan, llvm]
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - *checkout
+      - *setup-uv
+      - name: Install native OSL parser tools and compiler cache
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends flex bison m4 ccache
+      - *pins
+      - uses: actions/cache@v4
+        id: sdk-cache
+        with:
+          path: ${{ runner.temp }}/emsdk
+          key: ${{ runner.os }}-emsdk-${{ hashFiles('web/upstream.json') }}
+      - *install-sdk
+      - uses: actions/cache@v4
+        with:
+          path: |
+            build/native/deps/prefix
+            build/native/deps/downloads
+            build/native/deps/*/installed.json
+          key: ${{ needs.plan.outputs.native-deps-key }}
+          restore-keys: ${{ runner.os }}-native-deps-
+      - *restore-llvm
+      - *build-llvm
+      # See web-pages.yml: ccache wraps emcc's clang command without rewriting paths.
+      - name: Restore compiler cache
+        id: ccache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/ccache
+          key: ${{ runner.os }}-ccache-editors-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-ccache-editors-
+      - name: Configure compiler cache
+        run: |
+          {
+            echo "CCACHE_DIR=$RUNNER_TEMP/ccache"
+            echo "CCACHE_MAXSIZE=1G"
+            echo "EM_COMPILER_WRAPPER=ccache"
+          } >> "$GITHUB_ENV"
+          date +%s > "$RUNNER_TEMP/ccache-start"
+          CCACHE_DIR="$RUNNER_TEMP/ccache" ccache --zero-stats
       - name: Compile original editors and validate Wasm dependencies
+        id: compile
+        timeout-minutes: 300
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           mkdir -p build/native
           python3 web/tests/dependency_download.py
           python3 web/tools/native_build.py --jobs 4 --check-deps 2>&1 | tee build/native/build.log
+      - name: Trim compiler cache to this build
+        if: always() && steps.compile.outcome != 'skipped'
+        run: |
+          ccache --show-stats --verbose
+          ccache --evict-older-than "$(( $(date +%s) - $(cat "$RUNNER_TEMP/ccache-start") + 60 ))s"
+          du -sh "$CCACHE_DIR"
+      - name: Save compiler cache
+        id: save-ccache
+        if: always() && steps.compile.outcome != 'skipped' && steps.ccache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/ccache
+          key: ${{ steps.ccache.outputs.cache-primary-key }}
+      - name: Remove superseded compiler caches
+        if: always() && steps.save-ccache.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/prune-superseded-caches.sh "${{ runner.os }}-ccache-editors-" "${{ steps.ccache.outputs.cache-primary-key }}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

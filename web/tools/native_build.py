@@ -416,12 +416,15 @@ def main():
     parser.add_argument("--skip-shader-seed", action="store_true", help="Bootstrap a fresh shader capture after translator changes")
     parser.add_argument("--render-only", action="store_true", help="Skip the fallback link during shader bootstrap or backend development")
     parser.add_argument("--configure-only", action="store_true")
+    parser.add_argument("--deps-only", action="store_true", help="Build or verify dependencies, then stop before staging Blender")
     parser.add_argument("--check-deps", action="store_true", help="Run Wasm dependency checks under Node")
     parser.add_argument("--targets", nargs="+", help="Override the editor archive compilation checkpoint with upstream targets")
     args = parser.parse_args()
     # Large USD-enabled modules exhaust modest hosts when Binaryen runs a pass
     # on many functions at once. This only controls build-time optimization.
     os.environ.setdefault("BINARYEN_CORES", "1")
+    if args.deps_only and args.skip_deps:
+        parser.error("--deps-only cannot be combined with --skip-deps")
     if args.render_only and not args.app:
         parser.error("--render-only requires --app")
     if args.render_only and args.targets and "blender" not in args.targets:
@@ -440,6 +443,8 @@ def main():
         build_usd_imaging(base, args.jobs)
         if args.app:
             build_application_dependencies(base, args.jobs)
+    if args.deps_only:
+        return
     prefix = base / "deps/prefix"
     os.environ["PKG_CONFIG_LIBDIR"] = str(prefix / "lib/pkgconfig")
     os.environ["PKG_CONFIG_PATH"] = ""
