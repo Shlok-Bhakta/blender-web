@@ -91,6 +91,8 @@ class GHOST_WebTouch : public GHOST_TouchSink {
   char *text_ = nullptr;
   bool pushed_ = false;
   bool touch_active_ = false;
+  /** Set by `Module.webTouchTrace(true)`; logs discrete input and its results. */
+  bool trace_ = false;
   double scroll_rest_x_ = 0.0, scroll_rest_y_ = 0.0, zoom_rest_ = 0.0;
   int32_t last_x_ = 0, last_y_ = 0;
 };

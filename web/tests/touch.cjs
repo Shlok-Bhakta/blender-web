@@ -45,7 +45,7 @@ async function main() {
       fs.readFileSync(path.join(__dirname, 'touch_state.py'), 'utf8'));
     await consoleCommand(page, "exec(open('/tmp/touch_state.py').read())", 'TOUCH_STATE:');
     /* Setup typed into the console; a touch user without a keyboard would never have. */
-    await page.evaluate(() => Module.webTouchForgetKeyboard());
+    await page.evaluate(() => { Module.webTouchForgetKeyboard(); Module.webTouchTrace(true); });
 
     const ratio = await page.evaluate(() => devicePixelRatio);
     const state = async () => {
@@ -188,7 +188,8 @@ async function main() {
   }
   catch (error) {
     await page.screenshot({path:path.join(output, 'failure.png')}).catch(() => {});
-    fs.writeFileSync(path.join(output, 'partial.json'), JSON.stringify({...report, error:String(error)}, null, 2));
+    const trace = messages.filter(text => text.startsWith('GHOST_TOUCH')).slice(-40);
+    fs.writeFileSync(path.join(output, 'partial.json'), JSON.stringify({...report, error:String(error), trace}, null, 2));
     throw error;
   }
   finally {

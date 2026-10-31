@@ -28,7 +28,8 @@ if (typeof window !== 'undefined') {
     };
     const clock = () => performance.timeOrigin + performance.now() - epoch;
 
-    const write = (kind, id = 0, x = 0, y = 0, pressure = 1, tiltX = 0, tiltY = 0) => {
+    /* `time` is when the input happened, which can be well before a busy page handles it. */
+    const write = (kind, id = 0, x = 0, y = 0, pressure = 1, tiltX = 0, tiltY = 0, time = clock()) => {
       if (!ring) return;
       views();
       const header = ring >> 2;
@@ -41,8 +42,8 @@ if (typeof window !== 'undefined') {
       f32[base + 4] = pressure;
       f32[base + 5] = tiltX;
       f32[base + 6] = tiltY;
-      i32[base + 7] = Math.round(clock());
-      Atomics.store(i32, header + 2, i32[base + 7]);
+      i32[base + 7] = Math.round(time);
+      Atomics.store(i32, header + 2, Math.round(clock()));
       Atomics.store(i32, header, (index + 1) | 0);
     };
 
@@ -75,6 +76,7 @@ if (typeof window !== 'undefined') {
       event.stopImmediatePropagation();
       ensureUi();
       const [x, y] = local(event);
+      const time = Math.min(clock(), performance.timeOrigin + event.timeStamp - epoch);
       if (event.pointerType === 'pen') {
         lastInput = 'pen';
         const pressure = event.pressure || (event.buttons ? 0.5 : 0);
@@ -82,14 +84,14 @@ if (typeof window !== 'undefined') {
         switch (event.type) {
           case 'pointerdown':
             canvas.setPointerCapture?.(event.pointerId);
-            write(Kind.PenDown, event.button === 2 || (event.buttons & 2) ? 1 : 0, x, y, pressure, tiltX, tiltY);
+            write(Kind.PenDown, event.button === 2 || (event.buttons & 2) ? 1 : 0, x, y, pressure, tiltX, tiltY, time);
             break;
           case 'pointermove':
-            write(event.buttons ? Kind.PenMove : Kind.PenHover, 0, x, y, pressure, tiltX, tiltY);
+            write(event.buttons ? Kind.PenMove : Kind.PenHover, 0, x, y, pressure, tiltX, tiltY, time);
             break;
           case 'pointerup':
           case 'pointercancel':
-            write(Kind.PenUp, 0, x, y, pressure, tiltX, tiltY);
+            write(Kind.PenUp, 0, x, y, pressure, tiltX, tiltY, time);
             break;
         }
       }
@@ -102,16 +104,16 @@ if (typeof window !== 'undefined') {
         switch (event.type) {
           case 'pointerdown':
             canvas.setPointerCapture?.(event.pointerId);
-            write(Kind.TouchDown, event.pointerId, x, y);
+            write(Kind.TouchDown, event.pointerId, x, y, 1, 0, 0, time);
             break;
           case 'pointermove':
-            write(Kind.TouchMove, event.pointerId, x, y);
+            write(Kind.TouchMove, event.pointerId, x, y, 1, 0, 0, time);
             break;
           case 'pointerup':
-            write(Kind.TouchUp, event.pointerId, x, y);
+            write(Kind.TouchUp, event.pointerId, x, y, 1, 0, 0, time);
             break;
           case 'pointercancel':
-            write(Kind.TouchCancel, event.pointerId, x, y);
+            write(Kind.TouchCancel, event.pointerId, x, y, 1, 0, 0, time);
             break;
         }
       }
@@ -318,6 +320,13 @@ if (typeof window !== 'undefined') {
         const over = show && x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
         belt.style.opacity = over ? '0.3' : '1';
       }
+    };
+
+    /* Log discrete touch input and what GHOST made of it to the console. */
+    Module.webTouchTrace = enabled => {
+      if (!ring) return;
+      views();
+      Atomics.store(i32, (ring >> 2) + 3, enabled ? 1 : 0);
     };
 
     /* The page only learns that a keyboard was used, not that it was detached. */

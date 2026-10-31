@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <memory>
@@ -86,6 +87,7 @@ bool GHOST_WebTouch::process(GHOST_WindowWeb *window)
   pointer_.setBlenderVisibility(window->getCursorVisibility());
 
   const double time = now();
+  trace_ = __atomic_load_n(&ring_[3], __ATOMIC_RELAXED) != 0;
   const uint32_t written = __atomic_load_n(reinterpret_cast<uint32_t *>(&ring_[0]),
                                            __ATOMIC_ACQUIRE);
   uint32_t read = uint32_t(ring_[1]);
@@ -123,6 +125,9 @@ void GHOST_WebTouch::apply(const int32_t *record, const double now_seconds)
 
   if (kind >= TouchDown && kind <= PenHover) {
     touch_active_ = true;
+  }
+  if (trace_ && kind != TouchMove && kind != PenMove && kind != PenHover) {
+    fprintf(stderr, "GHOST_TOUCH input kind=%d id=%d t=%.3f now=%.3f\n", kind, id, time, now_seconds);
   }
   switch (kind) {
     case TouchDown:
@@ -235,6 +240,9 @@ void GHOST_WebTouch::button(const GHOST_TouchPointerButton button,
                              button == GHOST_TouchPointerButton::Right ? GHOST_kButtonMaskRight :
                                                                          GHOST_kButtonMaskMiddle;
   system_.buttons_.set(mask, down);
+  if (trace_) {
+    fprintf(stderr, "GHOST_TOUCH button %d %s at %d,%d\n", int(button), down ? "down" : "up", last_x_, last_y_);
+  }
   const GHOST_TabletData data = tablet.active ?
                                     GHOST_TabletData{GHOST_kTabletModeStylus,
                                                      tablet.pressure,
@@ -278,6 +286,9 @@ void GHOST_WebTouch::key(const int key_code, const bool down, const char *utf8)
 
 void GHOST_WebTouch::modifier(const GHOST_TouchModifier modifier, const bool down)
 {
+  if (trace_) {
+    fprintf(stderr, "GHOST_TOUCH modifier %d %s\n", int(modifier), down ? "down" : "up");
+  }
   key(modifier == GHOST_TouchModifier::Shift   ? GHOST_kKeyLeftShift :
       modifier == GHOST_TouchModifier::Control ? GHOST_kKeyLeftControl :
                                                  GHOST_kKeyLeftAlt,
@@ -328,6 +339,9 @@ void GHOST_WebTouch::magnify(const double delta)
 
 void GHOST_WebTouch::shortcut(const GHOST_TouchShortcut shortcut)
 {
+  if (trace_) {
+    fprintf(stderr, "GHOST_TOUCH shortcut %d\n", int(shortcut));
+  }
   switch (shortcut) {
     case GHOST_TouchShortcut::Undo:
     case GHOST_TouchShortcut::Redo: {
