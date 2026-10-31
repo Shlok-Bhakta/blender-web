@@ -35,12 +35,50 @@
 #  include <string>
 #  include <vector>
 LLD_HAS_DRIVER(wasm)
+#  if defined(WITH_GHOST_WEB_OSL_SYMBOLS)
+/* The application is not a dynamic-linking main module; see GHOST_WebOSLSymbols.cc. */
+extern "C" void *GHOST_web_osl_symbol(const char *name);
+#  endif
+static void *host_symbol(const std::string &name)
+{
+#  if defined(WITH_GHOST_WEB_OSL_SYMBOLS)
+  return GHOST_web_osl_symbol(name.c_str());
+#  else
+  return dlsym(RTLD_DEFAULT, name.c_str());
+#  endif
+}
 
+struct OwnedImport {
+  std::string name;
+  uintptr_t address;
+  bool function;
+};
 struct OwnedProgram {
   unsigned handle;
   std::vector<char> code;
   uint32_t layout[3];
+  std::vector<OwnedImport> imports;
 };
+#  if defined(WITH_GHOST_WEB_OSL_SYMBOLS)
+extern "C" void GHOST_web_osl_define_symbols(void (*define)(const char *, void *, bool));
+#  endif
+/* Program imports resolve in the instantiating thread's JS scope, so every
+ * thread defines them before it creates or attaches a program. */
+static void define_imports(const OwnedProgram &program)
+{
+#  if defined(WITH_GHOST_WEB_OSL_SYMBOLS)
+  static thread_local bool host_symbols = false;
+  if (!host_symbols) {
+    GHOST_web_osl_define_symbols([](const char *name, void *address, bool function) {
+      owned_define_import(name, reinterpret_cast<uintptr_t>(address), function);
+    });
+    host_symbols = true;
+  }
+#  endif
+  for (const OwnedImport &import : program.imports) {
+    owned_define_import(import.name.c_str(), import.address, import.function);
+  }
+}
 static std::mutex &program_mutex()
 {
   static auto *m = new std::mutex;
@@ -71,11 +109,13 @@ static void apply_programs(void *)
   for (unsigned old : applied)
     if (std::find(next.begin(), next.end(), old) == next.end() && !owned_retire(old))
       llvm::report_fatal_error("Owned OSL retirement failed");
-  for (const auto &[token, p] : programs())
+  for (const auto &[token, p] : programs()) {
+    define_imports(*p);
     if (owned_create(
             p->code.data(), p->code.size(), p->handle, p->layout[0], p->layout[1], p->layout[2]) !=
         p->handle)
       llvm::report_fatal_error("Owned OSL worker attachment failed");
+  }
   applied = std::move(next);
   GHOST_web_osl_loaded_epoch = epoch;
 }
@@ -190,7 +230,7 @@ class WebOSLEngine : public llvm::ExecutionEngine {
     if (LazyFunctionCreator)
       if (auto *p = LazyFunctionCreator(name.str()))
         return p;
-    if (auto *p = dlsym(RTLD_DEFAULT, name.str().c_str()))
+    if (auto *p = host_symbol(name.str()))
       return p;
     if (abort)
       llvm::report_fatal_error(llvm::Twine("Missing OSL function ") + name);
@@ -207,15 +247,13 @@ class WebOSLEngine : public llvm::ExecutionEngine {
     module.setDataLayout(machine->createDataLayout());
     if (llvm::verifyModule(module, &llvm::errs()))
       llvm::report_fatal_error("OSL generated invalid LLVM IR");
+    auto program = std::make_shared<OwnedProgram>();
     for (auto &function : module) {
       if (function.isDeclaration() && !function.isIntrinsic() && !function.use_empty()) {
         auto *pointer = getPointerToNamedFunction(function.getName(), false);
-        if (pointer) {
-          EM_ASM(
-              { wasmImports[UTF8ToString($0)] = getWasmTableEntry($1); },
-              function.getName().str().c_str(),
-              pointer);
-        }
+        if (pointer)
+          program->imports.push_back(
+              {function.getName().str(), reinterpret_cast<uintptr_t>(pointer), true});
       }
     }
     for (auto &global : module.globals()) {
@@ -223,8 +261,11 @@ class WebOSLEngine : public llvm::ExecutionEngine {
         auto *pointer = getPointerToGlobalIfAvailable(&global);
         if (!pointer)
           pointer = llvm::sys::DynamicLibrary::SearchForAddressOfSymbol(global.getName().str());
+        if (!pointer)
+          pointer = host_symbol(global.getName().str());
         if (pointer)
-          EM_ASM({ wasmImports[UTF8ToString($0)] = $1; }, global.getName().str().c_str(), pointer);
+          program->imports.push_back(
+              {global.getName().str(), reinterpret_cast<uintptr_t>(pointer), false});
       }
     }
     std::string prefix = "/osl-program-" + std::to_string(serial.fetch_add(1));
@@ -258,7 +299,6 @@ class WebOSLEngine : public llvm::ExecutionEngine {
     auto linked = lld::lldMain(args, llvm::outs(), llvm::errs(), drivers);
     if (linked.retCode || !linked.canRunAgain)
       llvm::report_fatal_error("OSL Wasm link failed");
-    auto program = std::make_shared<OwnedProgram>();
     std::ifstream input(binary, std::ios::binary);
     program->code.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
     input.close();
@@ -267,6 +307,7 @@ class WebOSLEngine : public llvm::ExecutionEngine {
     GHOST_web_invoke_runtime_thread(
         [](void *value) {
           auto &p = *static_cast<OwnedProgram *>(value);
+          define_imports(p);
           p.handle = owned_create(p.code.data(), p.code.size(), 0, 0, 0, 0);
           if (!p.handle) {
             EM_ASM({ console.error(Module.ownedLastError); });

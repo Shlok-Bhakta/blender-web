@@ -1,11 +1,33 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
-/* Standalone ownership experiment; not linked into Blender. */
+/* Owned generated-program loader, shared by standalone checks and Cycles OSL. */
 #include <cstddef>
 #include <cstdint>
 #include <emscripten.h>
 // clang-format off
-EM_JS_DEPS(owned, "$getDylinkMetadata,$setWasmTableEntry,$addFunction,$getFunctionAddress");
+EM_JS_DEPS(owned, "$setWasmTableEntry,$getWasmTableEntry,$addFunction,$getFunctionAddress,malloc,free");
+// Read LLD's dylink.0 section. Emscripten's own reader exists only in
+// dynamic-linking builds; the application is not one.
+// Each worker resolves program imports from its own JS scope; define them there.
+EM_JS(void, owned_define_import, (const char *name, uintptr_t address, int is_function), {
+  wasmImports[UTF8ToString(name)] = is_function ? getWasmTableEntry(address) : address;
+});
 EM_JS(unsigned, owned_create, (const void *bytes, size_t size, unsigned external, uintptr_t memory_arg, uintptr_t table_arg, unsigned capacity_arg), {
+  const ownedDylinkMetadata=module=>{
+    const sections=WebAssembly.Module.customSections(module,'dylink.0');
+    if(sections.length!==1)throw new Error('Owned program has no dylink.0 section');
+    const bytes=new Uint8Array(sections[0]);let offset=0;
+    const leb=()=>{let value=0,shift=0,byte;do{byte=bytes[offset++];value+=(byte&127)*2**shift;shift+=7;}while(byte&128);return value;};
+    const name=()=>{const size=leb(),text=new TextDecoder().decode(bytes.subarray(offset,offset+size));offset+=size;return text;};
+    const meta={memorySize:0,memoryAlign:0,tableSize:0,tableAlign:0,neededDynlibs:[],tlsExports:new Set()};
+    while(offset<bytes.length) {
+      const kind=bytes[offset++],size=leb(),end=offset+size;
+      if(kind===1){meta.memorySize=leb();meta.memoryAlign=leb();meta.tableSize=leb();meta.tableAlign=leb();}
+      else if(kind===2){for(let count=leb();count--;)meta.neededDynlibs.push(name());}
+      else if(kind===3){for(let count=leb();count--;){const symbol=name();if(leb()&256)meta.tlsExports.add(symbol);}}
+      offset=end;
+    }
+    return meta;
+  };
   const state = Module.ownedState ||= {programs:new Map(),blocks:[],next:1,liveBytes:0,minDataBase:Infinity,owners:new Map(),rootSlots:new Map()};
   if(external && state.programs.has(external)) {
     const old=state.programs.get(external);
@@ -19,7 +41,7 @@ EM_JS(unsigned, owned_create, (const void *bytes, size_t size, unsigned external
   const clear=()=>{ if(block){for(let i=0;i<block.capacity;i++){const slot=block.base+i;if(state.owners.get(slot)===handle){setWasmTableEntry(slot,null);state.owners.delete(slot);}}block.used=false;}if(raw)_free(raw); };
   try {
     const binary = new Uint8Array(wasmMemory.buffer,bytes>>>0,size>>>0).slice();
-    const module = new WebAssembly.Module(binary), meta = getDylinkMetadata(module);
+    const module = new WebAssembly.Module(binary), meta = ownedDylinkMetadata(module);
     if(meta.neededDynlibs.length || meta.tlsExports.size)throw new Error('External libraries and TLS definitions are not supported in this experiment');
     const names=WebAssembly.Module.exports(module).filter(e=>e.kind==='function').map(e=>e.name).sort();
     const needed=meta.tableSize+names.length, align=2**meta.tableAlign;
@@ -61,6 +83,16 @@ EM_JS(unsigned, owned_create, (const void *bytes, size_t size, unsigned external
       if(name==='__table_base')return block.base;
       if(name==='memory')return wasmMemory;
       if(name==='__indirect_function_table')return wasmTable;
+      // A non-relocatable application keeps its stack pointer private. Each worker
+      // then gives its generated programs one separate 2 MiB stack.
+      if(name==='__stack_pointer' && wasmExports.__stack_pointer===undefined) {
+        if(!Module.ownedStack) {
+          const size=2<<20, base=_malloc(size)>>>0;
+          if(!base)throw new Error('Owned program stack allocation failed');
+          Module.ownedStack=new WebAssembly.Global({value:'i32',mutable:true},(base+size)&~15);
+        }
+        return Module.ownedStack;
+      }
       return resolve(name);
     }});
     instance=new WebAssembly.Instance(module,{env,'GOT.func':gotProxy,'GOT.mem':gotProxy});

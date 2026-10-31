@@ -42,6 +42,8 @@ def stage(base, source, prefix, shader_seed=True):
     # Cycles' Python engine is installed from intern/cycles, outside scripts/.
     # Its CPU kernels are compiled into the binary; do not preload GPU sources.
     cycles = source / 'intern/cycles/blender/addon'
+    # OSL builds add compiled node shaders after this; never keep a stale set.
+    shutil.rmtree(blender / 'scripts/addons_core/cycles/shader', ignore_errors=True)
     shutil.copytree(cycles, blender / 'scripts/addons_core/cycles', dirs_exist_ok=True,
                     ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
     for path in (blender / 'datafiles').rglob('*'):
@@ -63,6 +65,22 @@ def stage_locales(base, source, prefix):
         output = destination / catalog.stem / 'LC_MESSAGES/blender.mo'
         output.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(base / 'editor/source/creator' / (catalog.stem + '.mo'), output)
+    fingerprint_assets(base, prefix)
+
+
+def stage_osl_shaders(base, source, prefix):
+    """Install Cycles' compiled node shaders and headers where its addon path expects them."""
+    destination = base / 'assets/5.2/scripts/addons_core/cycles/shader'
+    if destination.exists():
+        shutil.rmtree(destination)
+    destination.mkdir(parents=True)
+    compiled = sorted((base / 'editor/intern/cycles/kernel/osl/shaders').glob('*.oso'))
+    if not compiled:
+        raise RuntimeError('Cycles OSL shaders were not compiled')
+    headers = [*sorted((source / 'intern/cycles/kernel/osl/shaders').glob('*.h')),
+               *sorted((prefix / 'share/OSL/shaders').glob('*.h'))]
+    for path in [*compiled, *headers]:
+        shutil.copy2(path, destination / path.name)
     fingerprint_assets(base, prefix)
 
 

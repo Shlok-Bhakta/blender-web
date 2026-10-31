@@ -149,3 +149,17 @@ endif()
 if(WITH_MESHOPTIMIZER)
   find_package(meshoptimizer CONFIG REQUIRED)
 endif()
+if(WITH_CYCLES_OSL)
+  # OSL's exported link interface names LLVM, Clang, LLD and pugixml targets.
+  find_package(LLVM 20.1.8 EXACT CONFIG REQUIRED)
+  # Clang's export references LLD's targets.
+  find_package(LLD CONFIG REQUIRED)
+  find_package(Clang CONFIG REQUIRED)
+  find_package(pugixml CONFIG REQUIRED)
+  if(NOT TARGET pugixml::pugixml)
+    add_library(pugixml::pugixml ALIAS pugixml)
+  endif()
+  find_package(OSL 1.15.3 CONFIG REQUIRED)
+  # The installed oslc is a Node-hosted Wasm module; build steps run its launcher.
+  set_target_properties(OSL::oslc PROPERTIES IMPORTED_LOCATION_RELEASE "${CMAKE_PREFIX_PATH}/bin/oslc")
+endif()

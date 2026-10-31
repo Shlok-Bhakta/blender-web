@@ -21,6 +21,26 @@ function(blender_web_configure_application)
     set_property(TARGET blender APPEND PROPERTY LINK_DEPENDS
       "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/audio.js")
   endif()
+  if(WITH_CYCLES_OSL)
+    # Cycles OSL emits shader groups as Wasm programs, linked by in-process LLD
+    # and instantiated on each worker that shades.
+    target_sources(blender PRIVATE
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/ghost/GHOST_WebOSLOwnedProbe.cc"
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/ghost/GHOST_WebJITProbe.cc"
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/ghost/GHOST_WebOSLSymbols.cc")
+    set_source_files_properties(
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/ghost/GHOST_WebOSLOwnedProbe.cc"
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/ghost/GHOST_WebJITProbe.cc"
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/ghost/GHOST_WebOSLSymbols.cc"
+      TARGET_DIRECTORY blender
+      PROPERTIES COMPILE_DEFINITIONS "WITH_GHOST_WEB_OSL=1;WITH_GHOST_WEB_OSL_SYMBOLS=1")
+    target_include_directories(blender SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS} ${LLD_INCLUDE_DIRS})
+    llvm_map_components_to_libnames(blender_web_osl_llvm
+      AsmParser Passes WebAssembly ExecutionEngine MCJIT RuntimeDyld GlobalISel)
+    target_link_libraries(blender PRIVATE lldWasm lldCommon ${blender_web_osl_llvm})
+    target_link_options(blender PRIVATE -Wl,--wrap=dlopen -Wl,--wrap=dlsym
+      "--preload-file=${EMSCRIPTEN_SYSROOT}/lib/wasm32-emscripten/pic/crtbegin.o@/crtbegin.o")
+  endif()
   file(GLOB tint_libs "${gpu_deps}/tint/src/tint/libtint*.a")
   file(GLOB absl_libs "${gpu_deps}/tint/third_party/abseil/absl/*/libabsl*.a")
   target_link_libraries(bf_gpu PUBLIC

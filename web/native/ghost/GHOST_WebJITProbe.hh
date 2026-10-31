@@ -2,6 +2,7 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+extern "C" void owned_define_import(const char *, uintptr_t, int);
 extern "C" unsigned owned_create(const void *, size_t, unsigned, uintptr_t, uintptr_t, unsigned);
 extern "C" uintptr_t owned_symbol(unsigned, const char *);
 extern "C" uintptr_t owned_data_symbol(unsigned, const char *);

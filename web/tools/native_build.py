@@ -12,7 +12,7 @@ import subprocess
 
 from native_deps import build as build_dependencies
 from prepare import ROOT, prepare_source
-from native_package import stage, stage_locales, collect
+from native_package import stage, stage_locales, stage_osl_shaders, collect
 from native_app_deps import build as build_application_dependencies
 
 EDITOR_ARCHIVES = ["bf_rna", "bf_editor_interface", "bf_editor_screen", "bf_windowmanager",
@@ -368,7 +368,7 @@ def prepare_native(base, full_assets=False):
     elif subprocess.run(["git", "apply", "--reverse", "--check", str(patch)],
                         cwd=source, capture_output=True).returncode:
         raise RuntimeError(f"Native shims do not apply cleanly:\n{check.stderr.decode()}")
-    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch", "native-python-download.patch"):
+    for patch_name in ("native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch", "native-python-download.patch", "native-osl-types.patch", "native-osl-runtime.patch"):
         ui_patch = ROOT / "web/patches" / patch_name
         if not ui_patch.exists():
             continue
@@ -415,6 +415,7 @@ def main():
     parser.add_argument("--skip-deps", action="store_true", help="Use already compiled dependencies")
     parser.add_argument("--skip-shader-seed", action="store_true", help="Bootstrap a fresh shader capture after translator changes")
     parser.add_argument("--render-only", action="store_true", help="Skip the fallback link during shader bootstrap or backend development")
+    parser.add_argument("--cycles-osl", action="store_true", help="Enable Cycles OSL shading in the application")
     parser.add_argument("--configure-only", action="store_true")
     parser.add_argument("--deps-only", action="store_true", help="Build or verify dependencies, then stop before staging Blender")
     parser.add_argument("--check-deps", action="store_true", help="Run Wasm dependency checks under Node")
@@ -462,7 +463,8 @@ def main():
             check_shader_adaptation(base)
     if args.check_deps:
         check_dependencies(source, base, prefix, args.jobs)
-    subprocess.run(["emcmake", "cmake", f"-DBLENDER_WEB_APPLICATION={'ON' if args.app else 'OFF'}", "-DBLENDER_WEB_JSPI=ON", "-G", "Unix Makefiles", "-S", str(source), "-B", str(base / "editor"),
+    subprocess.run(["emcmake", "cmake", f"-DBLENDER_WEB_APPLICATION={'ON' if args.app else 'OFF'}", "-DBLENDER_WEB_JSPI=ON",
+                    f"-DBLENDER_WEB_CYCLES_OSL={'ON' if args.cycles_osl else 'OFF'}", "-G", "Unix Makefiles", "-S", str(source), "-B", str(base / "editor"),
                     f"-DCMAKE_TOOLCHAIN_FILE={ROOT / 'web/native/toolchain.cmake'}",
                     f"-DCMAKE_PREFIX_PATH={prefix}", f"-DCMAKE_FIND_ROOT_PATH={prefix}",
                     "-C", str(source / "intern/ghost/web/native/config.cmake"),
@@ -473,6 +475,9 @@ def main():
         if args.app:
             subprocess.run([*command, "locales"], check=True)
             stage_locales(base, source, prefix)
+            if args.cycles_osl:
+                subprocess.run([*command, "cycles_osl_shaders"], check=True)
+                stage_osl_shaders(base, source, prefix)
         if args.targets or args.app:
             subprocess.run([*command, *(args.targets or ["blender"])], check=True)
             if args.app:
@@ -507,7 +512,7 @@ def main():
                       "browserRunnable": False, "archives": archives,
                       "dnaLayoutAssertions": (base / "editor/source/blender/makesdna/intern/dna_verify.cc").read_text().count("BLI_STATIC_ASSERT("),
                       "shimHashes": {name: hashlib.sha256((ROOT / "web/patches" / name).read_bytes()).hexdigest()
-                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch", "native-python-download.patch")}}
+                                     for name in ("ghost-web.patch", "native-web.patch", "native-ui.patch", "native-portability.patch", "native-render.patch", "native-files.patch", "native-modeling.patch", "native-cycles.patch", "native-python-clock.patch", "native-translation.patch", "native-tracking.patch", "native-gltf.patch", "native-guiding.patch", "native-denoise.patch", "native-python-download.patch", "native-osl-types.patch", "native-osl-runtime.patch")}}
             (base / "editor-compilation.json").write_text(json.dumps(report, indent=2) + "\n")
             print("Original Blender editor archives compiled. Use --app to build the browser executable.")
 
