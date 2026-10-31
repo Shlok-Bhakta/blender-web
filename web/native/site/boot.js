@@ -28,7 +28,7 @@
   const selected = new Map(manifest.files.filter(file => {
     const name = file.name.split('/').pop();
     return name === 'blender.data' || name === 'audio-worklet.js' || name === executable ||
-      name === (uiOnly ? 'blender-ui.wasm' : 'blender.wasm') ||
+      name === 'blender.wasm' ||
       name === (uiOnly ? 'blender-ui.worker.js' : 'blender.worker.js');
   }).map(file => [new URL(file.name, location.href).href, {...file, loaded:0, cached:false}]));
   const total = [...selected.values()].reduce((sum, file) => sum + file.bytes, 0);
@@ -103,7 +103,8 @@
     },
     setStatus: text => { if (status.isConnected && progress.value === 1) message.textContent = text || 'Starting Blender…'; },
     onAbort: reason => { document.body.append(status); message.textContent = `Blender stopped: ${reason}`; progress.removeAttribute('value'); },
-    locateFile: path => new URL(uiOnly && path === 'blender.wasm' ? 'blender-ui.wasm' : path, assetBase).href,
+    // Both loaders instantiate one blender.wasm; JSPI lives in the JavaScript glue.
+    locateFile: path => new URL(path, assetBase).href,
   };
   // Cache the small, versioned audio processor on the first visit even when
   // the user has not played a sound yet. It must also be available offline.

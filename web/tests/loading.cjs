@@ -58,7 +58,7 @@ async function main() {
         const variant = document.documentElement.dataset.blenderVariant;
         const wanted = manifest.files.filter(file => file.name.endsWith('/blender.data') || file.name.endsWith('/audio-worklet.js') ||
           file.name.endsWith(variant === 'ui' ? '/blender-ui.js' : '/blender.js') ||
-          file.name.endsWith(variant === 'ui' ? '/blender-ui.wasm' : '/blender.wasm'));
+          file.name.endsWith('/blender.wasm'));
         // Cache writes can finish after the last GPU startup message.
         const cache = await caches.open(`blender-native:${new URL('./',location.href).href}:content-v1`);
         for (const file of wanted) {

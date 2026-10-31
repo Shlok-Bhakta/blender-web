@@ -70,7 +70,8 @@ function(blender_web_configure_application)
   endif()
   set_property(TARGET blender APPEND PROPERTY LINK_DEPENDS
     "${CMAKE_BINARY_DIR}/../assets.sha256"
-    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shader-cache.js")
+    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shader-cache.js"
+    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/touch.js")
   if(BLENDER_WEB_JSPI)
     target_link_options(blender PRIVATE -sJSPI=1
       "-sJSPI_EXPORTS=['main','blender_web_run_gpu_jobs','blender_web_run_frame']")
@@ -91,6 +92,7 @@ function(blender_web_configure_application)
     --use-port=emdawnwebgpu -sUSE_BZIP2=1
     "-O${BLENDER_WEB_LINK_OPTIMIZATION}"
     "--pre-js=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shader-cache.js"
+    "--pre-js=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/touch.js"
     -sPROXY_TO_PTHREAD=1 -sOFFSCREENCANVAS_SUPPORT=1
     "-sPTHREAD_POOL_SIZE=Math.max(4, Math.min(64, (navigator.hardwareConcurrency || 4) + 2))" -sPTHREAD_POOL_SIZE_STRICT=0
     -sDEFAULT_PTHREAD_STACK_SIZE=4194304 -sSTACK_SIZE=16777216
