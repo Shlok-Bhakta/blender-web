@@ -50,6 +50,19 @@ if (typeof window !== 'undefined') {
       return [event.clientX - rect.left, event.clientY - rect.top];
     };
 
+    /* Desktop sessions keep the page to the bare canvas; the overlay appears with the first touch. */
+    let uiBuilt = false;
+    const ensureUi = () => {
+      if (uiBuilt) return;
+      uiBuilt = true;
+      const head = document.createElement('style');
+      head.textContent = style;
+      document.head.append(head);
+      buildCursor();
+      buildBelt();
+      buildSheet();
+    };
+
     const onPointer = event => {
       if (event.pointerType === 'mouse') {
         if (event.type === 'pointermove' && (event.movementX || event.movementY)) lastInput = 'mouse';
@@ -59,6 +72,7 @@ if (typeof window !== 'undefined') {
       /* Keep the browser from scrolling, zooming or synthesizing mouse events. */
       event.preventDefault();
       event.stopImmediatePropagation();
+      ensureUi();
       const [x, y] = local(event);
       if (event.pointerType === 'pen') {
         lastInput = 'pen';
@@ -276,7 +290,7 @@ if (typeof window !== 'undefined') {
 
     const frame = () => {
       requestAnimationFrame(frame);
-      if (!status) return;
+      if (!status || !uiBuilt) return;
       views();
       const base = status >> 2;
       const flags = f32[base + Status.Flags] | 0;
@@ -302,6 +316,7 @@ if (typeof window !== 'undefined') {
     /* State for tests and diagnostics. */
     Module.webTouchDebug = () => {
       if (!status) return null;
+      if (!uiBuilt) return {lastInput, touchSeen, hardwareKeyboard, uiBuilt};
       views();
       const base = status >> 2;
       return {x:f32[base + Status.X], y:f32[base + Status.Y], flags:f32[base + Status.Flags] | 0,
@@ -318,12 +333,6 @@ if (typeof window !== 'undefined') {
       text = textPointer >>> 0;
       epoch = epochMs;
       canvas = document.getElementById('canvas');
-      const head = document.createElement('style');
-      head.textContent = style;
-      document.head.append(head);
-      buildCursor();
-      buildBelt();
-      buildSheet();
       for (const type of ['pointerdown', 'pointermove', 'pointerup', 'pointercancel']) {
         canvas.addEventListener(type, onPointer, {capture:true, passive:false});
       }
@@ -334,7 +343,7 @@ if (typeof window !== 'undefined') {
       canvas.style.webkitTouchCallout = 'none';
       canvas.style.webkitUserSelect = 'none';
       window.addEventListener('keydown', event => {
-        if (sheet.contains(event.target)) return;
+        if (sheet?.contains(event.target)) return;
         lastInput = 'keyboard';
         if (!hardwareKeyboard) {
           /* The belt hides while a hardware keyboard is in use, as on iPad. */

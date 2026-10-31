@@ -16,8 +16,9 @@ import sys
 
 # Only the browser application is large enough to be worth storing.
 MINIMUM_BYTES = 64 << 20
-# The render result and its predecessor; each entry is the size of the module.
-KEPT_ENTRIES = 2
+# Emscripten can run several large passes per link; keep every one from the
+# render link and its predecessor. Each entry is the size of the module.
+KEPT_ENTRIES = 8
 UNCACHEABLE = ('--input-source-map', '-ism', '--output-source-map', '-osm', '--symbolmap')
 
 
@@ -73,12 +74,15 @@ def main(real, cache, args):
         key.update(b'\0')
     key.update(file_digest(source).encode())
     entry = Path(cache) / key.hexdigest()
+    masked = ['<input>' if i == index - 1 else '<output>' if i == index + 1 else arg for i, arg in enumerate(args)]
+    describe = f'{entry.name[:16]} input={os.path.getsize(source) >> 20} MiB args={" ".join(masked)}'
     if (entry / 'output.wasm').is_file():
         shutil.copyfile(entry / 'output.wasm', output)
         sys.stdout.buffer.write((entry / 'stdout').read_bytes())
         os.utime(entry)
-        print(f'wasm-opt: reused identical optimization {entry.name[:16]}', file=sys.stderr)
+        print(f'wasm-opt: reused identical optimization {describe}', file=sys.stderr)
         return 0
+    print(f'wasm-opt: optimizing {describe}', file=sys.stderr, flush=True)
     result = subprocess.run(run, stdout=subprocess.PIPE)
     sys.stdout.buffer.write(result.stdout)
     if result.returncode:

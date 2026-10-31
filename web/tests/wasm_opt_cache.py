@@ -70,6 +70,11 @@ class WasmOptCache(unittest.TestCase):
         self.optimize(self.module('changed.wasm', marker=b'b'), '-O3')
         self.optimize(self.module('render.wasm'), '-O2')
         self.assertEqual(self.runs(), 3)
+        self.assertEqual(len(self.entries()), 3)
+
+    def test_old_entries_are_pruned(self):
+        for i in range(cache_module.KEPT_ENTRIES + 2):
+            self.optimize(self.module(f'module{i}.wasm', marker=bytes([65 + i])), '-O3')
         self.assertEqual(len(self.entries()), cache_module.KEPT_ENTRIES)
 
     def test_binaryen_environment_is_part_of_the_key(self):
