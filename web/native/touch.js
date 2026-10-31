@@ -313,6 +313,12 @@ if (typeof window !== 'undefined') {
       }
     };
 
+    /* The page only learns that a keyboard was used, not that it was detached. */
+    Module.webTouchForgetKeyboard = () => {
+      hardwareKeyboard = false;
+      updateBeltVisibility();
+    };
+
     /* State for tests and diagnostics. */
     Module.webTouchDebug = () => {
       if (!status) return null;

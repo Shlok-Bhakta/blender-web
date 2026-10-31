@@ -20,6 +20,11 @@ MINIMUM_BYTES = 64 << 20
 # render link and its predecessor. Each entry is the size of the module.
 KEPT_ENTRIES = 8
 UNCACHEABLE = ('--input-source-map', '-ism', '--output-source-map', '-osm', '--symbolmap')
+# Emscripten adds this for JSPI links only. It lets Binaryen emit reference-type
+# instructions; the application's -O3 output is byte-identical with and without
+# it (CI optimized both separately and compared), and every browser the non-JSPI
+# loader serves supports reference types. Its JS is generated from the reused Wasm.
+KEY_NEUTRAL = ('--enable-reference-types',)
 
 
 def environment(cache):
@@ -70,6 +75,8 @@ def main(real, cache, args):
     for name in sorted(name for name in os.environ if name.startswith('BINARYEN_')):
         key.update(f'{name}={os.environ[name]}\0'.encode())
     for position, arg in enumerate(args):
+        if arg in KEY_NEUTRAL:
+            continue
         key.update(b'<input>' if position == index - 1 else b'<output>' if position == index + 1 else arg.encode())
         key.update(b'\0')
     key.update(file_digest(source).encode())

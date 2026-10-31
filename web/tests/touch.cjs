@@ -44,6 +44,8 @@ async function main() {
     await page.evaluate(source => Module.FS.writeFile('/tmp/touch_state.py', source),
       fs.readFileSync(path.join(__dirname, 'touch_state.py'), 'utf8'));
     await consoleCommand(page, "exec(open('/tmp/touch_state.py').read())", 'TOUCH_STATE:');
+    /* Setup typed into the console; a touch user without a keyboard would never have. */
+    await page.evaluate(() => Module.webTouchForgetKeyboard());
 
     const ratio = await page.evaluate(() => devicePixelRatio);
     const state = async () => {

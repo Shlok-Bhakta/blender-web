@@ -65,6 +65,11 @@ class WasmOptCache(unittest.TestCase):
         self.assertEqual(first.read_bytes(), second.read_bytes())
         self.assertEqual(first_stdout, second_stdout)
 
+    def test_jspi_reference_types_flag_shares_the_result(self):
+        self.optimize(self.module('render.wasm'), '-O3', '--enable-reference-types')
+        self.optimize(self.module('ui.wasm'), '-O3')
+        self.assertEqual(self.runs(), 1)
+
     def test_different_module_or_arguments_run_again(self):
         self.optimize(self.module('render.wasm'), '-O3')
         self.optimize(self.module('changed.wasm', marker=b'b'), '-O3')
