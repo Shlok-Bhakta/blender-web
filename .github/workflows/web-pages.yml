@@ -41,6 +41,8 @@ jobs:
           lfs: false
       - name: Verify validation checkpoint isolation
         run: python3 web/tests/validation_checkpoint.py
+      - name: Verify the wasm-opt result cache
+        run: python3 web/tests/wasm_opt_cache.py
       # Cache keys are computed once here and passed to every later job.
       - name: Look up LLVM checkpoint
         id: llvm
