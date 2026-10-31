@@ -41,6 +41,8 @@ jobs:
           lfs: false
       - name: Verify validation checkpoint isolation
         run: python3 web/tests/validation_checkpoint.py
+      - name: Verify the wasm-opt result cache
+        run: python3 web/tests/wasm_opt_cache.py
       - name: Check touch gestures natively
         run: |
           g++ -std=c++20 -Wall -Wextra -Werror -Wno-unused-parameter -I web/native/ghost \
