@@ -40,7 +40,8 @@ class GHOST_WebTouch : public GHOST_TouchSink {
   void magnify(double delta) override;
   void shortcut(GHOST_TouchShortcut shortcut) override;
 
-  /* Shared layout, mirrored in touch.js. */
+  /* Shared layout, mirrored in touch.js. The ring header holds the write count,
+   * the read count and the page's heartbeat in milliseconds. */
   static constexpr int ring_capacity = 1024;
   static constexpr int record_ints = 8;
   static constexpr int text_bytes = 16384;

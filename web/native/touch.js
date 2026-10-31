@@ -42,6 +42,7 @@ if (typeof window !== 'undefined') {
       f32[base + 5] = tiltX;
       f32[base + 6] = tiltY;
       i32[base + 7] = Math.round(clock());
+      Atomics.store(i32, header + 2, i32[base + 7]);
       Atomics.store(i32, header, (index + 1) | 0);
     };
 
@@ -290,6 +291,12 @@ if (typeof window !== 'undefined') {
 
     const frame = () => {
       requestAnimationFrame(frame);
+      if (ring) {
+        /* Heartbeat: gesture timers in GHOST never run ahead of the input this
+         * thread has delivered, so a busy page cannot turn a tap into a hold. */
+        views();
+        Atomics.store(i32, (ring >> 2) + 2, Math.round(clock()));
+      }
       if (!status || !uiBuilt) return;
       views();
       const base = status >> 2;

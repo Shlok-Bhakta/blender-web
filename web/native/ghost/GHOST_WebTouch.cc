@@ -14,6 +14,7 @@
 #include "GHOST_EventTrackpad.hh"
 #include "GHOST_SystemWeb.hh"
 
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
@@ -97,7 +98,11 @@ bool GHOST_WebTouch::process(GHOST_WindowWeb *window)
   }
   __atomic_store_n(reinterpret_cast<uint32_t *>(&ring_[1]), read, __ATOMIC_RELEASE);
 
-  gestures_.update(time);
+  /* The page's heartbeat is when it last delivered input or drew a frame. If its
+   * thread is busy, a finger's release may still be queued there, so timed
+   * gestures (holds, tap timeouts) must not run ahead of it. */
+  const int32_t heartbeat = __atomic_load_n(&ring_[2], __ATOMIC_ACQUIRE);
+  gestures_.update(std::min(time, heartbeat / 1000.0 + 0.05));
   writeStatus();
   return pushed_;
 }

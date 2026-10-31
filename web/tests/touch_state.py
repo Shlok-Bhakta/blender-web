@@ -39,4 +39,6 @@ def report():
 
 for obj in bpy.context.view_layer.objects:
     obj.select_set(False)
+# API changes are not undo steps; record this one so a touch Undo returns here.
+bpy.ops.ed.undo_push(message='Deselect all')
 bpy.app.timers.register(report, first_interval=0.1, persistent=True)
