@@ -3,9 +3,9 @@ name: Blender Web native UI
 on:
   push:
     branches: [main, blender-web/v5.2]
-    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml', '!web/docs/**', '!web/native/*.md', '!web/README.md']
+    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml', '.github/scripts/**', '!web/docs/**', '!web/native/*.md', '!web/README.md']
   pull_request:
-    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml', '!web/docs/**', '!web/native/*.md', '!web/README.md']
+    paths: ['web/**', 'intern/ghost/**', 'blender', '.gitmodules', '.github/workflows/web-pages.yml', '.github/scripts/**', '!web/docs/**', '!web/native/*.md', '!web/README.md']
   workflow_dispatch:
 
 defaults:
@@ -19,59 +19,54 @@ concurrency:
   group: web-${{ github.ref }}
   cancel-in-progress: true
 
+# A cold build (LLVM, then every dependency, then Blender) exceeds GitHub's
+# 6-hour job limit, so each stage is its own job and hands over through caches.
+# Warm runs skip the LLVM and dependency jobs entirely, validate dependencies
+# in parallel with the application compile, and shard the browser tests.
 jobs:
-  build:
+  plan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 360
+    timeout-minutes: 10
+    outputs:
+      llvm-key: ${{ steps.llvm.outputs.cache-primary-key }}
+      llvm-hit: ${{ steps.llvm.outputs.cache-hit }}
+      native-deps-key: ${{ steps.native-deps.outputs.cache-primary-key }}
+      native-deps-hit: ${{ steps.native-deps.outputs.cache-hit }}
+      app-deps-key: ${{ steps.app-deps.outputs.cache-primary-key }}
+      app-deps-hit: ${{ steps.app-deps.outputs.cache-hit }}
     steps:
-      - uses: actions/checkout@v4
+      - &checkout
+        uses: actions/checkout@v4
         with:
           lfs: false
       - name: Verify validation checkpoint isolation
         run: python3 web/tests/validation_checkpoint.py
-      - uses: astral-sh/setup-uv@v6
-      - name: Install native OSL parser tools
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends flex bison m4
-      - uses: actions/setup-node@v4
+      # Cache keys are computed once here and passed to every later job.
+      - name: Look up LLVM checkpoint
+        id: llvm
+        uses: actions/cache/restore@v4
         with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: web/tests/package-lock.json
-      - name: Read pinned SDK
-        run: |
-          python3 - <<'PY'
-          import json, os
-          pins = json.load(open('web/upstream.json'))
-          with open(os.environ['GITHUB_ENV'], 'a') as output:
-              output.write(f"EMSDK_REVISION={pins['emsdkRevision']}\n")
-              output.write(f"EMSDK_VERSION={pins['emscriptenVersion']}\n")
-          PY
-      - uses: actions/cache@v4
-        id: sdk-cache
-        with:
-          path: ${{ runner.temp }}/emsdk
-          key: ${{ runner.os }}-emsdk-${{ hashFiles('web/upstream.json') }}
-      - name: Install Emscripten
-        if: steps.sdk-cache.outputs.cache-hit != 'true'
-        run: |
-          git init "$RUNNER_TEMP/emsdk"
-          git -C "$RUNNER_TEMP/emsdk" fetch --depth=1 https://github.com/emscripten-core/emsdk.git "$EMSDK_REVISION"
-          git -C "$RUNNER_TEMP/emsdk" checkout --detach FETCH_HEAD
-          "$RUNNER_TEMP/emsdk/emsdk" install "$EMSDK_VERSION"
-          "$RUNNER_TEMP/emsdk/emsdk" activate "$EMSDK_VERSION"
-      - uses: actions/cache/restore@v4
+          lookup-only: true
+          path: |
+            build/native/llvm-cache
+            build/native/deps/llvm/host
+          key: ${{ runner.os }}-native-llvm-${{ hashFiles('web/upstream.json', 'web/tools/native_llvm.py', 'web/tools/native_llvm_cache.py', 'web/native/toolchain.cmake') }}
+      - name: Look up native dependencies
         id: native-deps
+        uses: actions/cache/restore@v4
         with:
+          lookup-only: true
           path: |
             build/native/deps/prefix
             build/native/deps/downloads
             build/native/deps/*/installed.json
           key: ${{ runner.os }}-native-deps-${{ hashFiles('web/upstream.json', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/tools/native_media.py', 'web/tools/native_text.py', 'web/tools/native_usd.py', 'web/tools/native_usd_imaging.py', 'web/native/usd-imaging/**', 'web/tools/native_oidn.py', 'web/tools/native_ispc.py', 'web/tools/native_ispc_half.py', 'web/native/ispc-host.json', 'web/native/oidn/**', 'web/tools/native_app_deps.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/native/openssl-wasm.conf', 'web/native/shader-deps/**', 'web/native/toolchain.cmake', 'web/native/patches/**') }}
-          restore-keys: ${{ runner.os }}-native-deps-
-      - uses: actions/cache/restore@v4
+      - name: Look up application dependencies
         id: app-deps
+        uses: actions/cache/restore@v4
         with:
-          path: |
+          lookup-only: true
+          path: &app-deps-paths |
             build/native/deps/prefix/share/blender-web/licenses/numpy
             build/native/deps/prefix/include/blender-web-numpy.hh
             build/native/deps/prefix/lib/blender-web-numpy
@@ -94,16 +89,73 @@ jobs:
             build/native/deps/prefix/lib/libshaderc_combined.a
             build/native/gpu-deps
           key: ${{ runner.os }}-native-app-deps-v2-${{ hashFiles('web/upstream.json', 'web/native/shader-deps/**', 'web/tools/native_app_deps.py', 'web/tools/native_numpy.py', 'web/tools/native_python.py', 'web/tools/native_ffi.py', 'web/native/ghost/GHOST_WebFFI.*', 'web/native/ghost/GHOST_WebCTypes.*', 'web/tools/native_python_packages.py', 'web/tools/native_bindings.py', 'web/native/python-bindings/**', 'web/native/patches/yamlcpp.patch', 'web/native/patches/ffi.patch', 'web/native/python-packages.json', 'web/native/ghost/GHOST_WebNetwork.*', 'web/native/ghost/GHOST_WebDownload.py', 'web/native/patches/urllib3.patch', 'web/tools/native_deps.py', 'web/tools/native_llvm.py', 'web/tools/native_osl.py', 'web/tools/native_osl_bitcode.py', 'web/native/osl-query-probe/cmake/**', 'web/native/ghost/GHOST_WebOSL*.hh', 'web/native/ghost/GHOST_WebWorkerResources.hh', 'web/native/toolchain.cmake', 'web/native/numpy-static.patch') }}
-          restore-keys: ${{ runner.os }}-native-app-deps-v2-
-      - name: Restore LLVM checkpoint
+
+  llvm:
+    needs: plan
+    if: needs.plan.outputs.llvm-hit != 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - *checkout
+      - &setup-uv
+        uses: astral-sh/setup-uv@v6
+      - &parser-tools
+        name: Install native OSL parser tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends flex bison m4
+      - &pins
+        name: Read pinned SDK
+        run: |
+          python3 - <<'PY'
+          import json, os
+          pins = json.load(open('web/upstream.json'))
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write(f"EMSDK_REVISION={pins['emsdkRevision']}\n")
+              output.write(f"EMSDK_VERSION={pins['emscriptenVersion']}\n")
+          PY
+      # Only the application job saves the SDK, after its link has built
+      # every Emscripten system library and port the release needs.
+      - &restore-sdk
+        name: Restore Emscripten SDK
+        uses: actions/cache/restore@v4
+        id: sdk-cache
+        with:
+          path: ${{ runner.temp }}/emsdk
+          key: ${{ runner.os }}-emsdk-${{ hashFiles('web/upstream.json') }}
+      - &install-sdk
+        name: Install Emscripten
+        if: steps.sdk-cache.outputs.cache-hit != 'true'
+        run: |
+          git init "$RUNNER_TEMP/emsdk"
+          git -C "$RUNNER_TEMP/emsdk" fetch --depth=1 https://github.com/emscripten-core/emsdk.git "$EMSDK_REVISION"
+          git -C "$RUNNER_TEMP/emsdk" checkout --detach FETCH_HEAD
+          "$RUNNER_TEMP/emsdk/emsdk" install "$EMSDK_VERSION"
+          "$RUNNER_TEMP/emsdk/emsdk" activate "$EMSDK_VERSION"
+      # Installed LLVM stamps in a dependency prefix let the builder skip LLVM.
+      - &restore-native-deps
+        name: Restore native dependencies
+        uses: actions/cache/restore@v4
+        id: native-deps
+        with:
+          path: |
+            build/native/deps/prefix
+            build/native/deps/downloads
+            build/native/deps/*/installed.json
+          key: ${{ needs.plan.outputs.native-deps-key }}
+          restore-keys: ${{ runner.os }}-native-deps-
+      - &restore-llvm
+        name: Restore LLVM checkpoint
         uses: actions/cache/restore@v4
         id: llvm-checkpoint
         with:
           path: |
             build/native/llvm-cache
             build/native/deps/llvm/host
-          key: ${{ runner.os }}-native-llvm-${{ hashFiles('web/upstream.json', 'web/tools/native_llvm.py', 'web/tools/native_llvm_cache.py', 'web/native/toolchain.cmake') }}
-      - name: Build and checkpoint LLVM before OSL
+          key: ${{ needs.plan.outputs.llvm-key }}
+      - &build-llvm
+        name: Build and checkpoint LLVM before OSL
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           python3 web/tests/osl_parser_headers.py
@@ -122,70 +174,267 @@ jobs:
           export(base, base / 'llvm-cache')
           PYTHON
       - name: Save completed LLVM checkpoint
+        id: save-llvm
         uses: actions/cache/save@v4
         if: steps.llvm-checkpoint.outputs.cache-hit != 'true' && hashFiles('build/native/llvm-cache/manifest.json') != ''
         with:
           path: |
             build/native/llvm-cache
             build/native/deps/llvm/host
-          key: ${{ steps.llvm-checkpoint.outputs.cache-primary-key }}
-      - name: Build and validate native dependencies
+          key: ${{ needs.plan.outputs.llvm-key }}
+      - name: Remove superseded LLVM checkpoints
+        if: steps.save-llvm.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/prune-superseded-caches.sh "${{ runner.os }}-native-llvm-" "${{ needs.plan.outputs.llvm-key }}"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: llvm-build-logs
+          path: build/native/deps/llvm/build.log
+          if-no-files-found: ignore
+
+  deps:
+    needs: [plan, llvm]
+    if: ${{ !cancelled() && !failure() && !(needs.plan.outputs.native-deps-hit == 'true' && needs.plan.outputs.app-deps-hit == 'true') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - *checkout
+      - *setup-uv
+      - *parser-tools
+      - *pins
+      - *restore-sdk
+      - *install-sdk
+      - *restore-native-deps
+      - &restore-app-deps
+        name: Restore application dependencies
+        uses: actions/cache/restore@v4
+        id: app-deps
+        with:
+          path: *app-deps-paths
+          key: ${{ needs.plan.outputs.app-deps-key }}
+          restore-keys: ${{ runner.os }}-native-app-deps-v2-
+      - *restore-llvm
+      - *build-llvm
+      - name: Build native dependencies
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           mkdir -p build/native
-          python3 web/tests/dependency_download.py
-          python3 web/tools/native_build.py --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
-      - uses: actions/cache/save@v4
+          python3 web/tools/native_build.py --jobs 4 --deps-only 2>&1 | tee build/native/native-dependencies-build.log
+      - name: Save native dependencies
+        id: save-native-deps
+        uses: actions/cache/save@v4
         if: steps.native-deps.outputs.cache-hit != 'true'
         with:
           path: |
             build/native/deps/prefix
             build/native/deps/downloads
             build/native/deps/*/installed.json
-          key: ${{ steps.native-deps.outputs.cache-primary-key }}
-      - name: Build and validate application dependencies
+          key: ${{ needs.plan.outputs.native-deps-key }}
+      - name: Remove superseded native dependency caches
+        if: steps.save-native-deps.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/prune-superseded-caches.sh "${{ runner.os }}-native-deps-" "${{ needs.plan.outputs.native-deps-key }}"
+      - name: Build application dependencies
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          python3 web/tools/native_build.py --app --jobs 4 --deps-only 2>&1 | tee build/native/application-dependencies-build.log
+      - name: Save application dependencies
+        id: save-app-deps
+        uses: actions/cache/save@v4
+        if: steps.app-deps.outputs.cache-hit != 'true'
+        with:
+          path: *app-deps-paths
+          key: ${{ needs.plan.outputs.app-deps-key }}
+      - name: Remove superseded application dependency caches
+        if: steps.save-app-deps.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/prune-superseded-caches.sh "${{ runner.os }}-native-app-deps-v2-" "${{ needs.plan.outputs.app-deps-key }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-dependency-build
+          path: |
+            build/native/*-build.log
+            build/native/deps/*/build.log
+          if-no-files-found: ignore
+
+  validate-dependencies:
+    needs: [plan, deps]
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - *checkout
+      - *setup-uv
+      - *parser-tools
+      - &setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/tests/package-lock.json
+      - *pins
+      - *restore-sdk
+      - *install-sdk
+      - *restore-native-deps
+      - *restore-app-deps
+      - *restore-llvm
+      - *build-llvm
+      - name: Build and validate native dependencies
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           mkdir -p build/native
-          python3 web/tools/native_build.py --app --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
-      - uses: actions/cache/save@v4
-        if: steps.app-deps.outputs.cache-hit != 'true'
-        with:
-          path: |
-            build/native/deps/prefix/share/blender-web/licenses/numpy
-            build/native/deps/prefix/include/blender-web-numpy.hh
-            build/native/deps/prefix/lib/blender-web-numpy
-            build/native/deps/prefix/lib/blender-web-python
-            build/native/deps/prefix/include/blender-web-python.hh
-            build/native/deps/prefix/include/blender-web-ctypes-exports.inc
-            build/native/deps/prefix/include/blender-web-python-bindings.hh
-            build/native/deps/prefix/lib/blender-web-bindings
-            build/native/deps/python-bindings/installed.json
-            build/native/deps/prefix/share/blender-web/licenses/pybind11
-            build/native/deps/prefix/share/blender-web/licenses/nanobind
-            build/native/deps/prefix/share/blender-web/licenses/materialx/render
-            build/native/deps/python-extensions/installed.json
-            build/native/deps/python-packages/installed.json
-            build/native/deps/numpy/installed.json
-            build/native/deps/prefix/include/python3.13
-            build/native/deps/prefix/lib/python3.13
-            build/native/deps/prefix/lib/libpython3.13.a
-            build/native/deps/prefix/include/shaderc
-            build/native/deps/prefix/lib/libshaderc_combined.a
-            build/native/gpu-deps
-          key: ${{ steps.app-deps.outputs.cache-primary-key }}
-      - name: Compile original Blender application
+          python3 web/tests/dependency_download.py
+          python3 web/tools/native_build.py --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
+      - name: Build and validate application dependencies
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
-          python3 web/tools/native_build.py --app --skip-deps --jobs 4 2>&1 | tee build/native/build.log
-      - name: Install browser tests
+          python3 web/tools/native_build.py --app --jobs 4 --configure-only --check-deps 2>&1 | tee build/native/dependencies-build.log
+      - &install-browser-tests
+        name: Install browser tests
         working-directory: web/tests
         run: |
           npm ci
           npx playwright install --with-deps chromium
       - name: Verify libffi workers and high addresses in Chromium
         run: node web/tests/ffi-workers.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-dependency-validation
+          path: |
+            build/native/python-bindings-check.json
+            build/native/osl-python-check/*.log
+            build/native/compiler-check/*.log
+            build/native/hevc-check-*.hevc
+            build/native/*-check.json
+            build/native/*-build.log
+            build/native/deps/*/build.log
+          if-no-files-found: ignore
+
+  app:
+    needs: [plan, deps]
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - *checkout
+      - *setup-uv
+      - name: Install native OSL parser tools and compiler cache
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends flex bison m4 ccache
+      - *pins
+      - uses: actions/cache@v4
+        id: sdk-cache
+        with:
+          path: ${{ runner.temp }}/emsdk
+          key: ${{ runner.os }}-emsdk-${{ hashFiles('web/upstream.json') }}
+      - *install-sdk
+      - *restore-native-deps
+      - *restore-app-deps
+      - *restore-llvm
+      - *build-llvm
+      # ccache wraps the clang command emcc builds, after Emscripten has
+      # expanded its own flags. Paths on hosted runners are fixed, so no
+      # base_dir rewriting is needed: objects are byte-identical to an
+      # uncached compile and __FILE__ strings are unchanged.
+      - name: Restore compiler cache
+        id: ccache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/ccache
+          key: ${{ runner.os }}-ccache-app-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-ccache-app-
+      - name: Configure compiler cache
+        run: |
+          {
+            echo "CCACHE_DIR=$RUNNER_TEMP/ccache"
+            echo "CCACHE_MAXSIZE=3G"
+            echo "EM_COMPILER_WRAPPER=ccache"
+          } >> "$GITHUB_ENV"
+          date +%s > "$RUNNER_TEMP/ccache-start"
+          CCACHE_DIR="$RUNNER_TEMP/ccache" ccache --zero-stats
+          CCACHE_DIR="$RUNNER_TEMP/ccache" ccache --show-stats
+      - name: Compile original Blender application
+        id: compile
+        timeout-minutes: 300
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          mkdir -p build/native
+          python3 web/tools/native_build.py --app --jobs 4 2>&1 | tee build/native/build.log
+      # Keep only entries this build read or wrote, so the cache never grows
+      # past one build's working set.
+      - name: Trim compiler cache to this build
+        if: always() && steps.compile.outcome != 'skipped'
+        run: |
+          ccache --show-stats --verbose
+          ccache --evict-older-than "$(( $(date +%s) - $(cat "$RUNNER_TEMP/ccache-start") + 60 ))s"
+          du -sh "$CCACHE_DIR"
+      - name: Save compiler cache
+        id: save-ccache
+        if: always() && steps.compile.outcome != 'skipped' && steps.ccache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/ccache
+          key: ${{ steps.ccache.outputs.cache-primary-key }}
+      - name: Remove superseded compiler caches
+        if: always() && steps.save-ccache.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/prune-superseded-caches.sh "${{ runner.os }}-ccache-app-" "${{ steps.ccache.outputs.cache-primary-key }}"
+      # Browser tests read the published site plus the installed dependency
+      # and Cycles notices that features.cjs compares it against.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blender-web-site
+          retention-days: 7
+          compression-level: 1
+          path: |
+            build/native/dist
+            build/native/deps/prefix/share/blender-web/licenses
+            blender/intern/cycles/doc/license
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-application-build
+          path: |
+            build/native/build.log
+            build/native/*-check.json
+            build/native/deps/*/build.log
+          if-no-files-found: ignore
+
+  browser-tests:
+    needs: app
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [startup-ui-cycles, python-bindings, python-render, text-gltf-osl, modeling-ocean, volume-image-usd]
+    steps:
+      - *checkout
+      - *setup-node
+      - uses: actions/download-artifact@v4
+        with:
+          name: blender-web-site
+      - *install-browser-tests
       - name: Test without server isolation headers
+        env:
+          CHECK_GROUP: ${{ matrix.group }}
         run: |
           python3 web/tools/serve.py --directory build/native/dist --pages-mode > "$RUNNER_TEMP/blender-web-server.log" 2>&1 &
           WEB_SERVER_PID=$!
@@ -194,56 +443,67 @@ jobs:
             if curl --fail --silent http://127.0.0.1:8080/manifest.json > /dev/null; then break; fi
             sleep 1
           done
-          node web/tests/cache.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/loading.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/loading.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-ctypes.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-ctypes.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/osl-python.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/osl-python.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-bindings.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-bindings.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-foundation.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-foundation.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/render-libraries.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/render-libraries.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/embree.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/embree.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/text.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/text.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/gltf.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/gltf.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/tracking.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/tracking.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/native.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/features.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/features.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/ocean-alembic.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/ocean-alembic.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/volume.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/volume.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/image-vector.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/image-vector.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_RENDER_SOFTWARE=1 node web/tests/freestyle.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/usd-exchange.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/usd-exchange.cjs
-          WEB_TEST_URL=http://127.0.0.1:8080/ WEB_RENDER_SOFTWARE=1 node web/tests/cycles.cjs
+          case "$CHECK_GROUP" in
+            startup-ui-cycles)
+              node web/tests/cache.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/loading.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/loading.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/native.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_RENDER_SOFTWARE=1 node web/tests/cycles.cjs
+              ;;
+            python-bindings)
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-ctypes.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-ctypes.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-bindings.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-bindings.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_RENDER_SOFTWARE=1 node web/tests/freestyle.cjs
+              ;;
+            python-render)
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-foundation.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/python-foundation.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/render-libraries.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/render-libraries.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/embree.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/embree.cjs
+              ;;
+            text-gltf-osl)
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/osl-python.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/osl-python.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/text.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/text.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/gltf.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/gltf.cjs
+              ;;
+            modeling-ocean)
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/tracking.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/tracking.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/features.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/features.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/ocean-alembic.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/ocean-alembic.cjs
+              ;;
+            volume-image-usd)
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/volume.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/volume.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/image-vector.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/image-vector.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/usd-exchange.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/usd-exchange.cjs
+              ;;
+            *) exit 1 ;;
+          esac
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: browser-evidence
+          name: evidence-browser-${{ matrix.group }}
           path: |
             build/native/loading-evidence
             build/native/loading-evidence-ui
             build/native/render-libraries-evidence*
             build/native/python-foundation-evidence*
             build/native/python-bindings-evidence*
-            build/native/python-bindings-check.json
             build/native/osl-python-evidence*
-            build/native/osl-python-check/*.log
-            build/native/compiler-check/*.log
-            build/native/hevc-check-*.hevc
             build/native/embree-evidence*
             build/native/cache-evidence
             build/native/evidence
@@ -259,14 +519,33 @@ jobs:
             build/native/text-evidence*
             build/native/gltf-evidence*
             build/native/tracking-evidence*
-            build/native/build.log
-            build/native/*-check.json
-            build/native/*-build.log
-            build/native/deps/*/build.log
           if-no-files-found: ignore
+
+  # Pages publication is owned by publish-validated.yml. This only records the
+  # site that passed every dependency check and browser shard above.
+  pages:
+    needs: [validate-dependencies, browser-tests]
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: blender-web-site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build/native/dist
 
-  # Pages publication is owned by publish-validated.yml. A later source rebuild
-  # must not replace the exact archive that passed the release verification gate.
+  # Recombine per-job evidence under the artifact name earlier runs used.
+  evidence:
+    needs: [deps, validate-dependencies, app, browser-tests]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/upload-artifact/merge@v4
+        continue-on-error: true
+        with:
+          name: browser-evidence
+          pattern: evidence-*
+          delete-merged: true
