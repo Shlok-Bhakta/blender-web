@@ -608,7 +608,17 @@ commit containing the matching translator sources, and rebuild normally to
 package the verified seed.
 `--render-only` skips the UI fallback link for private shader-bootstrap builds;
 it also excludes older fallback files from the collected site. Normal builds
-still produce both variants. The opt-in render profiler accepts
+still produce both variants. Emscripten implements JSPI in the JavaScript loader,
+so both variants share one `blender.wasm` and `blender.data`: the fallback reruns
+CMake's render link script without the JSPI options into `build/native/ui-fallback`,
+checks that its Wasm and data are byte-identical, and publishes only
+`blender-ui.js`. Binaryen results for identical application modules are reused from
+`editor/wasm-opt-cache` (keyed by the input module, arguments and Binaryen
+executable), so the fallback does not repeat the `-O3` optimization.
+`--dev-link` is for local test cycles only: it links at `-O1`, skips Binaryen
+optimization and the fallback, and records `linkOptimization: 1` in the manifest.
+Release validation and acceptance reject that bundle; the next build without the
+flag restores the `-O3` link. The opt-in render profiler accepts
 `WEB_RENDER_GPU_TIMESTAMPS=1` with `WEB_RENDER_PROFILE=1` to report actual GPU
 pass durations. Keep these instrumented runs separate from benchmark results.
 `WEB_RENDER_RESIZE_DURING_RENDER=1` also changes the window size three times
