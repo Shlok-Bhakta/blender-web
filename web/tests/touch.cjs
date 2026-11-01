@@ -61,22 +61,33 @@ async function main() {
     const screen = point => point.map(value => value / ratio);
     const debug = () => page.evaluate(() => Module.webTouchDebug());
     const cdp = await context.newCDPSession(page);
-    const send = (type, points) => cdp.send('Input.dispatchTouchEvent', {type,
+    /* Every touch carries its planned time. A busy CI browser can accept a
+     * command long after the previous one; real fingers are not delayed, and the
+     * gestures time themselves by event timestamps. */
+    let stamp = 0;
+    const begin = () => { stamp = Math.max(stamp + 0.05, Date.now() / 1000); };
+    const send = (type, points) => cdp.send('Input.dispatchTouchEvent', {type, timestamp:stamp,
       touchPoints:points.map(([x, y], id) => ({x, y, id, radiusX:4, radiusY:4, force:1}))});
-    const release = () => cdp.send('Input.dispatchTouchEvent', {type:'touchEnd', touchPoints:[]});
+    const release = () => cdp.send('Input.dispatchTouchEvent', {type:'touchEnd', touchPoints:[], timestamp:stamp});
     /* Fingers move in parallel; `to` may differ per finger (pinch). */
     const gesture = async (from, to, steps, interval) => {
+      begin();
       await send('touchStart', from);
       for (let i = 1; i <= steps; i++) {
         await sleep(interval);
+        stamp += interval / 1000;
         await send('touchMove', from.map(([x, y], f) => [x + (to[f][0] - x) * i / steps, y + (to[f][1] - y) * i / steps]));
       }
       await sleep(interval);
+      stamp += interval / 1000;
       await release();
     };
-    const tap = async (fingers = [[640, 450]]) => {
+    /* `chained` taps continue the previous tap's timeline, as in a triple tap. */
+    const tap = async (fingers = [[640, 450]], chained = false) => {
+      if (!chained) begin();
       await send('touchStart', fingers);
       await sleep(40);
+      stamp += 0.04;
       await release();
     };
     /* Slow one-finger drags move the cursor one-to-one; repeat until it is on target. */
@@ -164,8 +175,9 @@ async function main() {
     /* Triple tap on the Outliner's Cube row is a double click: rename through the sheet. */
     await aim([1152, 121]);
     for (let i = 0; i < 3; i++) {
-      await tap();
+      await tap([[640, 450]], i > 0);
       await sleep(90);
+      stamp += 0.09;
     }
     await page.waitForFunction(() => Module.webTouchDebug()?.sheetOpen, null, {timeout:10000});
     info = await debug();
