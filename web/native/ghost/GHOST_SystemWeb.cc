@@ -194,6 +194,11 @@ GHOST_IWindow *GHOST_SystemWeb::createWindow(const char *title,
   window_manager_->setActiveWindow(window_);
   pushEvent(std::unique_ptr<const GHOST_IEvent>(
       new GHOST_Event(getMilliSeconds(), GHOST_kEventWindowSize, window_)));
+  /* The page's only window is the active one. Without activation the window
+   * manager treats it as inactive and re-reads the current modifier state on
+   * every button event, which drops modifiers queued just before a click. */
+  pushEvent(std::unique_ptr<const GHOST_IEvent>(
+      new GHOST_Event(getMilliSeconds(), GHOST_kEventWindowActivate, window_)));
   return window_;
 }
 
