@@ -81,6 +81,7 @@ bool GHOST_WebTouch::process(GHOST_WindowWeb *window)
   }
   window_ = window;
   pushed_ = false;
+  releaseModifiers();
   GHOST_Rect bounds;
   client_bounds(window, bounds);
   pointer_.initialize(bounds.getWidth(), bounds.getHeight(), 1.0);
@@ -284,15 +285,41 @@ void GHOST_WebTouch::key(const int key_code, const bool down, const char *utf8)
   pushed_ = true;
 }
 
+static int modifier_key(const GHOST_TouchModifier modifier)
+{
+  return modifier == GHOST_TouchModifier::Shift   ? GHOST_kKeyLeftShift :
+         modifier == GHOST_TouchModifier::Control ? GHOST_kKeyLeftControl :
+                                                    GHOST_kKeyLeftAlt;
+}
+
 void GHOST_WebTouch::modifier(const GHOST_TouchModifier modifier, const bool down)
 {
   if (trace_) {
     fprintf(stderr, "GHOST_TOUCH modifier %d %s\n", int(modifier), down ? "down" : "up");
   }
-  key(modifier == GHOST_TouchModifier::Shift   ? GHOST_kKeyLeftShift :
-      modifier == GHOST_TouchModifier::Control ? GHOST_kKeyLeftControl :
-                                                 GHOST_kKeyLeftAlt,
-      down);
+  const int index = int(modifier);
+  if (!down) {
+    /* The window manager can re-read the current modifier state when it handles a
+     * button event queued in this same pass. Release on the next pass, after it. */
+    release_pending_[index] = true;
+    return;
+  }
+  if (release_pending_[index]) {
+    /* Released and pressed again within one pass: the key simply stays down. */
+    release_pending_[index] = false;
+    return;
+  }
+  key(modifier_key(modifier), true);
+}
+
+void GHOST_WebTouch::releaseModifiers()
+{
+  for (int i = 0; i < GHOST_TOUCH_MODIFIER_COUNT; i++) {
+    if (release_pending_[i]) {
+      release_pending_[i] = false;
+      key(modifier_key(GHOST_TouchModifier(i)), false);
+    }
+  }
 }
 
 void GHOST_WebTouch::scroll(const double delta_x, const double delta_y, const int /*fingers*/)

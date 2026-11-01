@@ -78,6 +78,8 @@ class GHOST_WebTouch : public GHOST_TouchSink {
   void apply(const int32_t *record, double now);
   void key(int key, bool down, const char *utf8 = nullptr);
   void commitText(int length);
+  /** Send modifier releases deferred from the previous pass. */
+  void releaseModifiers();
   void writeStatus();
   double now() const;
 
@@ -93,6 +95,7 @@ class GHOST_WebTouch : public GHOST_TouchSink {
   bool touch_active_ = false;
   /** Set by `Module.webTouchTrace(true)`; logs discrete input and its results. */
   bool trace_ = false;
+  bool release_pending_[GHOST_TOUCH_MODIFIER_COUNT] = {};
   double scroll_rest_x_ = 0.0, scroll_rest_y_ = 0.0, zoom_rest_ = 0.0;
   int32_t last_x_ = 0, last_y_ = 0;
 };
