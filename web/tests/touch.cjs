@@ -70,17 +70,20 @@ async function main() {
       touchPoints:points.map(([x, y], id) => ({x, y, id, radiusX:4, radiusY:4, force:1}))});
     const release = () => cdp.send('Input.dispatchTouchEvent', {type:'touchEnd', touchPoints:[], timestamp:stamp});
     /* Fingers move in parallel; `to` may differ per finger (pinch). */
+    /* Send each touch on schedule without waiting for Chrome to acknowledge the
+     * previous one; a slow acknowledgement would otherwise hold the fingers still. */
     const gesture = async (from, to, steps, interval) => {
       begin();
-      await send('touchStart', from);
+      const sent = [send('touchStart', from)];
       for (let i = 1; i <= steps; i++) {
         await sleep(interval);
         stamp += interval / 1000;
-        await send('touchMove', from.map(([x, y], f) => [x + (to[f][0] - x) * i / steps, y + (to[f][1] - y) * i / steps]));
+        sent.push(send('touchMove', from.map(([x, y], f) => [x + (to[f][0] - x) * i / steps, y + (to[f][1] - y) * i / steps])));
       }
       await sleep(interval);
       stamp += interval / 1000;
-      await release();
+      sent.push(release());
+      await Promise.all(sent);
     };
     /* `chained` taps continue the previous tap's timeline, as in a triple tap. */
     const tap = async (fingers = [[640, 450]], chained = false) => {
