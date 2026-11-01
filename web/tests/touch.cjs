@@ -148,21 +148,6 @@ async function main() {
     assert.deepEqual(scene.selected, ['Cube']);
     report.checks.threeFingerRedo = true;
 
-    /* The cursor is over the 3D Viewport: two fingers orbit, pinch zooms. */
-    const before = await state();
-    await gesture([[560, 400], [680, 400]], [[700, 400], [820, 400]], 20, 25);
-    await settle();
-    let after = await state();
-    const turned = Math.acos(Math.min(1, Math.abs(before.rotation.reduce((sum, v, i) => sum + v * after.rotation[i], 0)))) * 2;
-    assert(turned > 0.2, `orbit turned ${turned} rad`);
-    assert.deepEqual(after.selected, ['Cube']);
-    report.checks.twoFingerOrbit = turned;
-    await gesture([[600, 400], [680, 400]], [[450, 400], [830, 400]], 20, 25);
-    await settle();
-    const zoomed = await state();
-    assert(zoomed.distance < after.distance * 0.9, `pinch ${after.distance} -> ${zoomed.distance}`);
-    report.checks.pinchZoom = [after.distance, zoomed.distance];
-
     /* A tapped Shift on the belt adds the next click to the selection. */
     const handle = await page.locator('#blender-touch-belt .handle').boundingBox();
     await tap([[handle.x + handle.width / 2, handle.y + handle.height / 2]]);
@@ -180,6 +165,22 @@ async function main() {
     assert.deepEqual(scene.selected, ['Cube', 'Light']);
     assert.equal((await debug()).modifiers & 3, 0, 'latch cleared after the click');
     report.checks.shiftBelt = true;
+
+    /* Navigation runs after aiming at scene objects, since zooming in moves them off screen.
+     * The cursor is over the 3D Viewport: two fingers orbit, pinch zooms. */
+    const before = await state();
+    await gesture([[560, 400], [680, 400]], [[700, 400], [820, 400]], 20, 25);
+    await settle();
+    let after = await state();
+    const turned = Math.acos(Math.min(1, Math.abs(before.rotation.reduce((sum, v, i) => sum + v * after.rotation[i], 0)))) * 2;
+    assert(turned > 0.2, `orbit turned ${turned} rad`);
+    assert.deepEqual(after.selected, ['Cube', 'Light']);
+    report.checks.twoFingerOrbit = turned;
+    await gesture([[600, 400], [680, 400]], [[450, 400], [830, 400]], 20, 25);
+    await settle();
+    const zoomed = await state();
+    assert(zoomed.distance < after.distance * 0.9, `pinch ${after.distance} -> ${zoomed.distance}`);
+    report.checks.pinchZoom = [after.distance, zoomed.distance];
 
     /* Triple tap on the Outliner's Cube row is a double click: rename through the sheet. */
     await aim([1152, 121]);
