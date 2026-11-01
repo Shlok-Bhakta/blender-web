@@ -114,7 +114,11 @@ async function main() {
 
     /* Touch mode: the first drag shows the cursor and the belt but never clicks. */
     await gesture([[600, 450]], [[640, 450]], 10, 30);
-    await settle();
+    /* The page draws the cursor on its next animation frame, which a busy CI page can delay. */
+    await page.waitForFunction(() => {
+      const info = Module.webTouchDebug();
+      return info?.cursorShown && info.beltShown;
+    }, null, {timeout:15000}).catch(() => {});
     let info = await debug();
     assert.equal(info.lastInput, 'touch');
     assert(info.cursorShown && info.beltShown, JSON.stringify(info));
