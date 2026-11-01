@@ -85,10 +85,12 @@ async function main() {
     /* `chained` taps continue the previous tap's timeline, as in a triple tap. */
     const tap = async (fingers = [[640, 450]], chained = false) => {
       if (!chained) begin();
-      await send('touchStart', fingers);
+      /* Don't wait for the press to be acknowledged before releasing: a CI
+       * browser can take seconds to acknowledge, which would make the tap a hold. */
+      const pressed = send('touchStart', fingers);
       await sleep(40);
       stamp += 0.04;
-      await release();
+      await Promise.all([pressed, release()]);
     };
     /* Slow one-finger drags move the cursor one-to-one; repeat until it is on target. */
     const aim = async ([x, y]) => {
