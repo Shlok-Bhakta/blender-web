@@ -111,6 +111,11 @@ async function main() {
       assert(Math.hypot(x - now.x, y - now.y) <= 3, JSON.stringify({target:[x, y], now}));
     };
     const settle = () => sleep(600);
+    /* GHOST publishes its state once it has handled the input; a busy CI page can take a while. */
+    const until = async (predicate, message) => {
+      const ok = await page.waitForFunction(predicate, null, {timeout:15000}).then(() => true, () => false);
+      assert(ok, `${message}: ${JSON.stringify(await debug())}`);
+    };
 
     /* Touch mode: the first drag shows the cursor and the belt but never clicks. */
     await gesture([[600, 450]], [[640, 450]], 10, 30);
@@ -152,18 +157,18 @@ async function main() {
     const handle = await page.locator('#blender-touch-belt .handle').boundingBox();
     await tap([[handle.x + handle.width / 2, handle.y + handle.height / 2]]);
     await sleep(300);
-    assert((await debug()).beltExpanded);
+    await until(() => Module.webTouchDebug()?.beltExpanded, 'belt expanded');
     const shift = await page.locator('#blender-touch-belt .key').first().boundingBox();
     await tap([[shift.x + shift.width / 2, shift.y + shift.height / 2]]);
     await sleep(200);
-    assert.equal((await debug()).modifiers & 3, 2, 'Shift latched');
+    await until(() => (Module.webTouchDebug()?.modifiers & 3) === 2, 'Shift latched');
     scene = await state();
     await aim(screen(scene.Light));
     await tap();
     await settle();
     scene = await state();
     assert.deepEqual(scene.selected, ['Cube', 'Light']);
-    assert.equal((await debug()).modifiers & 3, 0, 'latch cleared after the click');
+    await until(() => (Module.webTouchDebug()?.modifiers & 3) === 0, 'latch cleared after the click');
     report.checks.shiftBelt = true;
 
     /* Navigation runs after aiming at scene objects, since zooming in moves them off screen.
