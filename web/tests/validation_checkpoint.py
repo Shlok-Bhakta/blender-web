@@ -27,7 +27,7 @@ class ValidationCheckpoint(unittest.TestCase):
             link.parent.mkdir(parents=True)
             link.write_text('em++ -O3')
             (base / 'dist').mkdir()
-            manifest = dict(version='new-candidate', uiFallback=True)
+            manifest = dict(version='new-candidate', uiFallback=True, linkOptimization=3)
             (base / 'dist/manifest.json').write_text(json.dumps(manifest))
             checkpoint = base / 'validation-candidate.json'
             checkpoint.write_text(json.dumps(dict(version='old-candidate')))
@@ -50,6 +50,22 @@ class ValidationCheckpoint(unittest.TestCase):
                     patch.object(sys, 'argv', arguments):
                 with self.assertRaisesRegex(AssertionError, 'previously recorded stage'):
                     native_validate.main()
+
+    def test_developer_link_bundle_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            base = root / 'build/native'
+            link = base / 'editor/source/creator/CMakeFiles/blender.dir/link.txt'
+            link.parent.mkdir(parents=True)
+            link.write_text('em++ -O3 -O1')
+            (base / 'dist').mkdir()
+            (base / 'dist/manifest.json').write_text(json.dumps(
+                dict(version='candidate', uiFallback=False, linkOptimization=1)))
+            with patch.object(native_validate, 'ROOT', root), \
+                    patch.object(sys, 'argv', ['native_validate.py', '--blender', sys.executable]):
+                with self.assertRaisesRegex(AssertionError, '-O3 link'):
+                    native_validate.main()
+            self.assertFalse((base / 'validation-candidate.json').exists())
 
     def test_unknown_stop_does_not_change_existing_checkpoint(self):
         with tempfile.TemporaryDirectory() as temporary:

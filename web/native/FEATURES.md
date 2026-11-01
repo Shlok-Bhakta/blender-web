@@ -8,6 +8,7 @@ batches. The static site's
 | Feature | Configuration | Verification or remaining work |
 | --- | --- | --- |
 | Original editors, Python, Eevee, color management and image IO | Enabled | Original UI, Python, storage and default-scene render checks |
+| Touch, pen and on-screen modifier keys | Implemented, tested in CI with Chromium multi-touch | Gestures, belt and text sheet from the 3D Modeling Thingy iOS port. Native gesture checks; the application check covers cursor aim and tap, two/three-finger Undo/Redo, Shift-belt multi-select, two-finger orbit, pinch and a triple-tap rename through the text sheet. Pinch sensitivity and real iOS/Android devices still need validation. See [touch controls](../docs/touch.md) |
 | Viewport picking | Enabled in JSPI bundle | Original mouse selection uses serialized JSPI frames for GPU readbacks |
 | OBJ, STL and PLY | Enabled | Native cube export/import, geometry and bounds checks |
 | FBX import | Enabled | Native ufbx importer, independently authored triangle fixture |

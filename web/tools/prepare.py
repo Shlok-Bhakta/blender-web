@@ -11,6 +11,10 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[2]
 
 
+GITHUB_MIRROR = "https://github.com/blender/blender.git"
+BLENDER_LFS = "https://projects.blender.org/blender/blender.git/info/lfs"
+
+
 def prepare_source(build_dir):
     # Support the original development checkout as well as the public wrapper repo.
     if (ROOT / "source/blender").is_dir():
@@ -19,8 +23,14 @@ def prepare_source(build_dir):
     upstream = ROOT / "blender"
     env = {**os.environ, "GIT_LFS_SKIP_SMUDGE": "1"}
     if not (upstream / ".git").exists():
-        subprocess.run(["git", "submodule", "update", "--init", "--depth", "1", "blender"],
-                       cwd=ROOT, env=env, check=True)
+        update = ["git", "submodule", "update", "--init", "--depth", "1", "blender"]
+        if subprocess.run(update, cwd=ROOT, env=env).returncode:
+            # projects.blender.org sometimes refuses CI runners (HTTP 403). The
+            # official GitHub mirror has the same commits; the revision check below
+            # still pins the result. Large files stay on Blender's own LFS server.
+            subprocess.run(["git", "config", "submodule.blender.url", GITHUB_MIRROR], cwd=ROOT, check=True)
+            subprocess.run(update, cwd=ROOT, env=env, check=True)
+            subprocess.run(["git", "config", "lfs.url", BLENDER_LFS], cwd=upstream, check=True)
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=upstream, text=True).strip()
     if revision != pins["blenderRevision"]:
         raise RuntimeError("The Blender submodule does not match web/upstream.json. Update the submodule explicitly before building.")

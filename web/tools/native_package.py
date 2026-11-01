@@ -110,7 +110,8 @@ def collect(base, root, ui_fallback=True):
     shell = root / 'web/native/site'
     artifacts = [base / 'editor/bin' / f'blender.{suffix}' for suffix in ['js', 'wasm', 'data', 'worker.js']]
     if ui_fallback:
-        artifacts += [base / 'editor/bin' / f'blender-ui.{suffix}' for suffix in ['js', 'wasm', 'worker.js']]
+        # Both loaders instantiate the same blender.wasm; JSPI is implemented in JavaScript.
+        artifacts += [base / 'editor/bin' / f'blender-ui.{suffix}' for suffix in ['js', 'worker.js']]
     artifacts = [path for path in artifacts if path.exists()]
     artifacts.append(shell / 'audio-worklet.js')
     for required in ['blender.js', 'blender.wasm', 'blender.data']:
@@ -197,8 +198,9 @@ def collect(base, root, ui_fallback=True):
     pins = json.loads((root / 'web/upstream.json').read_text())
     # Record the configured binary's options, rather than inferring capabilities
     # from whichever preset happened to be used by the caller.
-    options = dict(re.findall(r'^(WITH_\w+):BOOL=(ON|OFF)$',
-                             (base / 'editor/CMakeCache.txt').read_text(), re.MULTILINE))
+    cache = (base / 'editor/CMakeCache.txt').read_text()
+    options = dict(re.findall(r'^(WITH_\w+):BOOL=(ON|OFF)$', cache, re.MULTILINE))
+    link_optimization = re.search(r'^BLENDER_WEB_LINK_OPTIMIZATION:STRING=(\d+)$', cache, re.MULTILINE)
     seed = base / 'assets/5.2/datafiles/shader-seed.json'
     seed_info = None
     if seed.exists():
@@ -209,6 +211,7 @@ def collect(base, root, ui_fallback=True):
         'blenderRevision': pins['blenderRevision'], 'emscriptenVersion': pins['emscriptenVersion'],
         'assetBase': f'assets/{version}/', 'uiFallback': (bundle / 'blender-ui.js').exists(),
         'buildOptions': {key: value == 'ON' for key, value in sorted(options.items())},
+        'linkOptimization': int(link_optimization.group(1)) if link_optimization else None,
         'shaderSeed':seed_info,
         'files': files}, indent=2)+'\n')
     return destination

@@ -41,6 +41,13 @@ jobs:
           lfs: false
       - name: Verify validation checkpoint isolation
         run: python3 web/tests/validation_checkpoint.py
+      - name: Verify the wasm-opt result cache
+        run: python3 web/tests/wasm_opt_cache.py
+      - name: Check touch gestures natively
+        run: |
+          g++ -std=c++20 -Wall -Wextra -Werror -Wno-unused-parameter -I web/native/ghost \
+            web/native/tests/touch-gestures.cc web/native/ghost/GHOST_TouchGestures.cc -o "$RUNNER_TEMP/touch-gestures"
+          "$RUNNER_TEMP/touch-gestures"
       # Cache keys are computed once here and passed to every later job.
       - name: Look up LLVM checkpoint
         id: llvm
@@ -451,6 +458,7 @@ jobs:
               WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/native.cjs
               WEB_TEST_URL=http://127.0.0.1:8080/ WEB_TEST_UI_FALLBACK=1 node web/tests/native.cjs
               WEB_TEST_URL=http://127.0.0.1:8080/ WEB_RENDER_SOFTWARE=1 node web/tests/cycles.cjs
+              WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/touch.cjs
               ;;
             python-bindings)
               WEB_TEST_URL=http://127.0.0.1:8080/ node web/tests/python-ctypes.cjs
@@ -506,6 +514,7 @@ jobs:
             build/native/osl-python-evidence*
             build/native/embree-evidence*
             build/native/cache-evidence
+            build/native/touch-evidence
             build/native/evidence
             build/native/evidence-ui
             build/native/feature-evidence

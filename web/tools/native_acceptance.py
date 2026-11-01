@@ -340,7 +340,7 @@ def main():
     recording['sha256'] = hashlib.sha256(video.read_bytes()).hexdigest()
     recording['path'] = str(video.relative_to(ROOT))
     selected = lambda variant: sum(file['bytes'] for file in manifest['files'] if
-        file['name'].endswith(('/blender.data', f'/{variant}.js', f'/{variant}.wasm', '/audio-worklet.js')))
+        file['name'].endswith(('/blender.data', '/blender.wasm', f'/{variant}.js', '/audio-worklet.js')))
     native = {path.stem:read(path) for path in sorted(base.glob('*-check.json'))}
     report = {'bundleVersion':version, **read(ROOT / 'web/upstream.json'),
               'featureVariants':features, 'uiChecks':ui, 'eevee':eevee, 'cycles':cycles,

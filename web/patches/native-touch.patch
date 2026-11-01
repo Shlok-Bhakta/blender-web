@@ -1,0 +1,35 @@
+--- a/source/blender/editors/interface/interface_handlers.cc
++++ b/source/blender/editors/interface/interface_handlers.cc
+@@ -57,6 +57,12 @@
+ 
+ #include "GHOST_ISystem.hh"
+ 
++#ifdef WITH_GHOST_WEB
++/* Touch browsers edit text in a page sheet; see GHOST_WebTouch.cc. */
++extern "C" void GHOST_web_text_edit_begin(const char *text, bool numeric);
++extern "C" void GHOST_web_text_edit_end();
++#endif
++
+ #include "IMB_colormanagement.hh"
+ 
+ #include "ED_numinput.hh"
+@@ -3909,6 +3915,9 @@
+   /* Temporarily turn off window auto-focus on platforms that support it. */
+   GHOST_ISystem *ghost_system = GHOST_ISystem::getSystem();
+   ghost_system->setAutoFocus(false);
++#ifdef WITH_GHOST_WEB
++  GHOST_web_text_edit_begin(text_edit.edit_string, is_num_but);
++#endif
+ 
+ #ifdef WITH_INPUT_IME
+   if (!is_num_but) {
+@@ -3977,6 +3986,9 @@
+   /* Turn back on the auto-focusing of windows. */
+   GHOST_ISystem *ghost_system = GHOST_ISystem::getSystem();
+   ghost_system->setAutoFocus(true);
++#ifdef WITH_GHOST_WEB
++  GHOST_web_text_edit_end();
++#endif
+ 
+   /* Free text undo history text blocks. */
+   textedit_undo_stack_destroy(text_edit.undo_stack_text);

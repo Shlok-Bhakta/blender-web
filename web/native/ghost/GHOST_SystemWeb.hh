@@ -17,8 +17,16 @@
 #include "GHOST_System.hh"
 #include "GHOST_WindowWeb.hh"
 
+#include <memory>
+
+class GHOST_WebTouch;
+
 class GHOST_SystemWeb : public GHOST_System {
+  /* Touch and pen gestures drive the shared cursor, buttons and modifiers. */
+  friend class GHOST_WebTouch;
+
  private:
+  std::unique_ptr<GHOST_WebTouch> touch_;
   GHOST_WindowWeb *window_ = nullptr;
   int32_t cursor_x_ = 0, cursor_y_ = 0;
   GHOST_Buttons buttons_;
@@ -28,7 +36,7 @@ class GHOST_SystemWeb : public GHOST_System {
 
  public:
   GHOST_SystemWeb();
-  ~GHOST_SystemWeb() override = default;
+  ~GHOST_SystemWeb() override;
 
   bool processEvents(bool waitForEvent) override;
 

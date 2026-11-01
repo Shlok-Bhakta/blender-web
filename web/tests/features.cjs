@@ -135,7 +135,7 @@ async function main() {
     });
     if (hardware) assert(!/swiftshader|llvmpipe|lavapipe|software/i.test(JSON.stringify(report.adapter)),
       'Hardware feature acceptance must use a hardware WebGPU adapter');
-    report.wasmBytes = manifest.files.find(file=>file.name.endsWith(uiFallback ? '/blender-ui.wasm' : '/blender.wasm')).bytes;
+    report.wasmBytes = manifest.files.find(file=>file.name.endsWith('/blender.wasm')).bytes;
     report.browserErrors = errors.length;
     await page.screenshot({path:path.join(output,'reopened-scene.png')});
     await page.mouse.move(300,250);

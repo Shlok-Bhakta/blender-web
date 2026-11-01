@@ -21,6 +21,7 @@
 #include "GHOST_TimerManager.hh"
 #include "GHOST_WindowManager.hh"
 #include "GHOST_WebText.hh"
+#include "GHOST_WebTouch.hh"
 
 #define WEB_CANVAS "#canvas"
 
@@ -121,6 +122,8 @@ static GHOST_TKey web_key_from_code(const char *code)
 
 GHOST_SystemWeb::GHOST_SystemWeb() : GHOST_System() {}
 
+GHOST_SystemWeb::~GHOST_SystemWeb() = default;
+
 GHOST_TSuccess GHOST_SystemWeb::init()
 {
   GHOST_TSuccess success = GHOST_System::init();
@@ -141,6 +144,8 @@ GHOST_TSuccess GHOST_SystemWeb::init()
   emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, this, false, web_key_cb);
   emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, this, false, web_key_cb);
   emscripten_set_resize_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, this, false, web_resize_cb);
+  touch_ = std::make_unique<GHOST_WebTouch>(*this);
+  touch_->install();
   return GHOST_kSuccess;
 }
 
@@ -156,6 +161,9 @@ bool GHOST_SystemWeb::processEvents(bool /*waitForEvent*/)
   bool has_event = false;
   if (timer_manager_) {
     has_event |= timer_manager_->fireTimers(getMilliSeconds());
+  }
+  if (touch_) {
+    has_event |= touch_->process(window_);
   }
   has_event |= (event_manager_->getNumEvents() > 0);
   return has_event;
