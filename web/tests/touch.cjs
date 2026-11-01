@@ -189,11 +189,19 @@ async function main() {
 
     /* Triple tap on the Outliner's Cube row is a double click: rename through the sheet. */
     await aim([1152, 121]);
+    /* All six events go out on schedule; awaiting each acknowledgement would
+     * space the taps by seconds on CI and end the repeat window. */
+    begin();
+    const sent = [];
     for (let i = 0; i < 3; i++) {
-      await tap([[640, 450]], i > 0);
+      sent.push(send('touchStart', [[640, 450]]));
+      await sleep(40);
+      stamp += 0.04;
+      sent.push(release());
       await sleep(90);
       stamp += 0.09;
     }
+    await Promise.all(sent);
     await page.waitForFunction(() => Module.webTouchDebug()?.sheetOpen, null, {timeout:10000});
     info = await debug();
     assert.equal(info.sheetValue, 'Cube');
